@@ -6,7 +6,7 @@ import {DyeingResult} from '../../../models/dyeing-result';
 import {DyeingPrepareEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
-import {SilkCompare} from '../../../services/util.service';
+import {CodeCompare} from '../../../services/util.service';
 
 @Component({
   selector: 'app-dyeing-prepare-event',
@@ -39,7 +39,7 @@ export class DyeingPrepareEventComponent {
 
   get dataSource() {
     return new MatTableDataSource(this.dyeingPrepare.dyeingResults.sort((a, b) => {
-      return SilkCompare(a.silk, b.silk);
+      return CodeCompare(a.silk, b.silk);
     }));
   }
 

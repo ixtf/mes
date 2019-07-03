@@ -8,8 +8,6 @@ import {isArray, isNullOrUndefined, isObject} from 'util';
 import {EventSource} from '../models/event-source';
 import {Line} from '../models/line';
 import {LineMachine} from '../models/line-machine';
-import {ProductProcess} from '../models/product-process';
-import {Silk} from '../models/silk';
 
 @Injectable({
   providedIn: 'root'
@@ -130,17 +128,24 @@ export const DefaultCompare = (o1: any, o2: any): number => {
   return moment(o1.modifyDateTime).isAfter(o2.modifyDateTime) ? -1 : 1;
 };
 
-export const EventSourceCompare = (o1: EventSource, o2: EventSource): number => {
+export const SortByCompare = (o1: any, o2: any): number => {
   if (o1 && o2) {
-    return (o1 === o2 || o1.eventId === o2.eventId) ? 0 :
-      (moment(o1.fireDateTime).isAfter(o2.fireDateTime) ? -1 : 1);
+    return (o1 === o2 || o1.id === o2.id) ? 0 : o1.sortBy - o2.sortBy;
   }
   return o1 ? 1 : -1;
 };
 
-export const ProductProcessCompare = (o1: ProductProcess, o2: ProductProcess): number => {
+export const CodeCompare = (o1: any, o2: any): number => {
   if (o1 && o2) {
-    return (o1 === o2 || o1.id === o2.id) ? 0 : o1.sortBy - o2.sortBy;
+    return (o1 === o2 || o1.id === o2.id) ? 0 : o1.code.localeCompare(o2.code);
+  }
+  return o1 ? 1 : -1;
+};
+
+export const EventSourceCompare = (o1: EventSource, o2: EventSource): number => {
+  if (o1 && o2) {
+    return (o1 === o2 || o1.eventId === o2.eventId) ? 0 :
+      (moment(o1.fireDateTime).isAfter(o2.fireDateTime) ? -1 : 1);
   }
   return o1 ? 1 : -1;
 };
@@ -159,16 +164,6 @@ export const LineMachineCompare = (o1: LineMachine, o2: LineMachine): number => 
     }
     const lineCompare = LineCompare(o1.line, o2.line);
     return lineCompare !== 0 ? lineCompare : (o1.item - o2.item);
-  }
-  return o1 ? 1 : -1;
-};
-
-export const SilkCompare = (o1: Silk, o2: Silk): number => {
-  if (o1 && o2) {
-    if ((o1 === o2 || o1.id === o2.id)) {
-      return 0;
-    }
-    return o1.code.localeCompare(o2.code);
   }
   return o1 ? 1 : -1;
 };

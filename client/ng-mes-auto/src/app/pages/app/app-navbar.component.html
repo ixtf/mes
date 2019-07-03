@@ -4,9 +4,22 @@
   <a mat-button routerLink="/silkCarRecord" routerLinkActive="active">{{'Nav.silkCarRecord'|translate}}</a>
   <a mat-button routerLink="/productPlan" routerLinkActive="active">{{'Nav.productPlan'|translate}}</a>
   <a mat-button routerLink="/report" routerLinkActive="active">{{'Nav.report'|translate}}</a>
-  <a mat-button routerLink="/config" routerLinkActive="active">{{'Nav.config'|translate}}</a>
+
+  <button [matMenuTriggerFor]="configMenu" mat-button type="button">{{'Nav.config'|translate}}</button>
+  <mat-menu #configMenu="matMenu">
+    <a mat-menu-item routerLink="/config/workshops" routerLinkActive="active">{{'Nav.workshops'|translate}}</a>
+    <a mat-menu-item routerLink="/config/lines" routerLinkActive="active">{{'Nav.lines'|translate}}</a>
+    <a mat-menu-item routerLink="/config/silkCars" routerLinkActive="active">{{'Nav.silkCars'|translate}}</a>
+    <a mat-menu-item routerLink="/config/batches" routerLinkActive="active">{{'Nav.batches'|translate}}</a>
+    <a mat-menu-item routerLink="/config/packageClasses" routerLinkActive="active">{{'Nav.packageClasses'|translate}}</a>
+    <ng-container *ngIf="isAdmin$|async">
+      <mat-divider></mat-divider>
+      <a mat-menu-item routerLink="/config/sapT001ls" routerLinkActive="active">{{'Nav.sapT001ls'|translate}}</a>
+    </ng-container>
+  </mat-menu>
+
   <span fxFlex></span>
-  <button mat-button [matMenuTriggerFor]="menu">
+  <button [matMenuTriggerFor]="menu" mat-button type="button">
     {{(authInfo$|async)?.name || 'An'}}
   </button>
   <mat-menu #menu="matMenu" xPosition="before">
@@ -22,7 +35,7 @@
     <mat-divider></mat-divider>
     <button type="button" (click)="logout$.emit()" mat-menu-item>{{'Common.logout'|translate}}</button>
   </mat-menu>
-<!--    <button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Common.help'|translate">-->
-<!--      <mat-icon>help</mat-icon>-->
-<!--    </button>-->
+  <!--    <button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Common.help'|translate">-->
+  <!--      <mat-icon>help</mat-icon>-->
+  <!--    </button>-->
 </nav>

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {JikonAdapterSilkDetachEvent, RiambSilkDetachEvent} from '../../../models/event-source';
+import {RiambSilkDetachEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 

@@ -2,7 +2,6 @@ import {Batch} from './batch';
 import {EventSource} from './event-source';
 import {Grade} from './grade';
 import {Operator} from './operator';
-import {Silk} from './silk';
 import {SilkCar} from './silk-car';
 import {SilkRuntime} from './silk-runtime';
 

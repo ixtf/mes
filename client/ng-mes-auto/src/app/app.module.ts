@@ -25,10 +25,6 @@ import {SharedModule} from './shared.module';
 import {AppState} from './store/app.state';
 import {SilkCarRuntimePageState} from './store/silk-car-runtime-page.state';
 
-export function createTranslateLoader(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient);
-}
-
 const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
   {
@@ -38,27 +34,47 @@ const routes: Routes = [
     children: [
       {
         path: 'silkCarRuntime',
-        loadChildren: () => import('./pages/silk-car-runtime-page/silk-car-runtime-page.component').then(it => it.SilkCarRuntimePageModule),
+        loadChildren: () => import('./pages/silk-car-runtime-page/silk-car-runtime-page.component').then(it => it.Module),
       },
       {
         path: 'silkCarRecord',
-        loadChildren: () => import('./pages/silk-car-record-page/silk-car-record-page.component').then(it => it.SilkCarRecordPageModule),
+        loadChildren: () => import('./pages/silk-car-record-page/silk-car-record-page.component').then(it => it.Module),
       },
       {
-        path: 'config',
-        loadChildren: () => import('./config.module').then(it => it.ConfigModule),
+        path: 'config/workshops',
+        loadChildren: () => import('./pages/workshop-manage-page/workshop-manage-page.component').then(it => it.Module),
+      },
+      {
+        path: 'config/lines',
+        loadChildren: () => import('./pages/line-manage-page/line-manage-page.component').then(it => it.Module),
+      },
+      {
+        path: 'config/silkCars',
+        loadChildren: () => import('./pages/silk-car-manage-page/silk-car-manage-page.component').then(it => it.Module),
+      },
+      {
+        path: 'config/batches',
+        loadChildren: () => import('./pages/batch-manage-page/batch-manage-page.component').then(it => it.Module),
+      },
+      {
+        path: 'config/packageClasses',
+        loadChildren: () => import('./pages/package-class-manage-page/package-class-manage-page.component').then(it => it.Module),
+      },
+      {
+        path: 'config/sapT001ls',
+        loadChildren: () => import('./pages/sap-t001l-manage-page/sap-t001l-manage-page.component').then(it => it.Module),
       },
       {
         path: 'test/animation01',
-        loadChildren: () => import('./pages/test/animation01-page/animation01-page.component').then(it => it.Animation01PageModule),
+        loadChildren: () => import('./pages/test/animation01-page/animation01-page.component').then(it => it.Module),
       },
       {
         path: 'test/animation02',
-        loadChildren: () => import('./pages/test/animation02-page/animation02-page.component').then(it => it.Animation02PageModule),
+        loadChildren: () => import('./pages/test/animation02-page/animation02-page.component').then(it => it.Module),
       },
       {
         path: 'test/animation03',
-        loadChildren: () => import('./pages/test/animation03-page/animation03-page.component').then(it => it.Animation03PageModule),
+        loadChildren: () => import('./pages/test/animation03-page/animation03-page.component').then(it => it.Module),
       },
       // {path: 'print', loadChildren: './print.module#PrintModule'},
       // {path: 'silkCar', loadChildren: './silk-car.module#SilkCarModule'},
@@ -69,6 +85,10 @@ const routes: Routes = [
     ]
   },
 ];
+
+export function createTranslateLoader(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   declarations: [

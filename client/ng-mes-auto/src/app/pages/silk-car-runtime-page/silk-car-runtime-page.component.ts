@@ -2,10 +2,11 @@ import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@
 import {FormBuilder, FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
 import {RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {Emittable, Emitter} from '@ngxs-labs/emitter';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
 import {isString} from 'util';
 import {SilkCarRecordEventListComponentModule} from '../../components/flow-card/flow-card.component';
 import {SilkCarRecordInfoComponentModule} from '../../components/silk-car-record-info/silk-car-record-info.component';
@@ -14,7 +15,6 @@ import {insertRemoveAnimation} from '../../services/animations';
 import {ApiService} from '../../services/api.service';
 import {SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
 import {FetchAction, SilkCarRuntimePageState} from '../../store/silk-car-runtime-page.state';
 
 @Component({
@@ -41,8 +41,6 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
   });
   @Select(SilkCarRuntimePageState.silkCarRuntime)
   silkCarRuntime$: Observable<SilkCarRuntime>;
-  @Emitter(AppState.SetLoading)
-  SetLoading$: Emittable<boolean>;
   @Emitter(SilkCarRuntimePageState.OnInit)
   OnInit$: Emittable<void>;
 
@@ -53,9 +51,9 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.OnInit$.emit();
-    this.store.dispatch(new FetchAction('3000F48001'));
-    this.store.dispatch(new FetchAction('YJ048F0002'));
-    // this.store.dispatch(new FetchAction('3000F2345'));
+    // this.store.dispatch(new FetchAction('3000F48001'));
+    // this.store.dispatch(new FetchAction('YJ048F0002'));
+    this.store.dispatch(new FetchAction('3000F2345'));
     // this.store.dispatch(new FetchAction('3000F30606'));
   }
 
@@ -64,11 +62,9 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  @Dispatch()
   onSilkCarSelected(event: MatAutocompleteSelectedEvent) {
-    this.SetLoading$.emit(true);
-    this.store.dispatch(new FetchAction(event.option.value)).pipe(
-      finalize(() => this.SetLoading$.emit(false))
-    ).subscribe();
+    return new FetchAction(event.option.value);
   }
 
 }
@@ -87,5 +83,5 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
     ]),
   ],
 })
-export class SilkCarRuntimePageModule {
+export class Module {
 }

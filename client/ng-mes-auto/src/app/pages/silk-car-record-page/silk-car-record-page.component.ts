@@ -1,10 +1,11 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {Emittable, Emitter} from '@ngxs-labs/emitter';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
 import {isString} from 'util';
 import {SilkCarRecordEventListComponentModule} from '../../components/flow-card/flow-card.component';
 import {SilkCarRecordInfoComponentModule} from '../../components/silk-car-record-info/silk-car-record-info.component';
@@ -12,7 +13,6 @@ import {SilkCarRecord} from '../../models/silk-car-record';
 import {ApiService} from '../../services/api.service';
 import {SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
 import {QueryAction, SilkCarRecordPageState} from '../../store/silk-car-record-page.state';
 
 @Component({
@@ -37,8 +37,6 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
   });
   @Select(SilkCarRecordPageState.silkCarRecords)
   silkCarRecords$: Observable<SilkCarRecord[]>;
-  @Emitter(AppState.SetLoading)
-  SetLoading$: Emittable<boolean>;
   @Emitter(SilkCarRecordPageState.OnInit)
   OnInit$: Emittable<void>;
 
@@ -56,11 +54,9 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  @Dispatch()
   query() {
-    this.SetLoading$.emit(true);
-    this.store.dispatch(new QueryAction(this.form.value)).pipe(
-      finalize(() => this.SetLoading$.emit(false))
-    ).subscribe();
+    return new QueryAction(this.form.value);
   }
 
 }
@@ -79,5 +75,5 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
     ]),
   ],
 })
-export class SilkCarRecordPageModule {
+export class Module {
 }

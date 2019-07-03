@@ -1,0 +1,35 @@
+<form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <form [formGroup]="searchForm" fxFlex fxLayout>
+    <mat-form-field floatLabel="never" fxFlexOffset="2px">
+      <input [placeholder]="'Tooltip.q'|translate" formControlName="q" matInput>
+    </mat-form-field>
+  </form>
+
+  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+
+<mat-table [dataSource]="sapT001ls$" fxFlex style="overflow-y: auto">
+  <ng-container matColumnDef="lgort">
+    <mat-header-cell *matHeaderCellDef>{{'Sap.lgort'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.lgort}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lgobe">
+    <mat-header-cell *matHeaderCellDef>{{'Sap.lgobe'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.lgobe}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <button (click)="update(row)" color="primary" mat-button>
+        {{'Common.edit'|translate}}
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

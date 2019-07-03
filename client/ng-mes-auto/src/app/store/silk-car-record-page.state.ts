@@ -1,7 +1,6 @@
 import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
 import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {tap} from 'rxjs/operators';
 import {SilkCarRecord} from '../models/silk-car-record';
 import {ApiService} from '../services/api.service';
 

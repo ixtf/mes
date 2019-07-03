@@ -1,37 +1,34 @@
-<main fxFill fxLayout>
-  <!--  <section fxFlex="50" fxLayout="column">-->
-  <section fxFlex="50" fxLayout="column" style="padding-right: 1px">
-    <div class="toolbar">
-      <input class="mySearch" [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" matInput [placeholder]="'Tooltip.q'|translate" tabindex="-1">
-      <mat-autocomplete #autoSilkCar="matAutocomplete" (optionSelected)="onSilkCarSelected($event)" autoActiveFirstOption>
-        <mat-option *ngFor="let it of autoCompleteSilkCars$|async" [value]="it.code">
-          {{it.code}}
-        </mat-option>
-      </mat-autocomplete>
-    </div>
+<section fxFlex="50" fxLayout="column" style="padding-right: 1px">
+  <div class="toolbar">
+    <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'Tooltip.q'|translate" class="mySearch" matInput tabindex="-1">
+    <mat-autocomplete #autoSilkCar="matAutocomplete" (optionSelected)="onSilkCarSelected($event)" autoActiveFirstOption>
+      <mat-option *ngFor="let it of autoCompleteSilkCars$|async" [value]="it.code">
+        {{it.code}}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
 
-    <mat-divider></mat-divider>
+  <mat-divider></mat-divider>
 
-    <app-silk-car-record-info @insertRemove *ngIf="(silkCarRuntime$|async)?.silkCarRecord" fxFlex [silkCarRuntime]="silkCarRuntime$|async"></app-silk-car-record-info>
-  </section>
+  <app-silk-car-record-info *ngIf="(silkCarRuntime$|async)?.silkCarRecord" @insertRemove [silkCarRuntime]="silkCarRuntime$|async" fxFlex></app-silk-car-record-info>
+</section>
 
-  <mat-divider vertical></mat-divider>
+<mat-divider vertical></mat-divider>
 
-  <section fxFlex="50" fxLayout="column" *ngIf="silkCarRuntime$|async" style="padding-left: 1px">
-    <div class="toolbar" [formGroup]="settingForm" ngxsForm="SilkCarRuntimePage.settingForm">
-      <h4 fxFlex></h4>
+<section *ngIf="silkCarRuntime$|async" @insertRemove fxFlex="50" fxLayout="column" style="padding-left: 1px">
+  <div [formGroup]="settingForm" class="toolbar" ngxsForm="SilkCarRuntimePage.settingForm">
+    <h4 fxFlex></h4>
 
-      <button type="button" mat-icon-button (click)="settingForm.patchValue({showAll:!settingForm.value.showAll})">
-        <mat-icon>{{settingForm.value.showAll ? 'visibility' : 'visibility_off'}}</mat-icon>
-      </button>
-      <mat-button-toggle-group formControlName="sort" appearance="legacy" style="box-shadow: none;">
-        <mat-button-toggle value="desc">{{'Common.timeDesc'|translate}}</mat-button-toggle>
-        <mat-button-toggle value="asc">{{'Common.timeAsc'|translate}}</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
+    <button (click)="settingForm.patchValue({showAll:!settingForm.value.showAll})" mat-icon-button type="button">
+      <mat-icon>{{settingForm.value.showAll ? 'visibility' : 'visibility_off'}}</mat-icon>
+    </button>
+    <mat-button-toggle-group appearance="legacy" formControlName="sort" style="box-shadow: none;">
+      <mat-button-toggle value="desc">{{'Common.timeDesc'|translate}}</mat-button-toggle>
+      <mat-button-toggle value="asc">{{'Common.timeAsc'|translate}}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 
-    <mat-divider></mat-divider>
+  <mat-divider></mat-divider>
 
-    <app-flow-card fxFlex [silkCarRuntime]="silkCarRuntime$|async" [setting]="settingForm.value"></app-flow-card>
-  </section>
-</main>
+  <app-flow-card [setting]="settingForm.value" [silkCarRuntime]="silkCarRuntime$|async" fxFlex></app-flow-card>
+</section>

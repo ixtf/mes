@@ -15,6 +15,6 @@ export const environment = {
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
 
-export const HOST_NAME = '10.61.0.15';
-// export const HOST_NAME = '10.2.0.215';
+// export const HOST_NAME = '10.61.0.15';
+export const HOST_NAME = '10.2.0.215';
 // export const baseEventbusUrl = baseUrl + ':9999/eventbus';

@@ -16,11 +16,7 @@ interface AppStateModel {
 export class LoginAction {
   static readonly type = '[App] LoginAction';
 
-  constructor(public payload: {
-    loginId: string;
-    loginPassword: string;
-    returnUrl: string;
-  }) {
+  constructor(public payload: { loginId: string; loginPassword: string; returnUrl: string; }) {
   }
 }
 
@@ -63,7 +59,7 @@ export class AppState implements NgxsOnInit {
   }
 
   @Receiver()
-  static LogoutAction({setState, dispatch}: StateContext<AppStateModel>, action: EmitterAction<void>) {
+  static LogoutAction({setState}: StateContext<AppStateModel>) {
     setState({});
     location.reload();
     // return dispatch(new Navigate(['/']));

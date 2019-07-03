@@ -2,18 +2,19 @@ import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest}
 import {Injectable} from '@angular/core';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
-import {Emittable, Emitter} from '@ngxs-labs/emitter';
+import {EmitterService} from '@ngxs-labs/emitter';
+import {Store} from '@ngxs/store';
 import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, finalize} from 'rxjs/operators';
 import {isString} from 'util';
 import {AppState} from '../store/app.state';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  @Emitter(AppState.LogoutAction)
-  Logout$: Emittable<void>;
 
-  constructor(private snackBar: MatSnackBar,
+  constructor(private store: Store,
+              private emitter: EmitterService,
+              private snackBar: MatSnackBar,
               private translate: TranslateService) {
   }
 
@@ -24,6 +25,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.handle(request, err);
         return throwError(err);
       }),
+      finalize(() => {
+        if (this.store.selectSnapshot(AppState.isLoading)) {
+          this.emitter.action(AppState.SetLoading).emit(false);
+        }
+      })
     );
   }
 
@@ -33,7 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
     if (err.status === 401) {
       // auto logout if 401 response returned from api
-      this.Logout$.emit().subscribe(() => {
+      this.emitter.action(AppState.LogoutAction).emit().subscribe(() => {
         location.reload(true);
       });
     } else if (err.status === 400) {

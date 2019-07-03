@@ -69,5 +69,5 @@ export class Animation01PageComponent {
     ]),
   ],
 })
-export class Animation01PageModule {
+export class Module {
 }

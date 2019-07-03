@@ -3,6 +3,7 @@ import {LoggableEntity} from './loggable-entity';
 export class PackageClass extends LoggableEntity {
   id: string;
   name: string;
+  riambCode: string;
   sortBy: number;
 
   static assign(...sources: any[]): PackageClass {

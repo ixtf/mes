@@ -1,10 +1,8 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MatTableDataSource, Sort} from '@angular/material';
 import {Store} from '@ngxs/store';
-import {SilkNoteFeedbackEvent, SilkRuntimeDetachEvent} from '../../../models/event-source';
+import {SilkNoteFeedbackEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
-import {SilkRuntime} from '../../../models/silk-runtime';
 import {AppState} from '../../../store/app.state';
 
 @Component({

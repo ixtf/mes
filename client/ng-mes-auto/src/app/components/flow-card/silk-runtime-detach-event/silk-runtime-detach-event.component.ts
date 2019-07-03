@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MatTableDataSource, Sort} from '@angular/material';
+import {MatTableDataSource} from '@angular/material';
 import {Store} from '@ngxs/store';
 import {SilkRuntimeDetachEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';

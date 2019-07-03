@@ -47,7 +47,7 @@
 <section fxFlex fxLayout="column">
   <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" rowHeight="100px" gutterSize="4">
     <mat-grid-tile *ngFor="let silk of silkCarRecordInfo.aSideSilks">
-      <ng-container *ngTemplateOutlet="silkTile;context:{silk:silk,sideType:'A'}"></ng-container>
+      <ng-container *ngTemplateOutlet="silkTileTemp;context:{silk:silk,sideType:'A'}"></ng-container>
     </mat-grid-tile>
   </mat-grid-list>
 
@@ -55,12 +55,12 @@
 
   <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" rowHeight="100px" gutterSize="4">
     <mat-grid-tile *ngFor="let silk of silkCarRecordInfo.bSideSilks">
-      <ng-container *ngTemplateOutlet="silkTile;context:{silk:silk,sideType:'B'}"></ng-container>
+      <ng-container *ngTemplateOutlet="silkTileTemp;context:{silk:silk,sideType:'B'}"></ng-container>
     </mat-grid-tile>
   </mat-grid-list>
 </section>
 
-<ng-template #silkTile let-silk="silk" let-sideType="sideType">
+<ng-template #silkTileTemp let-sideType="sideType" let-silk="silk">
   <ng-container *ngIf="silk.id">
     <div fxLayout="column" class="silk" [class.error]="silk.hasException">
       <div class="position" fxLayout fxLayoutAlign="center center" (click)="toggleSelect(silk);$event.stopPropagation();" [matTooltipDisabled]="!silk.hasException" [matTooltip]="silk.tooltip">

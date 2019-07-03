@@ -6,9 +6,7 @@ import {slideInAnimation} from '../../services/animations';
   templateUrl: './app-shell.component.html',
   styleUrls: ['./app-shell.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    slideInAnimation,
-  ]
+  animations: [slideInAnimation]
 })
 export class AppShellComponent {
   prepareRoute(outlet: RouterOutlet) {

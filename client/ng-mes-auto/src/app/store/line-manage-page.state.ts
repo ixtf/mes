@@ -1,10 +1,11 @@
 import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {of} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
 import {Line} from '../models/line';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {CodeCompare} from '../services/util.service';
+import {CodeCompare, LineCompare} from '../services/util.service';
 
 export class InitAction {
   static readonly type = '[LineManagePage] InitAction';
@@ -41,20 +42,20 @@ export class LineManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static workshopId(state: LineManagePageStateModel) {
+  static workshopId(state: LineManagePageStateModel): string {
     return state.workshopId;
   }
 
   @Selector()
   @ImmutableSelector()
-  static workshops(state: LineManagePageStateModel) {
+  static workshops(state: LineManagePageStateModel): Workshop[] {
     return state.workshops;
   }
 
   @Selector()
   @ImmutableSelector()
-  static lines(state: LineManagePageStateModel) {
-    return state.lines;
+  static lines(state: LineManagePageStateModel): Line[] {
+    return (state.lines || []).sort(LineCompare);
   }
 
   @Action(InitAction)
@@ -63,6 +64,10 @@ export class LineManagePageState {
       switchMap(workshops => {
         workshops = workshops.sort(CodeCompare);
         patchState({workshops});
+        console.log('getState().workshopId', getState().workshopId);
+        if (getState().workshopId) {
+          return of();
+        }
         return dispatch(new QueryAction({workshopId: workshops[0].id}));
       })
     );

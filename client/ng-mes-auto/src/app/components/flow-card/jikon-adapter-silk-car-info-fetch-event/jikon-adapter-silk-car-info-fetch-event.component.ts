@@ -27,7 +27,7 @@ export class JikonAdapterSilkCarInfoFetchEventComponent {
   }
 
   get data(): { bindNum: string, list: any[] } {
-    return JSON.parse(this.event.result).data;
+    return JSON.parse(this.event.result).workshop;
   }
 
 }

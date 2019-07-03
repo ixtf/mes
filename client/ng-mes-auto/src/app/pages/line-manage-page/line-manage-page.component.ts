@@ -19,19 +19,16 @@ const COLUMNS = ['workshop', 'name', 'doffingType'];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineManagePageComponent implements OnInit, OnDestroy {
+  readonly searchForm = this.fb.group({
+    workshopId: this.store.selectSnapshot(LineManagePageState.workshopId)
+  });
   @Select(AppState.isAdmin)
   readonly isAdmin$: Observable<boolean>;
-  @Select(LineManagePageState.workshopId)
-  readonly workshopId$: Observable<string>;
   @Select(LineManagePageState.workshops)
   readonly workshops$: Observable<Workshop[]>;
   @Select(LineManagePageState.lines)
   readonly lines$: Observable<Line[]>;
   displayedColumns$: Observable<string[]>;
-  readonly searchForm = this.fb.group({
-    workshopId: null
-  });
-  readonly displayedColumns = COLUMNS;
   private readonly destroy$ = new Subject();
 
   constructor(private store: Store,

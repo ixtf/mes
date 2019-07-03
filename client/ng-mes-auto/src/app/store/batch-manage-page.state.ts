@@ -27,22 +27,22 @@ export class BatchManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static batches(state: SilkCarManagePageStateModel) {
+  static batches(state: SilkCarManagePageStateModel): Batch[] {
     return state.batches;
   }
 
   @Selector()
-  static count(state: SilkCarManagePageStateModel) {
+  static count(state: SilkCarManagePageStateModel): number {
     return state.count;
   }
 
   @Selector()
-  static first(state: SilkCarManagePageStateModel) {
+  static first(state: SilkCarManagePageStateModel): number {
     return state.first;
   }
 
   @Selector()
-  static pageSize(state: SilkCarManagePageStateModel) {
+  static pageSize(state: SilkCarManagePageStateModel): number {
     return state.pageSize;
   }
 

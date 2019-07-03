@@ -51,9 +51,9 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.OnInit$.emit();
-    // this.store.dispatch(new FetchAction('3000F48001'));
+    this.store.dispatch(new FetchAction('3000F48001'));
     // this.store.dispatch(new FetchAction('YJ048F0002'));
-    this.store.dispatch(new FetchAction('3000F2345'));
+    // this.store.dispatch(new FetchAction('3000F2345'));
     // this.store.dispatch(new FetchAction('3000F30606'));
   }
 

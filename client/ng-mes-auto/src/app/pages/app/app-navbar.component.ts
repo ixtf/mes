@@ -20,4 +20,5 @@ export class AppNavbarComponent {
   readonly isAdmin$: Observable<boolean>;
   @Emitter(AppState.LogoutAction)
   readonly logout$: Emittable;
+
 }

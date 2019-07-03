@@ -5,16 +5,16 @@ import {tap} from 'rxjs/operators';
 import {SilkCarRuntime} from '../models/silk-car-runtime';
 import {ApiService} from '../services/api.service';
 
-interface SilkCarRuntimePageStateModel {
-  silkCarRuntime?: SilkCarRuntime;
-  settingForm?: { model: { sort: string } };
-}
-
 export class FetchAction {
   static readonly type = '[SilkCarRuntimePage] FetchAction';
 
   constructor(public payload: string) {
   }
+}
+
+interface SilkCarRuntimePageStateModel {
+  silkCarRuntime?: SilkCarRuntime;
+  settingForm?: { model: { sort: string } };
 }
 
 @State<SilkCarRuntimePageStateModel>({

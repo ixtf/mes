@@ -240,7 +240,7 @@ export class ApiService {
   }
 
   /*公司*/
-  listCorporation(params?: HttpParams): Observable<Corporation []> {
+  listCorporation(params?: HttpParams): Observable<Corporation[]> {
     return this.http.get<Corporation[]>(`${BASE_API_URL}/corporations`, {params});
   }
 

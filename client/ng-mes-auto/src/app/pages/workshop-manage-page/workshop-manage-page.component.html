@@ -8,7 +8,7 @@
 <mat-table [dataSource]="workshops$" fxFlex>
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
+    <mat-cell (dblclick)="copy(row.id)" *matCellDef="let row">{{row.id}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="corporation">
@@ -17,39 +17,39 @@
   </ng-container>
 
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef>{{'Common.name'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'Common.name'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">{{row.name}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="code">
-    <mat-header-cell *matHeaderCellDef>{{'code'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.code}}</mat-cell>
+    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'code'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">{{row.code}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="sapT001ls">
-    <mat-header-cell *matHeaderCellDef>{{'sapT001ls'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">
+    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'sapT001ls'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxLayoutAlign="center center">
       <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001ls}"></ng-container>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="sapT001lsPallet">
-    <mat-header-cell *matHeaderCellDef>{{'sapT001lsPallet'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">
+    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'sapT001lsPallet'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxLayoutAlign="center center">
       <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001lsPallet}"></ng-container>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="sapT001lsForeign">
-    <mat-header-cell *matHeaderCellDef>{{'sapT001lsForeign'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">
+    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'sapT001lsForeign'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxLayoutAlign="center center">
       <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001lsForeign}"></ng-container>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="btns">
-    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">
+    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">
       <button (click)="update(row)" color="primary" mat-button>
         {{'Common.edit'|translate}}
       </button>
@@ -59,6 +59,61 @@
   <mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
 </mat-table>
+
+<!--<table mat-table [dataSource]="workshops$" fxFlex>-->
+<!--  <ng-container matColumnDef="id">-->
+<!--    <th mat-header-cell *matHeaderCellDef>ID</th>-->
+<!--    <td mat-cell *matCellDef="let row" (dblclick)="copy(row.id)">{{row.id}}</td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="corporation">-->
+<!--    <th mat-header-cell *matHeaderCellDef>{{'corporation'|translate}}</th>-->
+<!--    <td mat-cell *matCellDef="let row">{{row.corporation.name}}</td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="name">-->
+<!--    <th mat-header-cell *matHeaderCellDef>{{'Common.name'|translate}}</th>-->
+<!--    <td mat-cell *matCellDef="let row">{{row.name}}</td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="code">-->
+<!--    <th mat-header-cell *matHeaderCellDef>{{'code'|translate}}</th>-->
+<!--    <td mat-cell *matCellDef="let row">{{row.code}}</td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="sapT001ls">-->
+<!--    <th mat-header-cell *matHeaderCellDef>{{'sapT001ls'|translate}}</th>-->
+<!--    <td mat-cell *matCellDef="let row">-->
+<!--      <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001ls}"></ng-container>-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="sapT001lsPallet">-->
+<!--    <th mat-header-cell *matHeaderCellDef>{{'sapT001lsPallet'|translate}}</th>-->
+<!--    <td mat-cell *matCellDef="let row" fxLayout fxLayoutAlign="center center">-->
+<!--      <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001lsPallet}"></ng-container>-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="sapT001lsForeign">-->
+<!--    <th mat-header-cell *matHeaderCellDef>{{'sapT001lsForeign'|translate}}</th>-->
+<!--    <td mat-cell *matCellDef="let row">-->
+<!--      <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001lsForeign}"></ng-container>-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <ng-container matColumnDef="btns">-->
+<!--    <th mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</th>-->
+<!--    <td mat-cell *matCellDef="let row">-->
+<!--      <button (click)="update(row)" color="primary" mat-button>-->
+<!--        {{'Common.edit'|translate}}-->
+<!--      </button>-->
+<!--    </td>-->
+<!--  </ng-container>-->
+
+<!--  <tr mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></tr>-->
+<!--  <tr mat-row *matRowDef="let row; columns: displayedColumns$|async;"></tr>-->
+<!--</table>-->
 
 <ng-template #sapT001lsTemp let-sapT001ls="sapT001ls">
   <mat-list dense>

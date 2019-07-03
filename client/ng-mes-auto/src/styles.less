@@ -24,8 +24,10 @@ form.search-area {
 }
 
 .mat-column-btns {
-  text-align: right;
-  place-content: center flex-end;
+  //text-align: right;
+  //place-content: center flex-end;
+  padding: 0 !important;
+  border-left: 1px solid #e0e0e0;
 }
 
 .flow-card-event {
@@ -56,4 +58,41 @@ form.search-area {
       height: 48px;
     }
   }
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: @mediumgray;
+  outline: 1px solid @darkgray;
+}
+
+///* 设置滚动条的样式 */
+//::-webkit-scrollbar {
+//  height: 6px;
+//  width: 6px;
+//}
+//
+///* 滚动槽 */
+//::-webkit-scrollbar-track {
+//  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//  background-color: #F5F5F5;
+//}
+//
+///* 滚动条滑块 */
+//::-webkit-scrollbar-thumb {
+//  outline: 1px solid #333;
+//  background: rgba(0, 0, 0, 0.1);
+//  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+//}
+//
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255, 0, 0, 0.4);
 }

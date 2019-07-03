@@ -3,24 +3,23 @@ import {RouterModule} from '@angular/router';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {PackageClass} from '../../models/package-class';
+import {Workshop} from '../../models/workshop';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
-import {InitAction, PackageClassManagePageState} from '../../store/package-class-manage-page.state';
-import {PackageClassUpdateDialogComponent} from './package-class-update-dialog.component';
+import {InitAction, WorkshopManagePageState} from '../../store/workshop-manage-page.state';
 
-const COLUMNS = ['name', 'riambCode', 'sortBy'];
+const COLUMNS = ['corporation', 'name', 'code', 'sapT001ls', 'sapT001lsForeign', 'sapT001lsPallet'];
 
 @Component({
-  templateUrl: './package-class-manage-page.component.html',
-  styleUrls: ['./package-class-manage-page.component.less'],
+  templateUrl: './blank.component.html',
+  styleUrls: ['./blank.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PackageClassManagePageComponent implements OnInit {
+export class BlankComponent implements OnInit {
   @Select(AppState.isAdmin)
   readonly isAdmin$: Observable<boolean>;
-  @Select(PackageClassManagePageState.packageClasses)
-  readonly packageClasses$: Observable<PackageClass[]>;
+  @Select(WorkshopManagePageState.workshops)
+  readonly workshops$: Observable<Workshop[]>;
   displayedColumns$: Observable<string[]>;
 
   constructor(private store: Store) {
@@ -43,17 +42,13 @@ export class PackageClassManagePageComponent implements OnInit {
 
 @NgModule({
   declarations: [
-    PackageClassManagePageComponent,
-    PackageClassUpdateDialogComponent,
-  ],
-  entryComponents: [
-    PackageClassUpdateDialogComponent
+    BlankComponent,
   ],
   imports: [
-    NgxsModule.forFeature([PackageClassManagePageState]),
+    NgxsModule.forFeature([WorkshopManagePageState]),
     SharedModule,
     RouterModule.forChild([
-      {path: '', component: PackageClassManagePageComponent, data: {animation: 'FilterPage'}},
+      {path: '', component: BlankComponent, data: {animation: 'FilterPage'}},
     ]),
   ],
 })

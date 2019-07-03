@@ -1,0 +1,13 @@
+dependencies {
+    compile project(':mes-auto-core'),
+            "com.github.ixtf.vertx:jax-rs",
+            "com.github.ixtf.persistence:mongo",
+            "io.vertx:vertx-hazelcast",
+            "org.apache.lucene:lucene-analyzers-smartcn",
+            "org.apache.lucene:lucene-expressions",
+            "org.apache.lucene:lucene-facet",
+            "org.apache.lucene:lucene-queries",
+            "org.apache.lucene:lucene-queryparser"
+}
+
+mainClassName = "com.hengyi.japp.mes.auto.search.Search"

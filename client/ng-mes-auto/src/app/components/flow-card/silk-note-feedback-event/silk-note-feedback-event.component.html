@@ -1,0 +1,18 @@
+<header fxLayout fxLayoutAlign="start center">
+  <span fxFlex="50px">{{event.operator.name}}</span>
+  <span fxFlex>{{event.fireDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  <button type="button" mat-button [matMenuTriggerFor]="menu">
+    {{('EventSourceType.' + event.type)|translate}}
+  </button>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <button mat-menu-item [disabled]="!canUndo()">{{'Common.undo'|translate}}</button>
+  </mat-menu>
+</header>
+
+<section fxLayout="column">
+  <mat-list dense>
+    <mat-list-item  style="font-size: 14px">
+      {{event.silkNote.name}}
+    </mat-list-item>
+  </mat-list>
+</section>

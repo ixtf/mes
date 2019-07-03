@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':mes-auto-core'),
+            "com.github.ixtf.vertx:jax-rs"
+}
+
+mainClassName = "com.hengyi.japp.mes.auto.agent.Agent"

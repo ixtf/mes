@@ -1,0 +1,90 @@
+<!--<header class="mat-elevation-z1" fxLayout="column">-->
+<header fxLayout="column">
+  <div fxLayout fxLayoutAlign="start center" style="line-height: 40px">
+      <span style="font-size: 20px" (dblclick)="copy(silkCarRecordInfo.id)" fxFlex>
+        {{silkCarRecordInfo.silkCar.code}}
+        - {{silkCarRecordInfo.batch.batchNo}}
+        - {{silkCarRecordInfo.batch.product.name}}
+        - {{silkCarRecordInfo.batch.spec}}
+      </span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" color="primary" *ngIf="silkCarRecordInfo.validSideSilks.length>0">
+      <mat-icon>list</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+  </div>
+
+  <div fxLayout fxLayoutAlign="start center">
+    <span style="color: rgba(0,0,0,.54)">
+     {{silkCarRecordInfo.initOperator.name}}  {{silkCarRecordInfo.initDateTime|date:'yyyy-MM-dd HH:mm:ss'}}
+    </span>
+    <mat-chip selected fxFlexOffset="16px" [selectable]="false">
+      {{silkCarRecordInfo.initTypeString|translate}}
+    </mat-chip>
+    <mat-chip selected fxFlexOffset="16px" [color]="silkCarRecordInfo.grade.sortBy>=100?'primary':'warn'" [selectable]="false" [matTooltip]="'SilkCarRecord.grade'|translate" matTooltipPosition="right">
+      {{silkCarRecordInfo.grade.name}}
+    </mat-chip>
+  </div>
+
+  <div fxLayout fxLayoutAlign="start center" *ngIf="silkCarRecordInfo.validSideSilks.length>0">
+    <button type="button" mat-button (click)="selectBySide(silkCarRecordInfo.aSideSilks)" color="primary">
+      {{'SilkCar.SideType.A'|translate}}
+    </button>
+    <button type="button" mat-button (click)="selectBySide(silkCarRecordInfo.bSideSilks)" color="primary">
+      {{'SilkCar.SideType.B'|translate}}
+    </button>
+    <button type="button" mat-button *ngFor="let btn of lineMachineSelectBtns" (click)="selectByLineMachine(btn)" color="primary">
+      {{btn.label|translate}}
+    </button>
+    <span fxFlex></span>
+    <button type="button" mat-button (click)="resetSelected();$event.stopPropagation();" color="accent">
+      {{'Common.reset'|translate}} [{{selectedCount}}]
+    </button>
+  </div>
+</header>
+
+<section fxFlex fxLayout="column">
+  <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" rowHeight="100px" gutterSize="4">
+    <mat-grid-tile *ngFor="let silk of silkCarRecordInfo.aSideSilks">
+      <ng-container *ngTemplateOutlet="silkTile;context:{silk:silk,sideType:'A'}"></ng-container>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <div class="side-divide"></div>
+
+  <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" rowHeight="100px" gutterSize="4">
+    <mat-grid-tile *ngFor="let silk of silkCarRecordInfo.bSideSilks">
+      <ng-container *ngTemplateOutlet="silkTile;context:{silk:silk,sideType:'B'}"></ng-container>
+    </mat-grid-tile>
+  </mat-grid-list>
+</section>
+
+<ng-template #silkTile let-silk="silk" let-sideType="sideType">
+  <ng-container *ngIf="silk.id">
+    <div fxLayout="column" class="silk" [class.error]="silk.hasException">
+      <div class="position" fxLayout fxLayoutAlign="center center" (click)="toggleSelect(silk);$event.stopPropagation();" [matTooltipDisabled]="!silk.hasException" [matTooltip]="silk.tooltip">
+        <span fxFlex>{{sideType}}-{{silk.row}}-{{silk.col}}</span>
+        <mat-icon *ngIf="silk.selected" color="accent">done</mat-icon>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2px">
+        <span>{{silk.lineMachine.line.name}}-{{silk.spindle}}/{{silk.lineMachine.item}}-{{silk.doffingNum}}</span>
+        <span (click)="copy(silk.code);$event.stopPropagation();">{{silk.code}}</span>
+        <span>{{silk.grade?.name}}</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!silk.id">
+    <div fxLayout="column" class="silk empty">
+      <div class="position" fxLayout fxLayoutAlign="center center">
+        <div fxFlex fxLayout fxLayoutAlign="center center">
+          {{sideType}}-{{silk.row}}-{{silk.col}}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

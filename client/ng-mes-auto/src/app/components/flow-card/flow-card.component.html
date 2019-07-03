@@ -1,0 +1,69 @@
+<ng-container @myInsertRemoveTrigger *ngFor="let event of events">
+  <ng-container [ngSwitch]="event.type">
+
+    <ng-container *ngSwitchCase="'ProductProcessSubmitEvent'">
+      <app-product-process-submit-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-product-process-submit-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'PackageBoxEvent'">
+      <app-package-box-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-package-box-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'DyeingPrepareEvent'">
+      <app-dyeing-prepare-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-dyeing-prepare-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'SilkRuntimeDetachEvent'">
+      <app-silk-runtime-detach-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-silk-runtime-detach-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'JikonAdapterSilkCarInfoFetchEvent'">
+      <app-jikon-adapter-silk-car-info-fetch-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-jikon-adapter-silk-car-info-fetch-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'RiambSilkCarInfoFetchEvent'">
+      <app-riamb-silk-car-info-fetch-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-riamb-silk-car-info-fetch-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'SilkNoteFeedbackEvent'">
+      <app-silk-note-feedback-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-silk-note-feedback-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'RiambSilkDetachEvent'">
+      <ng-container *ngIf="setting.showAll">
+        <app-riamb-silk-detach-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-riamb-silk-detach-event>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'JikonAdapterSilkDetachEvent'">
+      <ng-container *ngIf="setting.showAll">
+        <app-jikon-adapter-silk-detach-event class="flow-card-event" [silkCarRuntime]="silkCarRuntime" [event]="event"></app-jikon-adapter-silk-detach-event>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <div class="flow-card-event">
+        <header fxLayout fxLayoutAlign="start center">
+          <span>{{event.operator.name}}</span>
+          <span fxFlex>{{event.fireDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+          <button type="button" mat-button>
+            {{('EventSourceType.' + event.type)|translate}}
+          </button>
+        </header>
+        <section>
+          {{event|json}}
+        </section>
+      </div>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </ng-container>
+</ng-container>

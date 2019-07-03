@@ -1,0 +1,28 @@
+<mat-progress-bar *ngIf="isLoading$|async" color="accent" mode="indeterminate" style="height: 2px"></mat-progress-bar>
+<nav>
+  <a mat-button routerLink="/silkCarRuntime" routerLinkActive="active">{{'Nav.silkCarRuntime'|translate}}</a>
+  <a mat-button routerLink="/silkCarRecord" routerLinkActive="active">{{'Nav.silkCarRecord'|translate}}</a>
+  <a mat-button routerLink="/productPlan" routerLinkActive="active">{{'Nav.productPlan'|translate}}</a>
+  <a mat-button routerLink="/report" routerLinkActive="active">{{'Nav.report'|translate}}</a>
+  <a mat-button routerLink="/config" routerLinkActive="active">{{'Nav.config'|translate}}</a>
+  <span fxFlex></span>
+  <button mat-button [matMenuTriggerFor]="menu">
+    {{(authInfo$|async)?.name || 'An'}}
+  </button>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <button mat-menu-item>Item 1</button>
+    <button mat-menu-item>Item 2</button>
+    <ng-container *ngIf="isAdmin$|async">
+      <mat-divider></mat-divider>
+      <a routerLink="/admin" mat-menu-item>{{'Nav.admin'|translate}}</a>
+      <a routerLink="/test/animation01" mat-menu-item>{{'animation01'|translate}}</a>
+      <a routerLink="/test/animation02" mat-menu-item>{{'animation02'|translate}}</a>
+      <a routerLink="/test/animation03" mat-menu-item>{{'animation03'|translate}}</a>
+    </ng-container>
+    <mat-divider></mat-divider>
+    <button type="button" (click)="logout$.emit()" mat-menu-item>{{'Common.logout'|translate}}</button>
+  </mat-menu>
+<!--    <button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Common.help'|translate">-->
+<!--      <mat-icon>help</mat-icon>-->
+<!--    </button>-->
+</nav>

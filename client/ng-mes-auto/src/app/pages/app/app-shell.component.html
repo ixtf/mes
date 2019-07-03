@@ -1,0 +1,4 @@
+<app-navbar class="mat-elevation-z6"></app-navbar>
+<main fxLayout="column" [@routeAnimations]="prepareRoute(outlet)">
+  <router-outlet #outlet="outlet"></router-outlet>
+</main>

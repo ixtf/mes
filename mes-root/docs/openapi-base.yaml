@@ -1,0 +1,22 @@
+info:
+  description: auto api
+  version: "1.0.0"
+  title: Mes Auto
+  contact:
+    email: ixtf1984@gmail.com
+
+tags:
+  - name: auth
+    description: 登录和权限
+  - name: api
+  - name: config
+    description: 配置
+  - name: admin
+    description: 管理员
+  - name: riamb
+    description: 北自所接口
+  - name: if
+    description: 接口
+
+security:
+  - bearerAuth: []

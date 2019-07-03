@@ -1,0 +1,4863 @@
+openapi: 3.0.1
+info:
+  title: Mes Auto
+  description: auto api
+  contact:
+    email: ixtf1984@gmail.com
+  version: 1.0.0
+security:
+- bearerAuth: []
+tags:
+- name: auth
+  description: 登录和权限
+- name: api
+- name: config
+  description: 配置
+- name: admin
+  description: 管理员
+- name: riamb
+  description: 北自所接口
+- name: if
+  description: 接口
+paths:
+  /:
+    get:
+      operationId: test
+      parameters:
+      - name: test
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            '*/*': {}
+  /facevisa/autoVisualInspection/silkCodes/{code}:
+    get:
+      operationId: token
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoVisualInspectionSilkInfoDTO'
+  /open/automaticintegration/production/getSilkSpindleInfo:
+    post:
+      operationId: getSilkSpindleInfo
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+  /open/automaticintegration/production/relieveBindSilkCar:
+    post:
+      operationId: relieveBindSilkCar
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+  /open/automaticintegration/production/getSilkBoxAndspilkInfo:
+    post:
+      operationId: getSilkBoxAndspilkInfo
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/admin/ManualDoffingEvents:
+    post:
+      operationId: handle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkCarRuntime'
+  /api/admin/silkCarRecords/{id}:
+    delete:
+      operationId: handle_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/auth:
+    get:
+      operationId: auth
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: string
+  /token:
+    post:
+      operationId: token_1
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TokenCommand'
+      responses:
+        default:
+          description: default response
+          content:
+            text/plain:
+              schema:
+                type: string
+  /api/autoComplete/silkCar:
+    get:
+      operationId: silkCar
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/autoComplete/formConfig:
+    get:
+      operationId: formConfig
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/autoComplete/permission:
+    get:
+      operationId: permission
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/autoComplete/line:
+    get:
+      operationId: line
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/autoComplete/operator:
+    get:
+      operationId: operator
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/batches/{id}:
+    get:
+      operationId: get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+    put:
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+  /api/batches:
+    get:
+      operationId: query
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: q
+        in: query
+        schema:
+          type: string
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Batch'
+  /api/corporations/{id}:
+    get:
+      operationId: get_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Corporation'
+  /api/corporations:
+    get:
+      operationId: list
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/dyeingPrepares:
+    get:
+      operationId: dyeingPrepares
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: startDateTimestamp
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: endDateTimestamp
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: type
+        in: query
+        schema:
+          type: string
+      - name: hrIdQ
+        in: query
+        schema:
+          type: string
+      - name: silkCarId
+        in: query
+        schema:
+          type: string
+      - name: lineMachineId
+        in: query
+        schema:
+          type: string
+      - name: doffingNum
+        in: query
+        schema:
+          type: string
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/dyeingResults:
+    get:
+      operationId: dyeingResults
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: startDateTimestamp
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: endDateTimestamp
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: lineMachineId
+        in: query
+        schema:
+          type: string
+      - name: silkCarId
+        in: query
+        schema:
+          type: string
+      - name: hrIdQ
+        in: query
+        schema:
+          type: string
+      - name: type
+        in: query
+        schema:
+          type: string
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/dyeingResultsTimeline:
+    get:
+      operationId: timeline
+      parameters:
+      - name: type
+        in: query
+        schema:
+          type: string
+          default: FIRST
+      - name: lineMachineId
+        in: query
+        schema:
+          type: string
+      - name: spindle
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: currentId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DyeingResult'
+  /api/batchDyeingPrepareResult:
+    post:
+      operationId: update_1
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/dyeingPrepares/{id}/result:
+    put:
+      operationId: update_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/dyeingPrepares/{id}/dyeingResults/{dyeingResultId}:
+    put:
+      operationId: update_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: dyeingResultId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/dyeingSamples/{code}:
+    get:
+      operationId: get_2
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DyeingSample'
+  /api/dyeingSamples:
+    get:
+      operationId: query_1
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: batchId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/formConfigs/{id}:
+    get:
+      operationId: get_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormConfig'
+    put:
+      operationId: update_4
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormConfig'
+  /api/formConfigs:
+    get:
+      operationId: get_4
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_1
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormConfig'
+  /api/grades/{id}:
+    get:
+      operationId: get_5
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grade'
+    put:
+      operationId: update_5
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grade'
+  /api/grades:
+    get:
+      operationId: get_6
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_2
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grade'
+  /api/lineMachines/{id}/productPlan:
+    get:
+      operationId: productPlan
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineMachineProductPlan'
+  /api/lineMachines/{id}/productPlansTimeline:
+    get:
+      operationId: timeline_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: currentId
+        in: query
+        schema:
+          type: string
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LineMachineProductPlan'
+  /api/lineMachines/{id}:
+    get:
+      operationId: get_7
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineMachine'
+    put:
+      operationId: update_6
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineMachine'
+  /api/batchLineMachines:
+    post:
+      operationId: create_3
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/lineMachines:
+    post:
+      operationId: create_4
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineMachine'
+  /api/lines/{id}/lineMachines:
+    get:
+      operationId: lineMachines
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/lines/{id}:
+    get:
+      operationId: get_8
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Line'
+    put:
+      operationId: update_7
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Line'
+  /api/lines:
+    get:
+      operationId: query_2
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: q
+        in: query
+        schema:
+          type: string
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_6
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Line'
+  /api/batchLines:
+    post:
+      operationId: create_5
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/operatorGroups/{id}:
+    get:
+      operationId: get_9
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorGroup'
+    put:
+      operationId: update_8
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorGroup'
+  /api/operatorGroups:
+    get:
+      operationId: list_1
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_7
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorGroup'
+  /api/operators/{id}/auth:
+    get:
+      operationId: auth_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/operators/{id}/password:
+    put:
+      operationId: password
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PasswordChangeCommand'
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/operators/{id}:
+    get:
+      operationId: get_10
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+    put:
+      operationId: update_9
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+  /api/operators:
+    get:
+      operationId: query_3
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_8
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+  /api/packageBoxFlips:
+    get:
+      operationId: query_4
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: packageBoxFlipType
+        in: query
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        schema:
+          type: string
+      - name: packageBoxId
+        in: query
+        schema:
+          type: string
+      - name: gradeId
+        in: query
+        schema:
+          type: string
+      - name: batchId
+        in: query
+        schema:
+          type: string
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/packageBoxes/{id}/silks:
+    get:
+      operationId: silks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Silk'
+  /api/packageBoxes/{id}/silkCarRecords:
+    get:
+      operationId: silkCarRecords
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SilkCarRecord'
+  /api/currentSelPackageBoxes:
+    get:
+      operationId: queryPrepare
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/measurePackageBoxes:
+    get:
+      operationId: queryPrepare_1
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: workshopId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: packageBoxType
+        in: query
+        schema:
+          type: string
+      - name: packageBoxCode
+        in: query
+        schema:
+          type: string
+      - name: netWeight
+        in: query
+        schema:
+          type: number
+          format: double
+      - name: gradeId
+        in: query
+        schema:
+          type: string
+      - name: batchId
+        in: query
+        schema:
+          type: string
+      - name: productId
+        in: query
+        schema:
+          type: string
+      - name: creatorId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/packageBoxes/{id}:
+    get:
+      operationId: get_11
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageBox'
+    delete:
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/packageBoxes/{id}/measureInfo:
+    put:
+      operationId: list_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageBox'
+  /api/packageBoxBatchPrint:
+    post:
+      operationId: print
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/packageBoxes/{id}/print:
+    put:
+      operationId: print_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/packageBoxAppend:
+    post:
+      operationId: handle_2
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageBox'
+  /api/packageBoxes:
+    get:
+      operationId: query_5
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: workshopId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: packageBoxType
+        in: query
+        schema:
+          type: string
+      - name: packageBoxCode
+        in: query
+        schema:
+          type: string
+      - name: budatClassId
+        in: query
+        schema:
+          type: string
+      - name: gradeId
+        in: query
+        schema:
+          type: string
+      - name: batchId
+        in: query
+        schema:
+          type: string
+      - name: productId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/packageClasses/{id}:
+    get:
+      operationId: get_12
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageClass'
+    put:
+      operationId: update_10
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageClass'
+  /api/packageClasses:
+    get:
+      operationId: list_3
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_9
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageClass'
+  /api/roles:
+    get:
+      operationId: roles
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - DOFFING
+                  - SUBMIT_DYEING_PREPARE
+                  - SUBMIT_DYEING_RESULT
+                  - SUBMIT_GRADE
+                  - SUBMIT_DYEING_SAMPLE
+                  - INSPECTION
+                  - PACKAGE_BOX
+  /api/permissions/{id}:
+    get:
+      operationId: get_13
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+    put:
+      operationId: update_11
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+  /api/permissions:
+    get:
+      operationId: get_14
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_10
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+  /api/prints/printers:
+    get:
+      operationId: get_15
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MesAutoPrinter'
+  /api/prints/silkBarcodes/print:
+    post:
+      operationId: print_2
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/prints/silks/print:
+    post:
+      operationId: print_3
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/productPlanNotifies/{id}/exe:
+    post:
+      operationId: exe
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/productPlanNotifies/{id}/unExe:
+    delete:
+      operationId: unExe
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/productPlanNotifies/{id}/exeInfo:
+    get:
+      operationId: exeInfo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /api/productPlanNotifies/{id}/finish:
+    put:
+      operationId: finish
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+    delete:
+      operationId: unFinish
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/productPlanNotifies/{id}/batchExe:
+    post:
+      operationId: get_16
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/productPlanNotifies/{id}:
+    get:
+      operationId: get_17
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPlanNotify'
+    put:
+      operationId: update_12
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPlanNotify'
+  /api/productPlanNotifies:
+    get:
+      operationId: query_6
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_11
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPlanNotify'
+  /api/productProcesses/{id}:
+    get:
+      operationId: get_18
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductProcess'
+    put:
+      operationId: update_13
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductProcess'
+  /api/productProcesses:
+    post:
+      operationId: create_12
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductProcess'
+  /api/products/{id}/productProcesses:
+    get:
+      operationId: productProcesses
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/products/{id}/dyeingInfo:
+    get:
+      operationId: dyeingInfo_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+    put:
+      operationId: dyeingInfo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /api/products/{id}:
+    get:
+      operationId: get_19
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      operationId: update_14
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /api/products:
+    get:
+      operationId: query_7
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_13
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /api/reports/workshopProductPlanReport:
+    get:
+      operationId: workshopProductPlanReport
+      parameters:
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      - name: lineId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/reports/measurePackageBoxReport:
+    post:
+      operationId: measurePackageBoxReport
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ReportCommand'
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/reports/measureReport:
+    post:
+      operationId: measureReport
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ReportCommand'
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/reports/statisticsReport:
+    get:
+      operationId: statisticsReport
+      parameters:
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/sapT001ls/{lgort}:
+    get:
+      operationId: get_20
+      parameters:
+      - name: lgort
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SapT001l'
+  /api/sapT001ls:
+    get:
+      operationId: list_4
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_14
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SapT001lUpdateCommand'
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SapT001l'
+  /share/reports/workshopProductPlanReport:
+    get:
+      operationId: workshopProductPlanReport_1
+      parameters:
+      - name: lineId
+        in: query
+        schema:
+          type: string
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /share/workshops:
+    get:
+      operationId: get_21
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /share/packageBoxes/codes/{code}:
+    get:
+      operationId: list_5
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageBox'
+  /share/workshops/{id}/lines:
+    get:
+      operationId: lines
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /share/products:
+    get:
+      operationId: query_8
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/silkBarcodes/{id}/silkInfo:
+    get:
+      operationId: silkInfo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SilkInfo'
+  /api/silkBarcodes/{id}:
+    get:
+      operationId: get_22
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkBarcode'
+  /api/silkBarcodes:
+    get:
+      operationId: query_9
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: startDate
+        in: query
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        schema:
+          type: string
+      - name: lineId
+        in: query
+        schema:
+          type: string
+      - name: lineMachineId
+        in: query
+        schema:
+          type: string
+      - name: doffingNum
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_15
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkBarcode'
+  /api/batchSilkBarcodes:
+    post:
+      operationId: create_16
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/silkCarRecords/{id}/events:
+    get:
+      operationId: events
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventSource'
+  /api/silkCarRecords:
+    get:
+      operationId: query_10
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: silkCarCode
+        in: query
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/silkCarCodes/{code}:
+    get:
+      operationId: code
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkCar'
+  /api/silkCars/{id}:
+    get:
+      operationId: get_23
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkCar'
+    put:
+      operationId: update_15
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkCar'
+  /api/silkCars:
+    get:
+      operationId: query_11
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_18
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkCar'
+  /api/batchSilkCars:
+    post:
+      operationId: create_17
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /api/silkExceptions/{id}:
+    get:
+      operationId: get_24
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkException'
+    put:
+      operationId: update_16
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkException'
+  /api/silkExceptions:
+    get:
+      operationId: list_6
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_19
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkException'
+  /api/silkNotes/{id}:
+    get:
+      operationId: get_25
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkNote'
+    put:
+      operationId: update_17
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkNote'
+  /api/silkNotes:
+    get:
+      operationId: list_7
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_20
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SilkNote'
+  /api/silks/{id}/silkCarRecords:
+    get:
+      operationId: silkCarRecords_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SilkCarRecord'
+  /api/silks/{id}/packageBox:
+    get:
+      operationId: packageBox
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageBox'
+  /api/silks/codes/{code}:
+    get:
+      operationId: getByCode
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Silk'
+  /api/silks/{id}/exception:
+    put:
+      operationId: get_26
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Silk'
+  /api/silks/{id}:
+    get:
+      operationId: get_27
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Silk'
+  /api/silks:
+    get:
+      operationId: query_12
+      parameters:
+      - name: first
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 50
+      - name: batchId
+        in: query
+        schema:
+          type: string
+      - name: workshopId
+        in: query
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/temporaryBoxes/{id}:
+    get:
+      operationId: get_28
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryBox'
+    put:
+      operationId: update_18
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryBox'
+  /api/temporaryBoxes:
+    get:
+      operationId: list_8
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_21
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporaryBox'
+  /api/workshops:
+    get:
+      operationId: get_29
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      operationId: create_22
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workshop'
+  /api/workshops/{id}:
+    get:
+      operationId: get_30
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workshop'
+    put:
+      operationId: update_19
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workshop'
+  /api/workshops/{id}/lines:
+    get:
+      operationId: lines_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: object
+  /riamb/SilkDetachEvents:
+    post:
+      operationId: fetchSilkCarRecord
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Command'
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /riamb/silkCarRecords/codes/{code}:
+    get:
+      operationId: fetchSilkCarRecord_1
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiambFetchSilkCarRecordResultDTO'
+  /riamb/PackageBoxEvents:
+    post:
+      operationId: fetchSilkCarRecord_2
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Command'
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  /warehouse/PackageBoxFetchEvent:
+    post:
+      operationId: fetch
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageBox'
+  /warehouse/PackageBoxFlipEvent:
+    post:
+      operationId: packageBoxFlipEvent
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageBoxFlip'
+components:
+  schemas:
+    AutoVisualInspectionSilkInfoDTO:
+      type: object
+      properties:
+        silk_code:
+          type: string
+        workshop_id:
+          type: string
+        workshop_name:
+          type: string
+        line_id:
+          type: string
+        line_name:
+          type: string
+        item:
+          type: integer
+          format: int32
+        spindle_no:
+          type: integer
+          format: int32
+        fall_no:
+          type: string
+        batch_no:
+          type: string
+        spec:
+          type: string
+        product_date_time:
+          type: string
+          format: date-time
+        exceptionInfos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExceptionInfo'
+        is_exception:
+          type: boolean
+    ExceptionInfo:
+      type: object
+      properties:
+        exception_id:
+          type: string
+        exception_name:
+          type: string
+        operator_id:
+          type: string
+        operator_display_name:
+          type: string
+    Batch:
+      required:
+      - batchNo
+      - id
+      - product
+      - spec
+      - tubeColor
+      - workshop
+      type: object
+      properties:
+        id:
+          type: string
+        workshop:
+          $ref: '#/components/schemas/Workshop'
+        product:
+          $ref: '#/components/schemas/Product'
+        batchNo:
+          type: string
+        silkWeight:
+          minimum: 1
+          type: number
+          format: double
+        centralValue:
+          minimum: 1
+          type: number
+          format: double
+        holeNum:
+          minimum: 1
+          type: integer
+          format: int32
+        spec:
+          type: string
+        tubeColor:
+          type: string
+        note:
+          type: string
+    Corporation:
+      required:
+      - code
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+    DyeingResult:
+      required:
+      - createDateTime
+      - creator
+      - dateTime
+      - id
+      - lineMachine
+      - silk
+      type: object
+      properties:
+        id:
+          type: string
+        silk:
+          $ref: '#/components/schemas/Silk'
+        lineMachine:
+          $ref: '#/components/schemas/LineMachine'
+        spindle:
+          minimum: 1
+          type: integer
+          format: int32
+        dateTime:
+          type: string
+          format: date-time
+        hasException:
+          type: boolean
+        grade:
+          $ref: '#/components/schemas/Grade'
+        silkExceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkException'
+        silkNotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkNote'
+        creator:
+          $ref: '#/components/schemas/Operator'
+        createDateTime:
+          type: string
+          format: date-time
+        modifier:
+          $ref: '#/components/schemas/Operator'
+        modifyDateTime:
+          type: string
+          format: date-time
+        submitted:
+          type: boolean
+        formConfigValueData:
+          $ref: '#/components/schemas/JsonNode'
+        formConfig:
+          $ref: '#/components/schemas/JsonNode'
+    DyeingResultInfo:
+      type: object
+      properties:
+        dyeingResult:
+          $ref: '#/components/schemas/DyeingResult'
+        grade:
+          $ref: '#/components/schemas/Grade'
+    EventSource:
+      type: object
+      properties:
+        eventId:
+          type: string
+        operator:
+          $ref: '#/components/schemas/Operator'
+        fireDateTime:
+          type: string
+          format: date-time
+        deleted:
+          type: boolean
+        deleteOperator:
+          $ref: '#/components/schemas/Operator'
+        deleteDateTime:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum:
+          - SilkCarRuntimeInitEvent
+          - SilkCarRuntimeAppendEvent
+          - SilkCarRuntimeGradeEvent
+          - SilkRuntimeDetachEvent
+          - SilkCarRuntimeGradeSubmitEvent
+          - DyeingSampleSubmitEvent
+          - TemporaryBoxEvent
+          - ProductProcessSubmitEvent
+          - ExceptionCleanEvent
+          - DyeingPrepareEvent
+          - PackageBoxEvent
+          - PackageBoxFlipEvent
+          - SilkNoteFeedbackEvent
+          - JikonAdapterSilkCarInfoFetchEvent
+          - JikonAdapterSilkDetachEvent
+          - JikonAdapterPackageBoxEvent
+          - RiambPackageBoxEvent
+          - RiambSilkCarInfoFetchEvent
+          - RiambSilkDetachEvent
+          - WarehousePackageBoxFetchEvent
+    Grade:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+        sortBy:
+          type: integer
+          format: int32
+    JsonNode:
+      type: object
+      properties:
+        valueNode:
+          type: boolean
+        containerNode:
+          type: boolean
+        missingNode:
+          type: boolean
+        object:
+          type: boolean
+        pojo:
+          type: boolean
+        integralNumber:
+          type: boolean
+        floatingPointNumber:
+          type: boolean
+        textual:
+          type: boolean
+        boolean:
+          type: boolean
+        binary:
+          type: boolean
+        int:
+          type: boolean
+        number:
+          type: boolean
+        bigDecimal:
+          type: boolean
+        bigInteger:
+          type: boolean
+        double:
+          type: boolean
+        long:
+          type: boolean
+        float:
+          type: boolean
+        nodeType:
+          type: string
+          enum:
+          - ARRAY
+          - BINARY
+          - BOOLEAN
+          - MISSING
+          - NULL
+          - NUMBER
+          - OBJECT
+          - POJO
+          - STRING
+        short:
+          type: boolean
+        array:
+          type: boolean
+        null:
+          type: boolean
+    Line:
+      required:
+      - id
+      - name
+      - workshop
+      type: object
+      properties:
+        id:
+          type: string
+        workshop:
+          $ref: '#/components/schemas/Workshop'
+        name:
+          type: string
+        doffingType:
+          type: string
+          enum:
+          - AUTO
+          - MANUAL
+          - DYEING_SAMPLE
+          - PHYSICAL_INFO
+    LineMachine:
+      required:
+      - id
+      - line
+      - spindleSeq
+      type: object
+      properties:
+        id:
+          type: string
+        line:
+          $ref: '#/components/schemas/Line'
+        item:
+          minimum: 1
+          type: integer
+          format: int32
+        spindleNum:
+          minimum: 1
+          type: integer
+          format: int32
+        spindleSeq:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            type: integer
+            format: int32
+    Operator:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        hrId:
+          type: string
+        oaId:
+          type: string
+        phone:
+          type: string
+        admin:
+          type: boolean
+    Product:
+      required:
+      - code
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+    SapT001l:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        lgort:
+          type: string
+        lgobe:
+          type: string
+    Silk:
+      required:
+      - batch
+      - code
+      - doffingDateTime
+      - doffingOperator
+      - doffingType
+      - grade
+      - id
+      - lineMachine
+      - spindle
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        doffingNum:
+          type: string
+        doffingOperator:
+          $ref: '#/components/schemas/Operator'
+        doffingType:
+          type: string
+          enum:
+          - AUTO
+          - MANUAL
+          - DYEING_SAMPLE
+          - PHYSICAL_INFO
+        doffingDateTime:
+          type: string
+          format: date-time
+        lineMachine:
+          $ref: '#/components/schemas/LineMachine'
+        spindle:
+          type: integer
+          format: int32
+        batch:
+          $ref: '#/components/schemas/Batch'
+        grade:
+          $ref: '#/components/schemas/Grade'
+        exception:
+          $ref: '#/components/schemas/SilkException'
+        exceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkException'
+        dyeingExceptionStrings:
+          type: array
+          items:
+            type: string
+        dyeingSample:
+          type: boolean
+        detached:
+          type: boolean
+        packageDateTime:
+          type: string
+          format: date-time
+    SilkCar:
+      required:
+      - code
+      - id
+      - number
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - DEFAULT
+          - BIG_SILK_CAR
+        number:
+          type: string
+        code:
+          type: string
+        row:
+          minimum: 1
+          type: integer
+          format: int32
+        col:
+          minimum: 1
+          type: integer
+          format: int32
+    SilkCarRecord:
+      required:
+      - batch
+      - grade
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        silkCar:
+          $ref: '#/components/schemas/SilkCar'
+        batch:
+          $ref: '#/components/schemas/Batch'
+        grade:
+          $ref: '#/components/schemas/Grade'
+        doffingOperator:
+          $ref: '#/components/schemas/Operator'
+        doffingType:
+          type: string
+          enum:
+          - AUTO
+          - MANUAL
+          - DYEING_SAMPLE
+          - PHYSICAL_INFO
+        doffingDateTime:
+          type: string
+          format: date-time
+        carpoolOperator:
+          $ref: '#/components/schemas/Operator'
+        carpoolDateTime:
+          type: string
+          format: date-time
+        endDateTime:
+          type: string
+          format: date-time
+        startDateTime:
+          type: string
+          format: date-time
+        initCommand:
+          $ref: '#/components/schemas/JsonNode'
+        initSilks:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkRuntime'
+    SilkCarRuntime:
+      type: object
+      properties:
+        silkCarRecord:
+          $ref: '#/components/schemas/SilkCarRecord'
+        silkRuntimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkRuntime'
+        eventSources:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventSource'
+    SilkException:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    SilkNote:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        mustFeedback:
+          type: boolean
+    SilkRuntime:
+      type: object
+      properties:
+        sideType:
+          type: string
+          enum:
+          - A
+          - B
+        row:
+          type: integer
+          format: int32
+        col:
+          type: integer
+          format: int32
+        silk:
+          $ref: '#/components/schemas/Silk'
+        exceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkException'
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkNote'
+        grade:
+          $ref: '#/components/schemas/Grade'
+        firstDyeingResultInfo:
+          $ref: '#/components/schemas/DyeingResultInfo'
+        crossDyeingResultInfo:
+          $ref: '#/components/schemas/DyeingResultInfo'
+        multiDyeingResultInfo:
+          $ref: '#/components/schemas/DyeingResultInfo'
+    Workshop:
+      required:
+      - code
+      - corporation
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        corporation:
+          $ref: '#/components/schemas/Corporation'
+        name:
+          type: string
+        code:
+          maxLength: 1
+          minLength: 1
+          type: string
+        note:
+          type: string
+        sapT001ls:
+          type: array
+          items:
+            $ref: '#/components/schemas/SapT001l'
+        sapT001lsForeign:
+          type: array
+          items:
+            $ref: '#/components/schemas/SapT001l'
+        sapT001lsPallet:
+          type: array
+          items:
+            $ref: '#/components/schemas/SapT001l'
+    AdminManualDoffingCommand:
+      required:
+      - checkSilks
+      - grade
+      - silkCar
+      type: object
+      properties:
+        silkCar:
+          $ref: '#/components/schemas/EntityByCodeDTO'
+        checkSilks:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckSilkDTO'
+        grade:
+          $ref: '#/components/schemas/EntityDTO'
+    CheckSilkDTO:
+      required:
+      - code
+      type: object
+      properties:
+        sideType:
+          type: string
+          enum:
+          - A
+          - B
+        row:
+          type: integer
+          format: int32
+        col:
+          type: integer
+          format: int32
+        code:
+          type: string
+    EntityByCodeDTO:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+    EntityDTO:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+    TokenCommand:
+      required:
+      - loginId
+      - loginPassword
+      type: object
+      properties:
+        loginId:
+          type: string
+        loginPassword:
+          type: string
+    BatchUpdateCommand:
+      required:
+      - batchNo
+      - holeNum
+      - product
+      - spec
+      - tubeColor
+      - workshop
+      type: object
+      properties:
+        workshop:
+          $ref: '#/components/schemas/EntityDTO'
+        product:
+          $ref: '#/components/schemas/EntityDTO'
+        batchNo:
+          type: string
+        silkWeight:
+          minimum: 1
+          type: number
+          format: double
+        centralValue:
+          minimum: 1
+          type: number
+          format: double
+        holeNum:
+          minimum: 1
+          type: integer
+          format: int32
+        spec:
+          type: string
+        tubeColor:
+          type: string
+        note:
+          type: string
+    BatchItem:
+      required:
+      - dyeingPrepare
+      - items
+      type: object
+      properties:
+        dyeingPrepare:
+          $ref: '#/components/schemas/EntityDTO'
+        items:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    Item:
+      required:
+      - batchNo
+      - batchSpec
+      - code
+      - codeDate
+      - lineMachineItem
+      - lineName
+      type: object
+      properties:
+        code:
+          type: string
+        codeDate:
+          type: string
+          format: date-time
+        lineName:
+          type: string
+        lineMachineItem:
+          type: integer
+          format: int32
+        spindle:
+          minimum: 1
+          type: integer
+          format: int32
+        doffingNum:
+          type: string
+        batchNo:
+          type: string
+        batchSpec:
+          type: string
+    DyeingResultUpdateCommand:
+      required:
+      - items
+      type: object
+      properties:
+        items:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    DyeingSample:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        silk:
+          $ref: '#/components/schemas/Silk'
+        code:
+          type: string
+        lineName:
+          type: string
+        lineMachineItem:
+          type: integer
+          format: int32
+        spindle:
+          type: integer
+          format: int32
+        batchNo:
+          type: string
+        doffingNum:
+          type: string
+        used:
+          type: boolean
+    FormConfig:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        formFieldConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/FormFieldConfig'
+    FormFieldConfig:
+      required:
+      - inputType
+      - name
+      - valueType
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        valueType:
+          type: string
+          enum:
+          - STRING
+          - BOOLEAN
+          - NUMBER
+        inputType:
+          type: string
+          enum:
+          - DEFAULT
+          - SELECTION
+        required:
+          type: boolean
+        multi:
+          type: boolean
+        selectOptions:
+          type: array
+          items:
+            type: string
+    FormConfigUpdateCommand:
+      required:
+      - formFieldConfigs
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        formFieldConfigs:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/FormFieldConfig'
+    GradeUpdateCommand:
+      required:
+      - code
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          maxLength: 1
+          minLength: 1
+          type: string
+        sortBy:
+          type: integer
+          format: int32
+    LineMachineProductPlan:
+      required:
+      - batch
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        productPlanNotify:
+          $ref: '#/components/schemas/ProductPlanNotify'
+        lineMachine:
+          $ref: '#/components/schemas/LineMachine'
+        batch:
+          $ref: '#/components/schemas/Batch'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+    ProductPlanNotify:
+      required:
+      - batch
+      - id
+      - lineMachines
+      - name
+      - startDate
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - CHANGE_BATCH
+          - SAMPLE
+        name:
+          type: string
+        batch:
+          $ref: '#/components/schemas/Batch'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        lineMachines:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/LineMachine'
+    LineMachineUpdateCommand:
+      required:
+      - line
+      - spindleSeq
+      type: object
+      properties:
+        line:
+          $ref: '#/components/schemas/EntityDTO'
+        item:
+          minimum: 1
+          type: integer
+          format: int32
+        spindleNum:
+          minimum: 1
+          type: integer
+          format: int32
+        spindleSeq:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            type: integer
+            format: int32
+    LineUpdateCommand:
+      required:
+      - doffingType
+      - name
+      - workshop
+      type: object
+      properties:
+        workshop:
+          $ref: '#/components/schemas/EntityDTO'
+        name:
+          type: string
+        doffingType:
+          type: string
+          enum:
+          - AUTO
+          - MANUAL
+          - DYEING_SAMPLE
+          - PHYSICAL_INFO
+    OperatorGroup:
+      required:
+      - id
+      - name
+      - permissions
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+            - DOFFING
+            - SUBMIT_DYEING_PREPARE
+            - SUBMIT_DYEING_RESULT
+            - SUBMIT_GRADE
+            - SUBMIT_DYEING_SAMPLE
+            - INSPECTION
+            - PACKAGE_BOX
+        permissions:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+    Permission:
+      required:
+      - code
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+    OperatorGroupUpdateCommand:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - DOFFING
+            - SUBMIT_DYEING_PREPARE
+            - SUBMIT_DYEING_RESULT
+            - SUBMIT_GRADE
+            - SUBMIT_DYEING_SAMPLE
+            - INSPECTION
+            - PACKAGE_BOX
+        permissions:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    PasswordChangeCommand:
+      required:
+      - newPassword
+      - newPasswordAgain
+      - oldPassword
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
+        newPasswordAgain:
+          type: string
+    OperatorPermissionUpdateCommand:
+      type: object
+      properties:
+        admin:
+          type: boolean
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - DOFFING
+            - SUBMIT_DYEING_PREPARE
+            - SUBMIT_DYEING_RESULT
+            - SUBMIT_GRADE
+            - SUBMIT_DYEING_SAMPLE
+            - INSPECTION
+            - PACKAGE_BOX
+        groups:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+        permissions:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    OperatorCreateCommand:
+      required:
+      - hrId
+      - name
+      - password
+      type: object
+      properties:
+        hrId:
+          type: string
+        oaId:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+    PackageBox:
+      required:
+      - batch
+      - code
+      - grade
+      - id
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - AUTO
+          - MANUAL
+          - MANUAL_APPEND
+          - WORK_FETCH
+          - FOREIGN
+        code:
+          type: string
+        saleType:
+          type: string
+          enum:
+          - DOMESTIC
+          - FOREIGN
+        palletCode:
+          type: string
+        palletType:
+          type: string
+        packageType:
+          type: string
+        foamType:
+          type: string
+        foamNum:
+          type: integer
+          format: int32
+        batch:
+          $ref: '#/components/schemas/Batch'
+        grade:
+          $ref: '#/components/schemas/Grade'
+        silkCount:
+          minimum: 1
+          type: integer
+          format: int32
+        grossWeight:
+          minimum: 1
+          type: number
+          format: double
+        netWeight:
+          minimum: 1
+          type: number
+          format: double
+        riambJobId:
+          type: string
+        printDate:
+          type: string
+          format: date-time
+        printClass:
+          $ref: '#/components/schemas/PackageClass'
+        printCount:
+          minimum: 0
+          type: integer
+          format: int32
+        automaticPackeLine:
+          type: string
+        budat:
+          type: string
+          format: date-time
+        budatClass:
+          $ref: '#/components/schemas/PackageClass'
+        sapT001l:
+          $ref: '#/components/schemas/SapT001l'
+        inWarehouse:
+          type: boolean
+        creator:
+          $ref: '#/components/schemas/Operator'
+    PackageClass:
+      required:
+      - id
+      - name
+      - riambCode
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        riambCode:
+          type: string
+        sortBy:
+          type: integer
+          format: int32
+    PackageBoxMeasureInfoUpdateCommand:
+      required:
+      - budat
+      - budatClass
+      - foamType
+      - packageType
+      - palletType
+      - saleType
+      - sapT001l
+      type: object
+      properties:
+        saleType:
+          type: string
+          enum:
+          - DOMESTIC
+          - FOREIGN
+        silkCount:
+          minimum: 1
+          type: integer
+          format: int32
+        grossWeight:
+          minimum: 1
+          type: number
+          format: double
+        netWeight:
+          minimum: 1
+          type: number
+          format: double
+        budat:
+          type: string
+          format: date-time
+        budatClass:
+          $ref: '#/components/schemas/EntityDTO'
+        sapT001l:
+          $ref: '#/components/schemas/EntityDTO'
+        palletType:
+          type: string
+        packageType:
+          type: string
+        foamType:
+          type: string
+        foamNum:
+          minimum: 0
+          type: integer
+          format: int32
+        palletCode:
+          type: string
+    PackageBoxBatchPrintUpdateCommand:
+      required:
+      - packageBoxes
+      type: object
+      properties:
+        packageBoxes:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    PackageBoxAppendCommand:
+      required:
+      - batch
+      - budat
+      - budatClass
+      - foamType
+      - grade
+      - packageType
+      - palletType
+      - saleType
+      - sapT001l
+      type: object
+      properties:
+        batch:
+          $ref: '#/components/schemas/EntityDTO'
+        grade:
+          $ref: '#/components/schemas/EntityDTO'
+        silkCount:
+          minimum: 1
+          type: integer
+          format: int32
+        saleType:
+          type: string
+          enum:
+          - DOMESTIC
+          - FOREIGN
+        grossWeight:
+          minimum: 0
+          type: number
+          format: double
+        netWeight:
+          minimum: 0
+          type: number
+          format: double
+        budat:
+          type: string
+          format: date-time
+        budatClass:
+          $ref: '#/components/schemas/EntityDTO'
+        sapT001l:
+          $ref: '#/components/schemas/EntityDTO'
+        palletType:
+          type: string
+        packageType:
+          type: string
+        foamType:
+          type: string
+        foamNum:
+          minimum: 0
+          type: integer
+          format: int32
+        palletCode:
+          type: string
+    PackageClassUpdateCommand:
+      required:
+      - name
+      - riambCode
+      type: object
+      properties:
+        name:
+          type: string
+        riambCode:
+          type: string
+        sortBy:
+          type: integer
+          format: int32
+    PermissionUpdateCommand:
+      required:
+      - code
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+    MesAutoPrinter:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    SilkBarcodePrintCommand:
+      required:
+      - mesAutoPrinter
+      - silkBarcodes
+      type: object
+      properties:
+        mesAutoPrinter:
+          $ref: '#/components/schemas/MesAutoPrinter'
+        silkBarcodes:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    SilkPrintCommand:
+      required:
+      - mesAutoPrinter
+      - silks
+      type: object
+      properties:
+        mesAutoPrinter:
+          $ref: '#/components/schemas/MesAutoPrinter'
+        silks:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    ProductPlanNotifyExeCommand:
+      required:
+      - lineMachine
+      type: object
+      properties:
+        lineMachine:
+          $ref: '#/components/schemas/EntityDTO'
+    ProductPlanNotifyUpdateCommand:
+      required:
+      - batch
+      - lineMachines
+      - name
+      - startDate
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - CHANGE_BATCH
+          - SAMPLE
+        name:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        batch:
+          $ref: '#/components/schemas/EntityDTO'
+        lineMachines:
+          maxItems: 2147483647
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    ProductProcess:
+      required:
+      - exceptions
+      - id
+      - name
+      - notes
+      - product
+      type: object
+      properties:
+        id:
+          type: string
+        product:
+          $ref: '#/components/schemas/Product'
+        name:
+          type: string
+        relateRoles:
+          type: array
+          items:
+            type: string
+            enum:
+            - DOFFING
+            - SUBMIT_DYEING_PREPARE
+            - SUBMIT_DYEING_RESULT
+            - SUBMIT_GRADE
+            - SUBMIT_DYEING_SAMPLE
+            - INSPECTION
+            - PACKAGE_BOX
+        sortBy:
+          type: integer
+          format: int32
+        exceptions:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkException'
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkNote'
+        formConfig:
+          $ref: '#/components/schemas/FormConfig'
+        mustProcess:
+          type: boolean
+    ProductProcessUpdateCommand:
+      required:
+      - exceptions
+      - name
+      - product
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/EntityDTO'
+        relateRoles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - DOFFING
+            - SUBMIT_DYEING_PREPARE
+            - SUBMIT_DYEING_RESULT
+            - SUBMIT_GRADE
+            - SUBMIT_DYEING_SAMPLE
+            - INSPECTION
+            - PACKAGE_BOX
+        exceptions:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+        name:
+          type: string
+        sortBy:
+          type: integer
+          format: int32
+        formConfig:
+          $ref: '#/components/schemas/EntityDTO'
+        mustProcess:
+          type: boolean
+    ProductDyeingInfoUpdateCommand:
+      required:
+      - dyeingExceptions
+      type: object
+      properties:
+        dyeingFormConfig:
+          $ref: '#/components/schemas/EntityDTO'
+        dyeingExceptions:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+        dyeingNotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    ProductUpdateCommand:
+      required:
+      - code
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          maxLength: 2
+          minLength: 2
+          type: string
+    ReportCommand:
+      required:
+      - endDate
+      - startDate
+      - workshop
+      type: object
+      properties:
+        workshop:
+          $ref: '#/components/schemas/EntityDTO'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        packageClasses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    SapT001lUpdateCommand:
+      required:
+      - lgobe
+      - lgort
+      type: object
+      properties:
+        lgort:
+          type: string
+        lgobe:
+          type: string
+    SilkInfo:
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: string
+        weight:
+          type: number
+    SilkBarcode:
+      required:
+      - batch
+      - codeDate
+      - id
+      - lineMachine
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        codeDate:
+          type: string
+          format: date-time
+        codeDoffingNum:
+          type: integer
+          format: int64
+        lineMachine:
+          $ref: '#/components/schemas/LineMachine'
+        doffingNum:
+          type: string
+        batch:
+          $ref: '#/components/schemas/Batch'
+        batchChanged:
+          type: boolean
+    SilkBarcodeGenerateCommand:
+      required:
+      - codeDate
+      - doffingNum
+      - lineMachine
+      type: object
+      properties:
+        lineMachine:
+          $ref: '#/components/schemas/EntityDTO'
+        codeDate:
+          type: string
+          format: date-time
+        doffingNum:
+          type: string
+    SilkCarUpdateCommand:
+      required:
+      - code
+      - number
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - DEFAULT
+          - BIG_SILK_CAR
+        number:
+          type: string
+        code:
+          type: string
+        row:
+          minimum: 1
+          type: integer
+          format: int32
+        col:
+          minimum: 1
+          type: integer
+          format: int32
+    SilkExceptionUpdateCommand:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+    SilkNoteUpdateCommand:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        mustFeedback:
+          type: boolean
+    SilkInspectionExceptionUpdateCommand:
+      required:
+      - exception
+      - grade
+      type: object
+      properties:
+        exception:
+          $ref: '#/components/schemas/EntityDTO'
+        grade:
+          $ref: '#/components/schemas/EntityDTO'
+    TemporaryBox:
+      required:
+      - batch
+      - code
+      - grade
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        batch:
+          $ref: '#/components/schemas/Batch'
+        grade:
+          $ref: '#/components/schemas/Grade'
+        count:
+          type: integer
+          format: int32
+    TemporaryBoxUpdateCommand:
+      required:
+      - batch
+      - code
+      - grade
+      type: object
+      properties:
+        code:
+          type: string
+        batch:
+          $ref: '#/components/schemas/EntityDTO'
+        grade:
+          $ref: '#/components/schemas/EntityDTO'
+    WorkshopUpdateCommand:
+      required:
+      - code
+      - corporation
+      - name
+      type: object
+      properties:
+        corporation:
+          $ref: '#/components/schemas/EntityDTO'
+        code:
+          maxLength: 1
+          minLength: 1
+          type: string
+        name:
+          type: string
+        note:
+          type: string
+        sapT001ls:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+        sapT001lsForeign:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+        sapT001lsPallet:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityDTO'
+    Command:
+      required:
+      - code
+      - createDateTime
+      - grossWeight
+      - jobInfo
+      - netWeight
+      - silkInfos
+      type: object
+      properties:
+        code:
+          type: string
+        jobInfo:
+          $ref: '#/components/schemas/AutomaticPackeJobInfo'
+        netWeight:
+          minimum: 1
+          type: number
+        grossWeight:
+          minimum: 1
+          type: number
+        silkCount:
+          minimum: 1
+          type: integer
+          format: int32
+        createDateTime:
+          type: string
+          format: date-time
+        silkInfos:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkInfo'
+        palletCode:
+          type: string
+        otherInfo:
+          type: string
+    SilkCarInfo:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        row:
+          type: integer
+          format: int32
+        col:
+          type: integer
+          format: int32
+        batchNo:
+          type: string
+    RiambFetchSilkCarRecordResultDTO:
+      type: object
+      properties:
+        packeFlage:
+          type: string
+        silkCarInfo:
+          $ref: '#/components/schemas/SilkCarInfo'
+        silkCount:
+          type: integer
+          format: int32
+        silkInfos:
+          type: array
+          items:
+            $ref: '#/components/schemas/SilkInfo'
+    AutomaticPackeJobInfo:
+      required:
+      - automaticPackeLine
+      - batchNo
+      - createDateTime
+      - creatorHrId
+      - gradeName
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+        automaticPackeLine:
+          type: string
+        batchNo:
+          type: string
+        gradeName:
+          type: string
+        packageClassNo:
+          type: string
+        saleType:
+          type: string
+        budatDate:
+          type: string
+          format: date-time
+        palletType:
+          type: string
+        packageType:
+          type: string
+        foamType:
+          type: string
+        foamNum:
+          type: integer
+          format: int32
+        creatorHrId:
+          type: string
+        createDateTime:
+          type: string
+          format: date-time
+        lgort:
+          type: string
+        otherInfo:
+          type: string
+    PackageBoxFlip:
+      required:
+      - createDateTime
+      - creator
+      - id
+      - inSilks
+      - outSilks
+      - packageBox
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - AUTO
+          - WAREHOUSE
+        packageBox:
+          $ref: '#/components/schemas/PackageBox'
+        inSilks:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Silk'
+        outSilks:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Silk'
+        creator:
+          $ref: '#/components/schemas/Operator'
+        createDateTime:
+          type: string
+          format: date-time

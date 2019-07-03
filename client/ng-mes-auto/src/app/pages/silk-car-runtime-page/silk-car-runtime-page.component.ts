@@ -1,0 +1,91 @@
+import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormControl} from '@angular/forms';
+import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {RouterModule} from '@angular/router';
+import {Emittable, Emitter} from '@ngxs-labs/emitter';
+import {NgxsModule, Select, Store} from '@ngxs/store';
+import {Observable, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil} from 'rxjs/operators';
+import {isString} from 'util';
+import {SilkCarRecordEventListComponentModule} from '../../components/flow-card/flow-card.component';
+import {SilkCarRecordInfoComponentModule} from '../../components/silk-car-record-info/silk-car-record-info.component';
+import {SilkCarRuntime} from '../../models/silk-car-runtime';
+import {insertRemoveAnimation} from '../../services/animations';
+import {ApiService} from '../../services/api.service';
+import {SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
+import {SharedModule} from '../../shared.module';
+import {AppState} from '../../store/app.state';
+import {FetchAction, SilkCarRuntimePageState} from '../../store/silk-car-runtime-page.state';
+
+@Component({
+  templateUrl: './silk-car-runtime-page.component.html',
+  styleUrls: ['./silk-car-runtime-page.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    insertRemoveAnimation,
+  ],
+})
+export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject();
+  silkCarQCtrl = new FormControl();
+  autoCompleteSilkCars$ = this.silkCarQCtrl.valueChanges.pipe(
+    takeUntil(this.destroy$),
+    debounceTime(SEARCH_DEBOUNCE_TIME),
+    distinctUntilChanged(),
+    filter(it => it && isString(it) && it.trim().length > 1),
+    switchMap(q => this.apiService.autoCompleteSilkCar(q))
+  );
+  settingForm = this.fb.group({
+    sort: 'desc',
+    showAll: false,
+  });
+  @Select(SilkCarRuntimePageState.silkCarRuntime)
+  silkCarRuntime$: Observable<SilkCarRuntime>;
+  @Emitter(AppState.SetLoading)
+  SetLoading$: Emittable<boolean>;
+  @Emitter(SilkCarRuntimePageState.OnInit)
+  OnInit$: Emittable<void>;
+
+  constructor(private fb: FormBuilder,
+              private store: Store,
+              private apiService: ApiService) {
+  }
+
+  ngOnInit(): void {
+    this.OnInit$.emit();
+    this.store.dispatch(new FetchAction('3000F48001'));
+    this.store.dispatch(new FetchAction('YJ048F0002'));
+    // this.store.dispatch(new FetchAction('3000F2345'));
+    // this.store.dispatch(new FetchAction('3000F30606'));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  onSilkCarSelected(event: MatAutocompleteSelectedEvent) {
+    this.SetLoading$.emit(true);
+    this.store.dispatch(new FetchAction(event.option.value)).pipe(
+      finalize(() => this.SetLoading$.emit(false))
+    ).subscribe();
+  }
+
+}
+
+@NgModule({
+  declarations: [
+    SilkCarRuntimePageComponent,
+  ],
+  imports: [
+    NgxsModule.forFeature([SilkCarRuntimePageState]),
+    SharedModule,
+    SilkCarRecordInfoComponentModule,
+    SilkCarRecordEventListComponentModule,
+    RouterModule.forChild([
+      {path: '', component: SilkCarRuntimePageComponent, data: {animation: 'FilterPage'}},
+    ]),
+  ],
+})
+export class SilkCarRuntimePageModule {
+}

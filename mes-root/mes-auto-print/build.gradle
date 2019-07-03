@@ -1,0 +1,14 @@
+dependencies {
+    compile "com.github.ixtf.japp:zxing",
+            "com.github.ixtf.japp:print",
+            "com.google.inject:guice",
+            "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml",
+            "javax:javaee-api",
+            "org.hibernate.validator:hibernate-validator",
+            "org.glassfish:javax.el",
+            "commons-daemon:commons-daemon",
+            "redis.clients:jedis:3.0.1"
+}
+
+apply plugin: 'application'
+mainClassName = "com.hengyi.japp.mes.auto.print.Print"

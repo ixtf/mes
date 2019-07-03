@@ -1,0 +1,21 @@
+plugins {
+    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.0.8"
+}
+
+dependencies {
+    compile "com.github.ixtf.persistence:mongo",
+            "com.github.ixtf.persistence:redis",
+            "com.google.inject:guice",
+            "io.vertx:vertx-rx-java2",
+            "io.vertx:vertx-rabbitmq-client",
+            "io.vertx:vertx-jdbc-client",
+            "io.vertx:vertx-auth-jwt"
+}
+
+resolve {
+    outputFormat = 'YAML'
+    outputPath = '/home/jzb/git/com.hengyi/mes3/mes-root/docs'
+    openApiFile=file('/home/jzb/git/com.hengyi/mes3/mes-root/docs/openapi-base.yaml')
+    classpath = sourceSets.main.runtimeClasspath
+    resourcePackages=['com.hengyi.japp.mes.auto']
+}

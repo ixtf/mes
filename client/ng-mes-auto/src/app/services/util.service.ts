@@ -25,6 +25,12 @@ export class UtilService {
     this.translate.get(message).subscribe(res => this.snackBar.open(res, action, config));
   }
 
+  barcode(ev: MouseEvent, s: string) {
+  }
+
+  qrcode(ev: MouseEvent, s: string) {
+  }
+
 }
 
 export const COPY = (s: string) => {

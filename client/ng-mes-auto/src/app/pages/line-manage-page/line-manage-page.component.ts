@@ -1,9 +1,12 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
+import {MatDialog} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, switchMap, takeUntil} from 'rxjs/operators';
+import {BarcodeDialogComponent} from '../../components/barcode-dialog/barcode-dialog.component';
+import {QrcodeDialogComponent} from '../../components/qrcode-dialog/qrcode-dialog.component';
 import {Line} from '../../models/line';
 import {Workshop} from '../../models/workshop';
 import {SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
@@ -32,6 +35,7 @@ export class LineManagePageComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject();
 
   constructor(private store: Store,
+              private dialog: MatDialog,
               private fb: FormBuilder) {
     this.store.dispatch(new InitAction());
   }
@@ -54,10 +58,12 @@ export class LineManagePageComponent implements OnInit, OnDestroy {
   }
 
   create() {
-    this.update(null);
+    // this.update(null);
   }
 
   update(id: string) {
+    BarcodeDialogComponent.open(this.dialog, {value: 'dsfasdfa'});
+    QrcodeDialogComponent.open(this.dialog, {qrdata: 'dsfasdfa'});
   }
 }
 

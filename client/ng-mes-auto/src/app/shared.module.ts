@@ -13,6 +13,9 @@ import {NgxsDispatchPluginModule} from '@ngxs-labs/dispatch-decorator';
 import {NgxsEmitPluginModule} from '@ngxs-labs/emitter';
 import {NgxsFormPluginModule} from '@ngxs/form-plugin';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
+import {QRCodeModule} from 'angularx-qrcode';
+import {NgxBarcodeModule} from 'ngx-barcode';
+import {NgxPrintModule} from 'ngx-print';
 // import {NgxPrintModule} from 'ngx-print';
 // import {MyPaginatorIntl} from './services/my-paginator-intl';
 
@@ -20,7 +23,9 @@ registerLocaleData(localeZhHans, 'zh-Hans');
 
 @NgModule({
   exports: [
-    // NgxPrintModule,
+    NgxBarcodeModule,
+    QRCodeModule,
+    NgxPrintModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

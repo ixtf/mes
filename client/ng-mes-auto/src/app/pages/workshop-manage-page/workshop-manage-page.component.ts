@@ -19,7 +19,7 @@ const COLUMNS = ['corporation', 'name', 'code', 'sapT001ls', 'sapT001lsForeign',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkshopManagePageComponent implements OnInit {
-  readonly copy = COPY;
+  // readonly copy = COPY;
   @Select(AppState.isAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(WorkshopManagePageState.workshops)
@@ -35,6 +35,14 @@ export class WorkshopManagePageComponent implements OnInit {
     this.displayedColumns$ = this.isAdmin$.pipe(
       map(it => it ? ['id'].concat(COLUMNS).concat(['btns']) : COLUMNS),
     );
+  }
+
+  copy(s: string, ev: MouseEvent) {
+    ev.stopPropagation();
+    console.log(ev);
+    if (ev.ctrlKey) {
+      COPY(s);
+    }
   }
 
   create() {

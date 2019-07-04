@@ -14,6 +14,8 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {NgxsModule, NoopNgxsExecutionStrategy} from '@ngxs/store';
 import {environment} from '../environments/environment';
+import {BarcodeDialogComponent} from './components/barcode-dialog/barcode-dialog.component';
+import {QrcodeDialogComponent} from './components/qrcode-dialog/qrcode-dialog.component';
 import {AppNavbarComponent} from './pages/app/app-navbar.component';
 import {AppShellComponent} from './pages/app/app-shell.component';
 import {AppComponent} from './pages/app/app.component';
@@ -96,6 +98,12 @@ export function createTranslateLoader(httpClient: HttpClient) {
     LoginPageComponent,
     AppShellComponent,
     AppNavbarComponent,
+    BarcodeDialogComponent,
+    QrcodeDialogComponent,
+  ],
+  entryComponents: [
+    BarcodeDialogComponent,
+    QrcodeDialogComponent,
   ],
   imports: [
     BrowserModule,

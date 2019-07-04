@@ -4,8 +4,7 @@
   <mat-dialog-content fxLayout="column">
 
     <mat-form-field>
-      <input [placeholder]="'corporation'|translate" [value]="'test'" matInput readonly required>
-      <mat-error></mat-error>
+      <input [placeholder]="'corporation'|translate" [value]="form.value?.corporation.name" matInput readonly required>
     </mat-form-field>
 
     <mat-form-field>

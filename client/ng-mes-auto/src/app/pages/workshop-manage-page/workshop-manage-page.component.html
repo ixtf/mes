@@ -8,7 +8,7 @@
 <mat-table [dataSource]="workshops$" fxFlex>
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell (dblclick)="copy(row.id)" *matCellDef="let row">{{row.id}}</mat-cell>
+    <mat-cell (click)="copy(row.id,$event)" *matCellDef="let row">{{row.id}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="corporation">

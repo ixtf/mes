@@ -1,7 +1,11 @@
 import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
-import {Selector, State} from '@ngxs/store';
+import {Action, Selector, State} from '@ngxs/store';
 import {SilkCar} from '../models/silk-car';
 import {ApiService} from '../services/api.service';
+
+export class InitAction {
+  static readonly type = '[SilkCarManagePage] InitAction';
+}
 
 interface SilkCarManagePageStateModel {
   count: number;
@@ -9,7 +13,6 @@ interface SilkCarManagePageStateModel {
   pageSize: number;
   q?: string;
   silkCars: SilkCar[];
-  // silkCarEntities: { [id: string]: SilkCar };
 }
 
 @State<SilkCarManagePageStateModel>({
@@ -27,23 +30,27 @@ export class SilkCarManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static silkCars(state: SilkCarManagePageStateModel) {
+  static silkCars(state: SilkCarManagePageStateModel): SilkCar[] {
     return state.silkCars;
   }
 
   @Selector()
-  static count(state: SilkCarManagePageStateModel) {
+  static count(state: SilkCarManagePageStateModel): number {
     return state.count;
   }
 
   @Selector()
-  static first(state: SilkCarManagePageStateModel) {
+  static first(state: SilkCarManagePageStateModel): number {
     return state.first;
   }
 
   @Selector()
-  static pageSize(state: SilkCarManagePageStateModel) {
+  static pageSize(state: SilkCarManagePageStateModel): number {
     return state.pageSize;
+  }
+
+  @Action(InitAction)
+  InitAction(state: SilkCarManagePageStateModel) {
   }
 
 }

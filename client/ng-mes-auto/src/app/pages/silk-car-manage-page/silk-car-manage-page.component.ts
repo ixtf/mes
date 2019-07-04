@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
-import {NgxsModule, Select} from '@ngxs/store';
+import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {SilkCar} from '../../models/silk-car';
 import {PAGE_SIZE_OPTIONS} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {SilkCarManagePageState} from '../../store/silk-car-manage-page.state';
-
+import {AppState} from '../../store/app.state';
+import {InitAction, SilkCarManagePageState} from '../../store/silk-car-manage-page.state';
 
 @Component({
   templateUrl: './silk-car-manage-page.component.html',
@@ -17,15 +17,23 @@ import {SilkCarManagePageState} from '../../store/silk-car-manage-page.state';
 export class SilkCarManagePageComponent implements OnInit {
   readonly displayedColumns = ['code', 'number', 'rowAndCol', 'type', 'btns'];
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
+  @Select(AppState.isAdmin)
+  readonly isAdmin$: Observable<boolean>;
   @Select(SilkCarManagePageState.silkCars)
-  readonly silkCars$: Observable<SilkCar>;
+  readonly silkCars$: Observable<SilkCar[]>;
+  @Select(SilkCarManagePageState.count)
+  readonly count$: Observable<number>;
+  @Select(SilkCarManagePageState.pageSize)
+  readonly pageSize$: Observable<number>;
   readonly searchForm = this.fb.group({
     q: null,
   });
 
-  constructor(private fb: FormBuilder,
+  constructor(private store: Store,
+              private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router) {
+    this.store.dispatch(new InitAction());
   }
 
   ngOnInit(): void {
@@ -35,6 +43,14 @@ export class SilkCarManagePageComponent implements OnInit {
   }
 
   batchCreate() {
+  }
+
+  update(row: any) {
+
+  }
+
+  print(row: any) {
+
   }
 }
 

@@ -131,6 +131,8 @@
     "productPlanNotifies": "通知单",
     "workshops": "车间管理",
     "lines": "线别管理",
+    "packageClasses": "班次管理",
+    "sapT001ls": "SAP库存地管理",
     "lineMachines": "机台管理",
     "products": "产品管理",
     "productProcesses": "生产工艺管理",

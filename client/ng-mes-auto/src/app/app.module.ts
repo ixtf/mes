@@ -16,10 +16,11 @@ import {NgxsModule, NoopNgxsExecutionStrategy} from '@ngxs/store';
 import {environment} from '../environments/environment';
 import {BarcodeDialogComponent} from './components/barcode-dialog/barcode-dialog.component';
 import {QrcodeDialogComponent} from './components/qrcode-dialog/qrcode-dialog.component';
-import {AppNavbarComponent} from './pages/app/app-navbar.component';
-import {AppShellComponent} from './pages/app/app-shell.component';
+import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
+import {AppShellComponent} from './pages/app/app-shell/app-shell.component';
 import {AppComponent} from './pages/app/app.component';
-import {LoginPageComponent} from './pages/login-page/login-page.component';
+import {LoginPageComponent} from './pages/app/login-page/login-page.component';
+import {AdminGuard} from './services/admin.guard';
 import {AuthGuard} from './services/auth.guard';
 import {ErrorInterceptor} from './services/error.interceptor';
 import {JwtInterceptor} from './services/jwt.interceptor';
@@ -43,28 +44,56 @@ const routes: Routes = [
         loadChildren: () => import('./pages/silk-car-record-page/silk-car-record-page.component').then(it => it.Module),
       },
       {
-        path: 'config/workshops',
-        loadChildren: () => import('./pages/workshop-manage-page/workshop-manage-page.component').then(it => it.Module),
+        path: 'config',
+        children: [
+          {
+            path: 'workshops',
+            loadChildren: () => import('./pages/config/workshop-manage-page/workshop-manage-page.component').then(it => it.Module),
+          },
+          {
+            path: 'lines',
+            loadChildren: () => import('./pages/config/line-manage-page/line-manage-page.component').then(it => it.Module),
+          },
+          {
+            path: 'silkCars',
+            loadChildren: () => import('./pages/config/silk-car-manage-page/silk-car-manage-page.component').then(it => it.Module),
+          },
+          {
+            path: 'batches',
+            loadChildren: () => import('./pages/config/batch-manage-page/batch-manage-page.component').then(it => it.Module),
+          },
+          {
+            path: 'packageClasses',
+            loadChildren: () => import('./pages/config/package-class-manage-page/package-class-manage-page.component').then(it => it.Module),
+          },
+        ]
       },
       {
-        path: 'config/lines',
-        loadChildren: () => import('./pages/line-manage-page/line-manage-page.component').then(it => it.Module),
+        path: 'report',
+        children: [
+          {
+            path: 'workshops',
+            loadChildren: () => import('./pages/config/workshop-manage-page/workshop-manage-page.component').then(it => it.Module),
+          },
+        ]
       },
       {
-        path: 'config/silkCars',
-        loadChildren: () => import('./pages/silk-car-manage-page/silk-car-manage-page.component').then(it => it.Module),
-      },
-      {
-        path: 'config/batches',
-        loadChildren: () => import('./pages/batch-manage-page/batch-manage-page.component').then(it => it.Module),
-      },
-      {
-        path: 'config/packageClasses',
-        loadChildren: () => import('./pages/package-class-manage-page/package-class-manage-page.component').then(it => it.Module),
-      },
-      {
-        path: 'config/sapT001ls',
-        loadChildren: () => import('./pages/sap-t001l-manage-page/sap-t001l-manage-page.component').then(it => it.Module),
+        path: 'admin',
+        canActivate: [AdminGuard],
+        children: [
+          {
+            path: 'sapT001ls',
+            loadChildren: () => import('./pages/admin/sap-t001l-manage-page/sap-t001l-manage-page.component').then(it => it.Module),
+          },
+          {
+            path: 'operators',
+            loadChildren: () => import('./pages/admin/operator-manage-page/operator-manage-page.component').then(it => it.Module),
+          },
+          {
+            path: 'operatorGroups',
+            loadChildren: () => import('./pages/admin/operator-group-manage-page/operator-group-manage-page.component').then(it => it.Module),
+          },
+        ]
       },
       {
         path: 'test/animation01',
@@ -83,7 +112,7 @@ const routes: Routes = [
       // {path: 'productPlan', loadChildren: './product-plan.module#ProductPlanModule'},
       // {path: 'report', loadChildren: './report.module#ReportModule'},
       // {path: 'admin', loadChildren: './admin.module#AdminModule', canActivate: [AdminGuard]},
-      {path: '', redirectTo: '/config', pathMatch: 'full'},
+      {path: '', redirectTo: '/silkCarRuntime', pathMatch: 'full'},
     ]
   },
 ];

@@ -1,6 +1,5 @@
 import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {of} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
 import {Line} from '../models/line';
 import {Workshop} from '../models/workshop';
@@ -64,20 +63,18 @@ export class LineManagePageState {
       switchMap(workshops => {
         workshops = workshops.sort(CodeCompare);
         patchState({workshops});
-        console.log('getState().workshopId', getState().workshopId);
-        if (getState().workshopId) {
-          return of();
-        }
-        return dispatch(new QueryAction({workshopId: workshops[0].id}));
+        return dispatch(new QueryAction({workshopId: getState().workshopId || workshops[0].id}));
       })
     );
   }
 
   @Action(QueryAction)
   QueryAction({getState, patchState}: StateContext<LineManagePageStateModel>, {payload: {workshopId}}: QueryAction) {
-    return this.apiService.getWorkshop_Lines(workshopId).pipe(
-      tap(lines => patchState({workshopId, lines}))
-    );
+    if (getState().workshopId !== workshopId) {
+      return this.apiService.getWorkshop_Lines(workshopId).pipe(
+        tap(lines => patchState({workshopId, lines}))
+      );
+    }
   }
 
 }

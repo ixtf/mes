@@ -46,7 +46,7 @@ export const COPY = (s: string) => {
 };
 
 export const SEARCH_DEBOUNCE_TIME = 500;
-export const PAGE_SIZE_OPTIONS = [20, 50, 100];
+export const PAGE_SIZE_OPTIONS = [50, 100, 1000];
 export const COMPARE_WITH_ID = (o1: any, o2: any) => {
   if (o1 === o2) {
     return true;

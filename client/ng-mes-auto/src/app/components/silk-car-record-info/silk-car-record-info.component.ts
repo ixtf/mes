@@ -4,10 +4,11 @@ import {LineMachine} from '../../models/line-machine';
 import {Silk} from '../../models/silk';
 import {SilkCarRecord} from '../../models/silk-car-record';
 import {SilkCarRuntime} from '../../models/silk-car-runtime';
+import {SilkRuntime} from '../../models/silk-runtime';
 import {COPY} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 
-class SilkModel extends Silk {
+export class SilkModel extends Silk {
   sideType: string;
   row: number;
   col: number;
@@ -23,7 +24,7 @@ class SilkModel extends Silk {
   }
 }
 
-class SilkCarRecordInfoModel extends SilkCarRecord {
+export class SilkCarRecordInfoModel extends SilkCarRecord {
   aSideSilks: SilkModel[] = [];
   bSideSilks: SilkModel[] = [];
 
@@ -55,6 +56,8 @@ class LineMachineSelectBtn {
 export class SilkCarRecordInfoComponent {
   // tslint:disable-next-line:variable-name
   private _silkCarRuntime: SilkCarRuntime;
+  // tslint:disable-next-line:variable-name
+  private _silkCarRecord: SilkCarRecord;
   copy = COPY;
   silkCarRecordInfo: SilkCarRecordInfoModel;
   lineMachineSelectBtns: LineMachineSelectBtn[];
@@ -62,6 +65,21 @@ export class SilkCarRecordInfoComponent {
   silkSelectionListChange = new EventEmitter<string[]>();
 
   constructor(private snackBar: MatSnackBar) {
+  }
+
+  @Input()
+  set silkCarRecord(silkCarRecord: SilkCarRecord) {
+    this._silkCarRecord = silkCarRecord;
+    const silkCarRecordInfo = this.silkCarRecordInfo || new SilkCarRecordInfoModel();
+    const aSideSilks = [];
+    const bSideSilks = [];
+    for (let row = 1; row <= silkCarRecord.silkCar.row; row++) {
+      for (let col = 1; col <= silkCarRecord.silkCar.col; col++) {
+        aSideSilks.push(this.silkModel('A', row, col, silkCarRecordInfo.aSideSilks, silkCarRecord.initSilks));
+        bSideSilks.push(this.silkModel('B', row, col, silkCarRecordInfo.bSideSilks, silkCarRecord.initSilks));
+      }
+    }
+    this.silkCarRecordInfo = Object.assign(new SilkCarRecordInfoModel(), silkCarRecord, {aSideSilks, bSideSilks});
   }
 
   @Input()
@@ -73,8 +91,8 @@ export class SilkCarRecordInfoComponent {
     const bSideSilks = [];
     for (let row = 1; row <= silkCarRuntime.silkCarRecord.silkCar.row; row++) {
       for (let col = 1; col <= silkCarRuntime.silkCarRecord.silkCar.col; col++) {
-        aSideSilks.push(this.silkModel('A', row, col, silkCarRecordInfo.aSideSilks, silkCarRuntime));
-        bSideSilks.push(this.silkModel('B', row, col, silkCarRecordInfo.bSideSilks, silkCarRuntime));
+        aSideSilks.push(this.silkModel('A', row, col, silkCarRecordInfo.aSideSilks, silkCarRuntime.silkRuntimes));
+        bSideSilks.push(this.silkModel('B', row, col, silkCarRecordInfo.bSideSilks, silkCarRuntime.silkRuntimes));
       }
     }
     this.silkCarRecordInfo = Object.assign(new SilkCarRecordInfoModel(), silkCarRuntime.silkCarRecord, {aSideSilks, bSideSilks});
@@ -88,10 +106,10 @@ export class SilkCarRecordInfoComponent {
     this.lineMachineSelectBtns.sort((a, b) => a.label.localeCompare(b.label));
   }
 
-  private silkModel(sideType: string, row: number, col: number, silkModels: SilkModel[], silkCarRuntime: SilkCarRuntime): SilkModel {
+  private silkModel(sideType: string, row: number, col: number, silkModels: SilkModel[], silkRuntimes: SilkRuntime[]): SilkModel {
     const result = Object.assign(new SilkModel(), {sideType, row, col});
     const predicate = it => it.sideType === sideType && it.row === row && it.col === col;
-    const silkRuntime = silkCarRuntime.silkRuntimes.find(predicate);
+    const silkRuntime = silkRuntimes.find(predicate);
     if (silkRuntime) {
       const {silk, grade} = silkRuntime;
       const exceptions = (silkRuntime.exceptions || []).map(it => it.name);

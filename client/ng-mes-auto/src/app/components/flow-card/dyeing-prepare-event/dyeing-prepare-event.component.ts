@@ -52,7 +52,14 @@ export class DyeingPrepareEventComponent {
   }
 
   calcPosition(dyeingResult: DyeingResult): string {
-    const silkRuntime = this.silkCarRuntime.silkCarRecord.initSilks.find(it => it.silk.id === dyeingResult.silk.id);
-    return [silkRuntime.sideType, silkRuntime.row, silkRuntime.col].join('-');
+    console.log(this);
+    const silkCarRecord = (this.silkCarRuntime && this.silkCarRuntime.silkCarRecord) || this.silkCarRecord;
+    const initSilks = silkCarRecord && silkCarRecord.initSilks || [];
+    console.log('initSilks', silkCarRecord);
+    const silkRuntime = initSilks.find(it => it.silk.id === dyeingResult.silk.id);
+    if (silkRuntime) {
+      return [silkRuntime.sideType, silkRuntime.row, silkRuntime.col].join('-');
+    }
+    return '-';
   }
 }

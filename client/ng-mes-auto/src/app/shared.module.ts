@@ -23,12 +23,15 @@ registerLocaleData(localeZhHans, 'zh-Hans');
 
 @NgModule({
   exports: [
+    // BrowserAnimationsModule,
+
     NgxBarcodeModule,
     QRCodeModule,
     NgxPrintModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+
     TranslateModule,
     FlexLayoutModule,
     OverlayModule,

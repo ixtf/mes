@@ -1,2 +1,85 @@
+<section fxFlex="50" fxLayout="column">
+  <form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+    <mat-form-field floatLabel="never" fxFlexOffset="4px">
+      <input [matDatepicker]="startDatePicker" [placeholder]="'Common.startDate'|translate" formControlName="startDate" matInput required>
+      <mat-datepicker-toggle [for]="startDatePicker" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+      <mat-error *ngIf="searchForm.get('startDate').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field floatLabel="never">
+      <input [matDatepicker]="endDatePicker" [placeholder]="'Common.endDate'|translate" formControlName="endDate" matInput required>
+      <mat-datepicker-toggle [for]="endDatePicker" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+      <mat-error *ngIf="searchForm.get('endDate').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field floatLabel="never" fxFlex>
+      <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'Tooltip.q'|translate" class="mySearch" matInput required tabindex="-1">
+      <mat-autocomplete #autoSilkCar="matAutocomplete" (optionSelected)="onSilkCarSelected($event)" [displayWith]="displayWithSilkCar" autoActiveFirstOption>
+        <mat-option *ngFor="let it of autoCompleteSilkCars$|async" [value]="it">
+          {{it.code}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="searchForm.get('silkCarCode').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+    <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+      <mat-icon>search</mat-icon>
+    </button>
+  </form>
+  <mat-divider></mat-divider>
 
-silkCarRecord
+  <ng-container *ngIf="silkCarRecord$|async">
+    <app-silk-car-record-info [silkCarRecord]="silkCarRecord$|async" fxFlex></app-silk-car-record-info>
+  </ng-container>
+
+  <ng-container *ngIf="!(silkCarRecord$|async)">
+    <mat-action-list fxFlex style="overflow-y: auto">
+      <mat-list-item (click)="pick(silkCarRecord)" *ngFor="let silkCarRecord of silkCarRecords$|async">
+        <div fxLayout fxLayoutGap="16px" matLine>
+          <span>{{silkCarRecord?.doffingDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+          <span>{{silkCarRecord.doffingOperator?.name}}</span>
+          <span>{{silkCarRecord.batch.batchNo}}</span>
+          <span>{{silkCarRecord.grade.name}}</span>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-action-list>
+
+    <mat-paginator [length]="count$|async" [pageIndex]="0" [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize$|async" showFirstLastButtons></mat-paginator>
+  </ng-container>
+</section>
+
+<mat-divider vertical></mat-divider>
+
+<section *ngIf="silkCarRecord$|async" fxFlex="50" fxLayout="column">
+  <div [formGroup]="settingForm" class="toolbar" ngxsForm="SilkCarRecordPage.settingForm">
+    <button (click)="pick(null)" mat-icon-button type="button">
+      <!--      <mat-icon>undo</mat-icon>-->
+      <!--      <mat-icon>keyboard_arrow_left</mat-icon>-->
+      <!--      <mat-icon>keyboard_backspace</mat-icon>-->
+      <!--      <mat-icon>keyboard_return</mat-icon>-->
+      <mat-icon>reply</mat-icon>
+      <!--      <mat-icon>arrow_back_ios</mat-icon>-->
+      <!--      <mat-icon>arrow_back</mat-icon>-->
+    </button>
+    <h4 fxFlex></h4>
+
+    <button (click)="settingForm.patchValue({showAll:!settingForm.value.showAll})" mat-icon-button type="button">
+      <mat-icon>{{settingForm.value.showAll ? 'visibility' : 'visibility_off'}}</mat-icon>
+    </button>
+    <mat-button-toggle-group appearance="legacy" formControlName="sort" style="box-shadow: none;">
+      <mat-button-toggle value="desc">{{'Common.timeDesc'|translate}}</mat-button-toggle>
+      <mat-button-toggle value="asc">{{'Common.timeAsc'|translate}}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <app-flow-card [setting]="settingForm.value" [silkCarRecord]="silkCarRecord$|async" fxFlex></app-flow-card>
+</section>
+

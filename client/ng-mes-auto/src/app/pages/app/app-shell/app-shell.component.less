@@ -1,0 +1,17 @@
+@import "../../../../library";
+
+app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  color: #fff;
+}
+
+main {
+  position: absolute;
+  top: @appToolbarH;
+  height: calc(100vh - @appToolbarH);
+  width: 100vw;
+}

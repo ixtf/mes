@@ -17,8 +17,7 @@ export class JikonAdapterSilkCarInfoFetchEventComponent {
   private silkCarRecord: SilkCarRecord;
   @Input()
   private event: JikonAdapterSilkCarInfoFetchEvent;
-  // displayedColumns = ['actualPosition', 'code', 'grade', 'grabFlage', 'eliminateFlage'];
-  displayedColumns = ['actualPosition', 'code', 'grabFlage', 'eliminateFlage'];
+  readonly displayedColumns = ['actualPosition', 'code', 'grabFlage', 'eliminateFlage'];
 
   get dataSource() {
     return new MatTableDataSource(this.data.list.sort((a, b) => {
@@ -27,7 +26,7 @@ export class JikonAdapterSilkCarInfoFetchEventComponent {
   }
 
   get data(): { bindNum: string, list: any[] } {
-    return JSON.parse(this.event.result).workshop;
+    return JSON.parse(this.event.result).data;
   }
 
 }

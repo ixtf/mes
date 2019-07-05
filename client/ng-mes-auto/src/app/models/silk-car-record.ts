@@ -18,6 +18,8 @@ export class SilkCarRecord {
   initSilks: SilkRuntime[];
   initEventSource: EventSource;
   eventSources: EventSource[];
+  startDateTime: Date;
+  endDateTime: Date;
 
   static assign(...sources: any[]): SilkCarRecord {
     const result = Object.assign(new SilkCarRecord(), ...sources);

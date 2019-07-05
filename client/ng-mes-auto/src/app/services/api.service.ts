@@ -5,7 +5,7 @@ import {HOST_NAME} from '../../environments/environment';
 import {AuthInfo} from '../models/auth-info';
 import {Batch} from '../models/batch';
 import {Corporation} from '../models/corporation';
-import {DyeingSampleSilkSubmitEvent, ProductProcessSubmitEvent} from '../models/event-source';
+import {DyeingSampleSilkSubmitEvent, EventSource, ProductProcessSubmitEvent} from '../models/event-source';
 import {FormConfig} from '../models/form-config';
 import {Grade} from '../models/grade';
 import {Line} from '../models/line';
@@ -21,6 +21,7 @@ import {ProductPlanNotify} from '../models/product-plan-notify';
 import {ProductProcess} from '../models/product-process';
 import {SapT001l} from '../models/sapT001l';
 import {SilkCar} from '../models/silk-car';
+import {SilkCarRecord} from '../models/silk-car-record';
 import {SilkCarRuntime} from '../models/silk-car-runtime';
 import {SilkException} from '../models/silk-exception';
 import {SilkNote} from '../models/silk-note';
@@ -210,6 +211,14 @@ export class ApiService {
 
   listSilkCar(params?: HttpParams): Observable<{ count: number, first: number, pageSize: number, silkCars: SilkCar[] }> {
     return this.http.get<{ count: number, first: number, pageSize: number, silkCars: SilkCar [] }>(`${BASE_API_URL}/silkCars`, {params});
+  }
+
+  querySilkCarRecord(params?: HttpParams): Observable<{ count: number, first: number, pageSize: number, silkCarRecords: SilkCarRecord[] }> {
+    return this.http.get<{ count: number, first: number, pageSize: number, silkCarRecords: SilkCarRecord[] }>(`${BASE_API_URL}/silkCarRecords`, {params});
+  }
+
+  getSilkCarRecord_Events(id: string): Observable<EventSource[]> {
+    return this.http.get<EventSource[]>(`${BASE_API_URL}/silkCarRecords/${id}/events`);
   }
 
   autoCompleteSilkCar(q: string): Observable<SilkCar[]> {

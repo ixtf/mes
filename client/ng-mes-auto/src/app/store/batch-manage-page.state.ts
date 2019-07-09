@@ -22,7 +22,7 @@ interface SilkCarManagePageStateModel {
   }
 })
 export class BatchManagePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()

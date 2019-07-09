@@ -1,4 +1,4 @@
-import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
+import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {Workshop} from '../models/workshop';
@@ -19,7 +19,7 @@ interface WorkshopManagePageStateModel {
   defaults: {}
 })
 export class WorkshopManagePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
@@ -29,9 +29,13 @@ export class WorkshopManagePageState {
   }
 
   @Action(InitAction)
-  InitAction({patchState}: StateContext<WorkshopManagePageStateModel>) {
-    return this.apiService.listWorkshop().pipe(
-      tap(workshops => patchState({workshops}))
+  @ImmutableContext()
+  InitAction({setState}: StateContext<WorkshopManagePageStateModel>) {
+    return this.api.listWorkshop().pipe(
+      tap(workshops => setState((state: WorkshopManagePageStateModel) => {
+        state.workshops = workshops;
+        return state;
+      }))
     );
   }
 

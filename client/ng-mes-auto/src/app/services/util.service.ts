@@ -33,6 +33,18 @@ export class UtilService {
 
 }
 
+export const FULL_SCREEN = (element) => {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullScreen();
+  }
+};
+
 export const COPY = (s: string) => {
   const el = document.createElement('textarea');
   el.value = s;

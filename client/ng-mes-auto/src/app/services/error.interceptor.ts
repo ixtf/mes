@@ -4,7 +4,7 @@ import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
 import {EmitterService} from '@ngxs-labs/emitter';
 import {Store} from '@ngxs/store';
-import {Observable, throwError} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
 import {isString} from 'util';
 import {AppState} from '../store/app.state';
@@ -42,7 +42,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       this.emitter.action(AppState.LogoutAction).emit().subscribe(() => {
         location.reload(true);
       });
-    } else if (err.status === 400) {
+    } else {
       this.getErrorMsg(err).subscribe(it => {
         this.snackBar.open(it, 'OK', {
           duration: 0,
@@ -52,8 +52,11 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private getErrorMsg(err: any): Observable<string> {
-    const error = err.error.message || err.statusText;
-    return this.translate.get(error);
+    if (err.status === 400) {
+      const error = err.error.message || err.statusText;
+      return this.translate.get(error);
+    }
+    return of([err.status, err.statusText, err.error.message].join(':'));
   }
 
   showError(err: string | any, action?: string, config?: MatSnackBarConfig) {

@@ -1,0 +1,47 @@
+<form class="search-area">
+  <span fxFlex></span>
+  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="exceptionRecords$" fxFlex>
+  <ng-container matColumnDef="spec">
+    <mat-header-cell *matHeaderCellDef>{{'LineMachine.spec'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.lineMachine.line.name}}-{{row.spindle}}/{{row.lineMachine.item}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="doffingNum">
+    <mat-header-cell *matHeaderCellDef>{{'doffingNum'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.doffingNum}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="exception">
+    <mat-header-cell *matHeaderCellDef>{{'Common.exception'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.exception}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="creator">
+    <mat-header-cell *matHeaderCellDef>{{'提交人'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.creator.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="createDateTime">
+    <mat-header-cell *matHeaderCellDef>{{'提交时间'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">
+      <button (click)="handle(row)" color="primary" mat-button>
+        {{'Common.handle'|translate}}
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

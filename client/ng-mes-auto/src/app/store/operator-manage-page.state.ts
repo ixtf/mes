@@ -22,7 +22,7 @@ interface OperatorManagePageStateModel {
   }
 })
 export class OperatorManagePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()

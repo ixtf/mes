@@ -14,31 +14,31 @@
   </ng-container>
 
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'Common.name'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">{{row.name}}</mat-cell>
+    <mat-header-cell *matHeaderCellDef>{{'Common.name'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="code">
-    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'code'|translate}}</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'CODE'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">{{row.code}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="sapT001ls">
-    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'sapT001ls'|translate}}</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'Workshop.sapT001ls'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row" fxLayoutAlign="center center">
       <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001ls}"></ng-container>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="sapT001lsPallet">
-    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'sapT001lsPallet'|translate}}</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'Workshop.sapT001lsPallet'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row" fxLayoutAlign="center center">
       <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001lsPallet}"></ng-container>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="sapT001lsForeign">
-    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'sapT001lsForeign'|translate}}</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'Workshop.sapT001lsForeign'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row" fxLayoutAlign="center center">
       <ng-container *ngTemplateOutlet="sapT001lsTemp;context:{sapT001ls:row.sapT001lsForeign}"></ng-container>
     </mat-cell>

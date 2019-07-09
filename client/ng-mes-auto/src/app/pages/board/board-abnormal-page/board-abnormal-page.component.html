@@ -1,0 +1,70 @@
+<header class="board-title" fxLayout fxLayoutAlign="start center">
+  <img alt="" class="logo" src="assets/img/logo.png">
+  <div class="title-name" fxFlex>
+    <span>{{'Nav.board-abnormal'|translate}}</span>
+  </div>
+  <div class="date-box">
+    <span>{{currentDateTime$|async|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  </div>
+</header>
+
+<main class="board-content" fxFlex fxLayout>
+  <section fxFlex="40" fxLayout="column" style="padding-right: .5rem">
+    <table border="1">
+      <thead>
+      <tr>
+        <th translate="line"></th>
+        <th translate="lineMachine"></th>
+        <th translate="batchNo"></th>
+        <th translate="tubeColor"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of productPlanItems$|async">
+        <td>{{item.line.name}}</td>
+        <td>
+          <div fxLayout="column">
+            <span *ngFor="let it of item.lineMachineSpecs">{{it}}</span>
+          </div>
+        </td>
+        <td>{{item.batch.batchNo}}</td>
+        <td>{{item.batch.tubeColor}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <ng-container *ngIf="(notifications$|async)?.length>0">
+      <table border="1">
+        <caption translate="Common.notification"></caption>
+        <tr>
+          <td colspan="4">
+            <p id="pNotice"></p>
+            <label class="currDate" id="pNoticeDate"></label>
+          </td>
+        </tr>
+      </table>
+    </ng-container>
+  </section>
+
+  <section fxFlex="60" fxLayout="column" style="padding-left: .5rem">
+    <table border="1">
+      <thead>
+      <tr>
+        <th translate="LineMachine.spec"></th>
+        <th translate="doffingNum"></th>
+        <th translate="Common.exception"></th>
+        <th translate="Common.time"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let msg of exceptionRecords$|async">
+        <td>{{msg.lineMachine.line.name}}-{{msg.spindle}}/{{msg.lineMachine.item}}</td>
+        <td>{{msg.doffingNum}}</td>
+        <td>{{msg.exception}}</td>
+        <!--        <td>{{msg.creator?.name}} {{msg.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>-->
+        <td>{{msg.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</main>

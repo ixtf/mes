@@ -1,17 +1,20 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {HOST_NAME} from '../../environments/environment';
 import {AuthInfo} from '../models/auth-info';
 import {Batch} from '../models/batch';
 import {Corporation} from '../models/corporation';
 import {DyeingSampleSilkSubmitEvent, EventSource, ProductProcessSubmitEvent} from '../models/event-source';
+import {ExceptionRecord} from '../models/exception-record';
 import {FormConfig} from '../models/form-config';
 import {Grade} from '../models/grade';
 import {Line} from '../models/line';
 import {LineMachine} from '../models/line-machine';
 import {LineMachineProductPlan} from '../models/line-machine-product-plan';
 import {MeasureReport} from '../models/measure-report';
+import {Notification} from '../models/notification';
 import {Operator} from '../models/operator';
 import {OperatorGroup} from '../models/operator-group';
 import {PackageClass} from '../models/package-class';
@@ -31,6 +34,7 @@ import {Workshop} from '../models/workshop';
 import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report';
 
 const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
+const SHARE_API_URL = `http://${HOST_NAME}:9998/share`;
 
 @Injectable({
   providedIn: 'root'
@@ -41,10 +45,6 @@ export class ApiService {
 
   token(body: { loginId: string; loginPassword: string }): Observable<string> {
     return this.http.post(`http://${HOST_NAME}:9998/token`, body, {responseType: 'text'});
-  }
-
-  workshopProductPlanReport(params?: HttpParams): Observable<WorkshopProductPlanReport> {
-    return this.http.get<WorkshopProductPlanReport>(`${BASE_API_URL}/reports/workshopProductPlanReport`, {params});
   }
 
   saveOperatorGroup(operatorGroup: OperatorGroup): Observable<OperatorGroup> {
@@ -126,6 +126,14 @@ export class ApiService {
 
   deleteWorkshop(id: string): Observable<any> {
     return this.http.delete(`${BASE_API_URL}/workshops/${id}`);
+  }
+
+  listExceptionRecord(params?: HttpParams): Observable<ExceptionRecord[]> {
+    return this.http.get<ExceptionRecord[]>(`${BASE_API_URL}/exceptionRecords`, {params});
+  }
+
+  handleExceptionRecord(id: string): Observable<void> {
+    return this.http.put<void>(`${BASE_API_URL}/exceptionRecords/${id}/handle`, null);
   }
 
   /*产品增删改查*/
@@ -469,5 +477,27 @@ export class ApiService {
 
   private updateSapT001l(sapT001l: SapT001l): Observable<SapT001l> {
     return this.http.put<SapT001l>(`${BASE_API_URL}/sapT001ls/${sapT001l.id}`, sapT001l);
+  }
+
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiShareService {
+  constructor(private http: HttpClient) {
+  }
+
+  listExceptionRecord(params?: HttpParams): Observable<ExceptionRecord[]> {
+    return this.http.get<ExceptionRecord[]>(`${SHARE_API_URL}/exceptionRecords`, {params});
+  }
+
+  listNotification(params?: HttpParams): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${SHARE_API_URL}/notifications`, {params});
+  }
+
+  getWorkshop_ProductPlans(id: string): Observable<WorkshopProductPlanReport> {
+    return this.http.get<WorkshopProductPlanReport>(`${SHARE_API_URL}/workshops/${id}/productPlans`)
+      .pipe(map(WorkshopProductPlanReport.assign));
   }
 }

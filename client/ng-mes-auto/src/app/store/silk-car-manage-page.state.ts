@@ -1,5 +1,5 @@
-import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
-import {Action, Selector, State} from '@ngxs/store';
+import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {SilkCar} from '../models/silk-car';
 import {ApiService} from '../services/api.service';
 
@@ -25,7 +25,7 @@ interface SilkCarManagePageStateModel {
   }
 })
 export class SilkCarManagePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
@@ -50,7 +50,8 @@ export class SilkCarManagePageState {
   }
 
   @Action(InitAction)
-  InitAction(state: SilkCarManagePageStateModel) {
+  @ImmutableContext()
+  InitAction({setState}: StateContext<SilkCarManagePageStateModel>) {
   }
 
 }

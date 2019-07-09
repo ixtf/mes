@@ -1,16 +1,15 @@
 <mat-progress-bar *ngIf="isLoading$|async" color="accent" mode="indeterminate" style="height: 2px"></mat-progress-bar>
 <nav>
-  <a mat-button routerLink="/silkCarRuntime" routerLinkActive="active">{{'Nav.silkCarRuntime'|translate}}</a>
+  <a mat-button routerLink="/silkCarRuntime" style="padding: 0">
+    <img src="assets/img/logo.png" style="height: 48px;color: white">
+  </a>
+  <!--  <a mat-button routerLink="/silkCarRuntime" routerLinkActive="active">{{'Nav.silkCarRuntime'|translate}}</a>-->
   <a mat-button routerLink="/silkCarRecord" routerLinkActive="active">{{'Nav.silkCarRecord'|translate}}</a>
-  <a mat-button routerLink="/productPlan" routerLinkActive="active">{{'Nav.productPlan'|translate}}</a>
 
   <button [matMenuTriggerFor]="reportMenu" mat-button type="button">{{'Nav.report'|translate}}</button>
   <mat-menu #reportMenu="matMenu">
-    <a mat-menu-item routerLink="/config/workshops" routerLinkActive="active">{{'Nav.workshops'|translate}}</a>
-    <a mat-menu-item routerLink="/config/lines" routerLinkActive="active">{{'Nav.lines'|translate}}</a>
-    <a mat-menu-item routerLink="/config/silkCars" routerLinkActive="active">{{'Nav.silkCars'|translate}}</a>
-    <a mat-menu-item routerLink="/config/batches" routerLinkActive="active">{{'Nav.batches'|translate}}</a>
-    <a mat-menu-item routerLink="/config/packageClasses" routerLinkActive="active">{{'Nav.packageClasses'|translate}}</a>
+    <a mat-menu-item routerLink="/productPlan" routerLinkActive="active">{{'Nav.productPlan'|translate}}</a>
+    <a mat-menu-item routerLink="/exceptionRecords" routerLinkActive="active">{{'Nav.exceptionRecords'|translate}}</a>
   </mat-menu>
 
   <button [matMenuTriggerFor]="configMenu" mat-button type="button">{{'Nav.config'|translate}}</button>
@@ -20,14 +19,15 @@
     <a mat-menu-item routerLink="/config/silkCars" routerLinkActive="active">{{'Nav.silkCars'|translate}}</a>
     <a mat-menu-item routerLink="/config/batches" routerLinkActive="active">{{'Nav.batches'|translate}}</a>
     <a mat-menu-item routerLink="/config/packageClasses" routerLinkActive="active">{{'Nav.packageClasses'|translate}}</a>
+    <a *ngIf="isAdmin$|async" mat-menu-item routerLink="/admin/sapT001ls" routerLinkActive="active">{{'Nav.sapT001ls'|translate}}</a>
+    <a *ngIf="isAdmin$|async" mat-menu-item routerLink="/admin/operators" routerLinkActive="active">{{'Nav.operators'|translate}}</a>
+    <a *ngIf="isAdmin$|async" mat-menu-item routerLink="/admin/operatorGroups" routerLinkActive="active">{{'Nav.operatorGroups'|translate}}</a>
   </mat-menu>
 
-  <button *ngIf="isAdmin$|async" [matMenuTriggerFor]="adminMenu" mat-button type="button">{{'Nav.admin'|translate}}</button>
-  <mat-menu #adminMenu="matMenu">
-    <a mat-menu-item routerLink="/admin/sapT001ls" routerLinkActive="active">{{'Nav.sapT001ls'|translate}}</a>
-    <a mat-menu-item routerLink="/admin/operators" routerLinkActive="active">{{'Nav.operators'|translate}}</a>
-    <a mat-menu-item routerLink="/admin/operatorGroups" routerLinkActive="active">{{'Nav.operatorGroups'|translate}}</a>
-    <mat-divider></mat-divider>
+  <button *ngIf="isAdmin$|async" [matMenuTriggerFor]="boardMenu" mat-button type="button">{{'Nav.board'|translate}}</button>
+  <mat-menu #boardMenu="matMenu">
+    <button (click)="boardAutoLine()" mat-menu-item type="button">{{'Nav.board-auto-line'|translate}}</button>
+    <button (click)="boardAbnormal()" mat-menu-item type="button">{{'Nav.board-abnormal'|translate}}</button>
   </mat-menu>
 
   <span fxFlex></span>
@@ -35,17 +35,17 @@
     {{(authInfo$|async)?.name || 'An'}}
   </button>
   <mat-menu #menu="matMenu" xPosition="before">
-    <button mat-menu-item>Item 1</button>
-    <button mat-menu-item>Item 2</button>
+    <button mat-menu-item type="button">Item 1</button>
+    <button mat-menu-item type="button">Item 2</button>
     <ng-container *ngIf="isAdmin$|async">
       <mat-divider></mat-divider>
-      <a routerLink="/admin" mat-menu-item>{{'Nav.admin'|translate}}</a>
-      <a routerLink="/test/animation01" mat-menu-item>{{'animation01'|translate}}</a>
-      <a routerLink="/test/animation02" mat-menu-item>{{'animation02'|translate}}</a>
-      <a routerLink="/test/animation03" mat-menu-item>{{'animation03'|translate}}</a>
+      <a mat-menu-item routerLink="/admin" routerLinkActive="active">{{'Nav.admin'|translate}}</a>
+      <a mat-menu-item routerLink="/test/animation01" routerLinkActive="active">{{'animation01'|translate}}</a>
+      <a mat-menu-item routerLink="/test/animation02" routerLinkActive="active">{{'animation02'|translate}}</a>
+      <a mat-menu-item routerLink="/test/animation03" routerLinkActive="active">{{'animation03'|translate}}</a>
     </ng-container>
     <mat-divider></mat-divider>
-    <button type="button" (click)="logout$.emit()" mat-menu-item>{{'Common.logout'|translate}}</button>
+    <button (click)="logout$.emit()" mat-menu-item type="button">{{'Common.logout'|translate}}</button>
   </mat-menu>
   <!--    <button mat-icon-button [matMenuTriggerFor]="menu" [matTooltip]="'Common.help'|translate">-->
   <!--      <mat-icon>help</mat-icon>-->

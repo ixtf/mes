@@ -1,6 +1,6 @@
 <section fxFlex="50" fxLayout="column">
   <form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
-    <mat-form-field floatLabel="never" fxFlexOffset="4px">
+    <mat-form-field floatLabel="never">
       <input [matDatepicker]="startDatePicker" [placeholder]="'Common.startDate'|translate" formControlName="startDate" matInput required>
       <mat-datepicker-toggle [for]="startDatePicker" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #startDatePicker></mat-datepicker>
@@ -17,7 +17,7 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field floatLabel="never" fxFlex>
-      <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'Tooltip.q'|translate" class="mySearch" matInput required tabindex="-1">
+      <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'SilkCar.code'|translate" class="mySearch" matInput required tabindex="-1">
       <mat-autocomplete #autoSilkCar="matAutocomplete" (optionSelected)="onSilkCarSelected($event)" [displayWith]="displayWithSilkCar" autoActiveFirstOption>
         <mat-option *ngFor="let it of autoCompleteSilkCars$|async" [value]="it">
           {{it.code}}
@@ -27,6 +27,8 @@
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
+
+    <span fxFlex></span>
     <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
       <mat-icon>search</mat-icon>
     </button>
@@ -50,7 +52,7 @@
       </mat-list-item>
     </mat-action-list>
 
-    <mat-paginator [length]="count$|async" [pageIndex]="0" [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize$|async" showFirstLastButtons></mat-paginator>
+    <mat-paginator [length]="count$|async" [pageIndex]="0" [pageSize]="pageSize$|async" showFirstLastButtons></mat-paginator>
   </ng-container>
 </section>
 

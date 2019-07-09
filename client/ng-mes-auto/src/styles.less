@@ -20,6 +20,7 @@ form.search-area {
   place-content: center flex-start;
   align-items: center;
   flex-shrink: 0;
+  padding-left: 4px;
   padding-right: 16px;
 }
 
@@ -57,6 +58,50 @@ form.search-area {
     .mat-header-row {
       height: 48px;
     }
+  }
+}
+
+.board-page {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  color: #fff;
+  background: url('assets/img/board/background.jpg') center no-repeat;
+  background-size: cover;
+
+  header.board-title {
+    text-align: center;
+    padding: 0 1em;
+
+    .logo {
+      width: 13.5em;
+    }
+
+    .title-name {
+      display: inline-block;
+
+      span {
+        font-size: 2.7em;
+      }
+    }
+
+    .date-box {
+      border: .1em solid #2c647c;
+      height: 3em;
+      line-height: 3em;
+      padding: 0 .6em;
+      border-radius: .4em;
+
+      span {
+        font-size: 1.8em;
+      }
+    }
+  }
+
+  main.board-content {
+    margin-top: 2rem;
+    border-top: .1em solid #2c647c;
   }
 }
 

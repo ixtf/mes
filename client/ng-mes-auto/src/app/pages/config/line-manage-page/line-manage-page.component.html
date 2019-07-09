@@ -1,5 +1,5 @@
 <form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
-  <mat-form-field fxFlexOffset="4px">
+  <mat-form-field>
     <mat-select formControlName="workshopId">
       <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
         {{workshop.name}}

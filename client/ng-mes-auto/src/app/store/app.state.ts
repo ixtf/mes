@@ -1,4 +1,5 @@
 import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
+import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Navigate} from '@ngxs/router-plugin';
 import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
 import {forkJoin, of} from 'rxjs';
@@ -31,42 +32,52 @@ interface AppStateModel {
   defaults: {}
 })
 export class AppState implements NgxsOnInit {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
+  @ImmutableSelector()
   static isShake(state: AppStateModel): boolean {
     return state.shake;
   }
 
   @Selector()
+  @ImmutableSelector()
   static isLoading(state: AppStateModel): boolean {
     return state.loading;
   }
 
   @Selector()
+  @ImmutableSelector()
   static token(state: AppStateModel): string {
     return state.token;
   }
 
   @Selector()
+  @ImmutableSelector()
   static authInfo(state: AppStateModel): AuthInfo {
     return state.authInfo;
   }
 
   @Selector()
+  @ImmutableSelector()
   static corporation(state: AppStateModel): Corporation {
     return state.corporations && state.corporations[0];
   }
 
   @Selector()
+  @ImmutableSelector()
   static isAdmin(state: AppStateModel): boolean {
     return state.authInfo && state.authInfo.admin;
   }
 
   @Receiver()
-  static SetLoading({patchState}: StateContext<AppStateModel>, {payload}: EmitterAction<boolean>) {
-    patchState({loading: payload});
+  @ImmutableContext()
+  static SetLoading({setState}: StateContext<AppStateModel>, {payload}: EmitterAction<boolean>) {
+    setState((state: AppStateModel) => {
+      state.loading = payload;
+      return state;
+    });
   }
 
   @Receiver()
@@ -81,25 +92,37 @@ export class AppState implements NgxsOnInit {
   }
 
   @Action(InitAction)
-  InitAction({patchState}: StateContext<AppStateModel>) {
-    const authInfo$ = this.apiService.authInfo();
-    const corporations$ = this.apiService.listCorporation();
-    return forkJoin(authInfo$, corporations$).pipe(
-      tap(([authInfo, corporations]) => patchState({authInfo, corporations}))
+  @ImmutableContext()
+  InitAction({setState}: StateContext<AppStateModel>) {
+    const authInfo$ = this.api.authInfo();
+    const corporations$ = this.api.listCorporation();
+    return forkJoin([authInfo$, corporations$]).pipe(
+      tap(([authInfo, corporations]) => setState((state: AppStateModel) => {
+        state.authInfo = authInfo;
+        state.corporations = corporations;
+        return state;
+      }))
     );
   }
 
   @Action(LoginAction)
-  LoginAction({getState, patchState, dispatch}: StateContext<AppStateModel>, {payload}: LoginAction) {
-    return this.apiService.token(payload).pipe(
+  @ImmutableContext()
+  LoginAction({getState, setState, dispatch}: StateContext<AppStateModel>, {payload}: LoginAction) {
+    return this.api.token(payload).pipe(
       switchMap(token => {
-        patchState({token});
+        setState((state: AppStateModel) => {
+          state.token = token;
+          return state;
+        });
         const initAction = new InitAction();
         const navigateAction = new Navigate([payload.returnUrl || '/']);
         return dispatch([initAction, navigateAction]);
       }),
       catchError(() => {
-        patchState({shake: !getState().shake});
+        setState((state: AppStateModel) => {
+          state.shake = !state.shake;
+          return state;
+        });
         return of();
       })
     );

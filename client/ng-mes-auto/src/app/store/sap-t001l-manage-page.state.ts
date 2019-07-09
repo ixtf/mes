@@ -1,4 +1,4 @@
-import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
+import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {SapT001l} from '../models/sapT001l';
@@ -18,7 +18,7 @@ interface SapT001lManagePageStateModel {
   defaults: {}
 })
 export class SapT001lManagePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
@@ -28,9 +28,13 @@ export class SapT001lManagePageState {
   }
 
   @Action(InitAction)
-  InitAction({patchState}: StateContext<SapT001lManagePageStateModel>) {
-    return this.apiService.listSapT001l().pipe(
-      tap(sapT001ls => patchState({sapT001ls}))
+  @ImmutableContext()
+  InitAction({setState}: StateContext<SapT001lManagePageStateModel>) {
+    return this.api.listSapT001l().pipe(
+      tap(sapT001ls => setState((state: SapT001lManagePageStateModel) => {
+        state.sapT001ls = sapT001ls;
+        return state;
+      }))
     );
   }
 

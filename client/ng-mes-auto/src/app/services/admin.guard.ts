@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {isNullOrUndefined} from 'util';
 import {AppState} from '../store/app.state';
 
 @Injectable({providedIn: 'root'})
@@ -13,6 +15,8 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.isAdmin$;
+    return this.isAdmin$.pipe(
+      filter(it => !isNullOrUndefined(it)),
+    );
   }
 }

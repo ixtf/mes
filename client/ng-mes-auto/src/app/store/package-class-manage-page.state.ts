@@ -19,7 +19,7 @@ interface PackageClassManagePageStateModel {
   defaults: {}
 })
 export class PackageClassManagePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
@@ -29,9 +29,12 @@ export class PackageClassManagePageState {
   }
 
   @Action(InitAction)
-  InitAction({patchState}: StateContext<PackageClassManagePageStateModel>) {
-    return this.apiService.listPackageClass().pipe(
-      tap(packageClasses => patchState({packageClasses}))
+  InitAction({setState}: StateContext<PackageClassManagePageStateModel>) {
+    return this.api.listPackageClass().pipe(
+      tap(packageClasses => setState((state: PackageClassManagePageStateModel) => {
+        state.packageClasses = packageClasses;
+        return state;
+      }))
     );
   }
 

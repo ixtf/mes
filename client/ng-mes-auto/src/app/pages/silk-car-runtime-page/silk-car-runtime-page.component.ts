@@ -33,7 +33,7 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     filter(it => it && isString(it) && it.trim().length > 1),
-    switchMap(q => this.apiService.autoCompleteSilkCar(q))
+    switchMap(q => this.api.autoCompleteSilkCar(q))
   );
   settingForm = this.fb.group({
     sort: 'desc',
@@ -46,15 +46,15 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
               private store: Store,
-              private apiService: ApiService) {
+              private api: ApiService) {
   }
 
   ngOnInit(): void {
     this.OnInit$.emit();
-    this.store.dispatch(new FetchAction('3000F48001'));
+    // this.store.dispatch(new FetchAction('3000F48001'));
     // this.store.dispatch(new FetchAction('YJ048F0002'));
     // this.store.dispatch(new FetchAction('3000F2345'));
-    // this.store.dispatch(new FetchAction('3000F30606'));
+    this.store.dispatch(new FetchAction('3000F30606'));
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>
+  {{'Nav.board-auto-line'|translate}}
+</h2>
+
+<mat-dialog-content [formGroup]="form" fxLayout="column">
+  <mat-form-field>
+    <input formControlName="if_riamb_id" matInput placeholder="if_riamb_id">
+    <mat-error *ngIf="form.get('if_riamb_id').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input formControlName="displayCount" matInput placeholder="displayCount" type="number">
+    <mat-error *ngIf="form.get('displayCount').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+    <mat-error *ngIf="form.get('displayCount').hasError('min')">
+      {{'Validator.min'|translate}}
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="form.valid" align="end">
+  <a [queryParams]="form.value" color="primary" mat-button routerLink="/board/auto-line" target="_blank">
+    {{'Common.finish'|translate}}
+  </a>
+</mat-dialog-actions>

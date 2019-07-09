@@ -1,4 +1,4 @@
-import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
+import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {switchMap, tap} from 'rxjs/operators';
 import {Line} from '../models/line';
@@ -36,7 +36,7 @@ interface LineManagePageStateModel {
   }
 })
 export class LineManagePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
@@ -58,21 +58,30 @@ export class LineManagePageState {
   }
 
   @Action(InitAction)
-  InitAction({getState, patchState, dispatch}: StateContext<LineManagePageStateModel>) {
-    return this.apiService.listWorkshop().pipe(
+  @ImmutableContext()
+  InitAction({getState, setState, dispatch}: StateContext<LineManagePageStateModel>) {
+    return this.api.listWorkshop().pipe(
       switchMap(workshops => {
         workshops = workshops.sort(CodeCompare);
-        patchState({workshops});
+        setState((state: LineManagePageStateModel) => {
+          state.workshops = workshops;
+          return state;
+        });
         return dispatch(new QueryAction({workshopId: getState().workshopId || workshops[0].id}));
       })
     );
   }
 
   @Action(QueryAction)
-  QueryAction({getState, patchState}: StateContext<LineManagePageStateModel>, {payload: {workshopId}}: QueryAction) {
+  @ImmutableContext()
+  QueryAction({getState, setState}: StateContext<LineManagePageStateModel>, {payload: {workshopId}}: QueryAction) {
     if (getState().workshopId !== workshopId) {
-      return this.apiService.getWorkshop_Lines(workshopId).pipe(
-        tap(lines => patchState({workshopId, lines}))
+      return this.api.getWorkshop_Lines(workshopId).pipe(
+        tap(lines => setState((state: LineManagePageStateModel) => {
+          state.lines = lines;
+          state.workshopId = workshopId;
+          return state;
+        }))
       );
     }
   }

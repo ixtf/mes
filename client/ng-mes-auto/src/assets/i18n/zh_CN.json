@@ -15,12 +15,13 @@
   "silkNote": "丝锭备注",
   "permission": "权限",
   "silkWeight": "锭重",
+  "doffingNum": "落次",
   "silk": "丝锭",
   "weight": "锭重",
   "doffingType": "落筒方式",
   "brand": "品牌",
   "supplier": "厂商",
-  "tubeColor": "纸管颜色",
+  "tubeColor": "管色",
   "silkDetach": "丝锭解绑",
   "lineMachineCount": "机台数",
   "packageBoxCount": "包数",
@@ -80,6 +81,7 @@
     "exeInfo": "执行情况"
   },
   "LineMachine": {
+    "spec": "纺位",
     "name": "设备名称",
     "item": "位号",
     "partNum": "卷绕头数",
@@ -148,7 +150,13 @@
     "report": "报表中心",
     "measureReport": "计量报表",
     "statisticsReport": "统计报表",
+    "board": "大屏",
+    "board-auto-line": "自动包装线管理看板",
+    "board-abnormal": "车间生产管理看板",
     "admin": "管理员"
+  },
+  "Board": {
+    "autoLineReasons": "不能推入原因"
   },
   "Btn": {
     "productPlanNotifyExe": "执行",
@@ -193,6 +201,9 @@
     "success": "操作成功"
   },
   "Common": {
+    "notification": "通知",
+    "handle": "处理",
+    "exception": "异常",
     "logout": "退出",
     "loginId": "登录名",
     "password": "密码",
@@ -207,6 +218,7 @@
     "type": "类型",
     "batch": "批量",
     "date": "日期",
+    "time": "时间",
     "startDate": "开始日期",
     "endDate": "结束日期",
     "batchStart": "批量开始",

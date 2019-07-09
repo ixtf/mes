@@ -36,7 +36,7 @@ interface SilkCarRecordPageStateModel {
   }
 })
 export class SilkCarRecordPageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
@@ -78,7 +78,7 @@ export class SilkCarRecordPageState {
     const httpParams = new HttpParams().append('silkCarCode', silkCarCode)
       .append('startDate', moment(startDate).format('YYYY-MM-DD'))
       .append('endDate', moment(endDate).format('YYYY-MM-DD'));
-    return this.apiService.querySilkCarRecord(httpParams).pipe(
+    return this.api.querySilkCarRecord(httpParams).pipe(
       tap(({first, count, pageSize, silkCarRecords}) => setState((state: SilkCarRecordPageStateModel) => {
         state.silkCarRecord = null;
         state.first = first;
@@ -92,7 +92,7 @@ export class SilkCarRecordPageState {
 
   @Action(PickAction)
   @ImmutableContext()
-  PickAction({patchState, setState}: StateContext<SilkCarRecordPageStateModel>, {payload: {silkCarRecord}}: PickAction) {
+  PickAction({setState}: StateContext<SilkCarRecordPageStateModel>, {payload: {silkCarRecord}}: PickAction) {
     setState((state: SilkCarRecordPageStateModel) => {
       state.silkCarRecord = null;
       return state;
@@ -104,7 +104,7 @@ export class SilkCarRecordPageState {
           return state;
         });
       } else {
-        return this.apiService.getSilkCarRecord_Events(silkCarRecord.id).pipe(
+        return this.api.getSilkCarRecord_Events(silkCarRecord.id).pipe(
           tap(eventSources => setState((state: SilkCarRecordPageStateModel) => {
             silkCarRecord.eventSources = eventSources;
             state.silkCarRecord = silkCarRecord;

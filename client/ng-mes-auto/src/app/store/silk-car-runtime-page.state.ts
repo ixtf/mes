@@ -1,5 +1,5 @@
 import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
-import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
+import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {SilkCarRuntime} from '../models/silk-car-runtime';
@@ -22,7 +22,7 @@ interface SilkCarRuntimePageStateModel {
   defaults: {}
 })
 export class SilkCarRuntimePageState {
-  constructor(private apiService: ApiService) {
+  constructor(private api: ApiService) {
   }
 
   @Selector()
@@ -37,10 +37,17 @@ export class SilkCarRuntimePageState {
   }
 
   @Action(FetchAction)
+  @ImmutableContext()
   FetchAction({setState, patchState, dispatch}: StateContext<SilkCarRuntimePageStateModel>, {payload}: FetchAction) {
-    setState({});
-    return this.apiService.getSilkCarRuntimeByCode(payload).pipe(
-      tap(silkCarRuntime => patchState({silkCarRuntime})),
+    setState((state: SilkCarRuntimePageStateModel) => {
+      state = {};
+      return state;
+    });
+    return this.api.getSilkCarRuntimeByCode(payload).pipe(
+      tap(silkCarRuntime => setState((state: SilkCarRuntimePageStateModel) => {
+        state.silkCarRuntime = silkCarRuntime;
+        return state;
+      })),
     );
   }
 

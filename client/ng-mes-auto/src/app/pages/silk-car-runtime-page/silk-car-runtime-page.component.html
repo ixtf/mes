@@ -1,6 +1,6 @@
 <section fxFlex="50" fxLayout="column">
   <div class="toolbar">
-    <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'Tooltip.q'|translate" class="mySearch" matInput tabindex="-1">
+    <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'Tooltip.q'|translate" autofocus class="mySearch">
     <mat-autocomplete #autoSilkCar="matAutocomplete" (optionSelected)="onSilkCarSelected($event)" autoActiveFirstOption>
       <mat-option *ngFor="let it of autoCompleteSilkCars$|async" [value]="it.code">
         {{it.code}}
@@ -15,7 +15,7 @@
 
 <mat-divider vertical></mat-divider>
 
-<section *ngIf="silkCarRuntime$|async" @insertRemove fxFlex="50" fxLayout="column">
+<section *ngIf="(silkCarRuntime$|async)?.silkCarRecord" @insertRemove fxFlex="50" fxLayout="column">
   <div [formGroup]="settingForm" class="toolbar" ngxsForm="SilkCarRuntimePage.settingForm">
     <h4 fxFlex></h4>
 

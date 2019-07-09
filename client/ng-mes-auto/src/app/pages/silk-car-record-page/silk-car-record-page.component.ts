@@ -50,12 +50,12 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     filter(it => it && isString(it) && it.trim().length > 1),
-    switchMap(q => this.apiService.autoCompleteSilkCar(q))
+    switchMap(q => this.api.autoCompleteSilkCar(q))
   );
 
   constructor(private store: Store,
               private fb: FormBuilder,
-              private apiService: ApiService) {
+              private api: ApiService) {
   }
 
   readonly displayWithSilkCar = (silkCar: SilkCar) => silkCar && silkCar.code;

@@ -6,6 +6,7 @@ import {HOST_NAME} from '../../environments/environment';
 import {AuthInfo} from '../models/auth-info';
 import {Batch} from '../models/batch';
 import {Corporation} from '../models/corporation';
+import {DoffingSilkCarRecordReportItem} from '../models/doffing-silk-car-record-report';
 import {DyeingSampleSilkSubmitEvent, EventSource, ProductProcessSubmitEvent} from '../models/event-source';
 import {ExceptionRecord} from '../models/exception-record';
 import {FormConfig} from '../models/form-config';
@@ -479,6 +480,9 @@ export class ApiService {
     return this.http.put<SapT001l>(`${BASE_API_URL}/sapT001ls/${sapT001l.id}`, sapT001l);
   }
 
+  doffingSilkCarRecordReport(params?: HttpParams): Observable<DoffingSilkCarRecordReportItem[]> {
+    return this.http.get<DoffingSilkCarRecordReportItem[]>(`${BASE_API_URL}/reports/doffingSilkCarRecordReport`, {params});
+  }
 }
 
 @Injectable({

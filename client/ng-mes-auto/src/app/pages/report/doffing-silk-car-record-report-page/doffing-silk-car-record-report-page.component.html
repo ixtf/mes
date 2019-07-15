@@ -1,0 +1,64 @@
+<form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <input [matDatepicker]="startDatePicker" [placeholder]="'Common.startDate'|translate" formControlName="startDate" matInput required>
+    <mat-datepicker-toggle [for]="startDatePicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+    <mat-error *ngIf="searchForm.get('startDate').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never">
+    <input [matDatepicker]="endDatePicker" [placeholder]="'Common.endDate'|translate" formControlName="endDate" matInput required>
+    <mat-datepicker-toggle [for]="endDatePicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+    <mat-error *ngIf="searchForm.get('endDate').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select formControlName="workshopId">
+      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
+        {{workshop.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <span fxFlex></span>
+  <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+    <mat-icon>search</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="doffingSilkCarRecordReportItems$" fxFlex>
+  <ng-container matColumnDef="spec">
+    <mat-header-cell *matHeaderCellDef>{{'LineMachine.spec'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.lineMachine.line.name}}-{{row.spindle}}/{{row.lineMachine.item}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="doffingNum">
+    <mat-header-cell *matHeaderCellDef>{{'doffingNum'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.doffingNum}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="exception">
+    <mat-header-cell *matHeaderCellDef>{{'Common.exception'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.exception}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="creator">
+    <mat-header-cell *matHeaderCellDef>{{'提交人'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.creator.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="createDateTime">
+    <mat-header-cell *matHeaderCellDef>{{'提交时间'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

@@ -9,12 +9,12 @@ export class InitAction {
   static readonly type = '[WorkshopManagePage] InitAction';
 }
 
-interface WorkshopManagePageStateModel {
+interface StateModel {
   q?: string;
   workshops?: Workshop[];
 }
 
-@State<WorkshopManagePageStateModel>({
+@State<StateModel>({
   name: 'WorkshopManagePage',
   defaults: {}
 })
@@ -24,15 +24,15 @@ export class WorkshopManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static workshops(state: WorkshopManagePageStateModel) {
+  static workshops(state: StateModel) {
     return (state.workshops || []).sort(CodeCompare);
   }
 
   @Action(InitAction)
   @ImmutableContext()
-  InitAction({setState}: StateContext<WorkshopManagePageStateModel>) {
+  InitAction({setState}: StateContext<StateModel>) {
     return this.api.listWorkshop().pipe(
-      tap(workshops => setState((state: WorkshopManagePageStateModel) => {
+      tap(workshops => setState((state: StateModel) => {
         state.workshops = workshops;
         return state;
       }))

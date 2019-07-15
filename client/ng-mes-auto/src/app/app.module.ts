@@ -64,7 +64,7 @@ const routes: Routes = [
       {
         path: 'report',
         children: [
-          {path: 'workshops', loadChildren: () => import('./pages/config/workshop-manage-page/workshop-manage-page.component').then(it => it.Module)},
+          {path: 'doffingSilkCarRecordReport', loadChildren: () => import('./pages/report/doffing-silk-car-record-report-page/doffing-silk-car-record-report-page.component').then(it => it.Module)},
         ]
       },
       {

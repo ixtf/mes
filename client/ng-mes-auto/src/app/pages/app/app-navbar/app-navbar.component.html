@@ -8,6 +8,7 @@
 
   <button [matMenuTriggerFor]="reportMenu" mat-button type="button">{{'Nav.report'|translate}}</button>
   <mat-menu #reportMenu="matMenu">
+    <a mat-menu-item routerLink="/report/doffingSilkCarRecordReport" routerLinkActive="active">{{'Nav.doffingSilkCarRecordReport'|translate}}</a>
     <a mat-menu-item routerLink="/productPlan" routerLinkActive="active">{{'Nav.productPlan'|translate}}</a>
     <a mat-menu-item routerLink="/exceptionRecords" routerLinkActive="active">{{'Nav.exceptionRecords'|translate}}</a>
   </mat-menu>

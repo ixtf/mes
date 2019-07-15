@@ -53,7 +53,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   private getErrorMsg(err: any): Observable<string> {
     if (err.status === 400) {
-      const error = err.error.message || err.statusText;
+      const error = err.error.errorMessage || err.statusText;
       return this.translate.get(error);
     }
     return of([err.status, err.statusText, err.error.message].join(':'));

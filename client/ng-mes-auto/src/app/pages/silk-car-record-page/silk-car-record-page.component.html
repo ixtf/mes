@@ -8,6 +8,7 @@
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
+
     <mat-form-field floatLabel="never">
       <input [matDatepicker]="endDatePicker" [placeholder]="'Common.endDate'|translate" formControlName="endDate" matInput required>
       <mat-datepicker-toggle [for]="endDatePicker" matSuffix></mat-datepicker-toggle>
@@ -16,6 +17,7 @@
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
+
     <mat-form-field floatLabel="never" fxFlex>
       <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'SilkCar.code'|translate" class="mySearch" matInput required tabindex="-1">
       <mat-autocomplete #autoSilkCar="matAutocomplete" (optionSelected)="onSilkCarSelected($event)" [displayWith]="displayWithSilkCar" autoActiveFirstOption>

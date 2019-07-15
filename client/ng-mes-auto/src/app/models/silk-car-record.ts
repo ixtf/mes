@@ -5,6 +5,18 @@ import {Operator} from './operator';
 import {SilkCar} from './silk-car';
 import {SilkRuntime} from './silk-runtime';
 
+export class SilkCarRecordAggregate {
+  id: string;
+  silkCar: SilkCar;
+  batch: Batch;
+  grade: Grade;
+  creator: Operator;
+  startDateTime: Date;
+  endDateTime: Date;
+  initSilkRuntimes: SilkRuntime[];
+  eventSources: EventSource[];
+}
+
 export class SilkCarRecord {
   id: string;
   silkCar: SilkCar;

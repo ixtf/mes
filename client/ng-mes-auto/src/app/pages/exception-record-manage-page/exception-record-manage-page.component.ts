@@ -1,12 +1,9 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MatExpansionModule} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
-import {SilkCarRecordEventListComponentModule} from '../../components/flow-card/flow-card.component';
-import {SilkCarRecordInfoComponentModule} from '../../components/silk-car-record-info/silk-car-record-info.component';
 import {ExceptionRecord} from '../../models/exception-record';
 import {ApiService} from '../../services/api.service';
 import {PAGE_SIZE_OPTIONS} from '../../services/util.service';
@@ -37,9 +34,6 @@ export class ExceptionRecordManagePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.exceptionRecords$.subscribe(it => {
-      console.log('test', it);
-    });
   }
 
   ngOnDestroy(): void {
@@ -68,9 +62,6 @@ export class ExceptionRecordManagePageComponent implements OnInit, OnDestroy {
   imports: [
     NgxsModule.forFeature([ExceptionRecordManagePageState]),
     SharedModule,
-    MatExpansionModule,
-    SilkCarRecordInfoComponentModule,
-    SilkCarRecordEventListComponentModule,
     RouterModule.forChild([
       {path: '', component: ExceptionRecordManagePageComponent, data: {animation: 'FilterPage'}},
     ]),

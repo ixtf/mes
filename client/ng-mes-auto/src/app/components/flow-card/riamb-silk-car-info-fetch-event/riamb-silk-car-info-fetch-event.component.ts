@@ -30,7 +30,7 @@ export class RiambSilkCarInfoFetchEventComponent {
   @Input()
   private silkCarRecord: SilkCarRecord;
   @Input()
-  private event: RiambSilkCarInfoFetchEvent;
+  event: RiambSilkCarInfoFetchEvent;
   displayedColumns = ['position', 'code', 'grade', 'grabFlage', 'eliminateFlage', 'detached'];
 
   get dataSource() {

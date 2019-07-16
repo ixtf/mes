@@ -1,7 +1,9 @@
 import {FullscreenOverlayContainer, OverlayContainer} from '@angular/cdk/overlay';
+import {registerLocaleData} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import localeZhHans from '@angular/common/locales/zh-Hans';
 import {LOCALE_ID, NgModule} from '@angular/core';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
+import {DateAdapter, MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -17,8 +19,6 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {NgxsModule, NoopNgxsExecutionStrategy} from '@ngxs/store';
 import {environment} from '../environments/environment';
-import {BarcodeDialogComponent} from './components/barcode-dialog/barcode-dialog.component';
-import {QrcodeDialogComponent} from './components/qrcode-dialog/qrcode-dialog.component';
 import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
 import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './pages/app/app-navbar/board-auto-line-dialog/board-auto-line-dialog.component';
@@ -32,7 +32,8 @@ import {JwtInterceptor} from './services/jwt.interceptor';
 import {MyPaginatorIntl} from './services/my-paginator-intl';
 import {SharedModule} from './shared.module';
 import {AppState} from './store/app.state';
-import {SilkCarRuntimePageState} from './store/silk-car-runtime-page.state';
+
+registerLocaleData(localeZhHans, 'zh-Hans');
 
 const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -51,11 +52,13 @@ const routes: Routes = [
       {path: 'silkCarRuntime', loadChildren: () => import('./pages/silk-car-runtime-page/silk-car-runtime-page.component').then(it => it.Module)},
       {path: 'silkCarRecord', loadChildren: () => import('./pages/silk-car-record-page/silk-car-record-page.component').then(it => it.Module)},
       {path: 'exceptionRecords', loadChildren: () => import('./pages/exception-record-manage-page/exception-record-manage-page.component').then(it => it.Module)},
+      {path: 'notifications', loadChildren: () => import('./pages/notification-manage-page/notification-manage-page.component').then(it => it.Module)},
       {
         path: 'config',
         children: [
           {path: 'workshops', loadChildren: () => import('./pages/config/workshop-manage-page/workshop-manage-page.component').then(it => it.Module)},
           {path: 'lines', loadChildren: () => import('./pages/config/line-manage-page/line-manage-page.component').then(it => it.Module)},
+          {path: 'lineMachines', loadChildren: () => import('./pages/config/line-machine-manage-page/line-machine-manage-page.component').then(it => it.Module)},
           {path: 'silkCars', loadChildren: () => import('./pages/config/silk-car-manage-page/silk-car-manage-page.component').then(it => it.Module)},
           {path: 'batches', loadChildren: () => import('./pages/config/batch-manage-page/batch-manage-page.component').then(it => it.Module)},
           {path: 'packageClasses', loadChildren: () => import('./pages/config/package-class-manage-page/package-class-manage-page.component').then(it => it.Module)},
@@ -101,14 +104,10 @@ export function createTranslateLoader(httpClient: HttpClient) {
     AppNavbarComponent,
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
-    BarcodeDialogComponent,
-    QrcodeDialogComponent,
   ],
   entryComponents: [
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
-    BarcodeDialogComponent,
-    QrcodeDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,7 +120,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    NgxsModule.forRoot([AppState, SilkCarRuntimePageState], {
+    NgxsModule.forRoot([AppState], {
       developmentMode: !environment.production,
       executionStrategy: NoopNgxsExecutionStrategy,
     }),
@@ -133,8 +132,6 @@ export function createTranslateLoader(httpClient: HttpClient) {
     NgxsFormPluginModule.forRoot(),
     NgxsDispatchPluginModule.forRoot(),
     NgxsEmitPluginModule.forRoot(),
-    SharedModule,
-    RouterModule.forRoot(routes, {useHash: true}),
     // You should always include the logger as the last plugin in your configuration.
     NgxsLoggerPluginModule.forRoot({
       disabled: environment.production
@@ -143,6 +140,8 @@ export function createTranslateLoader(httpClient: HttpClient) {
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: environment.production
     }),
+    SharedModule,
+    RouterModule.forRoot(routes, {useHash: true}),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -151,6 +150,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     {provide: MAT_DATE_LOCALE, useValue: 'zh-CN'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {autoActiveFirstOption: true}},
     {provide: MyPaginatorIntl, useClass: MyPaginatorIntl, deps: [TranslateService]},
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer},
   ],

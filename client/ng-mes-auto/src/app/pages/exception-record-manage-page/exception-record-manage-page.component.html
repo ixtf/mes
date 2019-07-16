@@ -1,4 +1,13 @@
 <form class="search-area">
+  <mat-button-toggle-group appearance="legacy">
+    <mat-button-toggle (click)="filterLine()" [checked]="!(filterLine$|async)">
+      {{'Common.all'|translate}}
+    </mat-button-toggle>
+    <mat-button-toggle (click)="filterLine(it)" *ngFor="let it of lines$|async" [checked]="(filterLine$|async)?.id===it.id">
+      {{it.name}}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
   <span fxFlex></span>
   <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
     <mat-icon>add</mat-icon>
@@ -20,7 +29,7 @@
 
   <ng-container matColumnDef="exception">
     <mat-header-cell *matHeaderCellDef>{{'Common.exception'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.exception}}</mat-cell>
+    <mat-cell *matCellDef="let row">{{row.exception.name}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="creator">
@@ -34,11 +43,20 @@
   </ng-container>
 
   <ng-container matColumnDef="btns">
-    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'Common.operation'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">
-      <button (click)="handle(row)" color="primary" mat-button>
-        {{'Common.handle'|translate}}
-      </button>
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" [matMenuTriggerFor]="btnsMenu" matRipple>
+      <mat-icon>list</mat-icon>
+      <mat-menu #btnsMenu="matMenu">
+        <button (click)="handle(row)" mat-menu-item type="button">
+          {{'Common.handle'|translate}}
+        </button>
+        <button (click)="update(row)" *ngIf="isShow(row)|async" color="primary" mat-menu-item type="button">
+          {{'Common.edit'|translate}}
+        </button>
+        <button (click)="delete(row)" *ngIf="isShow(row)|async" color="warn" mat-menu-item type="button">
+          {{'Common.delete'|translate}}
+        </button>
+      </mat-menu>
     </mat-cell>
   </ng-container>
 

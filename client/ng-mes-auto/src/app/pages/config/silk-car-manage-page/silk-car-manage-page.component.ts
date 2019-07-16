@@ -17,7 +17,7 @@ import {InitAction, SilkCarManagePageState} from '../../../store/silk-car-manage
 export class SilkCarManagePageComponent implements OnInit {
   readonly displayedColumns = ['code', 'number', 'rowAndCol', 'type', 'btns'];
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(SilkCarManagePageState.silkCars)
   readonly silkCars$: Observable<SilkCar[]>;

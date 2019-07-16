@@ -8,8 +8,8 @@ export class ExceptionRecord {
   lineMachine: LineMachine;
   doffingNum: string;
   spindle: number;
-  silk: Silk;
   exception: SilkException;
+  silk: Silk;
   creator: Operator;
   createDateTime: Date;
   handled: boolean;

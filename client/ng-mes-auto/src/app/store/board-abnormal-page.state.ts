@@ -15,6 +15,14 @@ export class InitAction {
   }
 }
 
+export class RefreshAction {
+  static readonly type = '[BoardAbnormalPage] RefreshAction';
+}
+
+export class ReconnectAction {
+  static readonly type = '[BoardAbnormalPage] ReconnectAction';
+}
+
 export class RefreshProductPlansAction {
   static readonly type = '[BoardAbnormalPage] RefreshProductPlansAction';
 }
@@ -48,7 +56,7 @@ export class UpdateNotificationAction {
   }
 }
 
-interface BoardAbnormalPageStateModel {
+interface StateModel {
   workshopId?: string;
   lineIds?: string[];
   productPlanItems?: Item[];
@@ -56,16 +64,16 @@ interface BoardAbnormalPageStateModel {
   notifications?: Notification[];
 }
 
-const lineIdFilter = (state: BoardAbnormalPageStateModel, id: string): boolean => {
+const lineIdFilter = (state: StateModel, id: string): boolean => {
   const find = (state.lineIds || []).find(it => it === id);
   return !!find;
 };
 
-const exceptionRecordFilter = (state: BoardAbnormalPageStateModel, exceptionRecord: ExceptionRecord): boolean => {
+const exceptionRecordFilter = (state: StateModel, exceptionRecord: ExceptionRecord): boolean => {
   return lineIdFilter(state, exceptionRecord.lineMachine.line.id);
 };
 
-const notificationFilter = (state: BoardAbnormalPageStateModel, notification: Notification): boolean => {
+const notificationFilter = (state: StateModel, notification: Notification): boolean => {
   for (const it of (notification.workshops || [])) {
     if (it.id === state.workshopId) {
       return true;
@@ -79,7 +87,7 @@ const notificationFilter = (state: BoardAbnormalPageStateModel, notification: No
   return false;
 };
 
-@State<BoardAbnormalPageStateModel>({
+@State<StateModel>({
   name: 'BoardAbnormalPage',
   defaults: {}
 })
@@ -89,26 +97,26 @@ export class BoardAbnormalPageState {
 
   @Selector()
   @ImmutableSelector()
-  static productPlanItems(state: BoardAbnormalPageStateModel): Item[] {
+  static productPlanItems(state: StateModel): Item[] {
     return state.productPlanItems || [];
   }
 
   @Selector()
   @ImmutableSelector()
-  static exceptionRecords(state: BoardAbnormalPageStateModel): ExceptionRecord[] {
+  static exceptionRecords(state: StateModel): ExceptionRecord[] {
     return state.exceptionRecords || [];
   }
 
   @Selector()
   @ImmutableSelector()
-  static notifications(state: BoardAbnormalPageStateModel): Notification[] {
+  static notifications(state: StateModel): Notification[] {
     return state.notifications || [];
   }
 
   @Action(InitAction)
   @ImmutableContext()
-  InitAction({setState, dispatch}: StateContext<BoardAbnormalPageStateModel>, {payload: {workshopId, lineIds}}: InitAction) {
-    setState((state: BoardAbnormalPageStateModel) => {
+  InitAction({setState, dispatch}: StateContext<StateModel>, {payload: {workshopId, lineIds}}: InitAction) {
+    setState((state: StateModel) => {
       state = {};
       state.workshopId = workshopId;
       if (isArray(lineIds)) {
@@ -119,14 +127,27 @@ export class BoardAbnormalPageState {
       }
       return state;
     });
+    return dispatch(new RefreshAction());
+  }
+
+  @Action(RefreshAction)
+  @ImmutableContext()
+  RefreshAction({dispatch}: StateContext<StateModel>) {
     return dispatch([new RefreshProductPlansAction(), new RefreshExceptionRecordAction(), new RefreshNotificationAction()]);
+  }
+
+  @Action(ReconnectAction)
+  @ImmutableContext()
+  ReconnectAction({dispatch}: StateContext<StateModel>) {
+    // setTimeout(() => location.reload(), 10 * 1000);
+    return dispatch(new RefreshAction());
   }
 
   @Action(RefreshProductPlansAction)
   @ImmutableContext()
-  RefreshProductPlansAction({setState, getState}: StateContext<BoardAbnormalPageStateModel>) {
+  RefreshProductPlansAction({setState, getState}: StateContext<StateModel>) {
     return this.api.getWorkshop_ProductPlans(getState().workshopId).pipe(
-      tap(report => setState((state: BoardAbnormalPageStateModel) => {
+      tap(report => setState((state: StateModel) => {
         state.productPlanItems = (report && report.items || []).filter(it => lineIdFilter(state, it.line.id));
         return state;
       }))
@@ -135,9 +156,9 @@ export class BoardAbnormalPageState {
 
   @Action(RefreshExceptionRecordAction)
   @ImmutableContext()
-  RefreshExceptionRecordAction({setState}: StateContext<BoardAbnormalPageStateModel>) {
+  RefreshExceptionRecordAction({setState}: StateContext<StateModel>) {
     return this.api.listExceptionRecord().pipe(
-      tap(exceptionRecords => setState((state: BoardAbnormalPageStateModel) => {
+      tap(exceptionRecords => setState((state: StateModel) => {
         state.exceptionRecords = exceptionRecords.filter(it => exceptionRecordFilter(state, it));
         return state;
       }))
@@ -146,9 +167,9 @@ export class BoardAbnormalPageState {
 
   @Action(RefreshNotificationAction)
   @ImmutableContext()
-  RefreshNotificationAction({setState}: StateContext<BoardAbnormalPageStateModel>) {
+  RefreshNotificationAction({setState}: StateContext<StateModel>) {
     return this.api.listNotification().pipe(
-      tap(notifications => setState((state: BoardAbnormalPageStateModel) => {
+      tap(notifications => setState((state: StateModel) => {
         state.notifications = notifications.filter(it => notificationFilter(state, it));
         return state;
       }))
@@ -157,7 +178,7 @@ export class BoardAbnormalPageState {
 
   @Action(UpdateProductPlanRecordAction)
   @ImmutableContext()
-  UpdateProductPlanRecordAction({getState, dispatch}: StateContext<BoardAbnormalPageStateModel>, {payload: {lineMachineProductPlan}}: UpdateProductPlanRecordAction) {
+  UpdateProductPlanRecordAction({getState, dispatch}: StateContext<StateModel>, {payload: {lineMachineProductPlan}}: UpdateProductPlanRecordAction) {
     if (lineIdFilter(getState(), lineMachineProductPlan.lineMachine.line.id)) {
       return dispatch(new RefreshProductPlansAction());
     }
@@ -165,8 +186,8 @@ export class BoardAbnormalPageState {
 
   @Action(UpdateExceptionRecordAction)
   @ImmutableContext()
-  UpdateExceptionRecordAction({setState}: StateContext<BoardAbnormalPageStateModel>, {payload: {exceptionRecord}}: UpdateExceptionRecordAction) {
-    setState((state: BoardAbnormalPageStateModel) => {
+  UpdateExceptionRecordAction({setState}: StateContext<StateModel>, {payload: {exceptionRecord}}: UpdateExceptionRecordAction) {
+    setState((state: StateModel) => {
       state.exceptionRecords = (state.exceptionRecords || []).filter(it => it.id !== exceptionRecord.id);
       if (!exceptionRecord.handled && exceptionRecordFilter(state, exceptionRecord)) {
         state.exceptionRecords = [exceptionRecord].concat(state.exceptionRecords);
@@ -177,8 +198,8 @@ export class BoardAbnormalPageState {
 
   @Action(UpdateNotificationAction)
   @ImmutableContext()
-  UpdateNotificationAction({setState}: StateContext<BoardAbnormalPageStateModel>, {payload: {notification}}: UpdateNotificationAction) {
-    setState((state: BoardAbnormalPageStateModel) => {
+  UpdateNotificationAction({setState}: StateContext<StateModel>, {payload: {notification}}: UpdateNotificationAction) {
+    setState((state: StateModel) => {
       state.notifications = (state.notifications || []).filter(it => it.id !== notification.id);
       if (!notification.deleted && notificationFilter(state, notification)) {
         state.notifications = [notification].concat(state.notifications);

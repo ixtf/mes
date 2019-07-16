@@ -25,7 +25,7 @@ import {PickAction, QueryAction, SilkCarRecordPageState} from '../../store/silk-
 export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject();
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(SilkCarRecordPageState.silkCarRecords)
   readonly silkCarRecords$: Observable<SilkCarRecord[]>;

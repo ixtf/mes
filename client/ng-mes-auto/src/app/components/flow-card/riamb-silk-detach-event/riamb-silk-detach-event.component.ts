@@ -15,7 +15,7 @@ export class RiambSilkDetachEventComponent {
   @Input()
   private silkCarRecord: SilkCarRecord;
   @Input()
-  private event: RiambSilkDetachEvent;
+  event: RiambSilkDetachEvent;
 
   get codes(): string[] {
     return this.event.command.silkCodes;

@@ -20,7 +20,7 @@ export class AppNavbarComponent {
   readonly isLoading$: Observable<boolean>;
   @Select(AppState.authInfo)
   readonly authInfo$: Observable<AuthInfo>;
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Emitter(AppState.LogoutAction)
   readonly logout$: Emittable;

@@ -1,14 +1,15 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {Workshop} from '../../../models/workshop';
 import {COPY} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {InitAction, WorkshopManagePageState} from '../../../store/workshop-manage-page.state';
+import {InitAction, SaveAction, WorkshopManagePageState} from '../../../store/workshop-manage-page.state';
 import {WorkshopUpdateDialogComponent} from './workshop-update-dialog/workshop-update-dialog.component';
 
 const COLUMNS = ['corporation', 'name', 'code', 'sapT001ls', 'sapT001lsForeign', 'sapT001lsPallet'];
@@ -19,8 +20,7 @@ const COLUMNS = ['corporation', 'name', 'code', 'sapT001ls', 'sapT001lsForeign',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkshopManagePageComponent implements OnInit {
-  // readonly copy = COPY;
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(WorkshopManagePageState.workshops)
   readonly workshops$: Observable<Workshop[]>;
@@ -39,7 +39,6 @@ export class WorkshopManagePageComponent implements OnInit {
 
   copy(s: string, ev: MouseEvent) {
     ev.stopPropagation();
-    console.log(ev);
     if (ev.ctrlKey) {
       COPY(s);
     }
@@ -54,7 +53,14 @@ export class WorkshopManagePageComponent implements OnInit {
       workshop = new Workshop();
       workshop.corporation = this.store.selectSnapshot(AppState.corporation);
     }
-    this.dialog.open(WorkshopUpdateDialogComponent, {data: workshop, disableClose: true, width: '500px'});
+    WorkshopUpdateDialogComponent.open(this.dialog, workshop).afterClosed().pipe(
+      filter(it => !!it)
+    ).subscribe(this.save);
+  }
+
+  @Dispatch()
+  private save(workshop: Workshop) {
+    return new SaveAction(workshop);
   }
 }
 

@@ -1,0 +1,11 @@
+<div [formGroup]="form" class="container">
+  <input [formControl]="lineCtrl" [matAutocomplete]="lineAuto" matInput>
+  <mat-autocomplete #lineAuto='matAutocomplete' [displayWith]="displayWithLine">
+    <mat-option *ngFor="let it of autoCompleteLines$|async" [value]="it">
+      {{it.name}}
+    </mat-option>
+  </mat-autocomplete>
+  <span>&ndash;</span>
+  <input #itemInput [formControl]="itemCtrl" matInput max="100" min="1" type="number">
+  <span>#</span>
+</div>

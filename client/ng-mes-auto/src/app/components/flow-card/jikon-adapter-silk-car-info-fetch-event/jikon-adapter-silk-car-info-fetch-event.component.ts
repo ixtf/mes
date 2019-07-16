@@ -16,7 +16,7 @@ export class JikonAdapterSilkCarInfoFetchEventComponent {
   @Input()
   private silkCarRecord: SilkCarRecord;
   @Input()
-  private event: JikonAdapterSilkCarInfoFetchEvent;
+  event: JikonAdapterSilkCarInfoFetchEvent;
   readonly displayedColumns = ['actualPosition', 'code', 'grabFlage', 'eliminateFlage'];
 
   get dataSource() {

@@ -52,10 +52,8 @@ export class DyeingPrepareEventComponent {
   }
 
   calcPosition(dyeingResult: DyeingResult): string {
-    console.log(this);
     const silkCarRecord = (this.silkCarRuntime && this.silkCarRuntime.silkCarRecord) || this.silkCarRecord;
     const initSilks = silkCarRecord && silkCarRecord.initSilks || [];
-    console.log('initSilks', silkCarRecord);
     const silkRuntime = initSilks.find(it => it.silk.id === dyeingResult.silk.id);
     if (silkRuntime) {
       return [silkRuntime.sideType, silkRuntime.row, silkRuntime.col].join('-');

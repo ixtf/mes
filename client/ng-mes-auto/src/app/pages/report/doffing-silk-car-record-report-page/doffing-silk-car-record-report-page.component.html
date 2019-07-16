@@ -1,4 +1,12 @@
 <form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field>
+    <mat-select formControlName="workshopId">
+      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
+        {{workshop.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <mat-form-field floatLabel="never">
     <input [matDatepicker]="startDatePicker" [placeholder]="'Common.startDate'|translate" formControlName="startDate" matInput required>
     <mat-datepicker-toggle [for]="startDatePicker" matSuffix></mat-datepicker-toggle>
@@ -17,14 +25,6 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-select formControlName="workshopId">
-      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
-        {{workshop.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <span fxFlex></span>
   <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
     <mat-icon>search</mat-icon>
@@ -33,32 +33,94 @@
 
 <mat-divider></mat-divider>
 
-<mat-table [dataSource]="doffingSilkCarRecordReportItems$" fxFlex>
-  <ng-container matColumnDef="spec">
-    <mat-header-cell *matHeaderCellDef>{{'LineMachine.spec'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.lineMachine.line.name}}-{{row.spindle}}/{{row.lineMachine.item}}</mat-cell>
+<mat-table [dataSource]="infoItems$" fxFlex>
+  <ng-container matColumnDef="batch">
+    <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batch.batchNo}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="doffingNum">
-    <mat-header-cell *matHeaderCellDef>{{'doffingNum'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.doffingNum}}</mat-cell>
+  <ng-container matColumnDef="grade">
+    <mat-header-cell *matHeaderCellDef fxLayoutAlign="center center">{{'grade'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxLayoutAlign="center center">{{row.grade.name}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="exception">
-    <mat-header-cell *matHeaderCellDef>{{'Common.exception'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.exception}}</mat-cell>
+  <ng-container matColumnDef="allDetailInfo">
+    <mat-header-cell *matHeaderCellDef>{{'DoffingSilkCarRecordReport.allDetailInfo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:row.allDetailInfo}"></ng-container>
+    </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="creator">
-    <mat-header-cell *matHeaderCellDef>{{'提交人'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.creator.name}}</mat-cell>
+  <ng-container matColumnDef="noWeightDetailInfo">
+    <mat-header-cell *matHeaderCellDef>{{'DoffingSilkCarRecordReport.noWeightDetailInfo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngIf="row.grade.sortBy<100">
+        <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:row.noWeightDetailInfo}"></ng-container>
+      </ng-container>
+    </mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="createDateTime">
-    <mat-header-cell *matHeaderCellDef>{{'提交时间'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+  <ng-container matColumnDef="toDtyDetailInfo">
+    <mat-header-cell *matHeaderCellDef>{{'DoffingSilkCarRecordReport.toDtyDetailInfo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:row.toDtyDetailInfo}"></ng-container>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="toDtyConfirmDetailInfo">
+    <mat-header-cell *matHeaderCellDef>{{'DoffingSilkCarRecordReport.toDtyConfirmDetailInfo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:row.toDtyConfirmDetailInfo}"></ng-container>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="packageBoxDetailInfo">
+    <mat-header-cell *matHeaderCellDef>{{'DoffingSilkCarRecordReport.packageBoxDetailInfo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:row.packageBoxDetailInfo,s:'packageBoxCount'}"></ng-container>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="diffDetailInfo">
+    <mat-header-cell *matHeaderCellDef>{{'DoffingSilkCarRecordReport.diffDetailInfo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:row.diffDetailInfo}"></ng-container>
+    </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+
+<ng-template #detailInfoTemp let-detailInfo="detailInfo" let-s="s">
+  <!--  <mat-list dense>-->
+  <!--    <mat-list-item>{{detailInfo.items.length}}</mat-list-item>-->
+  <!--    <mat-list-item>{{detailInfo.silkCount}}</mat-list-item>-->
+  <!--    <mat-list-item>{{detailInfo.netWeight|number:'.3-3'}}</mat-list-item>-->
+  <!--  </mat-list>-->
+  <mat-list dense>
+    <mat-list-item>
+      <div fxLayout fxLayoutGap="16px" matLine>
+        <span>{{(s || '丝车')|translate}}</span>
+        <span>{{detailInfo.items.length}}</span>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div fxLayout fxLayoutGap="16px" matLine>
+        <span>{{'silkCount'|translate}}</span>
+        <span>{{detailInfo.silkCount}}</span>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div fxLayout fxLayoutGap="16px" matLine>
+        <span>{{'netWeight'|translate}}</span>
+        <span>{{detailInfo.netWeight|number:'.3-3'}}</span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+  <!--      <div fxLayout fxLayoutGap="16px">-->
+  <!--        <span>{{row.allDetailInfo.items.length}}</span>-->
+  <!--        <span>{{row.allDetailInfo.netWeight}}</span>-->
+  <!--        <span>{{row.allDetailInfo.silkCount}}</span>-->
+  <!--      </div>-->
+</ng-template>

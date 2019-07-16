@@ -15,7 +15,7 @@ export class JikonAdapterSilkDetachEventComponent {
   @Input()
   private silkCarRecord: SilkCarRecord;
   @Input()
-  private event: JikonAdapterSilkDetachEvent;
+  event: JikonAdapterSilkDetachEvent;
 
   get codes(): string[] {
     return this.event.command.spindleCode.split(',');

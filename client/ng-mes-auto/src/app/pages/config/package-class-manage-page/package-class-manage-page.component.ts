@@ -17,7 +17,7 @@ const COLUMNS = ['name', 'riambCode', 'sortBy'];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PackageClassManagePageComponent implements OnInit {
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(PackageClassManagePageState.packageClasses)
   readonly packageClasses$: Observable<PackageClass[]>;

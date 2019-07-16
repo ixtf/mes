@@ -1,0 +1,53 @@
+<form class="search-area">
+  <span fxFlex></span>
+  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="notifications$" fxFlex>
+  <ng-container matColumnDef="workshops">
+    <mat-header-cell *matHeaderCellDef>{{'workshop'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.workshopsSpec}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lines">
+    <mat-header-cell *matHeaderCellDef>{{'line'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.linesSpec}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="note">
+    <mat-header-cell *matHeaderCellDef>{{'Common.note'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.note}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="modifier">
+    <mat-header-cell *matHeaderCellDef>{{'Common.creator'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.modifier?.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="modifyDateTime">
+    <mat-header-cell *matHeaderCellDef>{{'Common.time'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.modifyDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" [matMenuTriggerFor]="btnsMenu" matRipple>
+      <mat-icon>list</mat-icon>
+      <mat-menu #btnsMenu="matMenu">
+        <button (click)="update(row)" *ngIf="isShow(row)|async" color="primary" mat-menu-item type="button">
+          {{'Common.edit'|translate}}
+        </button>
+        <button (click)="delete(row)" *ngIf="isShow(row)|async" color="warn" mat-menu-item type="button">
+          {{'Common.delete'|translate}}
+        </button>
+      </mat-menu>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

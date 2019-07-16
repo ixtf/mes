@@ -8,7 +8,7 @@ import {AppState} from '../store/app.state';
 
 @Injectable({providedIn: 'root'})
 export class AdminGuard implements CanActivate {
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
 
   constructor(private store: Store) {

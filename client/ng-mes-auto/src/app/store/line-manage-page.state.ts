@@ -17,14 +17,14 @@ export class QueryAction {
   }
 }
 
-interface LineManagePageStateModel {
+interface StateModel {
   workshopId?: string;
   workshops?: Workshop[];
   lines?: Line[];
   searchForm: any;
 }
 
-@State<LineManagePageStateModel>({
+@State<StateModel>({
   name: 'LineManagePage',
   defaults: {
     searchForm: {
@@ -41,29 +41,29 @@ export class LineManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static workshopId(state: LineManagePageStateModel): string {
+  static workshopId(state: StateModel): string {
     return state.workshopId;
   }
 
   @Selector()
   @ImmutableSelector()
-  static workshops(state: LineManagePageStateModel): Workshop[] {
+  static workshops(state: StateModel): Workshop[] {
     return state.workshops;
   }
 
   @Selector()
   @ImmutableSelector()
-  static lines(state: LineManagePageStateModel): Line[] {
+  static lines(state: StateModel): Line[] {
     return (state.lines || []).sort(LineCompare);
   }
 
   @Action(InitAction)
   @ImmutableContext()
-  InitAction({getState, setState, dispatch}: StateContext<LineManagePageStateModel>) {
+  InitAction({getState, setState, dispatch}: StateContext<StateModel>) {
     return this.api.listWorkshop().pipe(
       switchMap(workshops => {
         workshops = workshops.sort(CodeCompare);
-        setState((state: LineManagePageStateModel) => {
+        setState((state: StateModel) => {
           state.workshops = workshops;
           return state;
         });
@@ -74,10 +74,10 @@ export class LineManagePageState {
 
   @Action(QueryAction)
   @ImmutableContext()
-  QueryAction({getState, setState}: StateContext<LineManagePageStateModel>, {payload: {workshopId}}: QueryAction) {
+  QueryAction({getState, setState}: StateContext<StateModel>, {payload: {workshopId}}: QueryAction) {
     if (getState().workshopId !== workshopId) {
       return this.api.getWorkshop_Lines(workshopId).pipe(
-        tap(lines => setState((state: LineManagePageStateModel) => {
+        tap(lines => setState((state: StateModel) => {
           state.lines = lines;
           state.workshopId = workshopId;
           return state;

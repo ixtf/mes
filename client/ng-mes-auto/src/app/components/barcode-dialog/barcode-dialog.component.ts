@@ -1,5 +1,7 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, NgModule} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import {NgxBarcodeModule} from 'ngx-barcode';
+import {SharedModule} from '../../shared.module';
 
 export class BarcodeOptions {
   value: string;
@@ -29,11 +31,26 @@ export class BarcodeOptions {
 })
 export class BarcodeDialogComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: BarcodeOptions) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: BarcodeOptions) {
   }
 
   static open(dialog: MatDialog, options: BarcodeOptions) {
     const data = BarcodeOptions.assign(options);
     dialog.open(BarcodeDialogComponent, {data});
   }
+}
+
+@NgModule({
+  declarations: [
+    BarcodeDialogComponent,
+  ],
+  entryComponents: [
+    BarcodeDialogComponent,
+  ],
+  imports: [
+    SharedModule,
+    NgxBarcodeModule,
+  ],
+})
+export class BarcodeDialogComponentModule {
 }

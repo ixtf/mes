@@ -17,7 +17,7 @@ export class ProductProcessSubmitEventComponent {
   @Input()
   private silkCarRecord: SilkCarRecord;
   @Input()
-  private event: ProductProcessSubmitEvent;
+  event: ProductProcessSubmitEvent;
   displayedColumns = ['position', 'spec', 'code', 'grade'];
 
   get productProcess(): ProductProcess {

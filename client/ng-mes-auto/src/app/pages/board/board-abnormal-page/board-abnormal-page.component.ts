@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListener, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {interval, Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
@@ -9,7 +10,7 @@ import {Notification} from '../../../models/notification';
 import {Item} from '../../../models/workshop-product-plan-report';
 import {FULL_SCREEN} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BoardAbnormalPageState, InitAction, UpdateExceptionRecordAction, UpdateNotificationAction, UpdateProductPlanRecordAction} from '../../../store/board-abnormal-page.state';
+import {BoardAbnormalPageState, InitAction, ReconnectAction, RefreshAction, UpdateExceptionRecordAction, UpdateNotificationAction, UpdateProductPlanRecordAction} from '../../../store/board-abnormal-page.state';
 
 declare const EventBus: any;
 
@@ -19,42 +20,33 @@ declare const EventBus: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardAbnormalPageComponent implements OnInit, OnDestroy {
+  @HostBinding('class.board-page')
+  private readonly b = true;
+  private readonly destroy$ = new Subject();
+  readonly currentDateTime$ = interval(1000).pipe(
+    takeUntil(this.destroy$),
+    map(() => new Date()),
+  );
+  private readonly eb;
   @Select(BoardAbnormalPageState.productPlanItems)
   readonly productPlanItems$: Observable<Item[]>;
-  @HostBinding('class.board-page')
-  readonly b = true;
   @Select(BoardAbnormalPageState.exceptionRecords)
   readonly exceptionRecords$: Observable<ExceptionRecord[]>;
   @Select(BoardAbnormalPageState.notifications)
   readonly notifications$: Observable<Notification[]>;
-  private readonly destroy$ = new Subject();
-  readonly currentDateTime$ = interval(1000).pipe(
-    takeUntil(this.destroy$),
-    map(() => new Date())
-  );
-  private readonly eb;
 
   constructor(private store: Store,
               private route: ActivatedRoute,
               private elRef: ElementRef) {
-    route.queryParams.subscribe((it: any) => this.store.dispatch(new InitAction(it)));
+    route.queryParams.subscribe((it: any) => store.dispatch(new InitAction(it)));
     this.eb = new EventBus(EB_URL);
     this.eb.enableReconnect(true);
-    this.eb.onreconnect = () => setTimeout(() => location.reload(), 10 * 1000);
+    this.eb.onreconnect = this.onreconnect;
     this.eb.onopen = () => {
-      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/refresh', () => location.reload());
-      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/exceptionRecord', (error, message) => {
-        const exceptionRecord = JSON.parse(message.body);
-        this.store.dispatch(new UpdateExceptionRecordAction({exceptionRecord}));
-      });
-      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/productPlan', (error, message) => {
-        const lineMachineProductPlan = JSON.parse(message.body);
-        this.store.dispatch(new UpdateProductPlanRecordAction({lineMachineProductPlan}));
-      });
-      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/notification', (error, message) => {
-        const notification = JSON.parse(message.body);
-        this.store.dispatch(new UpdateNotificationAction({notification}));
-      });
+      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/refresh', this.refresh);
+      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/exceptionRecord', this.updateExceptionRecord);
+      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/productPlan', this.updateProductPlanRecord);
+      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/notification', this.updateNotification);
     };
   }
 
@@ -74,7 +66,37 @@ export class BoardAbnormalPageComponent implements OnInit, OnDestroy {
 
   @HostListener('click')
   private fullScreen() {
-    FULL_SCREEN(this.elRef.nativeElement);
+    if (environment.production) {
+      FULL_SCREEN(this.elRef.nativeElement);
+    }
+  }
+
+  @Dispatch()
+  private refresh() {
+    return new RefreshAction();
+  }
+
+  @Dispatch()
+  private onreconnect() {
+    return new ReconnectAction();
+  }
+
+  @Dispatch()
+  private updateExceptionRecord(error, message) {
+    const exceptionRecord = JSON.parse(message.body);
+    return new UpdateExceptionRecordAction({exceptionRecord});
+  }
+
+  @Dispatch()
+  private updateProductPlanRecord(error, message) {
+    const lineMachineProductPlan = JSON.parse(message.body);
+    return new UpdateProductPlanRecordAction({lineMachineProductPlan});
+  }
+
+  @Dispatch()
+  private updateNotification(error, message) {
+    const notification = JSON.parse(message.body);
+    return new UpdateNotificationAction({notification});
   }
 
 }

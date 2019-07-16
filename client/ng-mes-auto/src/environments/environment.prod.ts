@@ -3,4 +3,4 @@ export const environment = {
 };
 
 export const HOST_NAME = location.hostname;
-export const SEARCH_DEBOUNCE_TIME = 500;
+export const EB_URL = `http://${HOST_NAME}:9999/eventbus`;

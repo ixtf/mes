@@ -7,6 +7,7 @@ import {SilkRuntime} from './silk-runtime';
 
 export class SilkCarRecordAggregate {
   id: string;
+  type: string;
   silkCar: SilkCar;
   batch: Batch;
   grade: Grade;

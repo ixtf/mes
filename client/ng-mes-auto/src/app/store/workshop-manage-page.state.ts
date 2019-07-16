@@ -9,14 +9,23 @@ export class InitAction {
   static readonly type = '[WorkshopManagePage] InitAction';
 }
 
+export class SaveAction {
+  static readonly type = '[NotificationManagePage] SaveAction';
+
+  constructor(public payload: Workshop) {
+  }
+}
+
 interface StateModel {
   q?: string;
-  workshops?: Workshop[];
+  workshopEntities?: { [id: string]: Workshop };
 }
 
 @State<StateModel>({
   name: 'WorkshopManagePage',
-  defaults: {}
+  defaults: {
+    workshopEntities: {}
+  }
 })
 export class WorkshopManagePageState {
   constructor(private api: ApiService) {
@@ -25,7 +34,7 @@ export class WorkshopManagePageState {
   @Selector()
   @ImmutableSelector()
   static workshops(state: StateModel) {
-    return (state.workshops || []).sort(CodeCompare);
+    return Object.values(state.workshopEntities).sort(CodeCompare);
   }
 
   @Action(InitAction)
@@ -33,7 +42,18 @@ export class WorkshopManagePageState {
   InitAction({setState}: StateContext<StateModel>) {
     return this.api.listWorkshop().pipe(
       tap(workshops => setState((state: StateModel) => {
-        state.workshops = workshops;
+        state.workshopEntities = Workshop.toEntities(workshops);
+        return state;
+      }))
+    );
+  }
+
+  @Action(SaveAction)
+  @ImmutableContext()
+  SaveAction({setState}: StateContext<StateModel>, {payload}: SaveAction) {
+    return this.api.saveWorkshop(payload).pipe(
+      tap(workshop => setState((state: StateModel) => {
+        state.workshopEntities[workshop.id] = workshop;
         return state;
       }))
     );

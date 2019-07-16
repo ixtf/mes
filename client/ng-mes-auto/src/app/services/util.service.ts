@@ -56,31 +56,7 @@ export const COPY = (s: string) => {
   document.execCommand('copy');
   document.body.removeChild(el);
 };
-
-export const SEARCH_DEBOUNCE_TIME = 500;
-export const PAGE_SIZE_OPTIONS = [50, 100, 1000];
-export const COMPARE_WITH_ID = (o1: any, o2: any) => {
-  if (o1 === o2) {
-    return true;
-  }
-  if (isNullOrUndefined(o1) || isNullOrUndefined(o2)) {
-    return false;
-  }
-  return o1.id === o2.id;
-};
-
-export const requiredPickEntity = (ctrl: AbstractControl): ValidationErrors | null => {
-  const {value} = ctrl;
-  if (!value) {
-    return null;
-  }
-  if (value.id) {
-    return null;
-  }
-  return {requiredPickEntity: true};
-};
-
-export const UP_ELE = (array: any[], ele: any): any[] => {
+export const upEle = (array: any[], ele: any): any[] => {
   if (!array || !ele || !isArray(array)) {
     return array;
   }
@@ -101,8 +77,7 @@ export const UP_ELE = (array: any[], ele: any): any[] => {
   array[i - 1] = ele;
   return array;
 };
-
-export const DOWN_ELE = (array: any[], ele: any): any[] => {
+export const downEle = (array: any[], ele: any): any[] => {
   if (!array || !ele || !isArray(array)) {
     return array;
   }
@@ -123,17 +98,32 @@ export const DOWN_ELE = (array: any[], ele: any): any[] => {
   array[i + 1] = ele;
   return array;
 };
-
-export const defaultValue = (v: any, d: any): any => {
-  return isNullOrUndefined(v) ? d : v;
-};
-
 export const CheckQ = (sV: string, qV: string): boolean => {
   let s = sV || '';
   let q = qV || '';
   s = s.toLocaleLowerCase();
   q = q.toLocaleLowerCase();
   return s.includes(q);
+};
+
+export const SEARCH_DEBOUNCE_TIME = 500;
+export const PAGE_SIZE_OPTIONS = [50, 100, 1000];
+export const entityValidator = (control: AbstractControl): ValidationErrors | null => {
+  const value = control && control.value;
+  if (value && !value.id) {
+    return {entity: true};
+  }
+  return null;
+};
+export const displayWithLine = (line: Line) => line && line.name;
+export const compareWithId = (o1: any, o2: any) => {
+  if (o1 === o2) {
+    return true;
+  }
+  if (isNullOrUndefined(o1) || isNullOrUndefined(o2)) {
+    return false;
+  }
+  return o1.id === o2.id;
 };
 
 export const DefaultCompare = (o1: any, o2: any): number => {
@@ -145,21 +135,18 @@ export const DefaultCompare = (o1: any, o2: any): number => {
   }
   return moment(o1.modifyDateTime).isAfter(o2.modifyDateTime) ? -1 : 1;
 };
-
 export const SortByCompare = (o1: any, o2: any): number => {
   if (o1 && o2) {
     return (o1 === o2 || o1.id === o2.id) ? 0 : o1.sortBy - o2.sortBy;
   }
   return o1 ? 1 : -1;
 };
-
 export const CodeCompare = (o1: any, o2: any): number => {
   if (o1 && o2) {
     return (o1 === o2 || o1.id === o2.id) ? 0 : o1.code.localeCompare(o2.code);
   }
   return o1 ? 1 : -1;
 };
-
 export const EventSourceCompare = (o1: EventSource, o2: EventSource): number => {
   if (o1 && o2) {
     return (o1 === o2 || o1.eventId === o2.eventId) ? 0 :
@@ -167,14 +154,12 @@ export const EventSourceCompare = (o1: EventSource, o2: EventSource): number => 
   }
   return o1 ? 1 : -1;
 };
-
 export const LineCompare = (o1: Line, o2: Line): number => {
   if (o1 && o2) {
     return (o1 === o2 || o1.id === o2.id) ? 0 : o1.name.localeCompare(o2.name);
   }
   return o1 ? 1 : -1;
 };
-
 export const LineMachineCompare = (o1: LineMachine, o2: LineMachine): number => {
   if (o1 && o2) {
     if ((o1 === o2 || o1.id === o2.id)) {

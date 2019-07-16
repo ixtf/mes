@@ -32,7 +32,7 @@ export class SilkNoteFeedbackEventComponent {
   }
 
   canUndo(): boolean {
-    const isAdmin = this.store.selectSnapshot(AppState.isAdmin);
+    const isAdmin = this.store.selectSnapshot(AppState.authInfoIsAdmin);
     if (isAdmin) {
       return true;
     }

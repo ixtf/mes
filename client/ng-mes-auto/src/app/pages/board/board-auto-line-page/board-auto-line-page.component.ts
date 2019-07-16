@@ -1,5 +1,6 @@
-import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListener, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {interval, Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
@@ -16,15 +17,15 @@ declare const EventBus: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
-  @HostBinding('class.board-page')
-  readonly b = true;
-  @Select(BoardAutoLinePageState.messages)
-  readonly messages$: Observable<MessageModel[]>;
-  private readonly destroy$ = new Subject();
   readonly currentDateTime$ = interval(1000).pipe(
     takeUntil(this.destroy$),
-    map(() => new Date())
+    map(() => new Date()),
   );
+  private readonly destroy$ = new Subject();
+  @Select(BoardAutoLinePageState.messages)
+  readonly messages$: Observable<MessageModel[]>;
+  @HostBinding('class.board-page')
+  private readonly b = true;
   private readonly eb;
 
   constructor(private store: Store,
@@ -34,10 +35,7 @@ export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
     this.eb = new EventBus(EB_URL);
     this.eb.enableReconnect(true);
     this.eb.onopen = () => {
-      this.eb.registerHandler('mes-auto://websocket/boards/RiambSilkCarInfoFetchReasons', (error, message) => {
-        const msg = JSON.parse(message.body);
-        this.store.dispatch(new ReceivedMessageAction(msg));
-      });
+      this.eb.registerHandler('mes-auto://websocket/boards/RiambSilkCarInfoFetchReasons', this.updateReceivedMessage);
     };
   }
 
@@ -55,8 +53,17 @@ export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  @HostListener('click')
   fullScreen() {
-    FULL_SCREEN(this.elRef.nativeElement);
+    if (environment.production) {
+      FULL_SCREEN(this.elRef.nativeElement);
+    }
+  }
+
+  @Dispatch()
+  private updateReceivedMessage(error, message) {
+    const msg = JSON.parse(message.body);
+    return new ReceivedMessageAction(msg);
   }
 
 }

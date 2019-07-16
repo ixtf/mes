@@ -1,5 +1,7 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, NgModule} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import {QRCodeModule} from 'angularx-qrcode';
+import {SharedModule} from '../../shared.module';
 
 export class QrcodeOptions {
   qrdata: string;
@@ -25,11 +27,26 @@ export class QrcodeOptions {
 })
 export class QrcodeDialogComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: QrcodeOptions) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: QrcodeOptions) {
   }
 
   static open(dialog: MatDialog, options: QrcodeOptions) {
     const data = QrcodeOptions.assign(options);
     dialog.open(QrcodeDialogComponent, {data});
   }
+}
+
+@NgModule({
+  declarations: [
+    QrcodeDialogComponent,
+  ],
+  entryComponents: [
+    QrcodeDialogComponent,
+  ],
+  imports: [
+    SharedModule,
+    QRCodeModule,
+  ],
+})
+export class QrcodeDialogComponentModule {
 }

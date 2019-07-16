@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Store} from '@ngxs/store';
 import {Workshop} from '../../../../models/workshop';
 
@@ -28,11 +28,15 @@ export class WorkshopUpdateDialogComponent implements OnInit {
     this.title = 'Common.' + (this.workshop.id ? 'edit' : 'new');
   }
 
+  static open(dialog: MatDialog, data: Workshop): MatDialogRef<WorkshopUpdateDialogComponent, Workshop> {
+    return dialog.open(WorkshopUpdateDialogComponent, {data, disableClose: true, width: '500px'});
+  }
+
   ngOnInit(): void {
     this.form.patchValue(this.workshop);
   }
 
-  update() {
+  save() {
   }
 
 }

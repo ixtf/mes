@@ -4,11 +4,11 @@ import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
-import {DoffingSilkCarRecordReportItem} from '../../../models/doffing-silk-car-record-report';
+import {Workshop} from '../../../models/workshop';
 import {ApiService} from '../../../services/api.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {DoffingSilkCarRecordReportPageState, QueryAction} from '../../../store/doffing-silk-car-record-report-page.state';
+import {DoffingSilkCarRecordReportPageState, InfoItem, InitAction, QueryAction} from '../../../store/doffing-silk-car-record-report-page.state';
 
 @Component({
   templateUrl: './doffing-silk-car-record-report-page.component.html',
@@ -16,22 +16,24 @@ import {DoffingSilkCarRecordReportPageState, QueryAction} from '../../../store/d
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoffingSilkCarRecordReportPageComponent implements OnInit, OnDestroy {
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   readonly searchForm = this.fb.group({
     workshopId: [null, Validators.required],
-    startDate: [new Date(2019, 6, 1), Validators.required],
+    startDate: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
   });
-  readonly workshops$ = this.api.listWorkshop();
-  @Select(DoffingSilkCarRecordReportPageState.items)
-  readonly doffingSilkCarRecordReportItems$: Observable<DoffingSilkCarRecordReportItem[]>;
-  readonly displayedColumns = ['spec', 'doffingNum', 'exception', 'creator', 'createDateTime'];
+  @Select(DoffingSilkCarRecordReportPageState.workshops)
+  readonly workshops$: Observable<Workshop[]>;
+  @Select(DoffingSilkCarRecordReportPageState.infoItems)
+  readonly infoItems$: Observable<InfoItem[]>;
+  readonly displayedColumns = ['batch', 'grade', 'allDetailInfo', 'toDtyDetailInfo', 'toDtyConfirmDetailInfo', 'packageBoxDetailInfo', 'noWeightDetailInfo', 'diffDetailInfo'];
   private readonly destroy$ = new Subject();
 
   constructor(private store: Store,
               private fb: FormBuilder,
               private api: ApiService) {
+    this.store.dispatch(new InitAction());
   }
 
   ngOnInit(): void {

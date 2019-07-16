@@ -1,0 +1,41 @@
+<form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <mat-label>{{'line'|translate}}</mat-label>
+    <app-line-input formControlName="line" required></app-line-input>
+  </mat-form-field>
+  <span fxFlex></span>
+  <button (click)="create()" *ngIf="isAdmin$|async" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="lineMachines$" fxFlex>
+  <ng-container matColumnDef="line">
+    <mat-header-cell *matHeaderCellDef>{{'line'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.line.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="item">
+    <mat-header-cell *matHeaderCellDef>{{'LineMachine.item'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.item}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="spindleNum">
+    <mat-header-cell *matHeaderCellDef>{{'LineMachine.spindleNum'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.spindleNum}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">
+      <button (click)="update(row)" color="primary" mat-button>
+        {{'Common.edit'|translate}}
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
+</mat-table>

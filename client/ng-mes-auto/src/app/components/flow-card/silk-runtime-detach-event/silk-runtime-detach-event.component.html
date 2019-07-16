@@ -10,7 +10,7 @@
 </header>
 
 <section fxLayout="column">
-  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="test($event)">
+  <table [dataSource]="dataSource" mat-table matSort>
     <ng-container matColumnDef="code">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Silk.code'|translate}}</th>
       <td mat-cell *matCellDef="let row">{{row.silk.code}}</td>

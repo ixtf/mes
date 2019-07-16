@@ -5,8 +5,6 @@ import {RouterModule} from '@angular/router';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, switchMap, takeUntil, tap} from 'rxjs/operators';
-import {BarcodeDialogComponent} from '../../../components/barcode-dialog/barcode-dialog.component';
-import {QrcodeDialogComponent} from '../../../components/qrcode-dialog/qrcode-dialog.component';
 import {Line} from '../../../models/line';
 import {Workshop} from '../../../models/workshop';
 import {SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
@@ -24,7 +22,7 @@ const COLUMNS = ['workshop', 'name', 'doffingType'];
 export class LineManagePageComponent implements OnInit, OnDestroy {
   @Select(LineManagePageState.workshopId)
   readonly workshopId$: Observable<string>;
-  @Select(AppState.isAdmin)
+  @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   readonly searchForm = this.fb.group({
     workshopId: null
@@ -68,8 +66,8 @@ export class LineManagePageComponent implements OnInit, OnDestroy {
   }
 
   update(id: string) {
-    BarcodeDialogComponent.open(this.dialog, {value: 'dsfasdfa'});
-    QrcodeDialogComponent.open(this.dialog, {qrdata: 'dsfasdfa'});
+    // BarcodeDialogComponent.open(this.dialog, {value: 'dsfasdfa'});
+    // QrcodeDialogComponent.open(this.dialog, {qrdata: 'dsfasdfa'});
   }
 }
 

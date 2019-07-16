@@ -6,7 +6,6 @@ import {HOST_NAME} from '../../environments/environment';
 import {AuthInfo} from '../models/auth-info';
 import {Batch} from '../models/batch';
 import {Corporation} from '../models/corporation';
-import {DoffingSilkCarRecordReportItem} from '../models/doffing-silk-car-record-report';
 import {DyeingSampleSilkSubmitEvent, EventSource, ProductProcessSubmitEvent} from '../models/event-source';
 import {ExceptionRecord} from '../models/exception-record';
 import {FormConfig} from '../models/form-config';
@@ -33,6 +32,7 @@ import {StatisticsReport} from '../models/statistics-report';
 import {SuggestOperator} from '../models/suggest-operator';
 import {Workshop} from '../models/workshop';
 import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report';
+import {DoffingSilkCarRecordReportItem} from '../store/doffing-silk-car-record-report-page.state';
 
 const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
 const SHARE_API_URL = `http://${HOST_NAME}:9998/share`;
@@ -129,12 +129,28 @@ export class ApiService {
     return this.http.delete(`${BASE_API_URL}/workshops/${id}`);
   }
 
+  saveExceptionRecord(exceptionRecord: ExceptionRecord): Observable<ExceptionRecord> {
+    return exceptionRecord.id ? this.updateExceptionRecord(exceptionRecord) : this.createExceptionRecord(exceptionRecord);
+  }
+
   listExceptionRecord(params?: HttpParams): Observable<ExceptionRecord[]> {
     return this.http.get<ExceptionRecord[]>(`${BASE_API_URL}/exceptionRecords`, {params});
   }
 
   handleExceptionRecord(id: string): Observable<void> {
     return this.http.put<void>(`${BASE_API_URL}/exceptionRecords/${id}/handle`, null);
+  }
+
+  saveNotification(notification: Notification): Observable<Notification> {
+    return notification.id ? this.updateNotification(notification) : this.createNotification(notification);
+  }
+
+  listNotification(params?: HttpParams): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${BASE_API_URL}/notifications`, {params});
+  }
+
+  deleteNotification(notification: Notification): Observable<void> {
+    return this.http.delete<void>(`${BASE_API_URL}/notifications/${notification.id}`);
   }
 
   /*产品增删改查*/
@@ -228,6 +244,11 @@ export class ApiService {
 
   getSilkCarRecord_Events(id: string): Observable<EventSource[]> {
     return this.http.get<EventSource[]>(`${BASE_API_URL}/silkCarRecords/${id}/events`);
+  }
+
+  autoCompleteLine(q: string): Observable<Line[]> {
+    const params = new HttpParams().set('q', q);
+    return this.http.get<Line[]>(`${BASE_API_URL}/autoComplete/line`, {params});
   }
 
   autoCompleteSilkCar(q: string): Observable<SilkCar[]> {
@@ -478,6 +499,22 @@ export class ApiService {
 
   private updateSapT001l(sapT001l: SapT001l): Observable<SapT001l> {
     return this.http.put<SapT001l>(`${BASE_API_URL}/sapT001ls/${sapT001l.id}`, sapT001l);
+  }
+
+  private createExceptionRecord(exceptionRecord: ExceptionRecord): Observable<ExceptionRecord> {
+    return this.http.post<ExceptionRecord>(`${BASE_API_URL}/exceptionRecords`, exceptionRecord);
+  }
+
+  private updateExceptionRecord(exceptionRecord: ExceptionRecord): Observable<ExceptionRecord> {
+    return this.http.put<ExceptionRecord>(`${BASE_API_URL}/exceptionRecords/${exceptionRecord.id}`, exceptionRecord);
+  }
+
+  private createNotification(notification: Notification): Observable<Notification> {
+    return this.http.post<Notification>(`${BASE_API_URL}/notifications`, notification);
+  }
+
+  private updateNotification(notification: Notification): Observable<Notification> {
+    return this.http.put<Notification>(`${BASE_API_URL}/notifications/${notification.id}`, notification);
   }
 
   doffingSilkCarRecordReport(params?: HttpParams): Observable<DoffingSilkCarRecordReportItem[]> {

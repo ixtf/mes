@@ -26,6 +26,7 @@
   "lineMachineCount": "机台数",
   "packageBoxCount": "包数",
   "silkCount": "颗数",
+  "packageBoxCount": "包数",
   "netWeight": "净重",
   "grossWeight": "毛重",
   "weight": "重量",
@@ -123,6 +124,14 @@
   "GradeInfo": {
     "sortBy": "分数"
   },
+  "DoffingSilkCarRecordReport": {
+    "allDetailInfo": "下机",
+    "noWeightDetailInfo": "未称重",
+    "toDtyDetailInfo": "推加弹",
+    "toDtyConfirmDetailInfo": "推加弹确认",
+    "packageBoxDetailInfo": "打包",
+    "diffDetailInfo": "差异"
+  },
   "Nav": {
     "silkCarRuntime": "当前",
     "silkCarRecord": "历史",
@@ -147,7 +156,10 @@
     "permissions": "权限",
     "config": "配置",
     "operators": "用户",
+    "exceptionRecords": "异常处理",
+    "notifications": "通知管理",
     "report": "报表中心",
+    "doffingSilkCarRecordReport": "下机报表",
     "measureReport": "计量报表",
     "statisticsReport": "统计报表",
     "board": "大屏",
@@ -183,8 +195,9 @@
     "batchCreateLine": "批量新增线别"
   },
   "Validator": {
+    "workshopsLines": "车间和线别不能全为空",
     "required": "必输项",
-    "requiredPickEntity": "输入错误，必须通过选择，然后回车输入",
+    "entity": "输入错误，必须通过选择，然后回车输入",
     "number": "输入必须为数字",
     "min": "最小值：{{min}}",
     "max": "最大值：{{max}}",
@@ -201,6 +214,9 @@
     "success": "操作成功"
   },
   "Common": {
+    "all": "全部",
+    "creator": "创建人",
+    "modifier": "修改人",
     "notification": "通知",
     "handle": "处理",
     "exception": "异常",

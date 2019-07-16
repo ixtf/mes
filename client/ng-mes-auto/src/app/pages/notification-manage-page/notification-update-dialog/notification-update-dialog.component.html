@@ -1,0 +1,50 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+    <span fxFlex>{{title|translate}}</span>
+
+    <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content fxLayout="column">
+    <mat-error *ngIf="(!form.pristine)&&form.hasError('workshopsLines')">
+      {{'Validator.workshopsLines'|translate}}
+    </mat-error>
+
+    <mat-form-field>
+      <mat-select [placeholder]="'workshop'|translate" formControlName="workshops" multiple>
+        <mat-option *ngFor="let it of workshops$|async" [value]="it">
+          {{it.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-chip-list #lineChipList aria-label="Fruit selection">
+        <mat-chip (removed)="removeLine(it)" *ngFor="let it of (form.value.lines||[])" [selectable]="false">
+          {{it.name}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input [formControl]="lineQCtrl" [matAutocomplete]="autoLine" [matChipInputFor]="lineChipList" [placeholder]="'line'|translate">
+        <mat-autocomplete #autoLine="matAutocomplete" (optionSelected)="selectedLine($event)">
+          <mat-option *ngFor="let it of autoCompleteLines$|async" [value]="it">
+            {{it.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea [placeholder]="'Common.note'|translate" formControlName="note" matInput required></textarea>
+      <mat-error *ngIf="form.get('note').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-button>{{'Common.finish'|translate}}</button>
+  </mat-dialog-actions>
+</form>

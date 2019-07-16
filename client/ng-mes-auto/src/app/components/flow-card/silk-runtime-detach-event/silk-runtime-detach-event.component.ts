@@ -19,7 +19,7 @@ export class SilkRuntimeDetachEventComponent {
   @Input()
   private silkCarRecord: SilkCarRecord;
   // tslint:disable-next-line:variable-name
-  private _event: SilkRuntimeDetachEvent;
+  _event: SilkRuntimeDetachEvent;
   displayedColumns = ['position', 'spec', 'code', 'grade'];
   dataSource: MatTableDataSource<SilkRuntime>;
 
@@ -40,7 +40,7 @@ export class SilkRuntimeDetachEventComponent {
   }
 
   canUndo(): boolean {
-    const isAdmin = this.store.selectSnapshot(AppState.isAdmin);
+    const isAdmin = this.store.selectSnapshot(AppState.authInfoIsAdmin);
     if (isAdmin) {
       return true;
     }

@@ -1,21 +1,53 @@
-<form (ngSubmit)="update()" [formGroup]="form">
-  <h2 mat-dialog-title>{{title|translate}}</h2>
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+    <span fxFlex>{{title|translate}}</span>
+
+    <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 
   <mat-dialog-content fxLayout="column">
 
     <mat-form-field>
-      <input [placeholder]="'corporation'|translate" [value]="form.value?.corporation.name" matInput readonly required>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input [placeholder]="'Common.name'|translate" cdkFocusInitial formControlName="name" matInput required>
-      <mat-error *ngIf="form.get('name').hasError('required')">
+      <mat-label>{{'line'|translate}} - {{'lineMachine'|translate}}</mat-label>
+      <app-line-machine-input formControlName="lineMachine" required></app-line-machine-input>
+      <mat-error *ngIf="form.get('lineMachine').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'Common.exception'|translate" formControlName="exception" matInput required>
+      <mat-label>{{'spindle'|translate}}</mat-label>
+      <input formControlName="spindle" matInput required type="number">
+      <mat-error *ngIf="form.get('spindle').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [placeholder]="'doffingNum'|translate" formControlName="doffingNum" matInput required>
+      <mat-error *ngIf="form.get('doffingNum').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="form.get('doffingNum').hasError('min')">
+        {{'Validator.min'|translate:form.get('spindle').getError('min')}}
+      </mat-error>
+      <mat-error *ngIf="form.get('doffingNum').hasError('minLength')">
+        {{'Validator.min'|translate:form.get('spindle').getError('minLength')}}
+      </mat-error>
+      <mat-error *ngIf="form.get('doffingNum').hasError('maxLength')">
+        {{'Validator.min'|translate:form.get('spindle').getError('maxLength')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{'Common.exception'|translate}}</mat-label>
+      <mat-select [compareWith]="compareWithId" formControlName="exception" required>
+        <mat-option *ngFor="let it of silkExceptions$|async" [value]="it">
+          {{it.name}}
+        </mat-option>
+      </mat-select>
       <mat-error *ngIf="form.get('exception').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
@@ -24,7 +56,6 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button color="warn" mat-button mat-dialog-close type="button">{{'Common.cancel'|translate}}</button>
-    <button color="primary" mat-button>{{'Common.finish'|translate}}</button>
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-button>{{'Common.finish'|translate}}</button>
   </mat-dialog-actions>
 </form>

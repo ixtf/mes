@@ -2,8 +2,8 @@ import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Navigate} from '@ngxs/router-plugin';
 import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
-import {forkJoin, of} from 'rxjs';
-import {catchError, switchMap, tap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {catchError, concatMap, switchMap, tap} from 'rxjs/operators';
 import {AuthInfo} from '../models/auth-info';
 import {Corporation} from '../models/corporation';
 import {ApiService} from '../services/api.service';
@@ -19,7 +19,7 @@ export class LoginAction {
   }
 }
 
-interface AppStateModel {
+interface StateModel {
   shake?: boolean;
   loading?: boolean;
   token?: string;
@@ -27,7 +27,7 @@ interface AppStateModel {
   corporations?: Corporation[];
 }
 
-@State<AppStateModel>({
+@State<StateModel>({
   name: 'app',
   defaults: {}
 })
@@ -37,68 +37,78 @@ export class AppState implements NgxsOnInit {
 
   @Selector()
   @ImmutableSelector()
-  static isShake(state: AppStateModel): boolean {
+  static isShake(state: StateModel): boolean {
     return state.shake;
   }
 
   @Selector()
   @ImmutableSelector()
-  static isLoading(state: AppStateModel): boolean {
+  static isLoading(state: StateModel): boolean {
     return state.loading;
   }
 
   @Selector()
   @ImmutableSelector()
-  static token(state: AppStateModel): string {
+  static token(state: StateModel): string {
     return state.token;
   }
 
   @Selector()
   @ImmutableSelector()
-  static authInfo(state: AppStateModel): AuthInfo {
+  static authInfo(state: StateModel): AuthInfo {
     return state.authInfo;
   }
 
   @Selector()
   @ImmutableSelector()
-  static corporation(state: AppStateModel): Corporation {
-    return state.corporations && state.corporations[0];
+  static authInfoId(state: StateModel): string {
+    return state.authInfo && state.authInfo.id;
   }
 
   @Selector()
   @ImmutableSelector()
-  static isAdmin(state: AppStateModel): boolean {
+  static authInfoIsAdmin(state: StateModel): boolean {
     return state.authInfo && state.authInfo.admin;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static corporation(state: StateModel): Corporation {
+    return state.corporations && state.corporations[0];
   }
 
   @Receiver()
   @ImmutableContext()
-  static SetLoading({setState}: StateContext<AppStateModel>, {payload}: EmitterAction<boolean>) {
-    setState((state: AppStateModel) => {
+  static SetLoading({setState}: StateContext<StateModel>, {payload}: EmitterAction<boolean>) {
+    setState((state: StateModel) => {
       state.loading = payload;
       return state;
     });
   }
 
   @Receiver()
-  static LogoutAction({setState}: StateContext<AppStateModel>) {
+  static LogoutAction({setState}: StateContext<StateModel>) {
     setState({});
     location.reload();
     // return dispatch(new Navigate(['/']));
   }
 
-  ngxsOnInit({dispatch}: StateContext<AppStateModel>) {
+  ngxsOnInit({dispatch}: StateContext<StateModel>) {
     dispatch(new InitAction());
   }
 
   @Action(InitAction)
   @ImmutableContext()
-  InitAction({setState}: StateContext<AppStateModel>) {
-    const authInfo$ = this.api.authInfo();
-    const corporations$ = this.api.listCorporation();
-    return forkJoin([authInfo$, corporations$]).pipe(
-      tap(([authInfo, corporations]) => setState((state: AppStateModel) => {
-        state.authInfo = authInfo;
+  InitAction({setState}: StateContext<StateModel>) {
+    return this.api.authInfo().pipe(
+      concatMap(authInfo => {
+        setState((state: StateModel) => {
+          state.authInfo = authInfo;
+          return state;
+        });
+        return this.api.listCorporation();
+      }),
+      tap(corporations => setState((state: StateModel) => {
         state.corporations = corporations;
         return state;
       }))
@@ -107,10 +117,10 @@ export class AppState implements NgxsOnInit {
 
   @Action(LoginAction)
   @ImmutableContext()
-  LoginAction({getState, setState, dispatch}: StateContext<AppStateModel>, {payload}: LoginAction) {
+  LoginAction({getState, setState, dispatch}: StateContext<StateModel>, {payload}: LoginAction) {
     return this.api.token(payload).pipe(
       switchMap(token => {
-        setState((state: AppStateModel) => {
+        setState((state: StateModel) => {
           state.token = token;
           return state;
         });
@@ -119,7 +129,7 @@ export class AppState implements NgxsOnInit {
         return dispatch([initAction, navigateAction]);
       }),
       catchError(() => {
-        setState((state: AppStateModel) => {
+        setState((state: StateModel) => {
           state.shake = !state.shake;
           return state;
         });

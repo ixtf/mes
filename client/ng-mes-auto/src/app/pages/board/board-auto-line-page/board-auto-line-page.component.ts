@@ -17,11 +17,11 @@ declare const EventBus: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject();
   readonly currentDateTime$ = interval(1000).pipe(
     takeUntil(this.destroy$),
     map(() => new Date()),
   );
-  private readonly destroy$ = new Subject();
   @Select(BoardAutoLinePageState.messages)
   readonly messages$: Observable<MessageModel[]>;
   @HostBinding('class.board-page')

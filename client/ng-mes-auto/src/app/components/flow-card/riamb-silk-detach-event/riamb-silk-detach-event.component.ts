@@ -11,11 +11,11 @@ import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 })
 export class RiambSilkDetachEventComponent {
   @Input()
+  event: RiambSilkDetachEvent;
+  @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  @Input()
-  event: RiambSilkDetachEvent;
 
   get codes(): string[] {
     return this.event.command.silkCodes;

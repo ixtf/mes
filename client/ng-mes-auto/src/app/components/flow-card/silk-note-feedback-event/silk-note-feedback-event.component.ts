@@ -16,19 +16,20 @@ export class SilkNoteFeedbackEventComponent {
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
+
+  constructor(private store: Store) {
+  }
+
   // tslint:disable-next-line:variable-name
   private _event: SilkNoteFeedbackEvent;
 
-  constructor(private store: Store) {
+  get event(): SilkNoteFeedbackEvent {
+    return this._event;
   }
 
   @Input()
   set event(ev: SilkNoteFeedbackEvent) {
     this._event = ev;
-  }
-
-  get event(): SilkNoteFeedbackEvent {
-    return this._event;
   }
 
   canUndo(): boolean {

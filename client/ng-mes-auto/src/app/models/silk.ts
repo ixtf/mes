@@ -10,6 +10,11 @@ export class Silk {
   spindle: number;
   doffingNum: string;
   grade: Grade;
+  weight: number;
+
+  get spec(): string {
+    return `${this.lineMachine.line.name}-${this.spindle}/${this.lineMachine.item}-${this.doffingNum}`;
+  }
 
   static assign(...sources: any[]): Silk {
     const result = Object.assign(new Silk(), ...sources);
@@ -21,10 +26,6 @@ export class Silk {
       acc[cur.id] = Silk.assign(cur);
       return acc;
     }, {...(entities || {})});
-  }
-
-  get spec(): string {
-    return `${this.lineMachine.line.name}-${this.spindle}/${this.lineMachine.item}-${this.doffingNum}`;
   }
 
 }

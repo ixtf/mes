@@ -23,8 +23,8 @@ export class ExceptionRecordUpdateDialogComponent implements OnInit, OnDestroy {
     silk: null,
   });
   readonly title: string;
-  private readonly destroy$ = new Subject();
   readonly silkExceptions$ = this.api.listSilkException();
+  private readonly destroy$ = new Subject();
 
   constructor(private fb: FormBuilder,
               private api: ApiService,

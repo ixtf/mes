@@ -54,10 +54,6 @@ class LineMachineSelectBtn {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SilkCarRecordInfoComponent {
-  // tslint:disable-next-line:variable-name
-  private _silkCarRuntime: SilkCarRuntime;
-  // tslint:disable-next-line:variable-name
-  private _silkCarRecord: SilkCarRecord;
   copy = COPY;
   silkCarRecordInfo: SilkCarRecordInfoModel;
   lineMachineSelectBtns: LineMachineSelectBtn[];
@@ -67,20 +63,8 @@ export class SilkCarRecordInfoComponent {
   constructor(private snackBar: MatSnackBar) {
   }
 
-  @Input()
-  set silkCarRecord(silkCarRecord: SilkCarRecord) {
-    this._silkCarRecord = silkCarRecord;
-    const silkCarRecordInfo = this.silkCarRecordInfo || new SilkCarRecordInfoModel();
-    const aSideSilks = [];
-    const bSideSilks = [];
-    for (let row = 1; row <= silkCarRecord.silkCar.row; row++) {
-      for (let col = 1; col <= silkCarRecord.silkCar.col; col++) {
-        aSideSilks.push(this.silkModel('A', row, col, silkCarRecordInfo.aSideSilks, silkCarRecord.initSilks));
-        bSideSilks.push(this.silkModel('B', row, col, silkCarRecordInfo.bSideSilks, silkCarRecord.initSilks));
-      }
-    }
-    this.silkCarRecordInfo = Object.assign(new SilkCarRecordInfoModel(), silkCarRecord, {aSideSilks, bSideSilks});
-  }
+  // tslint:disable-next-line:variable-name
+  private _silkCarRuntime: SilkCarRuntime;
 
   @Input()
   set silkCarRuntime(silkCarRuntime: SilkCarRuntime) {
@@ -106,21 +90,22 @@ export class SilkCarRecordInfoComponent {
     this.lineMachineSelectBtns.sort((a, b) => a.label.localeCompare(b.label));
   }
 
-  private silkModel(sideType: string, row: number, col: number, silkModels: SilkModel[], silkRuntimes: SilkRuntime[]): SilkModel {
-    const result = Object.assign(new SilkModel(), {sideType, row, col});
-    const predicate = it => it.sideType === sideType && it.row === row && it.col === col;
-    const silkRuntime = silkRuntimes.find(predicate);
-    if (silkRuntime) {
-      const {silk, grade} = silkRuntime;
-      const exceptions = (silkRuntime.exceptions || []).map(it => it.name);
-      Object.assign(result, silk, {grade, exceptions});
+  // tslint:disable-next-line:variable-name
+  private _silkCarRecord: SilkCarRecord;
+
+  @Input()
+  set silkCarRecord(silkCarRecord: SilkCarRecord) {
+    this._silkCarRecord = silkCarRecord;
+    const silkCarRecordInfo = this.silkCarRecordInfo || new SilkCarRecordInfoModel();
+    const aSideSilks = [];
+    const bSideSilks = [];
+    for (let row = 1; row <= silkCarRecord.silkCar.row; row++) {
+      for (let col = 1; col <= silkCarRecord.silkCar.col; col++) {
+        aSideSilks.push(this.silkModel('A', row, col, silkCarRecordInfo.aSideSilks, silkCarRecord.initSilks));
+        bSideSilks.push(this.silkModel('B', row, col, silkCarRecordInfo.bSideSilks, silkCarRecord.initSilks));
+      }
     }
-    const silkModel = silkModels.find(predicate);
-    if (silkModel && result.id === silkModel.id) {
-      const {selected} = silkModel;
-      Object.assign(result, {selected});
-    }
-    return result;
+    this.silkCarRecordInfo = Object.assign(new SilkCarRecordInfoModel(), silkCarRecord, {aSideSilks, bSideSilks});
   }
 
   get doffingOperatorName() {
@@ -154,6 +139,23 @@ export class SilkCarRecordInfoComponent {
   selectByLineMachine(btn: LineMachineSelectBtn) {
     this.silkCarRecordInfo.validSideSilks.filter(it => btn.same(it)).forEach(it => it.selected = true);
     this.emitSilkSelectionListChange();
+  }
+
+  private silkModel(sideType: string, row: number, col: number, silkModels: SilkModel[], silkRuntimes: SilkRuntime[]): SilkModel {
+    const result = Object.assign(new SilkModel(), {sideType, row, col});
+    const predicate = it => it.sideType === sideType && it.row === row && it.col === col;
+    const silkRuntime = silkRuntimes.find(predicate);
+    if (silkRuntime) {
+      const {silk, grade} = silkRuntime;
+      const exceptions = (silkRuntime.exceptions || []).map(it => it.name);
+      Object.assign(result, silk, {grade, exceptions});
+    }
+    const silkModel = silkModels.find(predicate);
+    if (silkModel && result.id === silkModel.id) {
+      const {selected} = silkModel;
+      Object.assign(result, {selected});
+    }
+    return result;
   }
 
   private emitSilkSelectionListChange() {

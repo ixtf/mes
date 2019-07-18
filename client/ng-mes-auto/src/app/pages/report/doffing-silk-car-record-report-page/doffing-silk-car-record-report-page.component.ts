@@ -5,7 +5,6 @@ import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
 import {Workshop} from '../../../models/workshop';
-import {ApiService} from '../../../services/api.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {DoffingSilkCarRecordReportPageState, InfoItem, InitAction, QueryAction} from '../../../store/doffing-silk-car-record-report-page.state';
@@ -19,7 +18,7 @@ export class DoffingSilkCarRecordReportPageComponent implements OnInit, OnDestro
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   readonly searchForm = this.fb.group({
-    workshopId: [null, Validators.required],
+    workshopId: [this.store.selectSnapshot(DoffingSilkCarRecordReportPageState.workshopId), Validators.required],
     startDate: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
   });
@@ -31,8 +30,7 @@ export class DoffingSilkCarRecordReportPageComponent implements OnInit, OnDestro
   private readonly destroy$ = new Subject();
 
   constructor(private store: Store,
-              private fb: FormBuilder,
-              private api: ApiService) {
+              private fb: FormBuilder) {
     this.store.dispatch(new InitAction());
   }
 

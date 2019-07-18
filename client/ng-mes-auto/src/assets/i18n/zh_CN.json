@@ -17,6 +17,7 @@
   "silkWeight": "锭重",
   "doffingNum": "落次",
   "silk": "丝锭",
+  "silkCar": "丝车",
   "weight": "锭重",
   "doffingType": "落筒方式",
   "brand": "品牌",
@@ -26,6 +27,7 @@
   "lineMachineCount": "机台数",
   "packageBoxCount": "包数",
   "silkCount": "颗数",
+  "silkCarCount": "车数",
   "packageBoxCount": "包数",
   "netWeight": "净重",
   "grossWeight": "毛重",
@@ -165,6 +167,7 @@
     "board": "大屏",
     "board-auto-line": "自动包装线管理看板",
     "board-abnormal": "车间生产管理看板",
+    "board-silk-car-runtime": "车间丝车运行情况看板",
     "admin": "管理员"
   },
   "Board": {
@@ -227,6 +230,7 @@
     "reset": "重置",
     "selectAll": "全选",
     "unSelectAll": "全不选",
+    "duration": "持续时间",
     "timeDesc": "时间倒序",
     "timeAsc": "时间升序",
     "export": "导出",

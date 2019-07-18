@@ -1,6 +1,5 @@
-
 animation-03-page
 
-<div [@openClose]="isOpen ? 'open' : 'closed'" class="open-close-container" (click)="toggle()">
+<div (click)="toggle()" [@openClose]="isOpen ? 'open' : 'closed'" class="open-close-container">
   <p>The box is now {{ isOpen ? 'Open' : 'Closed' }}!</p>
 </div>

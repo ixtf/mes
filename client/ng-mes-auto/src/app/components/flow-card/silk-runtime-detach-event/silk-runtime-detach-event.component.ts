@@ -14,16 +14,21 @@ import {AppState} from '../../../store/app.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SilkRuntimeDetachEventComponent {
+  displayedColumns = ['position', 'spec', 'code', 'grade'];
+  dataSource: MatTableDataSource<SilkRuntime>;
   @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  // tslint:disable-next-line:variable-name
-  _event: SilkRuntimeDetachEvent;
-  displayedColumns = ['position', 'spec', 'code', 'grade'];
-  dataSource: MatTableDataSource<SilkRuntime>;
 
   constructor(private store: Store) {
+  }
+
+  // tslint:disable-next-line:variable-name
+  _event: SilkRuntimeDetachEvent;
+
+  get event(): SilkRuntimeDetachEvent {
+    return this._event;
   }
 
   @Input()
@@ -33,10 +38,6 @@ export class SilkRuntimeDetachEventComponent {
       return `${a.sideType}${a.row}${a.col}`.localeCompare(`${b.sideType}${b.row}${b.col}`);
     }));
     // this.dataSource = new MatTableDataSource(ev.silkRuntimes);
-  }
-
-  get event(): SilkRuntimeDetachEvent {
-    return this._event;
   }
 
   canUndo(): boolean {

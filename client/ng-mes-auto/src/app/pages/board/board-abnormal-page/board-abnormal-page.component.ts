@@ -2,13 +2,13 @@ import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListene
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {interval, Observable, Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {EB_URL, environment} from '../../../../environments/environment';
 import {ExceptionRecord} from '../../../models/exception-record';
 import {Notification} from '../../../models/notification';
 import {Item} from '../../../models/workshop-product-plan-report';
-import {FULL_SCREEN} from '../../../services/util.service';
+import {FULL_SCREEN, INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {BoardAbnormalPageState, InitAction, ReconnectAction, RefreshAction, UpdateExceptionRecordAction, UpdateNotificationAction, UpdateProductPlanRecordAction} from '../../../store/board-abnormal-page.state';
 
@@ -20,20 +20,20 @@ declare const EventBus: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardAbnormalPageComponent implements OnInit, OnDestroy {
-  @HostBinding('class.board-page')
-  private readonly b = true;
-  private readonly destroy$ = new Subject();
-  readonly currentDateTime$ = interval(1000).pipe(
-    takeUntil(this.destroy$),
-    map(() => new Date()),
-  );
-  private readonly eb;
   @Select(BoardAbnormalPageState.productPlanItems)
   readonly productPlanItems$: Observable<Item[]>;
   @Select(BoardAbnormalPageState.exceptionRecords)
   readonly exceptionRecords$: Observable<ExceptionRecord[]>;
   @Select(BoardAbnormalPageState.notifications)
   readonly notifications$: Observable<Notification[]>;
+  @HostBinding('class.board-page')
+  private readonly b = true;
+  private readonly destroy$ = new Subject();
+  readonly currentDateTime$ = INTERVAL$.pipe(
+    takeUntil(this.destroy$),
+    map(() => new Date()),
+  );
+  private readonly eb;
 
   constructor(private store: Store,
               private route: ActivatedRoute,

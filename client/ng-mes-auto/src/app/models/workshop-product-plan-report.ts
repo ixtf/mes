@@ -10,11 +10,10 @@ export class WorkshopProductPlanReport {
 
   static assign(...sources: any[]): WorkshopProductPlanReport {
     const result = Object.assign(new WorkshopProductPlanReport(), ...sources);
-    result.items = (result.items || []).map(it => Item.assign(it))
-      .sort((o1, o2) => {
-        const i = LineCompare(o1.line, o2.line);
-        return i !== 0 ? i : o1.minLineMachineItem - o2.minLineMachineItem;
-      });
+    result.items = (result.items || []).map(it => Item.assign(it)).sort((o1, o2) => {
+      const i = LineCompare(o1.line, o2.line);
+      return i !== 0 ? i : o1.minLineMachineItem - o2.minLineMachineItem;
+    });
     return result;
   }
 }

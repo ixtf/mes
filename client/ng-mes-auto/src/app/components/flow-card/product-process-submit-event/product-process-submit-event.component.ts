@@ -13,12 +13,12 @@ import {SilkRuntime} from '../../../models/silk-runtime';
 })
 export class ProductProcessSubmitEventComponent {
   @Input()
+  event: ProductProcessSubmitEvent;
+  displayedColumns = ['position', 'spec', 'code', 'grade'];
+  @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  @Input()
-  event: ProductProcessSubmitEvent;
-  displayedColumns = ['position', 'spec', 'code', 'grade'];
 
   get productProcess(): ProductProcess {
     return this.event.productProcess;

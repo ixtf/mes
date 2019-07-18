@@ -31,8 +31,8 @@ export class ExceptionRecordManagePageComponent implements OnInit, OnDestroy {
   readonly lines$: Observable<Line[]>;
   @Select(ExceptionRecordManagePageState.exceptionRecords)
   readonly exceptionRecords$: Observable<ExceptionRecord[]>;
-  private readonly destroy$ = new Subject();
   readonly displayedColumns = ['spec', 'doffingNum', 'exception', 'creator', 'createDateTime', 'btns'];
+  private readonly destroy$ = new Subject();
 
   constructor(private store: Store,
               private dialog: MatDialog,

@@ -1,9 +1,8 @@
-
 animation-01-page
 
-<div [@openClose]="isOpen ? 'open' : 'closed'"
+<div (@openClose.done)="onAnimationEvent($event)"
      (@openClose.start)="onAnimationEvent($event)"
-     (@openClose.done)="onAnimationEvent($event)"
-     class="open-close-container" (click)="toggle()">
+     (click)="toggle()"
+     [@openClose]="isOpen ? 'open' : 'closed'" class="open-close-container">
   <p>The box is now {{ isOpen ? 'Open' : 'Closed' }}!</p>
 </div>

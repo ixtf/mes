@@ -33,6 +33,25 @@ export class ErrorInterceptor implements HttpInterceptor {
     );
   }
 
+  showError(err: string | any, action?: string, config?: MatSnackBarConfig) {
+    if (isString(err)) {
+      this.translate.get(err).subscribe(res => this.snackBar.open(res, action || 'X', config));
+      return;
+    } else if (err instanceof HttpErrorResponse) {
+      if (err.error && err.error.errorCode) {
+        this.translate.get(`Error.${err.error.errorCode}`)
+          .subscribe(it => this.showError(it));
+      }
+      if (err.error && err.error.errorMessage) {
+        this.translate.get(err.error.errorMessage)
+          .subscribe(it => this.showError(it));
+      }
+    } else if (err instanceof Error) {
+      const error = err as Error;
+      this.translate.get(error.message).subscribe(it => this.showError(it));
+    }
+  }
+
   private handle(request: HttpRequest<any>, err: any) {
     if (request.url.endsWith('/token') || request.url.endsWith('/auth')) {
       return;
@@ -57,25 +76,6 @@ export class ErrorInterceptor implements HttpInterceptor {
       return this.translate.get(error);
     }
     return of([err.status, err.statusText, err.error.message].join(':'));
-  }
-
-  showError(err: string | any, action?: string, config?: MatSnackBarConfig) {
-    if (isString(err)) {
-      this.translate.get(err).subscribe(res => this.snackBar.open(res, action || 'X', config));
-      return;
-    } else if (err instanceof HttpErrorResponse) {
-      if (err.error && err.error.errorCode) {
-        this.translate.get(`Error.${err.error.errorCode}`)
-          .subscribe(it => this.showError(it));
-      }
-      if (err.error && err.error.errorMessage) {
-        this.translate.get(err.error.errorMessage)
-          .subscribe(it => this.showError(it));
-      }
-    } else if (err instanceof Error) {
-      const error = err as Error;
-      this.translate.get(error.message).subscribe(it => this.showError(it));
-    }
   }
 
 }

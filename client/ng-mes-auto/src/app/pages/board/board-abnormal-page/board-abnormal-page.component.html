@@ -9,7 +9,7 @@
 </header>
 
 <main class="board-content" fxFlex fxLayout>
-  <section fxFlex="40" fxLayout="column" style="padding-right: .5rem">
+  <section fxFlex="50" fxLayout="column" style="padding-right: .5rem;">
     <table border="1">
       <thead>
       <tr>
@@ -33,20 +33,18 @@
       </tbody>
     </table>
 
-    <ng-container *ngIf="(notifications$|async)?.length>0">
-      <table border="1">
-        <caption translate="Common.notification"></caption>
-        <tr>
-          <td colspan="4">
-            <p id="pNotice"></p>
-            <label class="currDate" id="pNoticeDate"></label>
-          </td>
-        </tr>
-      </table>
-    </ng-container>
+    <mat-card *ngFor="let it of notifications$|async" class="notification">
+      <mat-card-header>
+        {{it.creator?.name}} {{it.createDateTime|date:'yyyy-MM-dd'}}
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        {{it.note}}
+      </mat-card-content>
+    </mat-card>
   </section>
 
-  <section fxFlex="60" fxLayout="column" style="padding-left: .5rem">
+  <section fxFlex="50" fxLayout="column" style="padding-left: .5rem">
     <table border="1">
       <thead>
       <tr>

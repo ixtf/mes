@@ -7,7 +7,7 @@ import {isString} from 'util';
 import {Line} from '../../../models/line';
 import {Notification} from '../../../models/notification';
 import {ApiService} from '../../../services/api.service';
-import {SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
+import {compareWithId, SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
 
 const workshopsLinesValidator = (control: FormControl) => {
   const workshops = control.value.workshops || [];
@@ -25,6 +25,7 @@ const workshopsLinesValidator = (control: FormControl) => {
 })
 export class NotificationUpdateDialogComponent implements OnInit, OnDestroy {
   readonly title: string;
+  readonly compareWithId = compareWithId;
   readonly workshops$ = this.api.listWorkshop().pipe();
   readonly lineQCtrl = new FormControl();
   readonly form = this.fb.group({

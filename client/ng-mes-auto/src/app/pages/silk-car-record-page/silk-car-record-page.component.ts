@@ -23,7 +23,6 @@ import {PickAction, QueryAction, SilkCarRecordPageState} from '../../store/silk-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
-  private readonly destroy$ = new Subject();
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
@@ -45,6 +44,7 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
     showAll: false,
   });
   readonly silkCarQCtrl = new FormControl();
+  private readonly destroy$ = new Subject();
   readonly autoCompleteSilkCars$ = this.silkCarQCtrl.valueChanges.pipe(
     takeUntil(this.destroy$),
     debounceTime(SEARCH_DEBOUNCE_TIME),

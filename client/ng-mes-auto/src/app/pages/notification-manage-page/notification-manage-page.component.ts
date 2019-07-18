@@ -3,15 +3,13 @@ import {MatDialog} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {combineLatest, Observable, Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {ExceptionRecord} from '../../models/exception-record';
 import {Notification} from '../../models/notification';
-import {ApiService} from '../../services/api.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
-import {InitAction, NotificationManagePageState, SaveAction} from '../../store/notification-manage-page.state';
-// @ts-ignore
+import {DeleteAction, InitAction, NotificationManagePageState, SaveAction} from '../../store/notification-manage-page.state';
 import {NotificationUpdateDialogComponent} from './notification-update-dialog/notification-update-dialog.component';
 
 @Component({
@@ -22,16 +20,13 @@ import {NotificationUpdateDialogComponent} from './notification-update-dialog/no
 export class NotificationManagePageComponent implements OnInit, OnDestroy {
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
-  @Select(AppState.authInfoId)
-  readonly authInfoId$: Observable<string>;
   @Select(NotificationManagePageState.notifications)
   readonly notifications$: Observable<Notification[]>;
   readonly displayedColumns = ['workshops', 'lines', 'note', 'modifier', 'modifyDateTime', 'btns'];
   private readonly destroy$ = new Subject();
 
   constructor(private store: Store,
-              private dialog: MatDialog,
-              private api: ApiService) {
+              private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
   }
 
@@ -57,16 +52,16 @@ export class NotificationManagePageComponent implements OnInit, OnDestroy {
 
   @Dispatch()
   delete(notification: Notification) {
-
+    return new DeleteAction(notification);
   }
 
-  isShow(row: ExceptionRecord) {
-    const isSelf$ = this.authInfoId$.pipe(
-      map(it => it === row.creator.id)
-    );
-    return combineLatest([this.authInfoId$, this.isAdmin$]).pipe(
-      map(([isSelf, isAdmin]) => isAdmin || isSelf)
-    );
+  isShow(exceptionRecord: ExceptionRecord) {
+    const isAdmin = this.store.selectSnapshot(AppState.authInfoIsAdmin);
+    if (isAdmin) {
+      return true;
+    }
+    const currentId = this.store.selectSnapshot(AppState.authInfoId);
+    return exceptionRecord.creator.id === currentId;
   }
 }
 

@@ -2,10 +2,10 @@ import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListene
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {interval, Observable, Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {EB_URL, environment} from '../../../../environments/environment';
-import {FULL_SCREEN} from '../../../services/util.service';
+import {FULL_SCREEN, INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {BoardAutoLinePageState, InitAction, MessageModel, ReceivedMessageAction} from '../../../store/board-auto-line-page.state';
 
@@ -17,13 +17,13 @@ declare const EventBus: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
+  @Select(BoardAutoLinePageState.messages)
+  readonly messages$: Observable<MessageModel[]>;
   private readonly destroy$ = new Subject();
-  readonly currentDateTime$ = interval(1000).pipe(
+  readonly currentDateTime$ = INTERVAL$.pipe(
     takeUntil(this.destroy$),
     map(() => new Date()),
   );
-  @Select(BoardAutoLinePageState.messages)
-  readonly messages$: Observable<MessageModel[]>;
   @HostBinding('class.board-page')
   private readonly b = true;
   private readonly eb;

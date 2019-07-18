@@ -38,10 +38,10 @@
     <mat-cell *matCellDef="let row" [matMenuTriggerFor]="btnsMenu" matRipple>
       <mat-icon>list</mat-icon>
       <mat-menu #btnsMenu="matMenu">
-        <button (click)="update(row)" *ngIf="isShow(row)|async" color="primary" mat-menu-item type="button">
+        <button (click)="update(row)" *ngIf="isShow(row)" color="primary" mat-menu-item type="button">
           {{'Common.edit'|translate}}
         </button>
-        <button (click)="delete(row)" *ngIf="isShow(row)|async" color="warn" mat-menu-item type="button">
+        <button (click)="delete(row)" *ngIf="isShow(row)" color="warn" mat-menu-item type="button">
           {{'Common.delete'|translate}}
         </button>
       </mat-menu>

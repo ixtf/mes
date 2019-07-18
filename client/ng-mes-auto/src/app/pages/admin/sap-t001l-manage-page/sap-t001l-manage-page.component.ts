@@ -1,11 +1,15 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {SapT001l} from '../../../models/sapT001l';
 import {SharedModule} from '../../../shared.module';
+import {AppState} from '../../../store/app.state';
 import {InitAction, SapT001lManagePageState} from '../../../store/sap-t001l-manage-page.state';
+
+const COLUMNS = ['lgort', 'lgobe'];
 
 @Component({
   templateUrl: './sap-t001l-manage-page.component.html',
@@ -13,25 +17,25 @@ import {InitAction, SapT001lManagePageState} from '../../../store/sap-t001l-mana
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SapT001lManagePageComponent implements OnInit {
-  readonly displayedColumns = ['lgort', 'lgobe', 'btns'];
+  @Select(AppState.authInfoIsAdmin)
+  readonly isAdmin$: Observable<boolean>;
   @Select(SapT001lManagePageState.sapT001ls)
   readonly sapT001ls$: Observable<SapT001l[]>;
-  readonly searchForm = this.fb.group({
-    q: null,
-  });
+  readonly qCtrl = new FormControl();
+  displayedColumns$: Observable<string[]>;
 
-  constructor(private store: Store,
-              private fb: FormBuilder) {
-  }
-
-  ngOnInit(): void {
+  constructor(private store: Store) {
     this.store.dispatch(new InitAction());
   }
 
-  create() {
+  ngOnInit(): void {
+    this.displayedColumns$ = this.isAdmin$.pipe(
+      map(it => it ? [...COLUMNS].concat(['btns']) : COLUMNS),
+    );
   }
 
-  batchCreate() {
+  create() {
+    this.update(new SapT001l());
   }
 
   update(row: SapT001l) {

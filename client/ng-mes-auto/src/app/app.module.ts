@@ -22,6 +22,7 @@ import {environment} from '../environments/environment';
 import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
 import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './pages/app/app-navbar/board-auto-line-dialog/board-auto-line-dialog.component';
+import {BoardSilkCarRuntimeDialogComponent} from './pages/app/app-navbar/board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
 import {AppShellComponent} from './pages/app/app-shell/app-shell.component';
 import {AppComponent} from './pages/app/app.component';
 import {LoginPageComponent} from './pages/app/login-page/login-page.component';
@@ -42,6 +43,8 @@ const routes: Routes = [
     children: [
       {path: 'auto-line', loadChildren: () => import('./pages/board/board-auto-line-page/board-auto-line-page.component').then(it => it.Module)},
       {path: 'abnormal', loadChildren: () => import('./pages/board/board-abnormal-page/board-abnormal-page.component').then(it => it.Module)},
+      {path: 'silk-car-runtime', loadChildren: () => import('./pages/board/board-silk-car-runtime-page/board-silk-car-runtime-page.component').then(it => it.Module)},
+      {path: 'test', loadChildren: () => import('./pages/board/board-test-page/board-test-page.component').then(it => it.Module)},
     ]
   },
   {
@@ -104,10 +107,12 @@ export function createTranslateLoader(httpClient: HttpClient) {
     AppNavbarComponent,
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
+    BoardSilkCarRuntimeDialogComponent,
   ],
   entryComponents: [
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
+    BoardSilkCarRuntimeDialogComponent,
   ],
   imports: [
     BrowserModule,

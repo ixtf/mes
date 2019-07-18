@@ -12,12 +12,12 @@ import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 })
 export class PackageBoxEventComponent {
   @Input()
+  event: PackageBoxEvent;
+  displayedColumns = ['code', 'grade', 'netWeight', 'silkCount'];
+  @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  @Input()
-  event: PackageBoxEvent;
-  displayedColumns = ['code', 'grade', 'netWeight', 'silkCount'];
 
   get packageBox(): PackageBox {
     return this.event.packageBox;

@@ -25,10 +25,10 @@ export class QueryAction {
 export class DoffingSilkCarRecordReportItem {
   batch: Batch;
   grade: Grade;
-  items: SilkCarRecordAggregateItem[];
+  items: SilkCarRecordAggregateExtra[];
 }
 
-export class SilkCarRecordAggregateItem extends SilkCarRecordAggregate {
+export class SilkCarRecordAggregateExtra extends SilkCarRecordAggregate {
   silkCount: number;
   netWeight: number;
   hasNetWeight: boolean;
@@ -37,14 +37,14 @@ export class SilkCarRecordAggregateItem extends SilkCarRecordAggregate {
 export class DetailInfo {
   silkCount = 0;
   netWeight = 0.0;
-  items: SilkCarRecordAggregateItem[] = [];
+  items: SilkCarRecordAggregateExtra[] = [];
 }
 
 const hasEventSource = (eventSources: EventSource[], type: string): boolean => {
   const find = (eventSources || []).filter(it => !it.deleted).find(it => it.type === type);
   return !!find;
 };
-const collectDetailInfo = (detailInfo: DetailInfo, silkCarRecordAggregateItem: SilkCarRecordAggregateItem) => {
+const collectDetailInfo = (detailInfo: DetailInfo, silkCarRecordAggregateItem: SilkCarRecordAggregateExtra) => {
   detailInfo.silkCount += silkCarRecordAggregateItem.silkCount;
   detailInfo.netWeight += silkCarRecordAggregateItem.netWeight;
   detailInfo.items.push(silkCarRecordAggregateItem);
@@ -98,6 +98,12 @@ export class DoffingSilkCarRecordReportPageState {
 
   @Selector()
   @ImmutableSelector()
+  static workshopId(state: StateModel): string {
+    return state.workshopId;
+  }
+
+  @Selector()
+  @ImmutableSelector()
   static workshops(state: StateModel): Workshop[] {
     return state.workshops || [];
   }
@@ -114,6 +120,9 @@ export class DoffingSilkCarRecordReportPageState {
     return this.api.listWorkshop().pipe(
       tap(workshops => setState((state: StateModel) => {
         state.workshops = workshops.sort(CodeCompare);
+        if (!state.workshopId) {
+          state.workshopId = state.workshops[0].id;
+        }
         state.infoItems = [];
         return state;
       }))
@@ -128,6 +137,7 @@ export class DoffingSilkCarRecordReportPageState {
       .append('endDate', moment(endDate).format('YYYY-MM-DD'));
     return this.api.doffingSilkCarRecordReport(httpParams).pipe(
       tap(reportItems => setState((state: StateModel) => {
+        state.workshopId = workshopId;
         state.infoItems = (reportItems || []).map(reportItem => new InfoItem(reportItem)).sort((a, b) => {
           let i = a.batch.batchNo.localeCompare(b.batch.batchNo);
           if (i === 0) {

@@ -23,12 +23,12 @@ import {CodeCompare} from '../../../services/util.service';
 })
 export class DyeingPrepareEventComponent {
   @Input()
+  event: DyeingPrepareEvent;
+  displayedColumns = ['position', 'spec', 'code', 'result'];
+  @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  @Input()
-  event: DyeingPrepareEvent;
-  displayedColumns = ['position', 'spec', 'code', 'result'];
 
   constructor(private dialog: MatDialog) {
   }

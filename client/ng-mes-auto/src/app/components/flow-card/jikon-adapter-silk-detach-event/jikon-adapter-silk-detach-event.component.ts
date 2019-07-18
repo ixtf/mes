@@ -11,11 +11,11 @@ import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 })
 export class JikonAdapterSilkDetachEventComponent {
   @Input()
+  event: JikonAdapterSilkDetachEvent;
+  @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  @Input()
-  event: JikonAdapterSilkDetachEvent;
 
   get codes(): string[] {
     return this.event.command.spindleCode.split(',');

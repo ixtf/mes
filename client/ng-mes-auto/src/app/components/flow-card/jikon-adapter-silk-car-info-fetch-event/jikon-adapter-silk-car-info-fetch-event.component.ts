@@ -12,12 +12,12 @@ import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 })
 export class JikonAdapterSilkCarInfoFetchEventComponent {
   @Input()
+  event: JikonAdapterSilkCarInfoFetchEvent;
+  readonly displayedColumns = ['actualPosition', 'code', 'grabFlage', 'eliminateFlage'];
+  @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  @Input()
-  event: JikonAdapterSilkCarInfoFetchEvent;
-  readonly displayedColumns = ['actualPosition', 'code', 'grabFlage', 'eliminateFlage'];
 
   get dataSource() {
     return new MatTableDataSource(this.data.list.sort((a, b) => {

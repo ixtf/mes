@@ -5,25 +5,25 @@
   </aside>
 
   <div class="loginForm">
-    <form [@shake]="shake$|async" fxLayout="column" [formGroup]="form" (ngSubmit)="login()">
+    <form (ngSubmit)="login()" [@shake]="shake$|async" [formGroup]="form" fxLayout="column">
       <mat-form-field floatLabel="never">
         <input formControlName="loginId" matInput required>
-        <button tabindex="-1" type="button" mat-icon-button matPrefix>
+        <button mat-icon-button matPrefix tabindex="-1" type="button">
           <mat-icon>account_circle</mat-icon>
         </button>
       </mat-form-field>
 
       <mat-form-field floatLabel="never">
-        <input formControlName="loginPassword" matInput [type]="hide ? 'password' : 'text'" required>
-        <button tabindex="-1" type="button" mat-icon-button matPrefix>
+        <input [type]="hide ? 'password' : 'text'" formControlName="loginPassword" matInput required>
+        <button mat-icon-button matPrefix tabindex="-1" type="button">
           <mat-icon>lock</mat-icon>
         </button>
-        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <button (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" mat-icon-button matSuffix type="button">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
 
-      <button mat-stroked-button color="primary" [disabled]="form.pristine||form.invalid">
+      <button [disabled]="form.pristine||form.invalid" color="primary" mat-stroked-button>
         {{'Common.finish'|translate}}
       </button>
     </form>

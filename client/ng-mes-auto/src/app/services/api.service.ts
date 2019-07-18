@@ -373,6 +373,10 @@ export class ApiService {
     return this.http.get<StatisticsReport>(`${BASE_API_URL}/reports/statisticsReport`, {params});
   }
 
+  doffingSilkCarRecordReport(params?: HttpParams): Observable<DoffingSilkCarRecordReportItem[]> {
+    return this.http.get<DoffingSilkCarRecordReportItem[]>(`${BASE_API_URL}/reports/doffingSilkCarRecordReport`, {params});
+  }
+
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {
     return this.http.put<ProductPlanNotify>(`${BASE_API_URL}/productPlanNotifies/${productPlanNotify.id}`, productPlanNotify);
   }
@@ -517,9 +521,6 @@ export class ApiService {
     return this.http.put<Notification>(`${BASE_API_URL}/notifications/${notification.id}`, notification);
   }
 
-  doffingSilkCarRecordReport(params?: HttpParams): Observable<DoffingSilkCarRecordReportItem[]> {
-    return this.http.get<DoffingSilkCarRecordReportItem[]>(`${BASE_API_URL}/reports/doffingSilkCarRecordReport`, {params});
-  }
 }
 
 @Injectable({
@@ -541,4 +542,14 @@ export class ApiShareService {
     return this.http.get<WorkshopProductPlanReport>(`${SHARE_API_URL}/workshops/${id}/productPlans`)
       .pipe(map(WorkshopProductPlanReport.assign));
   }
+
+  listSilkCarRuntimeSilkCarCode(params?: HttpParams): Observable<string[]> {
+    return this.http.get<string[]>(`${BASE_API_URL}/reports/silkCarRuntimeSilkCarCodes`, {params});
+    // return this.http.get<string[]>(`${SHARE_API_URL}/reports/silkCarRuntimeSilkCarCodes`, {params});
+  }
+
+  getSilkCarRuntimeByCode(code: string): Observable<SilkCarRuntime> {
+    return this.http.get<SilkCarRuntime>(`${SHARE_API_URL}/silkCarRuntimes/${code}`);
+  }
+
 }

@@ -20,30 +20,26 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of productPlanItems$|async">
-        <td>{{item.line.name}}</td>
-        <td>
-          <div fxLayout="column">
-            <span *ngFor="let it of item.lineMachineSpecs">{{it}}</span>
-          </div>
-        </td>
-        <td>{{item.batch.batchNo}}</td>
-        <td>{{item.batch.tubeColor}}</td>
+      <tr>
+        <td>C1</td>
+        <td>item.line.name</td>
+        <td>batchNo</td>
+        <td>tubeColor</td>
       </tr>
       </tbody>
     </table>
 
-    <ng-container *ngIf="(notifications$|async)?.length>0">
-      <table border="1">
-        <caption translate="Common.notification"></caption>
-        <tr>
-          <td colspan="4">
-            <p id="pNotice"></p>
-            <label class="currDate" id="pNoticeDate"></label>
-          </td>
-        </tr>
-      </table>
-    </ng-container>
+    <table border="1">
+      <caption translate="Common.notification"></caption>
+      <tr>
+        <td colspan="4">
+          <p id="pNotice">it.note</p>
+          <label class="currDate" id="pNoticeDate">
+            name yyyy-MM-dd
+          </label>
+        </td>
+      </tr>
+    </table>
   </section>
 
   <section fxFlex="60" fxLayout="column" style="padding-left: .5rem">
@@ -57,12 +53,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let msg of exceptionRecords$|async">
-        <td>{{msg.lineMachine.line.name}}-{{msg.spindle}}/{{msg.lineMachine.item}}</td>
-        <td>{{msg.doffingNum}}</td>
-        <td>{{msg.exception.name}}</td>
-        <!--        <td>{{msg.creator?.name}} {{msg.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>-->
-        <td>{{msg.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <tr>
+        <td>C1-12/13</td>
+        <td>B2</td>
+        <td>exception</td>
+        <td>yyyy-MM-dd HH:mm:ss</td>
       </tr>
       </tbody>
     </table>

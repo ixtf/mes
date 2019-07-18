@@ -58,7 +58,8 @@ export class NotificationManagePageState {
   @ImmutableContext()
   SaveAction({setState}: StateContext<StateModel>, {payload}: SaveAction) {
     return this.api.saveNotification(payload).pipe(
-      tap(notification => setState((state: StateModel) => {
+      tap(it => setState((state: StateModel) => {
+        const notification = Notification.assign(it);
         state.notificationEntities[notification.id] = notification;
         return state;
       }))

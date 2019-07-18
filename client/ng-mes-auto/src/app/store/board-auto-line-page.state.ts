@@ -1,7 +1,7 @@
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {SilkCarRuntime} from '../models/silk-car-runtime';
-import {ApiService} from '../services/api.service';
+import {ApiShareService} from '../services/api.service';
 
 export class InitAction {
   static readonly type = '[BoardAutoLinePage] InitAction';
@@ -33,7 +33,7 @@ export class MessageModel {
   defaults: {}
 })
 export class BoardAutoLinePageState {
-  constructor(private api: ApiService) {
+  constructor(private api: ApiShareService) {
   }
 
   @Selector()

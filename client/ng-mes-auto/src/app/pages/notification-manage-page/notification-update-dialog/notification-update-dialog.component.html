@@ -13,7 +13,7 @@
     </mat-error>
 
     <mat-form-field>
-      <mat-select [placeholder]="'workshop'|translate" formControlName="workshops" multiple>
+      <mat-select [compareWith]="compareWithId" [placeholder]="'workshop'|translate" formControlName="workshops" multiple>
         <mat-option *ngFor="let it of workshops$|async" [value]="it">
           {{it.name}}
         </mat-option>

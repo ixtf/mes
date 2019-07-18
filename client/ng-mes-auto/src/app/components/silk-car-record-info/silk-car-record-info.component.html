@@ -1,13 +1,13 @@
 <!--<header class="mat-elevation-z1" fxLayout="column">-->
 <header fxLayout="column">
   <div fxLayout fxLayoutAlign="start center" style="line-height: 40px">
-      <span style="font-size: 20px" (dblclick)="copy(silkCarRecordInfo.id)" fxFlex>
+      <span (dblclick)="copy(silkCarRecordInfo.id)" fxFlex style="font-size: 20px">
         {{silkCarRecordInfo.silkCar.code}}
         - {{silkCarRecordInfo.batch.batchNo}}
         - {{silkCarRecordInfo.batch.product.name}}
         - {{silkCarRecordInfo.batch.spec}}
       </span>
-    <button mat-icon-button [matMenuTriggerFor]="menu" color="primary" *ngIf="silkCarRecordInfo.validSideSilks.length>0">
+    <button *ngIf="silkCarRecordInfo.validSideSilks.length>0" [matMenuTriggerFor]="menu" color="primary" mat-icon-button>
       <mat-icon>list</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
@@ -19,26 +19,26 @@
     <span style="color: rgba(0,0,0,.54)">
      {{silkCarRecordInfo.initOperator.name}}  {{silkCarRecordInfo.initDateTime|date:'yyyy-MM-dd HH:mm:ss'}}
     </span>
-    <mat-chip selected fxFlexOffset="16px" [selectable]="false">
+    <mat-chip [selectable]="false" fxFlexOffset="16px" selected>
       {{silkCarRecordInfo.initTypeString|translate}}
     </mat-chip>
-    <mat-chip selected fxFlexOffset="16px" [color]="silkCarRecordInfo.grade.sortBy>=100?'primary':'warn'" [selectable]="false" [matTooltip]="'SilkCarRecord.grade'|translate" matTooltipPosition="right">
+    <mat-chip [color]="silkCarRecordInfo.grade.sortBy>=100?'primary':'warn'" [matTooltip]="'SilkCarRecord.grade'|translate" [selectable]="false" fxFlexOffset="16px" matTooltipPosition="right" selected>
       {{silkCarRecordInfo.grade.name}}
     </mat-chip>
   </div>
 
-  <div fxLayout fxLayoutAlign="start center" *ngIf="silkCarRecordInfo.validSideSilks.length>0">
-    <button type="button" mat-button (click)="selectBySide(silkCarRecordInfo.aSideSilks)" color="primary">
+  <div *ngIf="silkCarRecordInfo.validSideSilks.length>0" fxLayout fxLayoutAlign="start center">
+    <button (click)="selectBySide(silkCarRecordInfo.aSideSilks)" color="primary" mat-button type="button">
       {{'SilkCar.SideType.A'|translate}}
     </button>
-    <button type="button" mat-button (click)="selectBySide(silkCarRecordInfo.bSideSilks)" color="primary">
+    <button (click)="selectBySide(silkCarRecordInfo.bSideSilks)" color="primary" mat-button type="button">
       {{'SilkCar.SideType.B'|translate}}
     </button>
-    <button type="button" mat-button *ngFor="let btn of lineMachineSelectBtns" (click)="selectByLineMachine(btn)" color="primary">
+    <button (click)="selectByLineMachine(btn)" *ngFor="let btn of lineMachineSelectBtns" color="primary" mat-button type="button">
       {{btn.label|translate}}
     </button>
     <span fxFlex></span>
-    <button type="button" mat-button (click)="resetSelected();$event.stopPropagation();" color="accent">
+    <button (click)="resetSelected();$event.stopPropagation();" color="accent" mat-button type="button">
       {{'Common.reset'|translate}} [{{selectedCount}}]
     </button>
   </div>
@@ -47,7 +47,7 @@
 <mat-divider></mat-divider>
 
 <section fxFlex fxLayout="column">
-  <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" rowHeight="100px" gutterSize="4">
+  <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" gutterSize="4" rowHeight="100px">
     <mat-grid-tile *ngFor="let silk of silkCarRecordInfo.aSideSilks">
       <ng-container *ngTemplateOutlet="silkTileTemp;context:{silk:silk,sideType:'A'}"></ng-container>
     </mat-grid-tile>
@@ -55,7 +55,7 @@
 
   <div class="side-divide"></div>
 
-  <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" rowHeight="100px" gutterSize="4">
+  <mat-grid-list [cols]="silkCarRecordInfo.silkCar.col" gutterSize="4" rowHeight="100px">
     <mat-grid-tile *ngFor="let silk of silkCarRecordInfo.bSideSilks">
       <ng-container *ngTemplateOutlet="silkTileTemp;context:{silk:silk,sideType:'B'}"></ng-container>
     </mat-grid-tile>
@@ -64,8 +64,8 @@
 
 <ng-template #silkTileTemp let-sideType="sideType" let-silk="silk">
   <ng-container *ngIf="silk.id">
-    <div fxLayout="column" class="silk" [class.error]="silk.hasException">
-      <div class="position" fxLayout fxLayoutAlign="center center" (click)="toggleSelect(silk);$event.stopPropagation();" [matTooltipDisabled]="!silk.hasException" [matTooltip]="silk.tooltip">
+    <div [class.error]="silk.hasException" class="silk" fxLayout="column">
+      <div (click)="toggleSelect(silk);$event.stopPropagation();" [matTooltipDisabled]="!silk.hasException" [matTooltip]="silk.tooltip" class="position" fxLayout fxLayoutAlign="center center">
         <span fxFlex>{{sideType}}-{{silk.row}}-{{silk.col}}</span>
         <mat-icon *ngIf="silk.selected" color="accent">done</mat-icon>
       </div>
@@ -81,7 +81,7 @@
   </ng-container>
 
   <ng-container *ngIf="!silk.id">
-    <div fxLayout="column" class="silk empty">
+    <div class="silk empty" fxLayout="column">
       <div class="position" fxLayout fxLayoutAlign="center center">
         <div fxFlex fxLayout fxLayoutAlign="center center">
           {{sideType}}-{{silk.row}}-{{silk.col}}

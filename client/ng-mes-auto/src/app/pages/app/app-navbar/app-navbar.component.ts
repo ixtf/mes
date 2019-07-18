@@ -8,6 +8,7 @@ import {ApiService} from '../../../services/api.service';
 import {AppState} from '../../../store/app.state';
 import {BoardAbnormalDialogComponent} from './board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './board-auto-line-dialog/board-auto-line-dialog.component';
+import {BoardSilkCarRuntimeDialogComponent} from './board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -37,4 +38,7 @@ export class AppNavbarComponent {
     BoardAbnormalDialogComponent.open(this.dialog);
   }
 
+  boardSilkCarRuntime() {
+    BoardSilkCarRuntimeDialogComponent.open(this.dialog);
+  }
 }

@@ -62,10 +62,12 @@ export class LineManagePageComponent implements OnInit, OnDestroy {
   }
 
   create() {
-    // this.update(null);
+    const line = new Line();
+    // line.workshop=this.store.selectSnapshot(LineManagePageState.workshopId)
+    this.update(line);
   }
 
-  update(id: string) {
+  update(line: Line) {
     // BarcodeDialogComponent.open(this.dialog, {value: 'dsfasdfa'});
     // QrcodeDialogComponent.open(this.dialog, {qrdata: 'dsfasdfa'});
   }

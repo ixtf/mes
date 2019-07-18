@@ -4,6 +4,8 @@ import {AbstractControl, ValidationErrors} from '@angular/forms';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
+import {interval} from 'rxjs';
+import {share} from 'rxjs/operators';
 import {isArray, isNullOrUndefined, isObject} from 'util';
 import {EventSource} from '../models/event-source';
 import {Line} from '../models/line';
@@ -34,14 +36,18 @@ export class UtilService {
 }
 
 export const FULL_SCREEN = (element) => {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullScreen();
+  try {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullScreen();
+    }
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -106,6 +112,7 @@ export const CheckQ = (sV: string, qV: string): boolean => {
   return s.includes(q);
 };
 
+export const INTERVAL$ = interval(1000).pipe(share());
 export const SEARCH_DEBOUNCE_TIME = 500;
 export const PAGE_SIZE_OPTIONS = [50, 100, 1000];
 export const entityValidator = (control: AbstractControl): ValidationErrors | null => {

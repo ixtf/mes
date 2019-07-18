@@ -28,11 +28,9 @@
   </ng-container>
 
   <ng-container matColumnDef="btns">
-    <mat-header-cell *matHeaderCellDef fxFlex="100px" fxLayoutAlign="center center">{{'Common.operation'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row" fxFlex="100px" fxLayoutAlign="center center">
-      <button (click)="update(row)" color="primary" mat-button>
-        {{'Common.edit'|translate}}
-      </button>
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell (click)="update(row)" *matCellDef="let row" matRipple>
+      <mat-icon>edit</mat-icon>
     </mat-cell>
   </ng-container>
 

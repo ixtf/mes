@@ -26,12 +26,12 @@ interface SilkInfo {
 })
 export class RiambSilkCarInfoFetchEventComponent {
   @Input()
+  event: RiambSilkCarInfoFetchEvent;
+  displayedColumns = ['position', 'code', 'grade', 'grabFlage', 'eliminateFlage', 'detached'];
+  @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  @Input()
-  event: RiambSilkCarInfoFetchEvent;
-  displayedColumns = ['position', 'code', 'grade', 'grabFlage', 'eliminateFlage', 'detached'];
 
   get dataSource() {
     return new MatTableDataSource(this.silkInfos);

@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>
+  {{'Nav.board-abnormal'|translate}}
+</h2>
+
+<mat-dialog-content [formGroup]="form" fxLayout="column">
+  <mat-form-field>
+    <mat-label>{{'workshop'|translate}}</mat-label>
+    <mat-select formControlName="workshopId">
+      <mat-option *ngFor="let it of workshops$|async" [value]="it.id">
+        {{it.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('workshopId').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="form.valid" align="end">
+  <a [queryParams]="form.value" color="primary" mat-button routerLink="/board/silk-car-runtime" target="_blank">
+    {{'Common.finish'|translate}}
+  </a>
+</mat-dialog-actions>

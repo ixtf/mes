@@ -544,8 +544,7 @@ export class ApiShareService {
   }
 
   listSilkCarRuntimeSilkCarCode(params?: HttpParams): Observable<string[]> {
-    return this.http.get<string[]>(`${BASE_API_URL}/reports/silkCarRuntimeSilkCarCodes`, {params});
-    // return this.http.get<string[]>(`${SHARE_API_URL}/reports/silkCarRuntimeSilkCarCodes`, {params});
+    return this.http.get<string[]>(`${SHARE_API_URL}/reports/silkCarRuntimeSilkCarCodes`, {params});
   }
 
   getSilkCarRuntimeByCode(code: string): Observable<SilkCarRuntime> {

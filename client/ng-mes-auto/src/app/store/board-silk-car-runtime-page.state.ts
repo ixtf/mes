@@ -1,3 +1,4 @@
+import {HttpParams} from '@angular/common/http';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
@@ -223,9 +224,9 @@ export class BoardSilkCarRuntimePageState {
   @Action(RefreshAction)
   @ImmutableContext()
   RefreshAction(ctx: StateContext<StateModel>) {
-    const {getState} = ctx;
-    const {silkCarRuntimeFilter} = getState();
-    return this.api.listSilkCarRuntimeSilkCarCode().pipe(
+    const {workshopId, silkCarRuntimeFilter} = ctx.getState();
+    const params = new HttpParams().set('workshopId', workshopId);
+    return this.api.listSilkCarRuntimeSilkCarCode(params).pipe(
       switchMap(silkCarCodes => fromArray((silkCarCodes || []))),
       // take(50),
       concatMap(it => this.api.getSilkCarRuntimeByCode(it)),

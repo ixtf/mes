@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostBinding, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
@@ -29,8 +29,7 @@ export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
   private readonly eb;
 
   constructor(private store: Store,
-              private route: ActivatedRoute,
-              private elRef: ElementRef) {
+              private route: ActivatedRoute) {
     route.queryParams.subscribe((it: any) => this.store.dispatch(new InitAction(it)));
     this.eb = new EventBus(EB_URL);
     this.eb.enableReconnect(true);

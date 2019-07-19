@@ -51,6 +51,9 @@ export class BarcodeDialogComponent {
     SharedModule,
     NgxBarcodeModule,
   ],
+  exports: [
+    NgxBarcodeModule,
+  ],
 })
 export class BarcodeDialogComponentModule {
 }

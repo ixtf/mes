@@ -166,8 +166,8 @@
     "statisticsReport": "统计报表",
     "board": "大屏",
     "board-auto-line": "自动包装线管理看板",
-    "board-abnormal": "车间生产管理看板",
-    "board-silk-car-runtime": "车间丝车运行情况看板",
+    "board-abnormal": "生产管理看板",
+    "board-silk-car-runtime": "丝车运行情况看板",
     "admin": "管理员"
   },
   "Board": {
@@ -223,6 +223,7 @@
     "notification": "通知",
     "handle": "处理",
     "exception": "异常",
+    "print": "打印",
     "logout": "退出",
     "loginId": "登录名",
     "password": "密码",

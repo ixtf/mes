@@ -8,7 +8,25 @@
   </button>
 </form>
 
-<mat-table [dataSource]="silkCars$" fxFlex>
+<mat-divider></mat-divider>
+
+<!--<mat-table [dataSource]="silkCars$" fxFlex>-->
+<mat-table [dataSource]="dataSource" fxFlex>
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef fxFlex="80px">
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="80px">
+      <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                    (click)="$event.stopPropagation()"
+                    [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
     <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
@@ -30,19 +48,22 @@
   </ng-container>
 
   <ng-container matColumnDef="rowAndCol">
-    <mat-header-cell *matHeaderCellDef>{{'Common.row'|translate}}×{{'Common.col'|translate}}</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>{{'Common.row'|translate}}X{{'Common.col'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row">{{row.row}}×{{row.col}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="btns">
-    <mat-header-cell *matHeaderCellDef fxFlex="200px" fxLayoutAlign="center center">{{'Common.operation'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row" fxFlex="200px" fxLayoutAlign="center center">
-      <button (click)="update(row)" *ngIf="isAdmin$|async" color="primary" mat-button type="button">
-        {{'Common.edit'|translate}}
-      </button>
-      <button (click)="print(row)" color="warn" mat-button type="button">
-        {{'Common.print'|translate}}
-      </button>
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" [matMenuTriggerFor]="btnsMenu" matRipple>
+      <mat-icon>list</mat-icon>
+      <mat-menu #btnsMenu="matMenu">
+        <button (click)="update(row)" *ngIf="isAdmin$|async" color="primary" mat-menu-item type="button">
+          {{'Common.edit'|translate}}
+        </button>
+        <button (click)="print(row)" color="primary" mat-menu-item type="button">
+          {{'Common.print'|translate}}
+        </button>
+      </mat-menu>
     </mat-cell>
   </ng-container>
 
@@ -50,13 +71,9 @@
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
 
-<!--<mat-paginator [length]="count$|async" [pageIndex]="pageIndex$|async" [pageSize]="pageSize$|async"-->
-<!--               [pageSizeOptions]="pageSizeOptions" (page)="onPageEvent($event)" showFirstLastButtons></mat-paginator>-->
-<mat-paginator [length]="100" [pageIndex]="0" [pageSizeOptions]="pageSizeOptions"
-               [pageSize]="50" showFirstLastButtons></mat-paginator>
+<mat-paginator (page)="onPageEvent($event)" [length]="count$|async" [pageIndex]="pageIndex$|async" [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize$|async" showFirstLastButtons></mat-paginator>
 
-
-<!--<div id="print-section" style="display: none">-->
-<!--  <ngx-barcode [bc-value]="'dsadfsafd'"></ngx-barcode>-->
-<!--  <qrcode [qrdata]="'dfadfsaf'"></qrcode>-->
-<!--</div>-->
+<div id="print-section" style="display: none">
+  <ngx-barcode [bc-value]="'dsadfsafd'"></ngx-barcode>
+  <qrcode [qrdata]="'dfadfsaf'"></qrcode>
+</div>

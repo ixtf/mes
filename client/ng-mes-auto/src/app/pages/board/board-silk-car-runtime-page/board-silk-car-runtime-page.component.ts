@@ -7,7 +7,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {EB_URL} from '../../../../environments/environment';
 import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BoardSilkCarRuntimePageState, GroupByBatchGradeItem, InitAction, RefreshAction, SilkCarRuntimeReportItem, UpdateSilkCarRuntimeEvent} from '../../../store/board-silk-car-runtime-page.state';
+import {BoardSilkCarRuntimePageState, GroupByBatchGradeItem, InitAction, SilkCarRuntimeReportItem, UpdateSilkCarRuntimeEvent} from '../../../store/board-silk-car-runtime-page.state';
 
 declare const EventBus: any;
 
@@ -55,15 +55,23 @@ export class BoardSilkCarRuntimePageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  @Dispatch()
   private refresh() {
-    return new RefreshAction();
+    return location.reload(true);
   }
 
-  @Dispatch()
   private onreconnect() {
-    return setTimeout(() => location.reload(), 30 * 1000);
+    setTimeout(() => location.reload(true), 30 * 1000);
   }
+
+  // @Dispatch()
+  // private refresh() {
+  //   return new RefreshAction();
+  // }
+  //
+  // @Dispatch()
+  // private onreconnect() {
+  //   return setTimeout(() => location.reload(), 30 * 1000);
+  // }
 
   @Dispatch()
   private updateSilkCarRuntimeEvent(error, message) {

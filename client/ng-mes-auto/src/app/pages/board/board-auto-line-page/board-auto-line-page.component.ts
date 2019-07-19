@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, HostListener, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {EB_URL, environment} from '../../../../environments/environment';
-import {FULL_SCREEN, INTERVAL$} from '../../../services/util.service';
+import {EB_URL} from '../../../../environments/environment';
+import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {BoardAutoLinePageState, InitAction, MessageModel, ReceivedMessageAction} from '../../../store/board-auto-line-page.state';
 
@@ -40,9 +40,6 @@ export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (environment.production) {
-      setTimeout(() => this.fullScreen(), 1000);
-    }
   }
 
   ngOnDestroy(): void {
@@ -53,11 +50,12 @@ export class BoardAutoLinePageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  @HostListener('click')
-  fullScreen() {
-    if (environment.production) {
-      FULL_SCREEN(this.elRef.nativeElement);
-    }
+  private refresh() {
+    return location.reload(true);
+  }
+
+  private onreconnect() {
+    setTimeout(() => location.reload(true), 30 * 1000);
   }
 
   @Dispatch()

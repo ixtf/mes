@@ -11,11 +11,9 @@ import {NgxsDispatchPluginModule} from '@ngxs-labs/dispatch-decorator';
 import {NgxsEmitPluginModule} from '@ngxs-labs/emitter';
 import {NgxsFormPluginModule} from '@ngxs/form-plugin';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
-import {NgxPrintModule} from 'ngx-print';
 
 @NgModule({
   exports: [
-    NgxPrintModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

@@ -47,6 +47,9 @@ export class QrcodeDialogComponent {
     SharedModule,
     QRCodeModule,
   ],
+  exports: [
+    QRCodeModule,
+  ],
 })
 export class QrcodeDialogComponentModule {
 }

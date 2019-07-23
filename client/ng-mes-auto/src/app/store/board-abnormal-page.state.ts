@@ -120,14 +120,15 @@ export class BoardAbnormalPageState {
         if (o2.id === '0') {
           return 1;
         }
-        return moment(o1.createDateTime).isAfter(o2.createDateTime) ? -1 : 1;
+        return moment(o1.createDateTime).isAfter(o2.createDateTime) ? 1 : -1;
       });
   }
 
   @Selector()
   @ImmutableSelector()
   static notifications(state: StateModel): Notification[] {
-    return Object.values(state.notificationEntities).sort(DefaultCompare);
+    return Object.keys(state.notificationEntities).map(it => state.notificationEntities[it])
+      .sort(DefaultCompare);
   }
 
   @Action(InitAction)

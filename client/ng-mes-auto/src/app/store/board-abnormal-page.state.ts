@@ -1,5 +1,6 @@
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
+import * as moment from 'moment';
 import {tap} from 'rxjs/operators';
 import {isArray, isString} from 'util';
 import {ExceptionRecord} from '../models/exception-record';
@@ -111,7 +112,16 @@ export class BoardAbnormalPageState {
   @Selector()
   @ImmutableSelector()
   static exceptionRecords(state: StateModel): ExceptionRecord[] {
-    return Object.values(state.exceptionRecordEntities);
+    return Object.keys(state.exceptionRecordEntities).map(it => state.exceptionRecordEntities[it])
+      .sort((o1, o2) => {
+        if (o1.id === '0') {
+          return -1;
+        }
+        if (o2.id === '0') {
+          return 1;
+        }
+        return moment(o1.createDateTime).isAfter(o2.createDateTime) ? -1 : 1;
+      });
   }
 
   @Selector()

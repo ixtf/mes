@@ -23,12 +23,12 @@
       <tr *ngFor="let item of productPlanItems$|async">
         <td>{{item.line.name}}</td>
         <td>
-          <!--          <div fxLayout="column">-->
-          <!--            <span *ngFor="let it of item.lineMachineSpecs">{{it}}</span>-->
-          <!--          </div>-->
-          <div fxLayout>
-            <span *ngFor="let it of item.lineMachineSpecs" fxFlex="50">{{it}}</span>
+          <div fxLayout="column">
+            <span *ngFor="let it of item.lineMachineSpecs">{{it}}</span>
           </div>
+          <!--          <div fxLayout>-->
+          <!--            <span *ngFor="let it of item.lineMachineSpecs" fxFlex="50">{{it}}</span>-->
+          <!--          </div>-->
         </td>
         <td>{{item.batch.batchNo}}</td>
         <td>{{item.batch.tubeColor}}</td>
@@ -62,7 +62,6 @@
         <td>{{msg.lineMachine.line.name}}-{{msg.spindle}}/{{msg.lineMachine.item}}</td>
         <td>{{msg.doffingNum}}</td>
         <td>{{msg.exception.name}}</td>
-        <!--        <td>{{msg.creator?.name}} {{msg.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>-->
         <td>{{msg.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
       </tr>
       </tbody>

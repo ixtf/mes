@@ -1,0 +1,92 @@
+@page {
+  size: 20cm 16cm;
+  margin: 0;
+}
+
+.package-box-print {
+  /*border: 1px solid #000;*/
+  position: relative;
+  width: 20cm;
+  height: 16cm;
+  padding-top: 3.2cm;
+  font-size: 0.9cm;
+}
+
+div.line {
+  text-align: center;
+  height: 62px;
+  line-height: 1.23cm;
+}
+
+/* 设置文本居中 */
+.line1, .line2, .line3 > .p_value {
+  /*border: 1px solid red;*/
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.left-box {
+  /*border: 1px solid red;*/
+  box-sizing: border-box;
+  flex: 19;
+}
+
+.package-box-print .center-box {
+  border: 1px solid red;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  /*position: absolute;*/
+  /*top: 3.45cm;*/
+  /*left: 1cm;*/
+  flex: 40;
+}
+
+.package-box-print .center-box .line1 {
+  /*width: 5.04cm;*/
+  /*height: 1.23cm;*/
+  flex: 9;
+  line-height: 1.23cm;
+}
+
+.package-box-print .center-box .bold {
+  font-size: 1.5cm;
+  font-weight: bold;
+}
+
+.package-box-print .center-box .line2 {
+  display: flex;
+  flex: 16;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.package-box-print .right-box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 47;
+}
+
+.package-box-print .right-box .line3 {
+  flex: 9;
+  display: flex;
+  line-height: 1.23cm;
+}
+
+.package-box-print .right-box .p_label {
+  flex: 19;
+}
+
+.package-box-print .right-box .p_value {
+  flex: 28;
+}
+
+.package-box-print .right-box .line4 {
+  /*border: 1px solid red;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 52;
+}

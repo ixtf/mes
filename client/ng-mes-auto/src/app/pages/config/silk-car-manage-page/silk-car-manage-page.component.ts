@@ -1,8 +1,9 @@
 import {SelectionModel} from '@angular/cdk/collections';
-import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, NgModule, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MatTableDataSource, PageEvent} from '@angular/material';
-import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {MatDialog, MatTableDataSource, PageEvent} from '@angular/material';
+import {RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {QRCodeModule} from 'angularx-qrcode';
 import {NgxBarcodeModule} from 'ngx-barcode';
@@ -10,12 +11,14 @@ import {NgxPrintModule} from 'ngx-print';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {BarcodeDialogComponentModule} from '../../../components/barcode-dialog/barcode-dialog.component';
+import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../../components/package-box-print/package-box-print.component';
 import {QrcodeDialogComponentModule} from '../../../components/qrcode-dialog/qrcode-dialog.component';
 import {SilkCar} from '../../../models/silk-car';
+import {ApiService} from '../../../services/api.service';
 import {PAGE_SIZE_OPTIONS} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {InitAction, SilkCarManagePageState} from '../../../store/silk-car-manage-page.state';
+import {InitAction, QueryAction, SilkCarManagePageState} from '../../../store/silk-car-manage-page.state';
 
 @Component({
   templateUrl: './silk-car-manage-page.component.html',
@@ -41,11 +44,14 @@ export class SilkCarManagePageComponent implements OnInit, OnDestroy {
   readonly dataSource: SilkCarDataSource;
   readonly selection = new SelectionModel<SilkCar>(true, []);
   private readonly destroy$ = new Subject();
+  printSilkCar: SilkCar;
+  @ViewChild('testPrint', {static: true})
+  readonly el: ElementRef;
 
   constructor(private store: Store,
               private fb: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router) {
+              private api: ApiService,
+              private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
     this.dataSource = new SilkCarDataSource(this.silkCars$.pipe(takeUntil(this.destroy$)));
   }
@@ -70,12 +76,20 @@ export class SilkCarManagePageComponent implements OnInit, OnDestroy {
   batchCreate() {
   }
 
+  @Dispatch()
   onPageEvent(ev: PageEvent) {
-    console.log(ev);
+    const first = ev.pageIndex * ev.pageSize;
+    return new QueryAction({first, pageSize: ev.pageSize});
   }
 
-  print(row: any) {
-
+  print(silkCar: SilkCar) {
+    // forkJoin([
+    //   this.api.getPackageBox('5d19a8a46dedd800019a6c8b'),
+    //   this.api.getPackageBox('5d19a8a46dedd800019a6c8b'),
+    // ])
+    this.api.getPackageBox('5d19a8a46dedd800019a6c8b').subscribe(it => {
+      PackageBoxPrintComponent.print(this.dialog, [it, it]);
+    });
   }
 
   isAllSelected() {
@@ -120,6 +134,7 @@ class SilkCarDataSource extends MatTableDataSource<SilkCar> {
     QRCodeModule,
     BarcodeDialogComponentModule,
     QrcodeDialogComponentModule,
+    PackageBoxPrintComponentModule,
     RouterModule.forChild([
       {path: '', component: SilkCarManagePageComponent, data: {animation: 'FilterPage'}},
     ]),

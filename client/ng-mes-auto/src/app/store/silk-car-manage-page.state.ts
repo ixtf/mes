@@ -5,8 +5,17 @@ import {tap} from 'rxjs/operators';
 import {SilkCar} from '../models/silk-car';
 import {ApiService} from '../services/api.service';
 
+const PAGE_NAME = 'SilkCarManagePage';
+
 export class InitAction {
-  static readonly type = '[SilkCarManagePage] InitAction';
+  static readonly type = `[${PAGE_NAME}] InitAction`;
+}
+
+export class QueryAction {
+  static readonly type = `[${PAGE_NAME}] QueryAction`;
+
+  constructor(public payload: { first: number; pageSize: number; }) {
+  }
 }
 
 interface StateModel {
@@ -18,7 +27,7 @@ interface StateModel {
 }
 
 @State<StateModel>({
-  name: 'SilkCarManagePage',
+  name: PAGE_NAME,
   defaults: {
     silkCarEntities: {},
   }
@@ -50,10 +59,16 @@ export class SilkCarManagePageState {
 
   @Action(InitAction)
   @ImmutableContext()
-  InitAction({setState}: StateContext<StateModel>) {
-    const params = new HttpParams();
+  InitAction({dispatch}: StateContext<StateModel>) {
+    return dispatch(new QueryAction({first: 0, pageSize: 50}));
+  }
+
+  @Action(QueryAction)
+  @ImmutableContext()
+  QueryAction({setState}: StateContext<StateModel>, {payload: {first, pageSize}}: QueryAction) {
+    const params = new HttpParams().set('first', `${first}`).set('pageSize', `${pageSize}`);
     return this.api.listSilkCar(params).pipe(
-      tap(({count, first, pageSize, silkCars}) => setState((state: StateModel) => {
+      tap(({count, silkCars}) => setState((state: StateModel) => {
         state.count = count;
         state.first = first;
         state.pageSize = pageSize;

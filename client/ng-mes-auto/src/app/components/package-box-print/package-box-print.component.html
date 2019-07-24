@@ -1,0 +1,60 @@
+<!--<div class="package-box-print" *ngFor="let it of packageBoxes" fxLayout>-->
+<!--  <div class="left-box"></div>-->
+<!--  <div class="center-box">-->
+<!--    <div class="line1 bold">{{it.batch.batchNo}}</div>-->
+<!--    <div class="line1">{{it.batch.spec}}</div>-->
+<!--    <div class="line1 bold">{{it.grade.name}}</div>-->
+<!--    <div class="line1">{{it.silkCount}}</div>-->
+<!--    <div class="line1">{{it.batch.tubeColor}}</div>-->
+<!--    <div class="line1">{{it.budat|date:'yyyy-MM-dd'}}</div>-->
+<!--    <div class="line2">-->
+<!--      <div>{{it.code.substring(0, 12)}}</div>-->
+<!--      <div>{{it.code.substring(12)}}</div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="right-box">-->
+<!--    <div class="line3">-->
+<!--      <div class="p_label"></div>-->
+<!--      <div class="p_value">{{it.netWeight}}</div>-->
+<!--    </div>-->
+<!--    <div class="line3">-->
+<!--      <div class="p_label"></div>-->
+<!--      <div class="p_value">{{it.grossWeight}}</div>-->
+<!--    </div>-->
+<!--    <div class="line4">-->
+<!--      <qrcode [qrdata]="it.code" [usesvg]="true" style="width:8cm;height:8cm;"></qrcode>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+<div *ngFor="let it of packageBoxes" class="package-box-print" fxLayout>
+  <!--  <div fxFlex="19"></div>-->
+  <div class="center-box" fxFlex="40" fxFlexAlign="center center" fxFlexOffset="19" fxLayout="column">
+    <div class="line bold">
+      {{it.batch.batchNo}}
+    </div>
+    <div class="line">{{it.batch.spec}}</div>
+    <div class="line bold">{{it.grade.name}}</div>
+    <div class="line">{{it.silkCount}}</div>
+    <div class="line">{{it.batch.tubeColor}}</div>
+    <div class="line">{{it.budat|date:'yyyy-MM-dd'}}</div>
+    <div class="line" fxFlexAlign="center center" fxLayout="column">
+      <div class="center-cell">{{it.code.substring(0, 12)}}</div>
+      <div class="center-cell">{{it.code.substring(12)}}</div>
+    </div>
+  </div>
+  <div class="right-box">
+    <div class="line3">
+      <div class="p_label"></div>
+      <div class="p_value">{{it.netWeight}}</div>
+    </div>
+    <div class="line3">
+      <div class="p_label"></div>
+      <div class="p_value">{{it.grossWeight}}</div>
+    </div>
+    <div class="line4">
+      <qrcode [qrdata]="it.code" [usesvg]="true" style="width:8cm;height:8cm;"></qrcode>
+    </div>
+  </div>
+</div>

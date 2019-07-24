@@ -17,6 +17,7 @@ import {MeasureReport} from '../models/measure-report';
 import {Notification} from '../models/notification';
 import {Operator} from '../models/operator';
 import {OperatorGroup} from '../models/operator-group';
+import {PackageBox} from '../models/package-box';
 import {PackageClass} from '../models/package-class';
 import {Permission} from '../models/permission';
 import {Product} from '../models/product';
@@ -244,6 +245,10 @@ export class ApiService {
 
   getSilkCarRecord_Events(id: string): Observable<EventSource[]> {
     return this.http.get<EventSource[]>(`${BASE_API_URL}/silkCarRecords/${id}/events`);
+  }
+
+  getPackageBox(id: string): Observable<PackageBox> {
+    return this.http.get<PackageBox>(`${BASE_API_URL}/packageBoxes/${id}`);
   }
 
   autoCompleteLine(q: string): Observable<Line[]> {
@@ -520,7 +525,6 @@ export class ApiService {
   private updateNotification(notification: Notification): Observable<Notification> {
     return this.http.put<Notification>(`${BASE_API_URL}/notifications/${notification.id}`, notification);
   }
-
 }
 
 @Injectable({

@@ -2,9 +2,9 @@ import {ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material';
 import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {ApiService} from '../../../../services/api.service';
-import {SEARCH_DEBOUNCE_TIME} from '../../../../services/util.service';
+import {CodeCompare, LineCompare, SEARCH_DEBOUNCE_TIME} from '../../../../services/util.service';
 
 @Component({
   templateUrl: './board-abnormal-dialog.component.html',
@@ -16,14 +16,15 @@ export class BoardAbnormalDialogComponent implements OnDestroy {
     workshopId: [null, Validators.required],
     lineIds: [null, [Validators.required, Validators.minLength(1)]]
   });
-  readonly workshops$ = this.api.listWorkshop();
+  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CodeCompare)));
   private readonly destroy$ = new Subject();
   readonly lines$ = this.form.get('workshopId').valueChanges.pipe(
     takeUntil(this.destroy$),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     tap(() => this.form.patchValue({lineIds: null})),
-    switchMap(it => this.api.getWorkshop_Lines(it))
+    switchMap(it => this.api.getWorkshop_Lines(it)),
+    map(it => (it || []).sort(LineCompare)),
   );
 
   constructor(private fb: FormBuilder,

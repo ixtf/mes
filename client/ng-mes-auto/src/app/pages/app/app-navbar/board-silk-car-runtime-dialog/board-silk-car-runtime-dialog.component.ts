@@ -1,7 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material';
+import {map} from 'rxjs/operators';
 import {ApiService} from '../../../../services/api.service';
+import {CodeCompare} from '../../../../services/util.service';
 
 @Component({
   templateUrl: './board-silk-car-runtime-dialog.component.html',
@@ -12,7 +14,7 @@ export class BoardSilkCarRuntimeDialogComponent {
   readonly form = this.fb.group({
     workshopId: [null, Validators.required],
   });
-  readonly workshops$ = this.api.listWorkshop();
+  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CodeCompare)));
 
   constructor(private fb: FormBuilder,
               private api: ApiService) {

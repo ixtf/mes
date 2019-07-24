@@ -4,6 +4,6 @@ services:
   mes-auto-web:
     image: nginx
     volumes:
-      - /home/jzb/git/com.hengyi/mes3/client/ng-mes-auto/dist/ng-mes-auto:/usr/share/nginx/html
+      - ./dist/ng-mes-auto:/usr/share/nginx/html
     ports:
       - 8080:80

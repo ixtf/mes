@@ -17,8 +17,6 @@ declare const EventBus: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardSilkCarRuntimePageComponent implements OnInit, OnDestroy {
-  @Select(BoardSilkCarRuntimePageState.allItems)
-  readonly allItems$: Observable<SilkCarRuntimeReportItem[]>;
   @Select(BoardSilkCarRuntimePageState.timeOutSilkCarRuntimes)
   readonly timeOutItems$: Observable<SilkCarRuntimeReportItem[]>;
   @Select(BoardSilkCarRuntimePageState.groupByBatchGradeItems)

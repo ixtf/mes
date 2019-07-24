@@ -149,13 +149,13 @@ export class BoardSilkCarRuntimePageState {
   @Selector()
   @ImmutableSelector()
   static allItems(state: StateModel): SilkCarRuntimeReportItem[] {
-    return Object.values(state.itemEntities);
+    return Object.keys(state.itemEntities).map(it => state.itemEntities[it]);
   }
 
   @Selector()
   @ImmutableSelector()
   static timeOutSilkCarRuntimes(state: StateModel): SilkCarRuntimeReportItem[] {
-    return Object.values(state.itemEntities).filter(it => {
+    return BoardSilkCarRuntimePageState.allItems(state).filter(it => {
       return it.duration() > state.timeOut;
     }).sort((a, b) => {
       return moment(a.startDateTime).isAfter(b.startDateTime) ? 1 : -1;
@@ -166,7 +166,7 @@ export class BoardSilkCarRuntimePageState {
   @ImmutableSelector()
   static groupByBatchGradeItems(state: StateModel): GroupByBatchGradeItem[] {
     const groupByBatchGradeItemEntities: { [key: string]: GroupByBatchGradeItem } = {};
-    Object.values(state.itemEntities).forEach(item => {
+    BoardSilkCarRuntimePageState.allItems(state).forEach(item => {
       const batch = item.batch;
       const grade = item.grade;
       const groupByKey = GroupByBatchGradeItem.groupByKey(batch, grade);
@@ -179,18 +179,20 @@ export class BoardSilkCarRuntimePageState {
       groupByBatchGradeItem.silkCount += item.silkCount;
       groupByBatchGradeItem.netWeight += item.netWeight;
     });
-    return Object.values(groupByBatchGradeItemEntities).sort((a, b) => {
-      let i = b.silkCarCount - a.silkCarCount;
-      if (i !== 0) {
+    return Object.keys(groupByBatchGradeItemEntities)
+      .map(it => groupByBatchGradeItemEntities[it])
+      .sort((a, b) => {
+        let i = b.silkCarCount - a.silkCarCount;
+        if (i !== 0) {
+          return i;
+        }
+        i = b.silkCount - a.silkCount;
+        if (i !== 0) {
+          return i;
+        }
+        i = b.netWeight - a.netWeight;
         return i;
-      }
-      i = b.silkCount - a.silkCount;
-      if (i !== 0) {
-        return i;
-      }
-      i = b.netWeight - a.netWeight;
-      return i;
-    });
+      });
   }
 
   @Action(InitAction)

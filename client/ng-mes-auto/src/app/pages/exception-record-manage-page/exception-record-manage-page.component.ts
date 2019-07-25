@@ -5,15 +5,17 @@ import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
+import {EB_URL} from '../../../environments/environment';
 import {LineMachineInputComponentModule} from '../../components/line-machine-input/line-machine-input.component';
 import {ExceptionRecord} from '../../models/exception-record';
 import {Line} from '../../models/line';
 import {ApiService} from '../../services/api.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
-import {ExceptionRecordManagePageState, FilterLineAction, HandleAction, InitAction, SaveAction} from '../../store/exception-record-manage-page.state';
-// @ts-ignore
+import {EBUpdateExceptionRecordAction, ExceptionRecordManagePageState, FilterLineAction, HandleAction, InitAction, SaveAction} from '../../store/exception-record-manage-page.state';
 import {ExceptionRecordUpdateDialogComponent} from './exception-record-update-dialog/exception-record-update-dialog.component';
+
+declare const EventBus: any;
 
 @Component({
   templateUrl: './exception-record-manage-page.component.html',
@@ -33,19 +35,34 @@ export class ExceptionRecordManagePageComponent implements OnInit, OnDestroy {
   readonly exceptionRecords$: Observable<ExceptionRecord[]>;
   readonly displayedColumns = ['spec', 'doffingNum', 'exception', 'creator', 'createDateTime', 'btns'];
   private readonly destroy$ = new Subject();
+  private readonly eb;
 
   constructor(private store: Store,
               private dialog: MatDialog,
               private api: ApiService) {
     this.store.dispatch(new InitAction());
+    this.eb = new EventBus(EB_URL);
+    this.eb.enableReconnect(true);
+    this.eb.onopen = () => {
+      this.eb.registerHandler('mes-auto://websocket/boards/abnormal/exceptionRecord', this.ebUpdateExceptionRecord);
+    };
   }
 
   ngOnInit(): void {
   }
 
   ngOnDestroy(): void {
+    if (this.eb) {
+      this.eb.close();
+    }
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  @Dispatch()
+  private ebUpdateExceptionRecord(error, message) {
+    const exceptionRecord = JSON.parse(message.body);
+    return new EBUpdateExceptionRecordAction({exceptionRecord});
   }
 
   @Dispatch()

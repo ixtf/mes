@@ -68,16 +68,6 @@ export class BoardAbnormalPageComponent implements OnInit, OnDestroy {
     setTimeout(() => location.reload(true), 30 * 1000);
   }
 
-  // @Dispatch()
-  // private refresh() {
-  //   return new RefreshAction();
-  // }
-  //
-  // @Dispatch()
-  // private onreconnect() {
-  //   return new ReconnectAction();
-  // }
-
   @Dispatch()
   private updateExceptionRecord(error, message) {
     const exceptionRecord = JSON.parse(message.body);

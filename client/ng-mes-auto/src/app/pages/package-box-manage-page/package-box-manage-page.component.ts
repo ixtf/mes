@@ -1,20 +1,18 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatTableDataSource} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {Observable, Subject} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
-import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
-import {ExceptionRecord} from '../../models/exception-record';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {map, takeUntil} from 'rxjs/operators';
+import {PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
 import {PackageBox} from '../../models/package-box';
 import {ApiService} from '../../services/api.service';
 import {CodeCompare} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
-import {DeleteAction, InitAction, PackageBoxManagePageState, SaveAction} from '../../store/package-box-manage-page.state';
-import {PackageBoxUpdateDialogComponent} from './package-box-update-dialog/package-box-update-dialog.component';
+import {DeleteAction, InitAction, PackageBoxManagePageState} from '../../store/package-box-manage-page.state';
 
 @Component({
   templateUrl: './package-box-manage-page.component.html',
@@ -26,7 +24,8 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
   readonly isAdmin$: Observable<boolean>;
   @Select(PackageBoxManagePageState.packageBoxes)
   readonly packageBoxes$: Observable<PackageBox[]>;
-  readonly displayedColumns = ['workshops', 'lines', 'note', 'modifier', 'modifyDateTime', 'btns'];
+  readonly dataSource: PackageBoxDataSource;
+  readonly displayedColumns = ['code', 'batch', 'grade', 'silkCountSpec', 'sapT001lSpec', 'budat', 'budatClass', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
   readonly searchForm = this.fb.group({
     workshopId: [null, Validators.required],
     budatClassId: null,
@@ -43,6 +42,7 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
               private api: ApiService,
               private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
+    this.dataSource = new PackageBoxDataSource(this.packageBoxes$.pipe(takeUntil(this.destroy$)));
   }
 
   ngOnInit(): void {
@@ -53,43 +53,33 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  create() {
-    this.api.getPackageBox('5d19a8a46dedd800019a6c8b').subscribe(it => {
-      PackageBoxPrintComponent.print(this.dialog, [it, it]);
-    });
-    // this.update(new PackageBox());
-  }
-
-  @Dispatch()
-  update(packageBox: PackageBox) {
-    return PackageBoxUpdateDialogComponent.open(this.dialog, packageBox).afterClosed().pipe(
-      filter(it => !!it),
-      map(it => new SaveAction(it))
-    );
-  }
-
   @Dispatch()
   delete(packageBox: PackageBox) {
     return new DeleteAction(packageBox);
   }
 
-  isShow(exceptionRecord: ExceptionRecord) {
-    const isAdmin = this.store.selectSnapshot(AppState.authInfoIsAdmin);
-    if (isAdmin) {
-      return true;
-    }
-    const currentId = this.store.selectSnapshot(AppState.authInfoId);
-    return exceptionRecord.creator.id === currentId;
+}
+
+class PackageBoxDataSource extends MatTableDataSource<PackageBox> {
+  private readonly subject = new BehaviorSubject<PackageBox[]>([]);
+
+  constructor(private packageBoxes$: Observable<PackageBox[]>) {
+    super();
+    packageBoxes$.subscribe(it => this.subject.next(it || []));
+  }
+
+  get data(): PackageBox[] {
+    return this.subject.value;
+  }
+
+  connect(): BehaviorSubject<PackageBox[]> {
+    return this.subject;
   }
 }
 
 @NgModule({
   declarations: [
     PackageBoxManagePageComponent,
-    PackageBoxUpdateDialogComponent,
-  ],
-  entryComponents: [
-    PackageBoxUpdateDialogComponent
   ],
   imports: [
     NgxsModule.forFeature([PackageBoxManagePageState]),

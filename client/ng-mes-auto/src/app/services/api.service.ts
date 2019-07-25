@@ -370,6 +370,13 @@ export class ApiService {
     return this.http.get<ProductProcess>(`${BASE_API_URL}/productProcesses/${id}`);
   }
 
+  listUnbudatPackageBox(params: HttpParams): Observable<PackageBox[]> {
+    params = params.set('first', '0').set('pageSize', '1000');
+    return this.http.get<{ packageBoxes: PackageBox[] }>(`${BASE_API_URL}/measurePackageBoxes`, {params}).pipe(
+      map(it => it.packageBoxes)
+    );
+  }
+
   measureReport(params?: HttpParams): Observable<MeasureReport> {
     return this.http.get<MeasureReport>(`${BASE_API_URL}/reports/measureReport`, {params});
   }
@@ -525,6 +532,7 @@ export class ApiService {
   private updateNotification(notification: Notification): Observable<Notification> {
     return this.http.put<Notification>(`${BASE_API_URL}/notifications/${notification.id}`, notification);
   }
+
 }
 
 @Injectable({

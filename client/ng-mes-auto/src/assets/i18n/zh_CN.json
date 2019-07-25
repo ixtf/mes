@@ -22,6 +22,10 @@
   "grabFlage": "抓取",
   "eliminateFlage": "剔除",
   "weight": "锭重",
+  "foamType": "泡沫类型",
+  "foamNum": "泡沫数量",
+  "palletType": "托盘类型",
+  "palletCode": "托盘编号",
   "doffingType": "落筒方式",
   "brand": "品牌",
   "supplier": "厂商",
@@ -30,13 +34,16 @@
   "lineMachineCount": "机台数",
   "packageBoxCount": "包数",
   "silkCount": "颗数",
+  "batchMeasure": "批量计量",
   "silkCarCount": "车数",
+  "printCount": "打印次数",
   "packageBoxCount": "包数",
   "netWeight": "净重",
   "grossWeight": "毛重",
   "weight": "重量",
   "foamCount": "泡沫数",
   "position": "位置",
+  "saleType": "销售类型",
   "EventSourceType": {
     "PackageBoxEvent": "打包",
     "Detach": "解绑",
@@ -53,13 +60,25 @@
   "DyeingPrepareType": {
     "FIRST": "正常抽样"
   },
+  "SaleType": {
+    "DOMESTIC": "内销",
+    "FOREIGN": "外销"
+  },
   "Workshop": {
     "sapT001ls": "SAP内销库",
     "sapT001lsForeign": "SAP外贸库",
     "sapT001lsPallet": "SAP塑托库"
   },
   "PackageBox": {
-    "code": "唛头"
+    "code": "唛头",
+    "sapT001l": "SAP库存地",
+    "budat": "入库日期",
+    "packageType": "包装类型",
+    "creator": "打包人",
+    "createDateTime": "打包时间"
+  },
+  "Grade": {
+    "sortBy": "分数"
   },
   "SilkCarRecord": {
     "grade": "预设等级"
@@ -221,6 +240,7 @@
   },
   "Common": {
     "all": "全部",
+    "filter": "过滤",
     "undo": "撤销",
     "creator": "创建人",
     "modifier": "修改人",

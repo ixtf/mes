@@ -30,6 +30,7 @@
 
   <mat-form-field floatLabel="never">
     <mat-select [placeholder]="'product'|translate" formControlName="productId">
+      <mat-option>{{'Common.all'|translate}}</mat-option>
       <mat-option *ngFor="let it of products$|async" [value]="it.id">
         {{it.name}}
       </mat-option>
@@ -43,30 +44,76 @@
 
 <mat-divider></mat-divider>
 
-<mat-table [dataSource]="packageBoxes$" fxFlex>
-  <ng-container matColumnDef="workshops">
-    <mat-header-cell *matHeaderCellDef>{{'workshop'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.workshopsSpec}}</mat-cell>
+<mat-table [dataSource]="dataSource" fxFlex>
+  <ng-container matColumnDef="code">
+    <mat-header-cell *matHeaderCellDef>CODE</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.code}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="lines">
-    <mat-header-cell *matHeaderCellDef>{{'line'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.linesSpec}}</mat-cell>
+  <ng-container matColumnDef="batch">
+    <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batch.batchNo}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="note">
-    <mat-header-cell *matHeaderCellDef>{{'Common.note'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.note}}</mat-cell>
+  <ng-container matColumnDef="grade">
+    <mat-header-cell *matHeaderCellDef>{{'grade'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.grade.name}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="modifier">
+  <ng-container matColumnDef="palletCode">
+    <mat-header-cell *matHeaderCellDef>{{'palletCode'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.palletCode}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="palletType">
+    <mat-header-cell *matHeaderCellDef>{{'palletType'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.palletType}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="packageType">
+    <mat-header-cell *matHeaderCellDef>{{'packageType'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.packageType}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="foamType">
+    <mat-header-cell *matHeaderCellDef>{{'foamType'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.foamType}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="foamNum">
+    <mat-header-cell *matHeaderCellDef>{{'foamNum'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.foamNum}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="silkCountSpec">
+    <mat-header-cell *matHeaderCellDef>{{'silkCountSpec'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.silkCount}} / {{row.netWeight}} / {{row.grossWeight}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sapT001lSpec">
+    <mat-header-cell *matHeaderCellDef>{{'sapT001l'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.silkCount}} / {{row.netWeight|number:'.3-3'}}
+      / {{row.grossWeight|number:'.3-3'}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="budat">
+    <mat-header-cell *matHeaderCellDef>{{'Common.budat'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.budat|date:'yyyy-MM-dd'}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="budatClass">
+    <mat-header-cell *matHeaderCellDef>{{'packageClass'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.budatClass.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="creator">
     <mat-header-cell *matHeaderCellDef>{{'Common.creator'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.modifier?.name}}</mat-cell>
+    <mat-cell *matCellDef="let row">{{row.creator.name}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="modifyDateTime">
+  <ng-container matColumnDef="createDateTime">
     <mat-header-cell *matHeaderCellDef>{{'Common.time'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.modifyDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+    <mat-cell *matCellDef="let row">{{row.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="btns">

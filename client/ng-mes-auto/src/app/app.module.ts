@@ -54,6 +54,7 @@ const routes: Routes = [
     children: [
       {path: 'silkCarRuntime', loadChildren: () => import('./pages/silk-car-runtime-page/silk-car-runtime-page.component').then(it => it.Module)},
       {path: 'silkCarRecord', loadChildren: () => import('./pages/silk-car-record-page/silk-car-record-page.component').then(it => it.Module)},
+      {path: 'unbudatPackageBoxes', loadChildren: () => import('./pages/unbudat-package-box-manage-page/unbudat-package-box-manage-page.component').then(it => it.Module)},
       {path: 'packageBoxes', loadChildren: () => import('./pages/package-box-manage-page/package-box-manage-page.component').then(it => it.Module)},
       {path: 'exceptionRecords', loadChildren: () => import('./pages/exception-record-manage-page/exception-record-manage-page.component').then(it => it.Module)},
       {path: 'notifications', loadChildren: () => import('./pages/notification-manage-page/notification-manage-page.component').then(it => it.Module)},
@@ -79,9 +80,9 @@ const routes: Routes = [
         path: 'admin',
         canActivate: [AdminGuard],
         children: [
-          {path: 'sapT001ls', loadChildren: () => import('./pages/admin/sap-t001l-manage-page/sap-t001l-manage-page.component').then(it => it.Module)},
-          {path: 'operators', loadChildren: () => import('./pages/admin/operator-manage-page/operator-manage-page.component').then(it => it.Module)},
-          {path: 'operatorGroups', loadChildren: () => import('./pages/admin/operator-group-manage-page/operator-group-manage-page.component').then(it => it.Module)},
+          {path: 'sapT001ls', loadChildren: () => import('./pages/config/sap-t001l-manage-page/sap-t001l-manage-page.component').then(it => it.Module)},
+          {path: 'operators', loadChildren: () => import('./pages/config/operator-manage-page/operator-manage-page.component').then(it => it.Module)},
+          {path: 'operatorGroups', loadChildren: () => import('./pages/config/operator-group-manage-page/operator-group-manage-page.component').then(it => it.Module)},
         ]
       },
       {path: 'test/animation01', loadChildren: () => import('./pages/test/animation01-page/animation01-page.component').then(it => it.Module)},

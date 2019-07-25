@@ -5,12 +5,14 @@ import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
 import {CodeCompare} from '../services/util.service';
 
+const PAGE_NAME = 'WorkshopManagePage';
+
 export class InitAction {
-  static readonly type = '[WorkshopManagePage] InitAction';
+  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
 }
 
 export class SaveAction {
-  static readonly type = '[NotificationManagePage] SaveAction';
+  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
 
   constructor(public payload: Workshop) {
   }
@@ -22,7 +24,7 @@ interface StateModel {
 }
 
 @State<StateModel>({
-  name: 'WorkshopManagePage',
+  name: PAGE_NAME,
   defaults: {
     workshopEntities: {}
   }

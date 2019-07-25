@@ -4,7 +4,7 @@ import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {Workshop} from '../../../models/workshop';
 import {COPY} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
@@ -48,20 +48,17 @@ export class WorkshopManagePageComponent implements OnInit {
     this.update(null);
   }
 
+  @Dispatch()
   update(workshop: Workshop) {
     if (!workshop) {
       workshop = new Workshop();
       workshop.corporation = this.store.selectSnapshot(AppState.corporation);
     }
-    WorkshopUpdateDialogComponent.open(this.dialog, workshop).afterClosed().pipe(
-      filter(it => !!it)
-    ).subscribe(this.save);
+    return WorkshopUpdateDialogComponent.open(this.dialog, workshop).pipe(
+      map(it => new SaveAction(it))
+    );
   }
 
-  @Dispatch()
-  private save(workshop: Workshop) {
-    return new SaveAction(workshop);
-  }
 }
 
 @NgModule({

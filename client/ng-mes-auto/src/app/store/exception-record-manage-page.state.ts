@@ -6,26 +6,35 @@ import {Line} from '../models/line';
 import {ApiService} from '../services/api.service';
 import {LineCompare} from '../services/util.service';
 
+const PAGE_NAME = 'ExceptionRecordManagePage';
+
 export class InitAction {
-  static readonly type = '[ExceptionRecordManagePage] InitAction';
+  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
 }
 
 export class HandleAction {
-  static readonly type = '[ExceptionRecordManagePage] HandleAction';
+  static readonly type = `[${PAGE_NAME}] ${HandleAction.name}`;
 
   constructor(public payload: ExceptionRecord) {
   }
 }
 
+export class EBUpdateExceptionRecordAction {
+  static readonly type = `[${PAGE_NAME}] ${EBUpdateExceptionRecordAction.name}`;
+
+  constructor(public payload: { exceptionRecord: ExceptionRecord }) {
+  }
+}
+
 export class SaveAction {
-  static readonly type = '[ExceptionRecordManagePage] SaveAction';
+  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
 
   constructor(public payload: ExceptionRecord) {
   }
 }
 
 export class FilterLineAction {
-  static readonly type = '[ExceptionRecordManagePage] FilterLineAction';
+  static readonly type = `[${PAGE_NAME}] ${FilterLineAction.name}`;
 
   constructor(public payload: Line) {
   }
@@ -37,7 +46,7 @@ interface StateModel {
 }
 
 @State<StateModel>({
-  name: 'ExceptionRecordManagePage',
+  name: PAGE_NAME,
   defaults: {
     exceptionRecordEntities: {}
   }
@@ -103,12 +112,25 @@ export class ExceptionRecordManagePageState {
     return this.api.saveExceptionRecord(payload).pipe(
       switchMap(exceptionRecord => {
         setState((state: StateModel) => {
-          state.exceptionRecordEntities[exceptionRecord.id] = exceptionRecord;
+          state.exceptionRecordEntities[exceptionRecord.id] = ExceptionRecord.assign(exceptionRecord);
           return state;
         });
         return dispatch(new FilterLineAction(exceptionRecord.lineMachine.line));
       }),
     );
+  }
+
+  @Action(EBUpdateExceptionRecordAction)
+  @ImmutableContext()
+  EBUpdateExceptionRecordAction({setState, dispatch}: StateContext<StateModel>, {payload: {exceptionRecord}}: EBUpdateExceptionRecordAction) {
+    setState((state: StateModel) => {
+      if (exceptionRecord.handled) {
+        delete state.exceptionRecordEntities[exceptionRecord.id];
+      } else {
+        state.exceptionRecordEntities[exceptionRecord.id] = ExceptionRecord.assign(exceptionRecord);
+      }
+      return state;
+    });
   }
 
   @Action(FilterLineAction)

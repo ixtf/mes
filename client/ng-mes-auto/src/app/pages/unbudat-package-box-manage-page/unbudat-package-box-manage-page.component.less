@@ -1,0 +1,103 @@
+@import "../../../library";
+
+.td-width(@width) {
+  width: @width;
+  min-width: @width;
+  max-width: @width;
+  text-align: center;
+  border-right: 1px solid #e0e0e0;
+}
+
+:host {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+}
+
+div.filter-area {
+  background: #f5f5f5;
+  min-height: 48px;
+  height: 48px;
+  padding-left: 16px;
+
+  .mat-button-toggle-group {
+    background-color: white;
+    box-shadow: none;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+th,
+td {
+  white-space: nowrap;
+
+  span {
+    text-align: center;
+  }
+}
+
+
+.mat-column-select {
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.mat-column-test {
+  text-align: center;
+  cursor: pointer;
+  border-right: 1px solid #e0e0e0;
+}
+
+.mat-column-silkCount,
+.mat-column-grade {
+  .td-width(50px);
+}
+
+.mat-column-grossWeight,
+.mat-column-netWeight {
+  .td-width(80px);
+}
+
+.mat-column-budat {
+  .td-width(130px);
+}
+
+.mat-column-palletCode,
+.mat-column-packageType,
+.mat-column-palletType,
+.mat-column-sapT001l {
+  .td-width(100px);
+}
+
+.mat-column-palletCode {
+  border-right: none;
+}
+
+.mat-column-foamType {
+  .td-width(140px);
+}
+
+.mat-column-foamNum {
+  .td-width(70px);
+}
+
+.mat-column-creator {
+  .td-width(150px);
+}
+
+.mat-column-createDateTime {
+  .td-width(160px);
+}
+
+.mat-column-btns {
+  .td-width(50px);
+}

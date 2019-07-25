@@ -107,9 +107,12 @@ export const downEle = (array: any[], ele: any): any[] => {
 export const CheckQ = (sV: string, qV: string): boolean => {
   let s = sV || '';
   let q = qV || '';
-  s = s.toLocaleLowerCase();
-  q = q.toLocaleLowerCase();
-  return s.includes(q);
+  if (q) {
+    s = s.toLocaleLowerCase();
+    q = q.toLocaleLowerCase();
+    return s.includes(q);
+  }
+  return true;
 };
 
 export const INTERVAL$ = interval(1000).pipe(share());

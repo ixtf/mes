@@ -1,7 +1,9 @@
 <form class="search-area">
   <mat-button-toggle-group appearance="legacy">
     <mat-button-toggle (click)="filterLine()" [checked]="!(filterLine$|async)">
-      {{'Common.all'|translate}}
+      <span [matBadge]="(exceptionRecords$|async)?.length" matBadgeColor="accent" matBadgePosition="before">
+        {{'Common.all'|translate}}
+      </span>
     </mat-button-toggle>
     <mat-button-toggle (click)="filterLine(it)" *ngFor="let it of lines$|async" [checked]="(filterLine$|async)?.id===it.id">
       {{it.name}}

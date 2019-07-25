@@ -47,7 +47,7 @@ export class UpdateProductPlanRecordAction {
 }
 
 export class UpdateExceptionRecordAction {
-  static readonly type = `[${PAGE_NAME}] UpdateExceptionRecordAction`;
+  static readonly type = `[${PAGE_NAME}] ${UpdateExceptionRecordAction.name}`;
 
   constructor(public payload: { exceptionRecord: ExceptionRecord }) {
   }

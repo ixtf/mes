@@ -1,6 +1,6 @@
 <div class="search-area" fxLayoutGap="16px">
   <mat-form-field floatLabel="never">
-    <input [formControl]="qCtrl" [placeholder]="'Tooltip.q'|translate" matInput>
+    <input (ngModelChange)="setQ($event)" [formControl]="qCtrl" [placeholder]="'Tooltip.q'|translate" matInput>
   </mat-form-field>
 
   <span fxFlex></span>

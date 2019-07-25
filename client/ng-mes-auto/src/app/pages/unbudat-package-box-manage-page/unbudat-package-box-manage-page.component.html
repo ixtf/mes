@@ -1,0 +1,201 @@
+<form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never" fxFlex="150px">
+    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId" required>
+      <mat-option *ngFor="let it of workshops$|async" [value]="it.id">
+        {{it.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never" fxFlex="150px">
+    <input [matDatepicker]="datePicker" [placeholder]="'Common.date'|translate" formControlName="date" matInput required>
+    <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
+  </mat-form-field>
+
+  <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+    <mat-icon>search</mat-icon>
+  </button>
+
+  <span fxFlex></span>
+
+  <button (click)="print()" [disabled]="selection.selected?.length<1" color="primary" mat-stroked-button type="button">
+    {{'Common.print'|translate}} ({{selection.selected.length}})
+  </button>
+  <button (click)="batchMeasure()" [disabled]="!canBatchMeasure()" color="primary" mat-stroked-button type="button">
+    {{'batchMeasure'|translate}} ({{selection.selected.length}})
+  </button>
+
+  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+
+<div class="filter-area" fxLayout fxLayoutAlign="start center" fxLayoutGap="16px">
+  <!--  <span>{{'Common.filter'|translate}}</span>-->
+
+  <mat-button-toggle-group appearance="legacy">
+    <mat-button-toggle (click)="filterPrinted()">
+      已打印
+    </mat-button-toggle>
+    <mat-button-toggle (click)="filterPrinted()">
+      未打印
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group appearance="legacy" multiple>
+    <mat-button-toggle (click)="filterMeasured()">
+      已计量
+      <!--      {{'Common.all'|translate}}-->
+    </mat-button-toggle>
+    <mat-button-toggle (click)="filterMeasured()">
+      未计量
+      <!--      {{'Common.all'|translate}}-->
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-form-field floatLabel="never" fxFlex="150px">
+    <mat-select (valueChange)="filterBatch($event)" [placeholder]="'batchNo'|translate">
+      <mat-option>{{'Common.all'|translate}}</mat-option>
+      <mat-option *ngFor="let it of batches$|async" [value]="it">
+        {{it.batchNo}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never" fxFlex="150px">
+    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'grade'|translate">
+      <mat-option>{{'Common.all'|translate}}</mat-option>
+      <mat-option *ngFor="let it of grades$|async" [value]="it">
+        {{it.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+<mat-divider></mat-divider>
+<div fxFlex style="overflow: auto;width: 100vw;">
+  <table [dataSource]="dataSource" mat-table>
+    <ng-container matColumnDef="select" sticky>
+      <th *matHeaderCellDef mat-header-cell>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td *matCellDef="let row" mat-cell>
+        <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                      (click)="$event.stopPropagation()"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="test" sticky>
+      <th *matHeaderCellDef mat-header-cell>
+        <div fxLayout fxLayoutAlign="center center" fxLayoutGap="32px">
+          <span translate="printCount"></span>
+          <mat-divider vertical></mat-divider>
+          <span translate="PackageBox.code"></span>
+          <mat-divider vertical></mat-divider>
+          <span translate="batchNo"></span>
+        </div>
+      </th>
+      <td (click)="selection.toggle(row)" *matCellDef="let row" mat-cell matRipple>
+        <div fxLayout>
+          <span fxFlex="40px">{{row.printCount}}</span>
+          <mat-divider vertical></mat-divider>
+          <span fxFlex="220px">{{row.code}}</span>
+          <mat-divider vertical></mat-divider>
+          <span [matTooltip]="row.batch.product.name+' - '+row.batch.spec+' - '+row.batch.tubeColor" fxFlex="90px">
+            {{row.batch.batchNo}}
+          </span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="grade">
+      <th *matHeaderCellDef mat-header-cell>{{'grade'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.grade.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="silkCount">
+      <th *matHeaderCellDef mat-header-cell>{{'silkCount'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.silkCount}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="netWeight">
+      <th *matHeaderCellDef mat-header-cell>{{'netWeight'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.netWeight|number:'.3-3'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="grossWeight">
+      <th *matHeaderCellDef mat-header-cell>{{'grossWeight'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.grossWeight|number:'.3-3'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="sapT001l">
+      <th *matHeaderCellDef mat-header-cell>{{'PackageBox.sapT001l'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>
+        <span *ngIf="row.sapT001l" [matTooltip]="row.sapT001l?.lgobe">
+          {{row.sapT001l.lgort}} / {{('SaleType.' + row.saleType)|translate}}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="budat">
+      <th *matHeaderCellDef mat-header-cell>{{'PackageBox.budat'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.budat|date:'yyyy-MM-dd'}} / {{row.budatClass?.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="palletType">
+      <th *matHeaderCellDef mat-header-cell>{{'palletType'|translate}}</th>
+      <td *matCellDef="let row" [matTooltipDisabled]="!row.isValidPalletCode" [matTooltip]="row.palletCode" mat-cell>{{row.palletType}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="packageType">
+      <th *matHeaderCellDef mat-header-cell>{{'PackageBox.packageType'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.packageType}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="foamType">
+      <th *matHeaderCellDef mat-header-cell>{{'foamType'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.foamType}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="foamNum">
+      <th *matHeaderCellDef mat-header-cell>{{'foamNum'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.foamNum}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="creator">
+      <th *matHeaderCellDef mat-header-cell>{{'Common.creator'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>
+        {{row.creator.name}}
+        <ng-container *ngIf="row.creator.hrId">
+          [{{row.creator.hrId}}]
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="createDateTime">
+      <th *matHeaderCellDef mat-header-cell>{{'Common.time'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.createDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="palletCode">
+      <th *matHeaderCellDef mat-header-cell>{{'palletCode'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.palletCode}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="btns" stickyEnd>
+      <th *matHeaderCellDef mat-header-cell>{{'Common.operation'|translate}}</th>
+      <td (click)="update(row)" *matCellDef="let row" mat-cell matRipple>
+        <mat-icon>edit</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</div>

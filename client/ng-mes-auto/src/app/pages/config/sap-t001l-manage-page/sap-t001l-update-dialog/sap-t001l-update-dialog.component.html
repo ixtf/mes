@@ -1,0 +1,30 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+    <span fxFlex>{{title|translate}}</span>
+
+    <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content fxLayout="column">
+    <mat-form-field>
+      <input [placeholder]="'Sap.lgort'|translate" formControlName="lgort" matInput required>
+      <mat-error *ngIf="form.get('lgort').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [placeholder]="'Sap.lgobe'|translate" formControlName="lgobe" matInput required>
+      <mat-error *ngIf="form.get('lgobe').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-button>{{'Common.finish'|translate}}</button>
+  </mat-dialog-actions>
+</form>
+

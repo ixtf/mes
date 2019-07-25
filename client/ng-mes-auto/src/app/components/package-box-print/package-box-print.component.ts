@@ -29,22 +29,18 @@ export class PackageBoxPrintComponent implements AfterContentInit {
     setTimeout(() => {
       const popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
       popupWin.document.open();
-      popupWin.document.write(`
-      <html>
-        <head>
-          <title></title>
-          <link rel="stylesheet" type="text/css" href="assets/print/normalize.css">
-          <link rel="stylesheet" type="text/css" href="assets/print/package-box.css">
-        </head>
-        <body onload="window.print();window.close()">
-        ${this.elementRef.nativeElement.innerHTML}
-        </body>
-      </html>`);
+      popupWin.document.write(`<html>
+<head>
+<link rel="stylesheet" type="text/css" href="assets/print/normalize.css">
+<link rel="stylesheet" type="text/css" href="assets/print/package-box.css">
+</head>
+<body onload="window.print();window.close()">${this.elementRef.nativeElement.innerHTML}</body>
+</html>`);
       this.dialogRef.close();
-      // popupWin.document.close();
+      popupWin.document.close();
     });
-    // <body onload="window.print();window.close()">
-    // popupWin.document.close();
+    // <body>${this.elementRef.nativeElement.innerHTML}</body>
+    // popupWin.document.execCommand('print');
   }
 }
 

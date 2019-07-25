@@ -1,17 +1,20 @@
-@import "../../../../library";
-
-main {
+:host {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
   min-width: 100vw;
   min-height: 100vh;
 }
 
 aside {
-  height: 100vh;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 100vh;
   background-color: #1f2018;
   background-image: url('../../../../assets/img/login-page/aside.png');
   //background-image: url(https://d14j85u8c9iadh.cloudfront.net/28/sweetmasteremail.png);
@@ -19,12 +22,13 @@ aside {
   background-size: cover;
 }
 
-.loginForm {
-  height: 100vh;
-  flex-grow: 1;
+section {
+  box-sizing: border-box;
   display: flex;
+  flex-grow: 1;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
 }
 
 form {

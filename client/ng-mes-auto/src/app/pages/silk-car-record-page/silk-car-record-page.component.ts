@@ -36,7 +36,7 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
   readonly pageSize$: Observable<number>;
   readonly searchForm = this.fb.group({
     silkCarCode: ['3000F2345', Validators.required],
-    startDate: [new Date(2019, 6, 1), Validators.required],
+    startDate: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
   });
   readonly settingForm = this.fb.group({

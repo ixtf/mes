@@ -22,10 +22,9 @@ import {AppState, LoginAction} from '../../../store/app.state';
 })
 export class LoginPageComponent implements OnInit {
   @Select(AppState.isShake)
-  shake$: Observable<boolean>;
-  shake?: boolean;
+  readonly shake$: Observable<boolean>;
   hide = true;
-  form = this.fb.group({
+  readonly form = this.fb.group({
     loginId: [null, Validators.required],
     loginPassword: [null, Validators.required],
     returnUrl: null

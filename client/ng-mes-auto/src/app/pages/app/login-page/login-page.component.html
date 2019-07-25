@@ -1,31 +1,29 @@
-<main fxLayout>
-  <aside>
-    <div style="color: white;font-size: 20px">MES-AUTO</div>
-    <div style="color: white;font-size: 16px">V3.0</div>
-  </aside>
+<aside>
+  <div style="color: white;font-size: 20px">MES-AUTO</div>
+  <div style="color: white;font-size: 16px">V3.0</div>
+</aside>
 
-  <div class="loginForm">
-    <form (ngSubmit)="login()" [@shake]="shake$|async" [formGroup]="form" fxLayout="column">
-      <mat-form-field floatLabel="never">
-        <input formControlName="loginId" matInput required>
-        <button mat-icon-button matPrefix tabindex="-1" type="button">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <mat-form-field floatLabel="never">
-        <input [type]="hide ? 'password' : 'text'" formControlName="loginPassword" matInput required>
-        <button mat-icon-button matPrefix tabindex="-1" type="button">
-          <mat-icon>lock</mat-icon>
-        </button>
-        <button (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" mat-icon-button matSuffix type="button">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <button [disabled]="form.pristine||form.invalid" color="primary" mat-stroked-button>
-        {{'Common.finish'|translate}}
+<section>
+  <form (ngSubmit)="login()" [@shake]="shake$|async" [formGroup]="form" fxLayout="column">
+    <mat-form-field floatLabel="never">
+      <input formControlName="loginId" matInput required>
+      <button mat-icon-button matPrefix tabindex="-1" type="button">
+        <mat-icon>account_circle</mat-icon>
       </button>
-    </form>
-  </div>
-</main>
+    </mat-form-field>
+
+    <mat-form-field floatLabel="never">
+      <input [type]="hide ? 'password' : 'text'" formControlName="loginPassword" matInput required>
+      <button mat-icon-button matPrefix tabindex="-1" type="button">
+        <mat-icon>lock</mat-icon>
+      </button>
+      <button (click)="hide = !hide" mat-icon-button matSuffix type="button">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-stroked-button>
+      {{'Common.finish'|translate}}
+    </button>
+  </form>
+</section>

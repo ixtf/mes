@@ -54,6 +54,7 @@ const routes: Routes = [
     children: [
       {path: 'silkCarRuntime', loadChildren: () => import('./pages/silk-car-runtime-page/silk-car-runtime-page.component').then(it => it.Module)},
       {path: 'silkCarRecord', loadChildren: () => import('./pages/silk-car-record-page/silk-car-record-page.component').then(it => it.Module)},
+      {path: 'packageBoxes', loadChildren: () => import('./pages/package-box-manage-page/package-box-manage-page.component').then(it => it.Module)},
       {path: 'exceptionRecords', loadChildren: () => import('./pages/exception-record-manage-page/exception-record-manage-page.component').then(it => it.Module)},
       {path: 'notifications', loadChildren: () => import('./pages/notification-manage-page/notification-manage-page.component').then(it => it.Module)},
       {
@@ -65,6 +66,7 @@ const routes: Routes = [
           {path: 'silkCars', loadChildren: () => import('./pages/config/silk-car-manage-page/silk-car-manage-page.component').then(it => it.Module)},
           {path: 'batches', loadChildren: () => import('./pages/config/batch-manage-page/batch-manage-page.component').then(it => it.Module)},
           {path: 'packageClasses', loadChildren: () => import('./pages/config/package-class-manage-page/package-class-manage-page.component').then(it => it.Module)},
+          {path: 'grades', loadChildren: () => import('./pages/config/grade-manage-page/grade-manage-page.component').then(it => it.Module)},
         ]
       },
       {

@@ -5,19 +5,21 @@ import {Notification} from '../models/notification';
 import {ApiService} from '../services/api.service';
 import {DefaultCompare} from '../services/util.service';
 
+const PAGE_NAME = 'NotificationManagePage';
+
 export class InitAction {
-  static readonly type = '[NotificationManagePage] InitAction';
+  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
 }
 
 export class SaveAction {
-  static readonly type = '[NotificationManagePage] SaveAction';
+  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
 
   constructor(public payload: Notification) {
   }
 }
 
 export class DeleteAction {
-  static readonly type = '[NotificationManagePage] DeleteAction';
+  static readonly type = `[${PAGE_NAME}] DeleteAction`;
 
   constructor(public payload: Notification) {
   }
@@ -28,7 +30,7 @@ interface StateModel {
 }
 
 @State<StateModel>({
-  name: 'NotificationManagePage',
+  name: PAGE_NAME,
   defaults: {
     notificationEntities: {}
   }

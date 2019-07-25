@@ -1,22 +1,25 @@
-import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
+import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {PackageClass} from '../models/package-class';
 import {ApiService} from '../services/api.service';
 import {SortByCompare} from '../services/util.service';
 
+const PAGE_NAME = 'PackageClassManagePage';
+
 export class InitAction {
-  static readonly type = '[PackageClassManagePage] InitAction';
+  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
 }
 
-interface PackageClassManagePageStateModel {
-  q?: string;
-  packageClasses?: PackageClass[];
+interface StateModel {
+  packageClassEntities?: { [id: string]: PackageClass };
 }
 
-@State<PackageClassManagePageStateModel>({
-  name: 'PackageClassManagePage',
-  defaults: {}
+@State<StateModel>({
+  name: PAGE_NAME,
+  defaults: {
+    packageClassEntities: {},
+  }
 })
 export class PackageClassManagePageState {
   constructor(private api: ApiService) {
@@ -24,15 +27,16 @@ export class PackageClassManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static packageClasses(state: PackageClassManagePageStateModel) {
-    return (state.packageClasses || []).sort(SortByCompare);
+  static packageClasses(state: StateModel): PackageClass[] {
+    return Object.values(state.packageClassEntities).sort(SortByCompare);
   }
 
   @Action(InitAction)
-  InitAction({setState}: StateContext<PackageClassManagePageStateModel>) {
+  @ImmutableContext()
+  InitAction({setState}: StateContext<StateModel>) {
     return this.api.listPackageClass().pipe(
-      tap(packageClasses => setState((state: PackageClassManagePageStateModel) => {
-        state.packageClasses = packageClasses;
+      tap(packageClasses => setState((state: StateModel) => {
+        state.packageClassEntities = PackageClass.toEntities(packageClasses);
         return state;
       }))
     );

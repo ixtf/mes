@@ -144,7 +144,7 @@ export const DefaultCompare = (o1: any, o2: any): number => {
 };
 export const SortByCompare = (o1: any, o2: any): number => {
   if (o1 && o2) {
-    return (o1 === o2 || o1.id === o2.id) ? 0 : o1.sortBy - o2.sortBy;
+    return (o1 === o2 || o1.id === o2.id) ? 0 : o2.sortBy - o1.sortBy;
   }
   return o1 ? 1 : -1;
 };

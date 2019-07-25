@@ -12,8 +12,8 @@ div.package-box {
 }
 
 span.line {
-  text-align: center;
   line-height: 1.64cm;
+  text-align: center;
 }
 
 span.line.bold {

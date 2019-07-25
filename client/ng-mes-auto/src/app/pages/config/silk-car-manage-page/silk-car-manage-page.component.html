@@ -4,12 +4,7 @@
     <mat-icon>add</mat-icon>
   </button>
 
-  <div #testPrint id="print-section" style="display: none">
-    <ngx-barcode [bc-value]="printSilkCar?.code" bc-height="150"></ngx-barcode>
-    {{printSilkCar?.code}}
-    <qrcode [qrdata]="printSilkCar?.code" [usesvg]="true"></qrcode>
-  </div>
-  <button mat-mini-fab ngxPrint printSectionId="print-section" styleSheetFile="assets/print/silkCar.css" tabindex="-1" type="button">
+  <button (click)="batchPrint()" mat-mini-fab tabindex="-1" type="button">
     <mat-icon>print</mat-icon>
   </button>
 </form>

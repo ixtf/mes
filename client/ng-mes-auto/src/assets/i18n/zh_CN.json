@@ -221,6 +221,7 @@
   },
   "Common": {
     "all": "全部",
+    "undo": "撤销",
     "creator": "创建人",
     "modifier": "修改人",
     "notification": "通知",

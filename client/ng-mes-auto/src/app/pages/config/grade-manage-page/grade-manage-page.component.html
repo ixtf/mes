@@ -1,0 +1,31 @@
+<mat-table [dataSource]="grades$" fxFlex>
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="code">
+    <mat-header-cell *matHeaderCellDef>CODE</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.code}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>{{'Common.name'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sortBy">
+    <mat-header-cell *matHeaderCellDef>{{'sortBy'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.sortBy}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell (click)="update(row)" *matCellDef="let row" matRipple>
+      <mat-icon>edit</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
+</mat-table>

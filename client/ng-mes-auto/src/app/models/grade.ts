@@ -3,6 +3,7 @@ import {LoggableEntity} from './loggable-entity';
 export class Grade extends LoggableEntity {
   id: string;
   name: string;
+  code: string;
   sortBy: number;
 
   static assign(...sources: any[]): Grade {

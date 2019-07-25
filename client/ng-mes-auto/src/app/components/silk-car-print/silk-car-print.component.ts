@@ -1,25 +1,27 @@
 import {AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, Inject, NgModule} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {QRCodeModule} from 'angularx-qrcode';
+import {NgxBarcodeModule} from 'ngx-barcode';
 import {isArray} from 'util';
-import {PackageBox} from '../../models/package-box';
+import {SilkCar} from '../../models/silk-car';
 import {SharedModule} from '../../shared.module';
 
 @Component({
-  templateUrl: './package-box-print.component.html',
+  templateUrl: './silk-car-print.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PackageBoxPrintComponent implements AfterContentInit {
-  readonly packageBoxes: PackageBox[];
+export class SilkCarPrintComponent implements AfterContentInit {
+  readonly silkCars: SilkCar[];
 
   constructor(private elementRef: ElementRef,
-              private dialogRef: MatDialogRef<PackageBoxPrintComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: PackageBox | PackageBox[]) {
-    this.packageBoxes = (isArray(data) ? data : [data]) as PackageBox[];
+              private dialogRef: MatDialogRef<SilkCarPrintComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: SilkCar[]) {
+    this.silkCars = data;
   }
 
-  static print(dialog: MatDialog, data: PackageBox | PackageBox[]) {
-    dialog.open(PackageBoxPrintComponent, {data});
+  static print(dialog: MatDialog, inputData: SilkCar | SilkCar[]) {
+    const data = isArray(inputData) ? inputData : [inputData];
+    dialog.open(SilkCarPrintComponent, {data});
   }
 
   ngAfterContentInit(): void {
@@ -35,22 +37,23 @@ export class PackageBoxPrintComponent implements AfterContentInit {
 <body onload="window.print();window.close()">${this.elementRef.nativeElement.innerHTML}</body>
 </html>`);
       this.dialogRef.close();
-      popupWin.document.close();
+      // popupWin.document.close();
     });
   }
 }
 
 @NgModule({
   declarations: [
-    PackageBoxPrintComponent,
+    SilkCarPrintComponent,
   ],
   entryComponents: [
-    PackageBoxPrintComponent,
+    SilkCarPrintComponent,
   ],
   imports: [
     SharedModule,
+    NgxBarcodeModule,
     QRCodeModule,
   ]
 })
-export class PackageBoxPrintComponentModule {
+export class SilkCarPrintComponentModule {
 }

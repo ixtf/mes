@@ -18,7 +18,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field floatLabel="never" fxFlex>
+    <mat-form-field floatLabel="never">
       <input [formControl]="silkCarQCtrl" [matAutocomplete]="autoSilkCar" [placeholder]="'SilkCar.code'|translate" class="mySearch" matInput required tabindex="-1">
       <mat-autocomplete #autoSilkCar="matAutocomplete" (optionSelected)="onSilkCarSelected($event)" [displayWith]="displayWithSilkCar" autoActiveFirstOption>
         <mat-option *ngFor="let it of autoCompleteSilkCars$|async" [value]="it">

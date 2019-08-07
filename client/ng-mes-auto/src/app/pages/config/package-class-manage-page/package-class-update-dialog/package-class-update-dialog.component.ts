@@ -3,7 +3,7 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 import {PackageClass} from '../../../../models/package-class';
 import {AppState} from '../../../../store/app.state';
 
@@ -16,15 +16,6 @@ export class PackageClassUpdateDialogComponent implements OnInit {
   readonly title: string;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
-  readonly fieldReadOnly$ = this.isAdmin$.pipe(map(isAdmin => {
-    if (isAdmin) {
-      return false;
-    }
-    if (this.packageClass.id) {
-      return true;
-    }
-    return false;
-  }));
   readonly form = this.fb.group({
     id: null,
     name: [null, Validators.required],

@@ -10,14 +10,14 @@
   <mat-dialog-content fxLayout="column">
 
     <mat-form-field>
-      <input [placeholder]="'Common.name'|translate" [readonly]="fieldReadOnly$|async" autocomplete="off" formControlName="name" matInput required>
+      <input [placeholder]="'Common.name'|translate" formControlName="name" matInput required>
       <mat-error *ngIf="form.get('name').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'riambCode'|translate" autocomplete="off" formControlName="riambCode" matInput required>
+      <input [placeholder]="'riambCode'|translate" formControlName="riambCode" matInput required>
       <mat-error *ngIf="form.get('riambCode').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>

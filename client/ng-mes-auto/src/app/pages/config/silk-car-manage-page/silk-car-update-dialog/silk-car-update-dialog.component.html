@@ -14,14 +14,14 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'SilkCar.number'|translate" autocomplete="off" formControlName="number" matInput required>
+      <input [placeholder]="'SilkCar.number'|translate" formControlName="number" matInput required>
       <mat-error *ngIf="form.get('number').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'SilkCar.code'|translate" autocomplete="off" formControlName="code" matInput required>
+      <input [placeholder]="'SilkCar.code'|translate" formControlName="code" matInput required>
       <mat-error *ngIf="form.get('code').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>

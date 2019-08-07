@@ -32,7 +32,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'batchNo'|translate" autocomplete="off" formControlName="batchNo" matInput required>
+      <input [placeholder]="'batchNo'|translate" formControlName="batchNo" matInput required>
       <mat-error *ngIf="form.get('batchNo').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
@@ -68,14 +68,14 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'tubeColor'|translate" autocomplete="off" formControlName="tubeColor" matInput required>
+      <input [placeholder]="'tubeColor'|translate" formControlName="tubeColor" matInput required>
       <mat-error *ngIf="form.get('tubeColor').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'tubeWeight'|translate" formControlName="tubeWeight" matInput min="0" required type="number">
+      <input [placeholder]="'tubeWeight'|translate" formControlName="tubeWeight" matInput required type="number">
       <span matSuffix>KG</span>
       <mat-error *ngIf="form.get('tubeWeight').hasError('required')">
         {{'Validator.required'|translate}}

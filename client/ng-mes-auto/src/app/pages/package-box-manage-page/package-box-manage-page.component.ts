@@ -58,6 +58,9 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
     return new DeleteAction(packageBox);
   }
 
+  create() {
+
+  }
 }
 
 class PackageBoxDataSource extends MatTableDataSource<PackageBox> {

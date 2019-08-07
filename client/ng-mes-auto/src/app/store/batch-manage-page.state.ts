@@ -3,7 +3,9 @@ import {Selector, State} from '@ngxs/store';
 import {Batch} from '../models/batch';
 import {ApiService} from '../services/api.service';
 
-interface SilkCarManagePageStateModel {
+const PAGE_NAME = 'BatchManagePage';
+
+interface StateModel {
   count: number;
   first: number;
   pageSize: number;
@@ -12,8 +14,8 @@ interface SilkCarManagePageStateModel {
   // silkCarEntities: { [id: string]: SilkCar };
 }
 
-@State<SilkCarManagePageStateModel>({
-  name: 'BatchManagePage',
+@State<StateModel>({
+  name: PAGE_NAME,
   defaults: {
     count: 0,
     first: 0,
@@ -27,22 +29,22 @@ export class BatchManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static batches(state: SilkCarManagePageStateModel): Batch[] {
+  static batches(state: StateModel): Batch[] {
     return state.batches;
   }
 
   @Selector()
-  static count(state: SilkCarManagePageStateModel): number {
+  static count(state: StateModel): number {
     return state.count;
   }
 
   @Selector()
-  static first(state: SilkCarManagePageStateModel): number {
+  static first(state: StateModel): number {
     return state.first;
   }
 
   @Selector()
-  static pageSize(state: SilkCarManagePageStateModel): number {
+  static pageSize(state: StateModel): number {
     return state.pageSize;
   }
 

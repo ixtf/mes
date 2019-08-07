@@ -2,20 +2,22 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialog, MatTableDataSource} from '@angular/material';
-import {RouterModule} from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
+import {AuthInfo} from '../../models/auth-info';
 import {Batch} from '../../models/batch';
 import {Grade} from '../../models/grade';
 import {PackageBox} from '../../models/package-box';
+import {PackageClass} from '../../models/package-class';
 import {ApiService} from '../../services/api.service';
-import {CodeCompare} from '../../services/util.service';
+import {CodeCompare, COPY} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
-import {FilterBatchAction, FilterGradeAction, InitAction, QueryAction, UnbudatPackageBoxManagePageState} from '../../store/unbudat-package-box-manage-page.state';
+import {FilterBatchAction, FilterGradeAction, InitAction, UnbudatPackageBoxManagePageState} from '../../store/unbudat-package-box-manage-page.state';
 import {PackageBoxUpdateDialogComponent} from './package-box-update-dialog/package-box-update-dialog.component';
 
 @Component({
@@ -24,8 +26,14 @@ import {PackageBoxUpdateDialogComponent} from './package-box-update-dialog/packa
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
+  @Select(AppState.authInfo)
+  readonly authInfo$: Observable<AuthInfo>;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
+  @Select(UnbudatPackageBoxManagePageState.budat)
+  readonly budat$: Observable<Date>;
+  @Select(UnbudatPackageBoxManagePageState.budatClass)
+  readonly budatClass$: Observable<PackageClass>;
   @Select(UnbudatPackageBoxManagePageState.filterBatch)
   readonly filterBatch$: Observable<Batch>;
   @Select(UnbudatPackageBoxManagePageState.batches)
@@ -48,9 +56,10 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store,
               private fb: FormBuilder,
+              private route: ActivatedRoute,
               private api: ApiService,
               private dialog: MatDialog) {
-    this.store.dispatch(new InitAction());
+    route.queryParams.subscribe((it: any) => store.dispatch(new InitAction(it)));
     this.dataSource = new PackageBoxDataSource(this.packageBoxes$.pipe(takeUntil(this.destroy$)));
   }
 
@@ -60,11 +69,6 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  @Dispatch()
-  query() {
-    return new QueryAction(this.searchForm.value);
   }
 
   @Dispatch()
@@ -127,6 +131,14 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
   }
 
   filterMeasured() {
+
+  }
+
+  copyCode(code: string, ev: MouseEvent) {
+    COPY(code);
+  }
+
+  resetFilter() {
 
   }
 }

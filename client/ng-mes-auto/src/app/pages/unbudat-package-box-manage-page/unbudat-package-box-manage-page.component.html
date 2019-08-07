@@ -1,21 +1,13 @@
-<form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
-  <mat-form-field floatLabel="never" fxFlex="150px">
-    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId" required>
-      <mat-option *ngFor="let it of workshops$|async" [value]="it.id">
-        {{it.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field floatLabel="never" fxFlex="150px">
-    <input [matDatepicker]="datePicker" [placeholder]="'Common.date'|translate" formControlName="date" matInput required>
-    <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
-    <mat-datepicker #datePicker></mat-datepicker>
-  </mat-form-field>
-
-  <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
-    <mat-icon>search</mat-icon>
-  </button>
+<form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <div fxLayout fxLayoutGap="8px">
+    <span>计量员</span>
+    <span>{{(authInfo$|async).name}}</span>
+  </div>
+  <div fxLayout fxLayoutGap="8px">
+    <span>入库日期班次</span>
+    <span>{{budat$|async|date:'yyyy-MM-dd'}}</span>
+    <span>{{(budatClass$|async).name}}</span>
+  </div>
 
   <span fxFlex></span>
 
@@ -26,8 +18,8 @@
     {{'batchMeasure'|translate}} ({{selection.selected.length}})
   </button>
 
-  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
-    <mat-icon>add</mat-icon>
+  <button (click)="create()" color="primary" mat-stroked-button type="button">
+    补充唛头
   </button>
 </form>
 
@@ -72,6 +64,9 @@
     </mat-select>
   </mat-form-field>
 
+  <button (click)="resetFilter()" color="warn" mat-button type="button">
+    {{'Common.reset'|translate}}
+  </button>
 </div>
 <mat-divider></mat-divider>
 <div fxFlex style="overflow: auto;width: 100vw;">
@@ -196,6 +191,6 @@
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    <tr (click)="copyCode(row.code,$event)" *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
 </div>

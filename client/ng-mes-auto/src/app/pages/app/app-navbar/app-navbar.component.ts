@@ -9,6 +9,7 @@ import {AppState} from '../../../store/app.state';
 import {BoardAbnormalDialogComponent} from './board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './board-auto-line-dialog/board-auto-line-dialog.component';
 import {BoardSilkCarRuntimeDialogComponent} from './board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
+import {UnbudatPackageBoxDialogComponent} from './unbudat-package-box-dialog/unbudat-package-box-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -40,5 +41,9 @@ export class AppNavbarComponent {
 
   boardSilkCarRuntime() {
     BoardSilkCarRuntimeDialogComponent.open(this.dialog);
+  }
+
+  unbudatPackageBoxes() {
+    UnbudatPackageBoxDialogComponent.open(this.dialog);
   }
 }

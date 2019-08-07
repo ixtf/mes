@@ -5,7 +5,6 @@
   </a>
   <!--  <a mat-button routerLink="/silkCarRuntime" routerLinkActive="active">{{'Nav.silkCarRuntime'|translate}}</a>-->
   <a mat-button routerLink="/silkCarRecord" routerLinkActive="active">{{'Nav.silkCarRecord'|translate}}</a>
-  <a mat-button routerLink="/unbudatPackageBoxes" routerLinkActive="active">{{'Nav.unbudatPackageBoxes'|translate}}</a>
   <a mat-button routerLink="/packageBoxes" routerLinkActive="active">{{'Nav.packageBoxes'|translate}}</a>
   <a mat-button routerLink="/exceptionRecords" routerLinkActive="active">{{'Nav.exceptionRecords'|translate}}</a>
   <a mat-button routerLink="/notifications" routerLinkActive="active">{{'Nav.notifications'|translate}}</a>
@@ -25,6 +24,7 @@
     <a mat-menu-item routerLink="/config/batches" routerLinkActive="active">{{'Nav.batches'|translate}}</a>
     <a mat-menu-item routerLink="/config/packageClasses" routerLinkActive="active">{{'Nav.packageClasses'|translate}}</a>
     <a mat-menu-item routerLink="/config/grades" routerLinkActive="active">{{'Nav.grades'|translate}}</a>
+    <a mat-menu-item routerLink="/config/silkCarRecordDestinations" routerLinkActive="active">{{'Nav.silkCarRecordDestinations'|translate}}</a>
     <a *ngIf="isAdmin$|async" mat-menu-item routerLink="/admin/sapT001ls" routerLinkActive="active">{{'Nav.sapT001ls'|translate}}</a>
     <a *ngIf="isAdmin$|async" mat-menu-item routerLink="/admin/operators" routerLinkActive="active">{{'Nav.operators'|translate}}</a>
     <a *ngIf="isAdmin$|async" mat-menu-item routerLink="/admin/operatorGroups" routerLinkActive="active">{{'Nav.operatorGroups'|translate}}</a>
@@ -42,6 +42,7 @@
     {{(authInfo$|async)?.name || 'An'}}
   </button>
   <mat-menu #menu="matMenu" xPosition="before">
+    <button (click)="unbudatPackageBoxes()" mat-menu-item type="button">{{'Nav.unbudatPackageBoxes'|translate}}</button>
     <button mat-menu-item type="button">Item 1</button>
     <button mat-menu-item type="button">Item 2</button>
     <ng-container *ngIf="isAdmin$|async">

@@ -1,0 +1,26 @@
+<form *ngIf="isAdmin$|async" class="search-area">
+  <span fxFlex></span>
+  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="silkCarRecordDestinations$" fxFlex>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>{{'Common.name'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell (click)="update(row)" *matCellDef="let row" matRipple>
+      <mat-icon>edit</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+

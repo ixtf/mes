@@ -26,6 +26,7 @@ import {ProductProcess} from '../models/product-process';
 import {SapT001l} from '../models/sapT001l';
 import {SilkCar} from '../models/silk-car';
 import {SilkCarRecord} from '../models/silk-car-record';
+import {SilkCarRecordDestination} from '../models/silk-car-record-destination';
 import {SilkCarRuntime} from '../models/silk-car-runtime';
 import {SilkException} from '../models/silk-exception';
 import {SilkNote} from '../models/silk-note';
@@ -118,8 +119,17 @@ export class ApiService {
     return workshop.id ? this.updateWorkshop(workshop) : this.createWorkshop(workshop);
   }
 
+  getWorkshop(id: string): Observable<Workshop> {
+    return this.http.get<Workshop>(`${BASE_API_URL}/workshops/${id}`);
+  }
+
   getWorkshop_Lines(id: string): Observable<Line[]> {
     return this.http.get<Line[]>(`${BASE_API_URL}/workshops/${id}/lines`);
+  }
+
+  getWorkshop_ProductPlans(id: string): Observable<WorkshopProductPlanReport> {
+    return this.http.get<WorkshopProductPlanReport>(`${SHARE_API_URL}/workshops/${id}/productPlans`)
+      .pipe(map(WorkshopProductPlanReport.assign));
   }
 
   listWorkshop(params?: HttpParams): Observable<Workshop[]> {
@@ -136,6 +146,14 @@ export class ApiService {
 
   listExceptionRecord(params?: HttpParams): Observable<ExceptionRecord[]> {
     return this.http.get<ExceptionRecord[]>(`${BASE_API_URL}/exceptionRecords`, {params});
+  }
+
+  saveSilkCarRecordDestination(silkCarRecordDestination: SilkCarRecordDestination): Observable<SilkCarRecordDestination> {
+    return silkCarRecordDestination.id ? this.updateSilkCarRecordDestination(silkCarRecordDestination) : this.createSilkCarRecordDestination(silkCarRecordDestination);
+  }
+
+  listSilkCarRecordDestination(params?: HttpParams): Observable<SilkCarRecordDestination[]> {
+    return this.http.get<SilkCarRecordDestination[]>(`${BASE_API_URL}/silkCarRecordDestinations`, {params});
   }
 
   handleExceptionRecord(id: string): Observable<void> {
@@ -321,7 +339,11 @@ export class ApiService {
     return this.http.delete(`${BASE_API_URL}/grades/${id}`);
   }
 
-  listPackageClass(params?: HttpParams): Observable<PackageClass []> {
+  getPackageClass(id: string): Observable<PackageClass> {
+    return this.http.get<PackageClass>(`${BASE_API_URL}/packageClasses/${id}`);
+  }
+
+  listPackageClass(params?: HttpParams): Observable<PackageClass[]> {
     return this.http.get<PackageClass[]>(`${BASE_API_URL}/packageClasses`, {params});
   }
 
@@ -533,6 +555,13 @@ export class ApiService {
     return this.http.put<Notification>(`${BASE_API_URL}/notifications/${notification.id}`, notification);
   }
 
+  private createSilkCarRecordDestination(silkCarRecordDestination: SilkCarRecordDestination): Observable<SilkCarRecordDestination> {
+    return this.http.post<SilkCarRecordDestination>(`${BASE_API_URL}/silkCarRecordDestinations`, silkCarRecordDestination);
+  }
+
+  private updateSilkCarRecordDestination(silkCarRecordDestination: SilkCarRecordDestination): Observable<SilkCarRecordDestination> {
+    return this.http.put<SilkCarRecordDestination>(`${BASE_API_URL}/silkCarRecordDestinations/${silkCarRecordDestination.id}`, silkCarRecordDestination);
+  }
 }
 
 @Injectable({

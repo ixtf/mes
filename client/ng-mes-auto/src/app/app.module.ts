@@ -23,6 +23,7 @@ import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
 import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './pages/app/app-navbar/board-auto-line-dialog/board-auto-line-dialog.component';
 import {BoardSilkCarRuntimeDialogComponent} from './pages/app/app-navbar/board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
+import {UnbudatPackageBoxDialogComponent} from './pages/app/app-navbar/unbudat-package-box-dialog/unbudat-package-box-dialog.component';
 import {AppShellComponent} from './pages/app/app-shell/app-shell.component';
 import {AppComponent} from './pages/app/app.component';
 import {LoginPageComponent} from './pages/app/login-page/login-page.component';
@@ -68,12 +69,14 @@ const routes: Routes = [
           {path: 'batches', loadChildren: () => import('./pages/config/batch-manage-page/batch-manage-page.component').then(it => it.Module)},
           {path: 'packageClasses', loadChildren: () => import('./pages/config/package-class-manage-page/package-class-manage-page.component').then(it => it.Module)},
           {path: 'grades', loadChildren: () => import('./pages/config/grade-manage-page/grade-manage-page.component').then(it => it.Module)},
+          {path: 'silkCarRecordDestinations', loadChildren: () => import('./pages/config/silk-car-record-destination-manage-page/silk-car-record-destination-manage-page.component').then(it => it.Module)},
         ]
       },
       {
         path: 'report',
         children: [
           {path: 'doffingSilkCarRecordReport', loadChildren: () => import('./pages/report/doffing-silk-car-record-report-page/doffing-silk-car-record-report-page.component').then(it => it.Module)},
+          {path: 'productPlan', loadChildren: () => import('./pages/report/product-plan-report-page/product-plan-report-page.component').then(it => it.Module)},
         ]
       },
       {
@@ -111,11 +114,13 @@ export function createTranslateLoader(httpClient: HttpClient) {
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
+    UnbudatPackageBoxDialogComponent,
   ],
   entryComponents: [
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
+    UnbudatPackageBoxDialogComponent,
   ],
   imports: [
     BrowserModule,

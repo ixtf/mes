@@ -2,10 +2,13 @@ import {HttpParams} from '@angular/common/http';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
+import {forkJoin} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Batch} from '../models/batch';
 import {Grade} from '../models/grade';
 import {PackageBox} from '../models/package-box';
+import {PackageClass} from '../models/package-class';
+import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
 import {DefaultCompare, SortByCompare} from '../services/util.service';
 
@@ -13,12 +16,8 @@ const PAGE_NAME = 'UnbudatPackageBoxManagePage';
 
 export class InitAction {
   static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
-}
 
-export class QueryAction {
-  static readonly type = `[${PAGE_NAME}] ${QueryAction.name}`;
-
-  constructor(public payload: { workshopId: string; date: Date }) {
+  constructor(public payload: { workshopId: string; date: Date; budat: Date; budatClassId: string; }) {
   }
 }
 
@@ -45,7 +44,11 @@ export class SaveAction {
 
 interface StateModel {
   workshopId?: string;
+  workshop?: Workshop;
   date?: Date;
+  budat?: Date;
+  budatClassId?: string;
+  budatClass?: PackageClass;
   filterBatch?: Batch;
   filterGrade?: Grade;
   packageBoxEntities: { [id: string]: PackageBox };
@@ -106,6 +109,18 @@ export class UnbudatPackageBoxManagePageState {
 
   @Selector()
   @ImmutableSelector()
+  static budat(state: StateModel): Date {
+    return state.budat;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static budatClass(state: StateModel): PackageClass {
+    return state.budatClass;
+  }
+
+  @Selector()
+  @ImmutableSelector()
   static filterGrade(state: StateModel): Grade {
     return state.filterGrade;
   }
@@ -123,20 +138,17 @@ export class UnbudatPackageBoxManagePageState {
 
   @Action(InitAction)
   @ImmutableContext()
-  InitAction({dispatch}: StateContext<StateModel>) {
-    return dispatch(new QueryAction({workshopId: '5c772ecc26e0ff000148c039', date: new Date()}));
-  }
-
-  @Action(QueryAction)
-  @ImmutableContext()
-  QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, date}}: QueryAction) {
+  InitAction({dispatch, setState}: StateContext<StateModel>, {payload: {workshopId, date, budat, budatClassId}}: InitAction) {
+    const workshop$ = this.api.getWorkshop(workshopId);
+    const packageClass$ = this.api.getPackageClass(budatClassId);
     const params = new HttpParams().set('workshopId', workshopId)
       .set('startDate', moment(date).format('YYYY-MM-DD'))
-      .set('endDate', moment(date).format('YYYY-MM-DD'));
-    return this.api.listUnbudatPackageBox(params).pipe(
-      tap(packageBoxes => setState((state: StateModel) => {
+      .set('endDate', moment().format('YYYY-MM-DD'));
+    const packageBoxes$ = this.api.listUnbudatPackageBox(params);
+    return forkJoin([workshop$, packageClass$, packageBoxes$]).pipe(
+      tap(([workshop, budatClass, packageBoxes]) => setState((state: StateModel) => {
         const packageBoxEntities = PackageBox.toEntities(packageBoxes);
-        return {workshopId, date, packageBoxEntities};
+        return {workshopId, workshop, date, budat, budatClassId, budatClass, packageBoxEntities};
       }))
     );
   }

@@ -20,27 +20,27 @@ export class InitAction {
 }
 
 export class RefreshAction {
-  static readonly type = `[${PAGE_NAME}] RefreshAction`;
+  static readonly type = `[${PAGE_NAME}] ${RefreshAction.name}`;
 }
 
 export class ReconnectAction {
-  static readonly type = `[${PAGE_NAME}] ReconnectAction`;
+  static readonly type = `[${PAGE_NAME}] ${ReconnectAction.name}`;
 }
 
 export class RefreshProductPlansAction {
-  static readonly type = `[${PAGE_NAME}] RefreshProductPlansAction`;
+  static readonly type = `[${PAGE_NAME}] ${RefreshProductPlansAction.name}`;
 }
 
 export class RefreshExceptionRecordAction {
-  static readonly type = `[${PAGE_NAME}] RefreshExceptionRecordAction`;
+  static readonly type = `[${PAGE_NAME}] ${RefreshExceptionRecordAction.name}`;
 }
 
 export class RefreshNotificationAction {
-  static readonly type = `[${PAGE_NAME}] RefreshExceptionRecordAction`;
+  static readonly type = `[${PAGE_NAME}] ${RefreshNotificationAction.name}`;
 }
 
 export class UpdateProductPlanRecordAction {
-  static readonly type = `[${PAGE_NAME}] UpdateProductPlanRecordAction`;
+  static readonly type = `[${PAGE_NAME}] ${UpdateProductPlanRecordAction.name}`;
 
   constructor(public payload: { lineMachineProductPlan: LineMachineProductPlan }) {
   }

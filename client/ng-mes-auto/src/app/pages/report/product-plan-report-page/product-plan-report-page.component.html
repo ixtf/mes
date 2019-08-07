@@ -1,0 +1,40 @@
+<form class="search-area" fxLayoutGap="16px">
+  <mat-form-field>
+    <mat-select (selectionChange)="query($event)" [formControl]="workshopIdCtrl">
+      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
+        {{workshop.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="productPlanItems$" fxFlex>
+  <ng-container matColumnDef="batch">
+    <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batch.batchNo}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="tubeColor">
+    <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batch.tubeColor}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="line">
+    <mat-header-cell *matHeaderCellDef>{{'line'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.line.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="lineMachine">
+    <mat-header-cell *matHeaderCellDef>{{'lineMachine'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-list dense="">
+        <mat-list-item *ngFor="let it of row.lineMachineSpecs">{{it}}</mat-list-item>
+      </mat-list>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

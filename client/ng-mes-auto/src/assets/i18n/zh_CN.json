@@ -158,6 +158,7 @@
   },
   "Nav": {
     "silkCarRuntime": "当前",
+    "unbudatPackageBoxes": "开始计量",
     "silkCarRecord": "历史",
     "workshopProductPlanReport": "车间生产计划",
     "corporations": "公司",
@@ -169,6 +170,7 @@
     "packageClasses": "班次管理",
     "sapT001ls": "SAP库存地管理",
     "lineMachines": "机台管理",
+    "silkCarRecordDestinations": "丝车目的地管理",
     "products": "产品管理",
     "productProcesses": "生产工艺管理",
     "silkCars": "丝车管理",

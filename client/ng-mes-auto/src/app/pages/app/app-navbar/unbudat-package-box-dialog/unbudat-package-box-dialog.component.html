@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>
+  {{'Nav.unbudatPackageBoxes'|translate}}
+</h2>
+
+<mat-dialog-content [formGroup]="form" fxLayout="column">
+  <mat-form-field>
+    <mat-label>{{'workshop'|translate}}</mat-label>
+    <mat-select formControlName="workshopId">
+      <mat-option *ngFor="let it of workshops$|async" [value]="it.id">
+        {{it.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('workshopId').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input [matDatepicker]="datePicker" [max]="maxDate" [min]="minDate" [placeholder]="'Common.date'|translate" formControlName="date" matInput required>
+    <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
+    <mat-error *ngIf="form.get('date').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input [matDatepicker]="budatPicker" [max]="maxDate" [min]="minDate" [placeholder]="'PackageBox.budat'|translate" formControlName="budat" matInput required>
+    <mat-datepicker-toggle [for]="budatPicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #budatPicker></mat-datepicker>
+    <mat-error *ngIf="form.get('budat').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{'packageClass'|translate}}</mat-label>
+    <mat-select formControlName="budatClassId">
+      <mat-option *ngFor="let it of budatClasses$|async" [value]="it.id">
+        {{it.name}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('budatClassId').hasError('required')">
+      {{'Validator.required'|translate}}
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions *ngIf="form.valid" align="end">
+  <a [queryParams]="queryParams()" color="primary" mat-button routerLink="/unbudatPackageBoxes" target="_blank">
+    {{'Common.finish'|translate}}
+  </a>
+</mat-dialog-actions>

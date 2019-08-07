@@ -11,6 +11,7 @@ export class Batch {
   holeNum: number;
   spec: string;
   tubeColor: string;
+  tubeWeight: number;
   note: string;
 
   static assign(...sources: any[]): Batch {

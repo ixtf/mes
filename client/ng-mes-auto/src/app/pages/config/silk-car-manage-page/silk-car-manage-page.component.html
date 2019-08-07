@@ -42,6 +42,11 @@
     <mat-cell *matCellDef="let row">{{row.number}}</mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="pliesNum">
+    <mat-header-cell *matHeaderCellDef>{{'SilkCar.pliesNum'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.pliesNum}}</mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="code">
     <mat-header-cell *matHeaderCellDef>{{'SilkCar.code'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row">{{row.code}}</mat-cell>

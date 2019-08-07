@@ -5,20 +5,22 @@ import {tap} from 'rxjs/operators';
 import {SilkCarRuntime} from '../models/silk-car-runtime';
 import {ApiService} from '../services/api.service';
 
+const PAGE_NAME = 'SilkCarRuntimePage';
+
 export class FetchAction {
-  static readonly type = '[SilkCarRuntimePage] FetchAction';
+  static readonly type = `[${PAGE_NAME}] ${FetchAction.name}`;
 
   constructor(public payload: string) {
   }
 }
 
-interface SilkCarRuntimePageStateModel {
+interface StateModel {
   silkCarRuntime?: SilkCarRuntime;
   settingForm?: { model: { sort: string } };
 }
 
-@State<SilkCarRuntimePageStateModel>({
-  name: 'SilkCarRuntimePage',
+@State<StateModel>({
+  name: PAGE_NAME,
   defaults: {}
 })
 export class SilkCarRuntimePageState {
@@ -27,24 +29,24 @@ export class SilkCarRuntimePageState {
 
   @Selector()
   @ImmutableSelector()
-  static silkCarRuntime(state: SilkCarRuntimePageStateModel) {
+  static silkCarRuntime(state: StateModel) {
     return state.silkCarRuntime;
   }
 
   @Receiver()
-  static OnInit({setState}: StateContext<SilkCarRuntimePageStateModel>, action: EmitterAction<void>) {
+  static OnInit({setState}: StateContext<StateModel>, action: EmitterAction<void>) {
     setState({});
   }
 
   @Action(FetchAction)
   @ImmutableContext()
-  FetchAction({setState, patchState, dispatch}: StateContext<SilkCarRuntimePageStateModel>, {payload}: FetchAction) {
-    setState((state: SilkCarRuntimePageStateModel) => {
+  FetchAction({setState, patchState, dispatch}: StateContext<StateModel>, {payload}: FetchAction) {
+    setState((state: StateModel) => {
       state = {};
       return state;
     });
     return this.api.getSilkCarRuntimeByCode(payload).pipe(
-      tap(silkCarRuntime => setState((state: SilkCarRuntimePageStateModel) => {
+      tap(silkCarRuntime => setState((state: StateModel) => {
         state.silkCarRuntime = silkCarRuntime;
         return state;
       })),

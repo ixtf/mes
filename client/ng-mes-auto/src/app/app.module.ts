@@ -3,7 +3,7 @@ import {registerLocaleData} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import {LOCALE_ID, NgModule} from '@angular/core';
-import {DateAdapter, MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material';
+import {DateAdapter, MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatPaginatorIntl} from '@angular/material';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -164,7 +164,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {autoActiveFirstOption: true}},
-    {provide: MyPaginatorIntl, useClass: MyPaginatorIntl, deps: [TranslateService]},
+    {provide: MatPaginatorIntl, useClass: MyPaginatorIntl, deps: [TranslateService]},
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer},
   ],
   bootstrap: [AppComponent]

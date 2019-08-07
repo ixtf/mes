@@ -1,31 +1,41 @@
-<form (ngSubmit)="update()" [formGroup]="form">
-  <h2 mat-dialog-title>{{title|translate}}</h2>
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+    <span fxFlex>{{title|translate}}</span>
+
+    <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 
   <mat-dialog-content fxLayout="column">
 
     <mat-form-field>
-      <input [placeholder]="'corporation'|translate" [value]="'sdfasdfsaf'" matInput readonly required>
-      <mat-error></mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input [placeholder]="'Common.name'|translate" cdkFocusInitial formControlName="name" matInput required>
+      <input [placeholder]="'Common.name'|translate" [readonly]="fieldReadOnly$|async" autocomplete="off" formControlName="name" matInput required>
       <mat-error *ngIf="form.get('name').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'Common.code'|translate" formControlName="code" matInput required>
-      <mat-error *ngIf="form.get('code').hasError('required')">
+      <input [placeholder]="'riambCode'|translate" autocomplete="off" formControlName="riambCode" matInput required>
+      <mat-error *ngIf="form.get('riambCode').hasError('required')">
         {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [placeholder]="'Common.sortBy'|translate" formControlName="sortBy" matInput required type="number">
+      <mat-error *ngIf="form.get('sortBy').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="form.get('sortBy').hasError('min')">
+        {{'Validator.min'|translate:form.get('sortBy').getError('min')}}
       </mat-error>
     </mat-form-field>
 
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button color="warn" mat-button mat-dialog-close type="button">{{'Common.cancel'|translate}}</button>
-    <button color="primary" mat-button>{{'Common.finish'|translate}}</button>
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-button>{{'Common.finish'|translate}}</button>
   </mat-dialog-actions>
 </form>

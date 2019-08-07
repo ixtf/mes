@@ -10,22 +10,60 @@
   <mat-dialog-content fxLayout="column">
 
     <mat-form-field>
-      <input [placeholder]="'corporation'|translate" [value]="form.value?.corporation.name" matInput readonly required tabindex="-1">
+      <input [placeholder]="'corporation'|translate" [value]="(corporation$|async).name+' [ '+(corporation$|async).code+' ] '" matInput readonly required tabindex="-1">
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'Common.name'|translate" formControlName="name" matInput required>
-      <mat-error *ngIf="form.get('name').hasError('required')">
+      <input [placeholder]="'SilkCar.number'|translate" autocomplete="off" formControlName="number" matInput required>
+      <mat-error *ngIf="form.get('number').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'Common.code'|translate" formControlName="code" matInput required>
+      <input [placeholder]="'SilkCar.code'|translate" autocomplete="off" formControlName="code" matInput required>
       <mat-error *ngIf="form.get('code').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
+
+    <mat-form-field>
+      <input [placeholder]="'Common.row'|translate" formControlName="row" matInput required type="number">
+      <mat-error *ngIf="form.get('row').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="form.get('row').hasError('min')">
+        {{'Validator.min'|translate:form.get('row').getError('min')}}
+      </mat-error>
+      <mat-error *ngIf="form.get('row').hasError('max')">
+        {{'Validator.max'|translate:form.get('row').getError('max')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [placeholder]="'Common.col'|translate" formControlName="col" matInput required type="number">
+      <mat-error *ngIf="form.get('col').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="form.get('col').hasError('min')">
+        {{'Validator.min'|translate:form.get('col').getError('min')}}
+      </mat-error>
+      <mat-error *ngIf="form.get('col').hasError('max')">
+        {{'Validator.max'|translate:form.get('col').getError('max')}}
+      </mat-error>
+    </mat-form-field>
+
+    <div fxLayout fxLayoutGap="32px" style="margin: 16px 0;">
+      <mat-button-toggle-group formControlName="type">
+        <mat-button-toggle value="DEFAULT">{{'SilkCar.Type.DEFAULT'|translate}}</mat-button-toggle>
+        <mat-button-toggle value="BIG_SILK_CAR">{{'SilkCar.Type.BIG_SILK_CAR'|translate}}</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-button-toggle-group formControlName="pliesNum">
+        <mat-button-toggle [value]="1">{{'SilkCar.PliesNum.1'|translate}}</mat-button-toggle>
+        <mat-button-toggle [value]="2">{{'SilkCar.PliesNum.2'|translate}}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
 
   </mat-dialog-content>
 

@@ -24,7 +24,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'Common.sortBy'|translate" formControlName="sortBy" matInput required type="number">
+      <input [placeholder]="'Grade.sortBy'|translate" formControlName="sortBy" matInput required type="number">
       <mat-error *ngIf="form.get('sortBy').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>

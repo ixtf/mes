@@ -1,8 +1,9 @@
 export class SilkCar {
   id: string;
-  type: string;
+  type: 'DEFAULT' | 'BIG_SILK_CAR';
   number: string;
   code: string;
+  pliesNum: 1 | 2;
   row: number;
   col: number;
 

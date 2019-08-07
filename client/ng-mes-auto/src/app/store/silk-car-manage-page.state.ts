@@ -8,11 +8,25 @@ import {ApiService} from '../services/api.service';
 const PAGE_NAME = 'SilkCarManagePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] InitAction`;
+  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
+}
+
+export class SaveAction {
+  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
+
+  constructor(public payload: SilkCar) {
+  }
+}
+
+export class BatchSaveAction {
+  static readonly type = `[${PAGE_NAME}] ${BatchSaveAction.name}`;
+
+  constructor(public payload: SilkCar[]) {
+  }
 }
 
 export class QueryAction {
-  static readonly type = `[${PAGE_NAME}] QueryAction`;
+  static readonly type = `[${PAGE_NAME}] ${QueryAction.name}`;
 
   constructor(public payload: { first: number; pageSize: number; }) {
   }

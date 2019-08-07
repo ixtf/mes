@@ -30,6 +30,7 @@
   "brand": "品牌",
   "supplier": "厂商",
   "tubeColor": "管色",
+  "tubeWeight": "管重",
   "silkDetach": "丝锭解绑",
   "lineMachineCount": "机台数",
   "packageBoxCount": "包数",
@@ -130,6 +131,7 @@
     "recordId": "丝车车次",
     "number": "丝车编号",
     "code": "丝车条码",
+    "pliesNum": "层数",
     "type": "丝车类型",
     "Type": {
       "DEFAULT": "普通丝车",
@@ -138,6 +140,10 @@
     "SideType": {
       "A": "A面",
       "B": "B面"
+    },
+    "PliesNum": {
+      "1": "放 1 层丝",
+      "2": "放 2 层丝"
     }
   },
   "Batch": {

@@ -6,14 +6,15 @@ import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {SilkCarPrintComponent, SilkCarPrintComponentModule} from '../../../components/silk-car-print/silk-car-print.component';
 import {SilkCar} from '../../../models/silk-car';
 import {ApiService} from '../../../services/api.service';
 import {PAGE_SIZE_OPTIONS} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {InitAction, QueryAction, SilkCarManagePageState} from '../../../store/silk-car-manage-page.state';
+import {BatchSaveAction, InitAction, QueryAction, SaveAction, SilkCarManagePageState} from '../../../store/silk-car-manage-page.state';
+import {SilkCarBatchCreateDialogComponent} from './silk-car-batch-create-dialog/silk-car-batch-create-dialog.component';
 import {SilkCarUpdateDialogComponent} from './silk-car-update-dialog/silk-car-update-dialog.component';
 
 @Component({
@@ -22,7 +23,7 @@ import {SilkCarUpdateDialogComponent} from './silk-car-update-dialog/silk-car-up
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SilkCarManagePageComponent implements OnInit, OnDestroy {
-  readonly displayedColumns = ['select', 'code', 'number', 'rowAndCol', 'type', 'btns'];
+  readonly displayedColumns = ['select', 'code', 'number', 'rowAndCol', 'pliesNum', 'type', 'btns'];
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
@@ -58,15 +59,21 @@ export class SilkCarManagePageComponent implements OnInit, OnDestroy {
   }
 
   create() {
-    console.log(this.selection);
     this.update(new SilkCar());
   }
 
+  @Dispatch()
   update(silkCar: SilkCar) {
-
+    return SilkCarUpdateDialogComponent.open(this.dialog, silkCar).pipe(
+      map(it => new SaveAction(it))
+    );
   }
 
+  @Dispatch()
   batchCreate() {
+    return SilkCarBatchCreateDialogComponent.open(this.dialog).pipe(
+      map(it => new BatchSaveAction(it))
+    );
   }
 
   @Dispatch()
@@ -119,9 +126,11 @@ class SilkCarDataSource extends MatTableDataSource<SilkCar> {
   declarations: [
     SilkCarManagePageComponent,
     SilkCarUpdateDialogComponent,
+    SilkCarBatchCreateDialogComponent,
   ],
   entryComponents: [
     SilkCarUpdateDialogComponent,
+    SilkCarBatchCreateDialogComponent,
   ],
   imports: [
     NgxsModule.forFeature([SilkCarManagePageState]),

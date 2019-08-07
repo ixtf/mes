@@ -11,6 +11,13 @@ export class InitAction {
   static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
 }
 
+export class SaveAction {
+  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
+
+  constructor(public payload: PackageClass) {
+  }
+}
+
 interface StateModel {
   packageClassEntities?: { [id: string]: PackageClass };
 }

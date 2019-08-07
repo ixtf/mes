@@ -1,12 +1,14 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material';
 import {RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {PackageClass} from '../../../models/package-class';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {InitAction, PackageClassManagePageState} from '../../../store/package-class-manage-page.state';
+import {InitAction, PackageClassManagePageState, SaveAction} from '../../../store/package-class-manage-page.state';
 import {PackageClassUpdateDialogComponent} from './package-class-update-dialog/package-class-update-dialog.component';
 
 const COLUMNS = ['name', 'riambCode', 'sortBy'];
@@ -23,7 +25,8 @@ export class PackageClassManagePageComponent implements OnInit {
   readonly packageClasses$: Observable<PackageClass[]>;
   displayedColumns$: Observable<string[]>;
 
-  constructor(private store: Store) {
+  constructor(private store: Store,
+              private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
   }
 
@@ -34,10 +37,14 @@ export class PackageClassManagePageComponent implements OnInit {
   }
 
   create() {
-    this.update(null);
+    this.update(new PackageClass());
   }
 
-  update(id: string) {
+  @Dispatch()
+  update(packageClass: PackageClass) {
+    return PackageClassUpdateDialogComponent.open(this.dialog, packageClass).pipe(
+      map(it => new SaveAction(it))
+    );
   }
 }
 

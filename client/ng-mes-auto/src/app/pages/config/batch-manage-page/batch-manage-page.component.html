@@ -1,61 +1,65 @@
-<!--<section fxLayout fxLayoutAlign="start center" fxLayoutGap="16px" style="padding-right: 16px;flex-shrink: 0;">-->
-<!--  <form [formGroup]="searchForm" fxFlex fxLayout>-->
-<!--    <mat-form-field floatLabel="never" fxFlexOffset="2px">-->
-<!--      <input formControlName="q" matInput [placeholder]="'Tooltip.q'|translate">-->
-<!--    </mat-form-field>-->
-<!--  </form>-->
+<form class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <input [formControl]="batchNoQCtrl" [placeholder]="'Tooltip.q'|translate" autocomplete="off" autofocus matInput>
+  </mat-form-field>
+  <span fxFlex></span>
+  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
 
-<!--  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">-->
-<!--    <mat-icon>add</mat-icon>-->
-<!--  </button>-->
-<!--  <button (click)="batchCreate()" mat-mini-fab tabindex="-1" type="button">-->
-<!--    <mat-icon>playlist_add</mat-icon>-->
-<!--  </button>-->
-<!--</section>-->
+<mat-divider></mat-divider>
 
-<!--<mat-table [dataSource]="silkCars$" fxFlex style="overflow-y: auto">-->
-<!--  <ng-container matColumnDef="id">-->
-<!--    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>-->
-<!--    <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>-->
-<!--  </ng-container>-->
+<mat-table [dataSource]="dataSource" fxFlex>
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
+  </ng-container>
 
-<!--  <ng-container matColumnDef="type">-->
-<!--    <mat-header-cell *matHeaderCellDef>{{'SilkCar.type'|translate}}</mat-header-cell>-->
-<!--    <mat-cell *matCellDef="let row"> {{('SilkCar.Type.' + row.type)|translate}}</mat-cell>-->
-<!--  </ng-container>-->
+  <ng-container matColumnDef="workshop">
+    <mat-header-cell *matHeaderCellDef>{{'workshop'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.workshop.name}}</mat-cell>
+  </ng-container>
 
-<!--  <ng-container matColumnDef="number">-->
-<!--    <mat-header-cell *matHeaderCellDef>{{'SilkCar.number'|translate}}</mat-header-cell>-->
-<!--    <mat-cell *matCellDef="let row"> {{row.number}}</mat-cell>-->
-<!--  </ng-container>-->
+  <ng-container matColumnDef="batchNo">
+    <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batchNo}}</mat-cell>
+  </ng-container>
 
-<!--  <ng-container matColumnDef="code">-->
-<!--    <mat-header-cell *matHeaderCellDef>{{'SilkCar.code'|translate}}</mat-header-cell>-->
-<!--    <mat-cell *matCellDef="let row"> {{row.code}}</mat-cell>-->
-<!--  </ng-container>-->
+  <ng-container matColumnDef="product">
+    <mat-header-cell *matHeaderCellDef>{{'product'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.product.name}}</mat-cell>
+  </ng-container>
 
-<!--  <ng-container matColumnDef="rowAndCol">-->
-<!--    <mat-header-cell *matHeaderCellDef>{{'Common.row'|translate}}×{{'Common.col'|translate}}</mat-header-cell>-->
-<!--    <mat-cell *matCellDef="let row">{{row.row}}×{{row.col}}</mat-cell>-->
-<!--  </ng-container>-->
+  <ng-container matColumnDef="spec">
+    <mat-header-cell *matHeaderCellDef>{{'spec'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.spec}}</mat-cell>
+  </ng-container>
 
-<!--  <ng-container matColumnDef="btns">-->
-<!--    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>-->
-<!--    <mat-cell *matCellDef="let row">-->
-<!--      <button (click)="update(row)" mat-button color="primary">-->
-<!--        {{'Common.edit'|translate}}-->
-<!--      </button>-->
-<!--      &lt;!&ndash;<button (click)="delete(row)" mat-button color="warn">&ndash;&gt;-->
-<!--      &lt;!&ndash;{{'Common.delete'|translate}}&ndash;&gt;-->
-<!--      &lt;!&ndash;</button>&ndash;&gt;-->
-<!--    </mat-cell>-->
-<!--  </ng-container>-->
+  <ng-container matColumnDef="tubeColor">
+    <mat-header-cell *matHeaderCellDef>{{'tubeColor'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.tubeColor}}</mat-cell>
+  </ng-container>
 
-<!--  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>-->
-<!--  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
-<!--</mat-table>-->
+  <ng-container matColumnDef="tubeWeight">
+    <mat-header-cell *matHeaderCellDef>{{'tubeWeight'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.tubeWeight|number:'.3-3'}}</mat-cell>
+  </ng-container>
 
-<!--&lt;!&ndash;<mat-paginator [length]="count$|async" [pageIndex]="pageIndex$|async" [pageSize]="pageSize$|async"&ndash;&gt;-->
-<!--&lt;!&ndash;               [pageSizeOptions]="pageSizeOptions" (page)="onPageEvent($event)" showFirstLastButtons></mat-paginator>&ndash;&gt;-->
+  <ng-container matColumnDef="silkWeight">
+    <mat-header-cell *matHeaderCellDef>{{'silkWeight'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.silkWeight|number:'.3-3'}}</mat-cell>
+  </ng-container>
 
-silkCars
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell (click)="update(row)" *matCellDef="let row" matRipple>
+      <mat-icon>edit</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator (page)="onPageEvent($event)" [length]="count$|async" [pageIndex]="pageIndex$|async" [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize$|async" showFirstLastButtons></mat-paginator>

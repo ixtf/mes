@@ -2,26 +2,23 @@ import {Injectable} from '@angular/core';
 import {MatPaginatorIntl} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
 
+const keys = ['itemsPerPageLabel', 'nextPageLabel', 'previousPageLabel', 'firstPageLabel', 'lastPageLabel'];
+const translateKeyFun = it => 'PaginatorIntl.' + it;
+
 @Injectable()
 export class MyPaginatorIntl extends MatPaginatorIntl {
+
   constructor(private translate: TranslateService) {
     super();
+    this.init();
     translate.onLangChange.subscribe(this.init);
   }
 
   init(): void {
-    console.log('itemsPerPageLabel', this.translate);
-
-    const keys = ['itemsPerPageLabel', 'nextPageLabel', 'previousPageLabel', 'firstPageLabel', 'lastPageLabel']
-      .map(it => 'PaginatorIntl.' + it);
-    this.translate.get(keys).subscribe(([itemsPerPageLabel, nextPageLabel, previousPageLabel, firstPageLabel, lastPageLabel]) => {
-      this.itemsPerPageLabel = itemsPerPageLabel;
-      this.nextPageLabel = nextPageLabel;
-      this.previousPageLabel = previousPageLabel;
-      this.firstPageLabel = firstPageLabel;
-      this.lastPageLabel = lastPageLabel;
+    this.translate.get(keys.map(translateKeyFun)).subscribe(translateObj => {
+      keys.forEach(it => this[it] = translateObj[translateKeyFun(it)]);
       this.changes.next();
-      console.log('itemsPerPageLabel', itemsPerPageLabel);
     });
   }
+
 }

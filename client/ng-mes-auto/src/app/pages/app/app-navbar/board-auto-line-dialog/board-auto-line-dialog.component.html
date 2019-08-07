@@ -15,7 +15,7 @@
       {{'Validator.required'|translate}}
     </mat-error>
     <mat-error *ngIf="form.get('displayCount').hasError('min')">
-      {{'Validator.min'|translate}}
+      {{'Validator.min'|translate:form.get('displayCount').getError('min')}}
     </mat-error>
   </mat-form-field>
 </mat-dialog-content>

@@ -26,17 +26,17 @@ import {FetchAction, SilkCarRuntimePageState} from '../../store/silk-car-runtime
   ],
 })
 export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
-  silkCarQCtrl = new FormControl();
-  settingForm = this.fb.group({
+  readonly silkCarQCtrl = new FormControl();
+  readonly settingForm = this.fb.group({
     sort: 'desc',
     showAll: false,
   });
   @Select(SilkCarRuntimePageState.silkCarRuntime)
-  silkCarRuntime$: Observable<SilkCarRuntime>;
+  readonly silkCarRuntime$: Observable<SilkCarRuntime>;
   @Emitter(SilkCarRuntimePageState.OnInit)
-  OnInit$: Emittable<void>;
+  readonly OnInit$: Emittable<void>;
   private readonly destroy$ = new Subject();
-  autoCompleteSilkCars$ = this.silkCarQCtrl.valueChanges.pipe(
+  readonly autoCompleteSilkCars$ = this.silkCarQCtrl.valueChanges.pipe(
     takeUntil(this.destroy$),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
@@ -44,8 +44,8 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
     switchMap(q => this.api.autoCompleteSilkCar(q))
   );
 
-  constructor(private fb: FormBuilder,
-              private store: Store,
+  constructor(private store: Store,
+              private fb: FormBuilder,
               private api: ApiService) {
   }
 

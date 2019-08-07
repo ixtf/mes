@@ -8,7 +8,7 @@ import {CodeCompare} from '../services/util.service';
 const PAGE_NAME = 'WorkshopManagePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] InitAction`;
+  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
 }
 
 export class SaveAction {

@@ -6,7 +6,7 @@ import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Workshop} from '../../../models/workshop';
-import {COPY} from '../../../services/util.service';
+import {COPY_WITH_CTRL} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {InitAction, SaveAction, WorkshopManagePageState} from '../../../store/workshop-manage-page.state';
@@ -20,6 +20,7 @@ const COLUMNS = ['corporation', 'name', 'code', 'sapT001ls', 'sapT001lsForeign',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkshopManagePageComponent implements OnInit {
+  readonly copy = COPY_WITH_CTRL;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(WorkshopManagePageState.workshops)
@@ -35,13 +36,6 @@ export class WorkshopManagePageComponent implements OnInit {
     this.displayedColumns$ = this.isAdmin$.pipe(
       map(it => it ? [...COLUMNS].concat(['btns']) : COLUMNS),
     );
-  }
-
-  copy(s: string, ev: MouseEvent) {
-    ev.stopPropagation();
-    if (ev.ctrlKey) {
-      COPY(s);
-    }
   }
 
   create() {

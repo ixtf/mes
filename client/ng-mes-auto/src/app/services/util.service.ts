@@ -51,6 +51,11 @@ export const FULL_SCREEN = (element) => {
   }
 };
 
+export const COPY_WITH_CTRL = (s: string, ev: MouseEvent) => {
+  if (ev.ctrlKey) {
+    COPY(s);
+  }
+};
 export const COPY = (s: string) => {
   const el = document.createElement('textarea');
   el.value = s;

@@ -145,7 +145,11 @@
 
     <ng-container matColumnDef="palletType">
       <th *matHeaderCellDef mat-header-cell>{{'palletType'|translate}}</th>
-      <td *matCellDef="let row" [matTooltipDisabled]="!row.isValidPalletCode" [matTooltip]="row.palletCode" mat-cell>{{row.palletType}}</td>
+      <td *matCellDef="let row" mat-cell>
+        <span [matTooltipDisabled]="!row.isValidPalletCode" [matTooltip]="row.palletCode">
+          {{row.palletType}}
+        </span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="packageType">

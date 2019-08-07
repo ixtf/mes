@@ -45,15 +45,13 @@ export class WorkshopManagePageComponent implements OnInit {
   }
 
   create() {
-    this.update(null);
+    const workshop = new Workshop();
+    workshop.corporation = this.store.selectSnapshot(AppState.corporation);
+    this.update(workshop);
   }
 
   @Dispatch()
   update(workshop: Workshop) {
-    if (!workshop) {
-      workshop = new Workshop();
-      workshop.corporation = this.store.selectSnapshot(AppState.corporation);
-    }
     return WorkshopUpdateDialogComponent.open(this.dialog, workshop).pipe(
       map(it => new SaveAction(it))
     );

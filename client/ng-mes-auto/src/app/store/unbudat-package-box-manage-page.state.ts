@@ -15,28 +15,28 @@ import {DefaultCompare, SortByCompare} from '../services/util.service';
 const PAGE_NAME = 'UnbudatPackageBoxManagePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 
   constructor(public payload: { workshopId: string; date: Date; budat: Date; budatClassId: string; }) {
   }
 }
 
 export class FilterBatchAction {
-  static readonly type = `[${PAGE_NAME}] ${FilterBatchAction.name}`;
+  static readonly type = `[${PAGE_NAME}] FilterBatchAction`;
 
   constructor(public payload: Batch) {
   }
 }
 
 export class FilterGradeAction {
-  static readonly type = `[${PAGE_NAME}] ${FilterGradeAction.name}`;
+  static readonly type = `[${PAGE_NAME}] FilterGradeAction`;
 
   constructor(public payload: Grade) {
   }
 }
 
 export class SaveAction {
-  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
+  static readonly type = `[${PAGE_NAME}] SaveAction`;
 
   constructor(public payload: PackageBox) {
   }

@@ -20,34 +20,34 @@ export class InitAction {
 }
 
 export class RefreshAction {
-  static readonly type = `[${PAGE_NAME}] ${RefreshAction.name}`;
+  static readonly type = `[${PAGE_NAME}] RefreshAction`;
 }
 
 export class ReconnectAction {
-  static readonly type = `[${PAGE_NAME}] ${ReconnectAction.name}`;
+  static readonly type = `[${PAGE_NAME}] ReconnectAction`;
 }
 
 export class RefreshProductPlansAction {
-  static readonly type = `[${PAGE_NAME}] ${RefreshProductPlansAction.name}`;
+  static readonly type = `[${PAGE_NAME}] RefreshProductPlansAction`;
 }
 
 export class RefreshExceptionRecordAction {
-  static readonly type = `[${PAGE_NAME}] ${RefreshExceptionRecordAction.name}`;
+  static readonly type = `[${PAGE_NAME}] RefreshExceptionRecordAction`;
 }
 
 export class RefreshNotificationAction {
-  static readonly type = `[${PAGE_NAME}] ${RefreshNotificationAction.name}`;
+  static readonly type = `[${PAGE_NAME}] RefreshNotificationAction`;
 }
 
 export class UpdateProductPlanRecordAction {
-  static readonly type = `[${PAGE_NAME}] ${UpdateProductPlanRecordAction.name}`;
+  static readonly type = `[${PAGE_NAME}] UpdateProductPlanRecordAction`;
 
   constructor(public payload: { lineMachineProductPlan: LineMachineProductPlan }) {
   }
 }
 
 export class UpdateExceptionRecordAction {
-  static readonly type = `[${PAGE_NAME}] ${UpdateExceptionRecordAction.name}`;
+  static readonly type = `[${PAGE_NAME}] UpdateExceptionRecordAction`;
 
   constructor(public payload: { exceptionRecord: ExceptionRecord }) {
   }

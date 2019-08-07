@@ -8,11 +8,11 @@ import {CodeCompare} from '../services/util.service';
 const PAGE_NAME = 'WorkshopManagePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
 export class SaveAction {
-  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
+  static readonly type = `[${PAGE_NAME}] SaveAction`;
 
   constructor(public payload: Workshop) {
   }

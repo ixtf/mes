@@ -9,32 +9,32 @@ import {LineCompare} from '../services/util.service';
 const PAGE_NAME = 'ExceptionRecordManagePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
 export class HandleAction {
-  static readonly type = `[${PAGE_NAME}] ${HandleAction.name}`;
+  static readonly type = `[${PAGE_NAME}] HandleAction`;
 
   constructor(public payload: ExceptionRecord) {
   }
 }
 
 export class EBUpdateExceptionRecordAction {
-  static readonly type = `[${PAGE_NAME}] ${EBUpdateExceptionRecordAction.name}`;
+  static readonly type = `[${PAGE_NAME}] EBUpdateExceptionRecordAction`;
 
   constructor(public payload: { exceptionRecord: ExceptionRecord }) {
   }
 }
 
 export class SaveAction {
-  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
+  static readonly type = `[${PAGE_NAME}] SaveAction`;
 
   constructor(public payload: ExceptionRecord) {
   }
 }
 
 export class FilterLineAction {
-  static readonly type = `[${PAGE_NAME}] ${FilterLineAction.name}`;
+  static readonly type = `[${PAGE_NAME}] FilterLineAction`;
 
   constructor(public payload: Line) {
   }

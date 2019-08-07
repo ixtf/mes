@@ -8,7 +8,7 @@ import {ApiService} from '../services/api.service';
 const PAGE_NAME = 'SilkCarRuntimePage';
 
 export class FetchAction {
-  static readonly type = `[${PAGE_NAME}] ${FetchAction.name}`;
+  static readonly type = `[${PAGE_NAME}] FetchAction`;
 
   constructor(public payload: string) {
   }

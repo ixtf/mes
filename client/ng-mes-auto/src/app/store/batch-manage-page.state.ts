@@ -8,25 +8,25 @@ import {ApiService} from '../services/api.service';
 const PAGE_NAME = 'BatchManagePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
 export class SaveAction {
-  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
+  static readonly type = `[${PAGE_NAME}] SaveAction`;
 
   constructor(public payload: Batch) {
   }
 }
 
 export class QueryAction {
-  static readonly type = `[${PAGE_NAME}] ${QueryAction.name}`;
+  static readonly type = `[${PAGE_NAME}] QueryAction`;
 
   constructor(public payload: { first: number; pageSize: number; }) {
   }
 }
 
 export class SetQAction {
-  static readonly type = `[${PAGE_NAME}] ${SetQAction.name}`;
+  static readonly type = `[${PAGE_NAME}] SetQAction`;
 
   constructor(public payload: string) {
   }

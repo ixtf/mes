@@ -7,14 +7,14 @@ import {ApiShareService} from '../services/api.service';
 const PAGE_NAME = 'BoardAutoLinePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 
   constructor(public payload: { if_riamb_id: string; displayCount: string }) {
   }
 }
 
 export class ReceivedMessageAction {
-  static readonly type = `[${PAGE_NAME}] ${ReceivedMessageAction.name}`;
+  static readonly type = `[${PAGE_NAME}] ReceivedMessageAction`;
 
   constructor(public payload: MessageModel) {
   }

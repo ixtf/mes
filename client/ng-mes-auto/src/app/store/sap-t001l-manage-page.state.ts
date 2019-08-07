@@ -8,18 +8,18 @@ import {CheckQ} from '../services/util.service';
 const PAGE_NAME = 'SapT001lManagePage';
 
 export class InitAction {
-  static readonly type = `[${PAGE_NAME}] ${InitAction.name}`;
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
 export class SetQAction {
-  static readonly type = `[${PAGE_NAME}] ${SetQAction.name}`;
+  static readonly type = `[${PAGE_NAME}] SetQAction`;
 
   constructor(public q: string) {
   }
 }
 
 export class SaveAction {
-  static readonly type = `[${PAGE_NAME}] ${SaveAction.name}`;
+  static readonly type = `[${PAGE_NAME}] SaveAction`;
 
   constructor(public payload: SapT001l) {
   }

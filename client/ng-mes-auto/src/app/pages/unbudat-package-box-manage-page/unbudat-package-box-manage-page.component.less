@@ -1,5 +1,6 @@
 @import "../../../library";
 
+
 .td-width(@width) {
   width: @width;
   min-width: @width;
@@ -42,6 +43,16 @@ th, td {
   }
 }
 
+td.dd {
+  //background-color: #fbed50;
+  //background-color: #c4e3f3;
+  //background-color: @pink-600;
+}
+
+tr.printed {
+  background-color: honeydew;
+}
+
 .mat-column-select {
   width: 40px;
   min-width: 40px;
@@ -49,7 +60,7 @@ th, td {
   border-right: 1px solid #e0e0e0;
 }
 
-.mat-column-test {
+.mat-column-compositeField {
   text-align: center;
   cursor: pointer;
   border-right: 1px solid #e0e0e0;

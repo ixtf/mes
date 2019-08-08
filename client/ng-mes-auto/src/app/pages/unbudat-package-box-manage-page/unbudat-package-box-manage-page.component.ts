@@ -14,7 +14,7 @@ import {Grade} from '../../models/grade';
 import {PackageBox} from '../../models/package-box';
 import {PackageClass} from '../../models/package-class';
 import {ApiService} from '../../services/api.service';
-import {CodeCompare, COPY} from '../../services/util.service';
+import {CodeCompare, COPY_WITH_CTRL} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
 import {FilterBatchAction, FilterGradeAction, InitAction, UnbudatPackageBoxManagePageState} from '../../store/unbudat-package-box-manage-page.state';
@@ -26,6 +26,7 @@ import {PackageBoxUpdateDialogComponent} from './package-box-update-dialog/packa
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
+  readonly copy = COPY_WITH_CTRL;
   @Select(AppState.authInfo)
   readonly authInfo$: Observable<AuthInfo>;
   @Select(AppState.authInfoIsAdmin)
@@ -45,7 +46,7 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
   @Select(UnbudatPackageBoxManagePageState.packageBoxes)
   readonly packageBoxes$: Observable<PackageBox[]>;
   readonly dataSource: PackageBoxDataSource;
-  readonly displayedColumns = ['select', 'test', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'sapT001l', 'budat', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
+  readonly displayedColumns = ['select', 'compositeField', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'sapT001l', 'budat', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
   readonly searchForm = this.fb.group({
     workshopId: [null, Validators.required],
     date: [new Date(), Validators.required],
@@ -134,12 +135,17 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
 
   }
 
-  copyCode(code: string, ev: MouseEvent) {
-    COPY(code);
-  }
-
   resetFilter() {
 
+  }
+
+  trClass(packageBox: PackageBox): string {
+    if (packageBox.printCount > 0) {
+      return 'dd';
+    }
+    if (packageBox.budat) {
+
+    }
   }
 }
 

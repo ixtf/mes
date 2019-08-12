@@ -1,12 +1,7 @@
 <form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
-  <div fxLayout fxLayoutGap="8px">
-    <span>计量员</span>
-    <span>{{(authInfo$|async)?.name}}</span>
-  </div>
-  <div fxLayout fxLayoutGap="8px">
-    <span>入库日期班次</span>
-    <span>{{budat$|async|date:'yyyy-MM-dd'}}</span>
-    <span>{{(budatClass$|async)?.name}}</span>
+  <div fxLayout fxLayoutGap="8px" style="font-size: 18px">
+    <span translate="PackageBox.budat"></span>
+    <span>{{budat$|async|date:'yyyy-MM-dd'}} / {{(budatClass$|async)?.name}}</span>
   </div>
 
   <span fxFlex></span>
@@ -83,10 +78,11 @@
                       (click)="$event.stopPropagation()"
                       [checked]="selection.isSelected(row)">
         </mat-checkbox>
+        <span style="position: absolute;background-color:red;top: 4px;left: 4px;border-radius: 50%;height: 8px;width: 8px"></span>
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="test" sticky>
+    <ng-container matColumnDef="compositeField" sticky>
       <th *matHeaderCellDef mat-header-cell>
         <div fxLayout fxLayoutAlign="center center" fxLayoutGap="32px">
           <span translate="printCount"></span>
@@ -96,13 +92,13 @@
           <span translate="batchNo"></span>
         </div>
       </th>
-      <td (click)="selection.toggle(row)" *matCellDef="let row" mat-cell matRipple>
+      <td (click)="selection.toggle(row)" *matCellDef="let row" [class.dd]="!row.budat" mat-cell matRipple>
         <div fxLayout>
           <span fxFlex="40px">{{row.printCount}}</span>
           <mat-divider vertical></mat-divider>
-          <span fxFlex="220px">{{row.code}}</span>
+          <span [matTooltipDisabled]="!row.isValidPalletCode" [matTooltip]="row.palletCode" fxFlex="240px">{{row.code}}</span>
           <mat-divider vertical></mat-divider>
-          <span [matTooltip]="row.batch.product.name+' - '+row.batch.spec+' - '+row.batch.tubeColor" fxFlex="90px">
+          <span [matTooltip]="row.batch.product.name+' - '+row.batch.spec+' - '+row.batch.tubeColor" fxFlex="100px">
             {{row.batch.batchNo}}
           </span>
         </div>
@@ -195,6 +191,6 @@
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
-    <tr (click)="copyCode(row.code,$event)" *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+    <tr (click)="copy(row.code,$event)" *matRowDef="let row; columns: displayedColumns;" [class.printed]="row.printCount>0" mat-row></tr>
   </table>
 </div>

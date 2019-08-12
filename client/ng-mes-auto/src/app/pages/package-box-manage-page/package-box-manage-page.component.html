@@ -36,9 +36,9 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <span fxFlex></span>
-  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
-    <mat-icon>add</mat-icon>
+
+  <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+    <mat-icon>search</mat-icon>
   </button>
 </form>
 

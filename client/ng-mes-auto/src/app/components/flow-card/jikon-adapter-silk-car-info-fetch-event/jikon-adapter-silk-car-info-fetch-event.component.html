@@ -45,6 +45,11 @@
       <td *matCellDef="let row" mat-cell>{{row.eliminateFlage}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="detached">
+      <th *matHeaderCellDef mat-header-cell>{{'detached'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.detached}}</td>
+    </ng-container>
+
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>

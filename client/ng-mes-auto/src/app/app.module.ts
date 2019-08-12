@@ -18,6 +18,7 @@ import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {NgxsModule, NoopNgxsExecutionStrategy} from '@ngxs/store';
+import {OWL_DATE_TIME_LOCALE, OwlDateTimeIntl} from 'ng-pick-datetime';
 import {environment} from '../environments/environment';
 import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
 import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnormal-dialog/board-abnormal-dialog.component';
@@ -31,6 +32,7 @@ import {AdminGuard} from './services/admin.guard';
 import {AuthGuard} from './services/auth.guard';
 import {ErrorInterceptor} from './services/error.interceptor';
 import {JwtInterceptor} from './services/jwt.interceptor';
+import {MyOwlDateTimeIntl} from './services/my-owl-date-time-intl';
 import {MyPaginatorIntl} from './services/my-paginator-intl';
 import {SharedModule} from './shared.module';
 import {AppState} from './store/app.state';
@@ -166,6 +168,8 @@ export function createTranslateLoader(httpClient: HttpClient) {
     {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {autoActiveFirstOption: true}},
     {provide: MatPaginatorIntl, useClass: MyPaginatorIntl, deps: [TranslateService]},
     {provide: OverlayContainer, useClass: FullscreenOverlayContainer},
+    {provide: OWL_DATE_TIME_LOCALE, useValue: 'zh-CN'},
+    {provide: OwlDateTimeIntl, useClass: MyOwlDateTimeIntl, deps: [TranslateService]},
   ],
   bootstrap: [AppComponent]
 })

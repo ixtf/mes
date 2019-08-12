@@ -18,7 +18,7 @@ export class InitAction {
 export class QueryAction {
   static readonly type = '[DoffingSilkCarRecordReportPage] QueryAction';
 
-  constructor(public payload: { workshopId: string; startDate: Date; endDate: Date; }) {
+  constructor(public payload: { workshopId: string; startDateTime: Date; endDateTime: Date; }) {
   }
 }
 
@@ -131,10 +131,11 @@ export class DoffingSilkCarRecordReportPageState {
 
   @Action(QueryAction)
   @ImmutableContext()
-  QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, startDate, endDate}}: QueryAction) {
+  QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, startDateTime, endDateTime}}: QueryAction) {
+    console.log(moment(startDateTime).millisecond());
     const httpParams = new HttpParams().set('workshopId', workshopId)
-      .append('startDate', moment(startDate).format('YYYY-MM-DD'))
-      .append('endDate', moment(endDate).format('YYYY-MM-DD'));
+      .append('startDateTime', `${moment(startDateTime).valueOf()}`)
+      .append('endDateTime', `${moment(endDateTime).valueOf()}`);
     return this.api.doffingSilkCarRecordReport(httpParams).pipe(
       tap(reportItems => setState((state: StateModel) => {
         state.workshopId = workshopId;

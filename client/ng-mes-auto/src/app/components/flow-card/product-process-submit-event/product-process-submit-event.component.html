@@ -15,7 +15,7 @@
 
 <section *ngIf="silkRuntimes?.length>0" fxLayout="column">
   <div fxLayout fxLayoutGap="16px" style="padding: 8px 0 8px 8px;">
-    <mat-chip *ngFor="let it of event.silkExceptions" [selectable]="false" color="accent" disableRipple selected>
+    <mat-chip *ngFor="let it of event.silkExceptions" [selectable]="false" color="accent" disableRipple selected style="padding: 0 4px;">
       {{it.name|translate}}
     </mat-chip>
 

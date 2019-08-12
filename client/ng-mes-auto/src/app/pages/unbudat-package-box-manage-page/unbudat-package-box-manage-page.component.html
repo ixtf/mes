@@ -1,12 +1,12 @@
 <form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
   <div fxLayout fxLayoutGap="8px">
     <span>计量员</span>
-    <span>{{(authInfo$|async).name}}</span>
+    <span>{{(authInfo$|async)?.name}}</span>
   </div>
   <div fxLayout fxLayoutGap="8px">
     <span>入库日期班次</span>
     <span>{{budat$|async|date:'yyyy-MM-dd'}}</span>
-    <span>{{(budatClass$|async).name}}</span>
+    <span>{{(budatClass$|async)?.name}}</span>
   </div>
 
   <span fxFlex></span>

@@ -338,5 +338,13 @@
     "previousPageLabel": "上一页",
     "firstPageLabel": "第一页",
     "lastPageLabel": "最后一页"
+  },
+  "OwlDateTimeIntl": {
+    "hour12AMLabel": "上午",
+    "hour12PMLabel": "下午",
+    "rangeFromLabel": "开始",
+    "rangeToLabel": "结束",
+    "cancelBtnLabel": "取消",
+    "setBtnLabel": "确定"
   }
 }

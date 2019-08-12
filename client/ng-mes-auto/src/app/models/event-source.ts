@@ -47,7 +47,7 @@ export class DyeingPrepareEvent extends EventSource {
 }
 
 export class JikonAdapterSilkDetachEvent extends EventSource {
-  command: any;
+  command: { silkcarCode: string; spindleCode: string };
   result: any;
 }
 

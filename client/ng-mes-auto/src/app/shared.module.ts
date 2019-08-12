@@ -12,8 +12,7 @@ import {NgxsDispatchPluginModule} from '@ngxs-labs/dispatch-decorator';
 import {NgxsEmitPluginModule} from '@ngxs-labs/emitter';
 import {NgxsFormPluginModule} from '@ngxs/form-plugin';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
-import {DateTimeAdapter, OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
-import {MomentDateTimeAdapter, OwlMomentDateTimeModule} from 'ng-pick-datetime-moment';
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 
 @NgModule({
   exports: [
@@ -23,7 +22,7 @@ import {MomentDateTimeAdapter, OwlMomentDateTimeModule} from 'ng-pick-datetime-m
 
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    OwlMomentDateTimeModule,
+    // OwlMomentDateTimeModule,
 
     TranslateModule,
     FlexLayoutModule,
@@ -65,7 +64,7 @@ import {MomentDateTimeAdapter, OwlMomentDateTimeModule} from 'ng-pick-datetime-m
     NgxsEmitPluginModule,
   ],
   providers: [
-    {provide: DateTimeAdapter, useClass: MomentDateTimeAdapter},
+    // {provide: DateTimeAdapter, useClass: MomentDateTimeAdapter},
   ],
 })
 export class SharedModule {

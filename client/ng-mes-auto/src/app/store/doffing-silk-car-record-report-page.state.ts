@@ -134,8 +134,8 @@ export class DoffingSilkCarRecordReportPageState {
   QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, startDateTime, endDateTime}}: QueryAction) {
     console.log(moment(startDateTime).millisecond());
     const httpParams = new HttpParams().set('workshopId', workshopId)
-      .append('startDateTime', `${moment(startDateTime).valueOf()}`)
-      .append('endDateTime', `${moment(endDateTime).valueOf()}`);
+      .append('startDate', `${moment(startDateTime).valueOf()}`)
+      .append('endDate', `${moment(endDateTime).valueOf()}`);
     return this.api.doffingSilkCarRecordReport(httpParams).pipe(
       tap(reportItems => setState((state: StateModel) => {
         state.workshopId = workshopId;

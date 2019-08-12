@@ -52,12 +52,12 @@ export class DoffingSilkCarRecordReportPageComponent implements OnInit, OnDestro
       }),
     ).subscribe();
     const startMoment = moment().startOf('d')
-      .hour(parseInt(getItem('startDate_hour') || '9', 10))
+      .hour(parseInt(getItem('startDate_hour') || '8', 10))
       .minute(parseInt(getItem('startDate_minute') || '0', 10));
     const endMoment = moment().add(1, 'd').startOf('d')
-      .hour(parseInt(getItem('endDate_hour') || '9', 10))
+      .hour(parseInt(getItem('endDate_hour') || '8', 10))
       .minute(parseInt(getItem('endDate_minute') || '0', 10));
-    this.rangeCtrl.patchValue([startMoment, endMoment]);
+    this.rangeCtrl.patchValue([startMoment.toDate(), endMoment.toDate()]);
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,13 @@
+<header fxLayout fxLayoutAlign="start center">
+  <span fxFlex="50px">{{event.operator.name}}</span>
+  <span fxFlex>{{event.fireDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  <button [matMenuTriggerFor]="menu" mat-button type="button">
+    {{('EventSourceType.' + event.type)|translate}}
+  </button>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <button [disabled]="!canUndo()" mat-menu-item>{{'Common.undo'|translate}}</button>
+  </mat-menu>
+</header>
+
+<section fxLayout="column">
+</section>

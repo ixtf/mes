@@ -65,3 +65,11 @@ export class RiambSilkCarInfoFetchEvent extends EventSource {
   command: any;
   result: any;
 }
+
+export class ToDtyEvent extends EventSource {
+  command: any;
+}
+
+export class ToDtyConfirmEvent extends EventSource {
+  command: any;
+}

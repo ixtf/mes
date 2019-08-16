@@ -14,6 +14,8 @@ import {RiambSilkCarInfoFetchEventComponent} from './riamb-silk-car-info-fetch-e
 import {RiambSilkDetachEventComponent} from './riamb-silk-detach-event/riamb-silk-detach-event.component';
 import {SilkNoteFeedbackEventComponent} from './silk-note-feedback-event/silk-note-feedback-event.component';
 import {SilkRuntimeDetachEventComponent} from './silk-runtime-detach-event/silk-runtime-detach-event.component';
+import {ToDtyConfirmEventComponent} from './to-dty-confirm-event/to-dty-confirm-event.component';
+import {ToDtyEventComponent} from './to-dty-event/to-dty-event.component';
 
 @Component({
   selector: 'app-flow-card',
@@ -64,6 +66,8 @@ export class FlowCardComponent {
     SilkNoteFeedbackEventComponent,
     RiambSilkDetachEventComponent,
     RiambSilkCarInfoFetchEventComponent,
+    ToDtyEventComponent,
+    ToDtyConfirmEventComponent,
   ],
   imports: [
     SharedModule,

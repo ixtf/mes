@@ -47,6 +47,8 @@
   "saleType": "销售类型",
   "EventSourceType": {
     "PackageBoxEvent": "打包",
+    "ToDtyEvent": "推加弹",
+    "ToDtyConfirmEvent": "推加弹确认",
     "Detach": "解绑",
     "SilkCarInfoFetchEvent": "推自动线",
     "SilkNoteFeedbackEvent": "备注处理"

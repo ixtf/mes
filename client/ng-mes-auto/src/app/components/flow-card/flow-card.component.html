@@ -21,6 +21,16 @@
       <mat-divider></mat-divider>
     </ng-container>
 
+    <ng-container *ngSwitchCase="'ToDtyEvent'">
+      <app-to-dty-event [event]="event" [silkCarRecord]="silkCarRecord" [silkCarRuntime]="silkCarRuntime" class="flow-card-event"></app-to-dty-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ToDtyConfirmEvent'">
+      <app-to-dty-confirm-event [event]="event" [silkCarRecord]="silkCarRecord" [silkCarRuntime]="silkCarRuntime" class="flow-card-event"></app-to-dty-confirm-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
     <ng-container *ngSwitchCase="'JikonAdapterSilkCarInfoFetchEvent'">
       <app-jikon-adapter-silk-car-info-fetch-event [event]="event" [silkCarRecord]="silkCarRecord" [silkCarRuntime]="silkCarRuntime" class="flow-card-event"></app-jikon-adapter-silk-car-info-fetch-event>
       <mat-divider></mat-divider>

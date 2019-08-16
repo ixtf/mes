@@ -12,11 +12,11 @@ import {AppState} from '../../../store/app.state';
 import {DoffingSilkCarRecordReportPageState, InfoItem, InitAction, QueryAction} from '../../../store/doffing-silk-car-record-report-page.state';
 
 const setItem = (key: string, value: string) => {
-  localStorage.setItem(`${DoffingSilkCarRecordReportPageComponent.name}.${key}`, value);
+  localStorage.setItem(`DoffingSilkCarRecordReportPageComponent.${key}`, value);
 };
 
 const getItem = (key: string) => {
-  return localStorage.getItem(`${DoffingSilkCarRecordReportPageComponent.name}.${key}`);
+  return localStorage.getItem(`DoffingSilkCarRecordReportPageComponent.${key}`);
 };
 
 @Component({

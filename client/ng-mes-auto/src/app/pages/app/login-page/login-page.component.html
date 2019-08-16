@@ -1,6 +1,9 @@
 <aside>
-  <div style="color: white;font-size: 20px">MES-AUTO</div>
-  <div style="color: white;font-size: 16px">V3.0</div>
+  <mat-divider></mat-divider>
+  <div style="font-size: 20px">MES AUTO</div>
+  <mat-divider></mat-divider>
+  <div style="font-size: 16px">V3.0</div>
+  <mat-divider></mat-divider>
 </aside>
 
 <section>
@@ -13,11 +16,11 @@
     </mat-form-field>
 
     <mat-form-field floatLabel="never">
-      <input [type]="hide ? 'password' : 'text'" formControlName="loginPassword" matInput required>
+      <input [type]="hide ? 'password' : 'text'" autocomplete="off" formControlName="loginPassword" matInput required>
       <button mat-icon-button matPrefix tabindex="-1" type="button">
         <mat-icon>lock</mat-icon>
       </button>
-      <button (click)="hide = !hide" mat-icon-button matSuffix type="button">
+      <button (click)="hide = !hide" mat-icon-button matSuffix tabindex="-1" type="button">
         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>

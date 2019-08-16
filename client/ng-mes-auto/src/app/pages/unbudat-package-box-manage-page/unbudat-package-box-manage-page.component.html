@@ -4,7 +4,46 @@
     <span>{{budat$|async|date:'yyyy-MM-dd'}} / {{(budatClass$|async)?.name}}</span>
   </div>
 
+  <mat-form-field floatLabel="never" fxFlex="100px">
+    <mat-select (valueChange)="filterBatch($event)" [placeholder]="'batchNo'|translate">
+      <mat-option>{{'Common.all'|translate}}</mat-option>
+      <mat-option *ngFor="let it of batches$|async" [value]="it">
+        {{it.batchNo}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never" fxFlex="100px">
+    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'grade'|translate">
+      <mat-option>{{'Common.all'|translate}}</mat-option>
+      <mat-option *ngFor="let it of grades$|async" [value]="it">
+        {{it.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never" fxFlex="100px">
+    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'Common.print'|translate">
+      <mat-option>{{'Common.all'|translate}}</mat-option>
+      <mat-option [value]="0">{{'Common.unPrint'|translate}}</mat-option>
+      <mat-option [value]="1">{{'Common.printed'|translate}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never" fxFlex="100px">
+    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'measure'|translate">
+      <mat-option>{{'Common.all'|translate}}</mat-option>
+      <mat-option [value]="0">{{'Common.unMeasure'|translate}}</mat-option>
+      <mat-option [value]="1">{{'Common.measured'|translate}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button (click)="resetFilter()" color="warn" mat-button type="button">
+    {{'Common.reset'|translate}}
+  </button>
+
   <span fxFlex></span>
+  <!--  <mat-divider vertical></mat-divider>-->
 
   <button (click)="print()" [disabled]="selection.selected?.length<1" color="primary" mat-stroked-button type="button">
     {{'Common.print'|translate}} ({{selection.selected.length}})
@@ -14,58 +53,13 @@
   </button>
 
   <button (click)="create()" color="primary" mat-stroked-button type="button">
-    补充唛头
+    {{'PackageBoxType.MANUAL_APPEND'|translate}}
   </button>
 </form>
 
-<div class="filter-area" fxLayout fxLayoutAlign="start center" fxLayoutGap="16px">
-  <!--  <span>{{'Common.filter'|translate}}</span>-->
-
-  <mat-button-toggle-group appearance="legacy">
-    <mat-button-toggle (click)="filterPrinted()">
-      已打印
-    </mat-button-toggle>
-    <mat-button-toggle (click)="filterPrinted()">
-      未打印
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <mat-button-toggle-group appearance="legacy" multiple>
-    <mat-button-toggle (click)="filterMeasured()">
-      已计量
-      <!--      {{'Common.all'|translate}}-->
-    </mat-button-toggle>
-    <mat-button-toggle (click)="filterMeasured()">
-      未计量
-      <!--      {{'Common.all'|translate}}-->
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <mat-form-field floatLabel="never" fxFlex="150px">
-    <mat-select (valueChange)="filterBatch($event)" [placeholder]="'batchNo'|translate">
-      <mat-option>{{'Common.all'|translate}}</mat-option>
-      <mat-option *ngFor="let it of batches$|async" [value]="it">
-        {{it.batchNo}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field floatLabel="never" fxFlex="150px">
-    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'grade'|translate">
-      <mat-option>{{'Common.all'|translate}}</mat-option>
-      <mat-option *ngFor="let it of grades$|async" [value]="it">
-        {{it.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <button (click)="resetFilter()" color="warn" mat-button type="button">
-    {{'Common.reset'|translate}}
-  </button>
-</div>
 <mat-divider></mat-divider>
 <div fxFlex style="overflow: auto;width: 100vw;">
-  <table [dataSource]="dataSource" mat-table>
+  <table [dataSource]="dataSource" class="package-box" mat-table>
     <ng-container matColumnDef="select" sticky>
       <th *matHeaderCellDef mat-header-cell>
         <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -78,12 +72,14 @@
                       (click)="$event.stopPropagation()"
                       [checked]="selection.isSelected(row)">
         </mat-checkbox>
-        <span style="position: absolute;background-color:red;top: 4px;left: 4px;border-radius: 50%;height: 8px;width: 8px"></span>
+        <ng-container *ngIf="row.isValidPalletCode">
+          <span [matTooltip]="row.palletCode" class="pallet-code" matTooltipPosition="right"></span>
+        </ng-container>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="compositeField" sticky>
-      <th *matHeaderCellDef mat-header-cell>
+      <th (click)="masterToggle()" *matHeaderCellDef mat-header-cell>
         <div fxLayout fxLayoutAlign="center center" fxLayoutGap="32px">
           <span translate="printCount"></span>
           <mat-divider vertical></mat-divider>
@@ -96,9 +92,9 @@
         <div fxLayout>
           <span fxFlex="40px">{{row.printCount}}</span>
           <mat-divider vertical></mat-divider>
-          <span [matTooltipDisabled]="!row.isValidPalletCode" [matTooltip]="row.palletCode" fxFlex="240px">{{row.code}}</span>
+          <span fxFlex="240px">{{row.code}}</span>
           <mat-divider vertical></mat-divider>
-          <span [matTooltip]="row.batch.product.name+' - '+row.batch.spec+' - '+row.batch.tubeColor" fxFlex="100px">
+          <span [matTooltip]="batchTooltip(row)" fxFlex="100px">
             {{row.batch.batchNo}}
           </span>
         </div>

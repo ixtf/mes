@@ -1,5 +1,9 @@
+import {HttpParams} from '@angular/common/http';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
+import * as moment from 'moment';
+import {tap} from 'rxjs/operators';
+import {isNullOrUndefined} from 'util';
 import {PackageBox} from '../models/package-box';
 import {ApiService} from '../services/api.service';
 import {DefaultCompare} from '../services/util.service';
@@ -10,10 +14,10 @@ export class InitAction {
   static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
-export class SaveAction {
-  static readonly type = `[${PAGE_NAME}] SaveAction`;
+export class QueryAction {
+  static readonly type = `[${PAGE_NAME}] QueryAction`;
 
-  constructor(public payload: PackageBox) {
+  constructor(public payload: { workshopId: string; code: string; batchId: string; gradeId: string; productId: string; budatClassId: string; type: string; startDate: Date; endDate: Date, first: number, pageSize: number }) {
   }
 }
 
@@ -25,6 +29,9 @@ export class DeleteAction {
 }
 
 interface StateModel {
+  count?: number;
+  first?: number;
+  pageSize?: number;
   packageBoxEntities: { [id: string]: PackageBox };
 }
 
@@ -44,6 +51,21 @@ export class PackageBoxManagePageState {
     return Object.values(state.packageBoxEntities).filter(DefaultCompare);
   }
 
+  @Selector()
+  static count(state: StateModel): number {
+    return state.count;
+  }
+
+  @Selector()
+  static pageIndex(state: StateModel): number {
+    return state.first / state.pageSize;
+  }
+
+  @Selector()
+  static pageSize(state: StateModel): number {
+    return state.pageSize;
+  }
+
   @Action(InitAction)
   @ImmutableContext()
   InitAction({setState}: StateContext<StateModel>) {
@@ -55,16 +77,45 @@ export class PackageBoxManagePageState {
     // );
   }
 
-  @Action(SaveAction)
+  @Action(QueryAction)
   @ImmutableContext()
-  SaveAction({setState}: StateContext<StateModel>, {payload}: SaveAction) {
-    // return this.api.saveNotification(payload).pipe(
-    //   tap(it => setState((state: StateModel) => {
-    //     const notification = PackageBox.assign(it);
-    //     state.packageBoxEntities[notification.id] = notification;
-    //     return state;
-    //   }))
-    // );
+  QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, code, batchId, gradeId, budatClassId, type, startDate, endDate, productId, first, pageSize}}: QueryAction) {
+    if (isNullOrUndefined(pageSize)) {
+      pageSize = 50;
+    }
+    let params = new HttpParams().set('workshopId', workshopId)
+      .set('startDate', moment(startDate).format('YYYY-MM-DD'))
+      .set('endDate', moment(endDate).format('YYYY-MM-DD'))
+      .set('first', `${first}`)
+      .set('pageSize', `${pageSize}`);
+    if (code) {
+      params = params.set('packageBoxCode', code);
+    } else {
+      if (type) {
+        params = params.set('packageBoxType', type);
+      }
+      if (batchId) {
+        params = params.set('batchId', batchId);
+      }
+      if (gradeId) {
+        params = params.set('gradeId', gradeId);
+      }
+      if (productId) {
+        params = params.set('productId', productId);
+      }
+      if (budatClassId) {
+        params = params.set('budatClassId', budatClassId);
+      }
+    }
+    return this.api.listPackageBox(params).pipe(
+      tap(it => setState((state: StateModel) => {
+        state.count = it.count;
+        state.first = it.first;
+        state.pageSize = it.pageSize;
+        state.packageBoxEntities = PackageBox.toEntities(it.packageBoxes);
+        return state;
+      }))
+    );
   }
 
   @Action(DeleteAction)

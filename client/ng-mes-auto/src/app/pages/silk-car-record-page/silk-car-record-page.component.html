@@ -33,13 +33,13 @@
   </ng-container>
 
   <ng-container *ngIf="!(silkCarRecord$|async)">
-    <mat-action-list fxFlex style="overflow-y: auto">
+    <mat-action-list fxFlex style="overflow-y: auto;padding: 0">
       <mat-list-item (click)="pick(silkCarRecord)" *ngFor="let silkCarRecord of silkCarRecords$|async">
-        <div fxLayout fxLayoutGap="16px" matLine>
-          <span>{{silkCarRecord?.doffingDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
-          <span>{{silkCarRecord.doffingOperator?.name}}</span>
-          <span>{{silkCarRecord.batch.batchNo}}</span>
-          <span>{{silkCarRecord.grade.name}}</span>
+        <div fxLayout fxLayoutGap="16px" matLine matTooltip="test1;test1;" matTooltipPosition="after">
+          <span style="width: 150px;">{{silkCarRecord?.doffingDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+          <span style="width: 100px;text-align: center;">{{silkCarRecord.batch.batchNo}}</span>
+          <span style="width: 50px;text-align: center;">{{silkCarRecord.doffingOperator?.name}}</span>
+          <span style="width: 50px;text-align: center;">{{silkCarRecord.grade.name}}</span>
         </div>
         <mat-divider></mat-divider>
       </mat-list-item>

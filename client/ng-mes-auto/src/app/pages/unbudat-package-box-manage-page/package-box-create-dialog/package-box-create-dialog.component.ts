@@ -19,11 +19,11 @@ const workshopsLinesValidator = (control: FormControl) => {
 };
 
 @Component({
-  templateUrl: './package-box-update-dialog.component.html',
-  styleUrls: ['./package-box-update-dialog.component.less'],
+  templateUrl: './package-box-create-dialog.component.html',
+  styleUrls: ['./package-box-create-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PackageBoxUpdateDialogComponent implements OnInit, OnDestroy {
+export class PackageBoxCreateDialogComponent implements OnInit, OnDestroy {
   readonly title: string;
   readonly compareWithId = compareWithId;
   readonly workshops$ = this.api.listWorkshop().pipe();
@@ -50,13 +50,13 @@ export class PackageBoxUpdateDialogComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
               private api: ApiService,
-              private dialogRef: MatDialogRef<PackageBoxUpdateDialogComponent>,
+              private dialogRef: MatDialogRef<PackageBoxCreateDialogComponent>,
               @Inject(MAT_DIALOG_DATA) private data: PackageBox) {
     this.title = 'Common.' + (this.data.id ? 'edit' : 'new');
   }
 
-  static open(dialog: MatDialog, data: PackageBox): MatDialogRef<PackageBoxUpdateDialogComponent, PackageBox> {
-    return dialog.open(PackageBoxUpdateDialogComponent, {data, disableClose: true, width: '500px'});
+  static open(dialog: MatDialog, data: PackageBox): MatDialogRef<PackageBoxCreateDialogComponent, PackageBox> {
+    return dialog.open(PackageBoxCreateDialogComponent, {data, disableClose: true, width: '500px'});
   }
 
   ngOnInit(): void {

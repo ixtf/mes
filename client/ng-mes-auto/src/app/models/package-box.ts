@@ -3,6 +3,8 @@ import {Grade} from './grade';
 import {Operator} from './operator';
 import {PackageClass} from './package-class';
 
+export const PACKAGE_BOX_TYPE = ['AUTO', 'MANUAL', 'BIG_SILK_CAR', 'MANUAL_APPEND'];
+
 export class PackageBox {
   id: string;
   code: string;

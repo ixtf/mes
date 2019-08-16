@@ -18,7 +18,9 @@ import {CodeCompare, COPY_WITH_CTRL} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
 import {FilterBatchAction, FilterGradeAction, InitAction, UnbudatPackageBoxManagePageState} from '../../store/unbudat-package-box-manage-page.state';
-import {PackageBoxUpdateDialogComponent} from './package-box-update-dialog/package-box-update-dialog.component';
+import {PackageBoxBatchMeasureDialogComponent} from './package-box-batch-measure-dialog/package-box-batch-measure-dialog.component';
+import {PackageBoxCreateDialogComponent} from './package-box-create-dialog/package-box-create-dialog.component';
+import {PackageBoxMeasureDialogComponent} from './package-box-measure-dialog/package-box-measure-dialog.component';
 
 @Component({
   templateUrl: './unbudat-package-box-manage-page.component.html',
@@ -46,7 +48,7 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
   @Select(UnbudatPackageBoxManagePageState.packageBoxes)
   readonly packageBoxes$: Observable<PackageBox[]>;
   readonly dataSource: PackageBoxDataSource;
-  readonly displayedColumns = ['select', 'compositeField', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'sapT001l', 'budat', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
+  readonly displayedColumns = ['select', 'compositeField', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'budat', 'sapT001l', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
   readonly searchForm = this.fb.group({
     workshopId: [null, Validators.required],
     date: [new Date(), Validators.required],
@@ -147,6 +149,10 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
 
     }
   }
+
+  batchTooltip(packageBox: PackageBox) {
+    return `${packageBox.batch.product.name} — ${packageBox.batch.spec} — ${packageBox.batch.tubeColor}`;
+  }
 }
 
 class PackageBoxDataSource extends MatTableDataSource<PackageBox> {
@@ -169,10 +175,14 @@ class PackageBoxDataSource extends MatTableDataSource<PackageBox> {
 @NgModule({
   declarations: [
     UnbudatPackageBoxManagePageComponent,
-    PackageBoxUpdateDialogComponent,
+    PackageBoxCreateDialogComponent,
+    PackageBoxMeasureDialogComponent,
+    PackageBoxBatchMeasureDialogComponent,
   ],
   entryComponents: [
-    PackageBoxUpdateDialogComponent
+    PackageBoxCreateDialogComponent,
+    PackageBoxMeasureDialogComponent,
+    PackageBoxBatchMeasureDialogComponent,
   ],
   imports: [
     NgxsModule.forFeature([UnbudatPackageBoxManagePageState]),

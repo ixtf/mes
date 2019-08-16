@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ApiService} from '../../../../services/api.service';
-import {CodeCompare, SortByCompare} from '../../../../services/util.service';
+import {CodeCompare} from '../../../../services/util.service';
 
 @Component({
   templateUrl: './unbudat-package-box-dialog.component.html',
@@ -20,7 +20,7 @@ export class UnbudatPackageBoxDialogComponent implements OnDestroy {
     budatClassId: [null, Validators.required],
   });
   readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CodeCompare)));
-  readonly budatClasses$ = this.api.listPackageClass().pipe(map(it => (it || []).sort(SortByCompare)));
+  readonly budatClasses$ = this.api.listPackageClass();
   readonly maxDate = moment();
   readonly minDate = moment();
   private readonly destroy$ = new Subject();

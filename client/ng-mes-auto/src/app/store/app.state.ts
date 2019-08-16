@@ -8,12 +8,14 @@ import {AuthInfo} from '../models/auth-info';
 import {Corporation} from '../models/corporation';
 import {ApiService} from '../services/api.service';
 
+const PAGE_NAME = 'App';
+
 export class InitAction {
-  static readonly type = '[App] InitAction';
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
 export class LoginAction {
-  static readonly type = '[App] LoginAction';
+  static readonly type = `[${PAGE_NAME}] LoginAction`;
 
   constructor(public payload: { loginId: string; loginPassword: string; returnUrl: string; }) {
   }
@@ -28,7 +30,7 @@ interface StateModel {
 }
 
 @State<StateModel>({
-  name: 'app',
+  name: PAGE_NAME,
   defaults: {}
 })
 export class AppState implements NgxsOnInit {

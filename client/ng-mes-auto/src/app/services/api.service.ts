@@ -392,6 +392,10 @@ export class ApiService {
     return this.http.get<ProductProcess>(`${BASE_API_URL}/productProcesses/${id}`);
   }
 
+  listPackageBox(params: HttpParams): Observable<{ count: number, first: number, pageSize: number, packageBoxes: PackageBox[] }> {
+    return this.http.get<{ count: number, first: number, pageSize: number, packageBoxes: PackageBox[] }>(`${BASE_API_URL}/packageBoxes`, {params});
+  }
+
   listUnbudatPackageBox(params: HttpParams): Observable<PackageBox[]> {
     params = params.set('first', '0').set('pageSize', '1000');
     return this.http.get<{ packageBoxes: PackageBox[] }>(`${BASE_API_URL}/measurePackageBoxes`, {params}).pipe(

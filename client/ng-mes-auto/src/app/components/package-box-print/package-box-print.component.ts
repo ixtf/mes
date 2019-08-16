@@ -23,7 +23,6 @@ export class PackageBoxPrintComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    console.log(this.elementRef.nativeElement);
     setTimeout(() => {
       const popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
       popupWin.document.open();
@@ -34,8 +33,8 @@ export class PackageBoxPrintComponent implements AfterContentInit {
 </head>
 <body onload="window.print();window.close()">${this.elementRef.nativeElement.innerHTML}</body>
 </html>`);
-      this.dialogRef.close();
       popupWin.document.close();
+      this.dialogRef.close();
     });
   }
 }

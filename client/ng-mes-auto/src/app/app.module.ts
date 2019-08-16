@@ -141,7 +141,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     }),
     // It is recommended to register the storage plugin before other plugins so initial state can be picked up by those plugins.
     NgxsStoragePluginModule.forRoot({
-      key: ['app.token', 'SilkCarRuntimePage.settingForm']
+      key: ['App.token']
     }),
     NgxsRouterPluginModule.forRoot(),
     NgxsFormPluginModule.forRoot(),

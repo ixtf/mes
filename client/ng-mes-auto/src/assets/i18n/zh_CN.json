@@ -74,10 +74,18 @@
   },
   "PackageBox": {
     "code": "唛头",
+    "type": "打包类型",
     "sapT001l": "SAP库存地",
     "budat": "入库日期",
     "packageType": "包装类型",
     "creator": "打包人",
+    "createDateTime": "打包时间"
+  },
+  "PackageBoxType": {
+    "AUTO": "自动打包",
+    "MANUAL_APPEND": "补充唛头",
+    "MANUAL": "人工打包",
+    "BIG_SILK_CAR": "大丝车",
     "createDateTime": "打包时间"
   },
   "Grade": {
@@ -180,6 +188,7 @@
     "lineMachines": "机台管理",
     "silkCarRecordDestinations": "丝车目的地管理",
     "products": "产品管理",
+    "packageBoxes": "唛头管理",
     "productProcesses": "生产工艺管理",
     "silkCars": "丝车管理",
     "silkWeights": "锭重管理",

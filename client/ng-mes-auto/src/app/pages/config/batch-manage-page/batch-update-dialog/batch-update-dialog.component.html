@@ -39,7 +39,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'centralValue'|translate" formControlName="centralValue" matInput required type="number">
+      <input [placeholder]="'Batch.centralValue'|translate" formControlName="centralValue" matInput required type="number">
       <span matSuffix>dtex</span>
       <mat-error *ngIf="form.get('centralValue').hasError('required')">
         {{'Validator.required'|translate}}
@@ -50,7 +50,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'holeNum'|translate" formControlName="holeNum" matInput required type="number">
+      <input [placeholder]="'Batch.holeNum'|translate" formControlName="holeNum" matInput required type="number">
       <span matSuffix>f</span>
       <mat-error *ngIf="form.get('holeNum').hasError('required')">
         {{'Validator.required'|translate}}
@@ -61,7 +61,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'spec'|translate" formControlName="spec" matInput required>
+      <input [placeholder]="'Batch.spec'|translate" formControlName="spec" matInput required>
       <mat-error *ngIf="form.get('spec').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>

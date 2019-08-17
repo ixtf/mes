@@ -1,4 +1,4 @@
-import {LineCompare, LineMachineCompare} from '../services/util.service';
+import {LINE_COMPARE, LINE_MACHINE_COMPARE} from '../services/util.service';
 import {Batch} from './batch';
 import {Line} from './line';
 import {LineMachine} from './line-machine';
@@ -11,7 +11,7 @@ export class WorkshopProductPlanReport {
   static assign(...sources: any[]): WorkshopProductPlanReport {
     const result = Object.assign(new WorkshopProductPlanReport(), ...sources);
     result.items = (result.items || []).map(it => Item.assign(it)).sort((o1, o2) => {
-      const i = LineCompare(o1.line, o2.line);
+      const i = LINE_COMPARE(o1.line, o2.line);
       return i !== 0 ? i : o1.minLineMachineItem - o2.minLineMachineItem;
     });
     return result;
@@ -22,7 +22,6 @@ export class Item {
   line: Line;
   batch: Batch;
   lineMachines: LineMachine[];
-  // tslint:disable-next-line:variable-name
   private _lineMachineSpecs: string[];
 
   get lineMachineSpecs(): string[] {
@@ -34,7 +33,7 @@ export class Item {
     }
     const specs: LineMachineSpec[] = [];
     let spec: LineMachineSpec;
-    this.lineMachines.sort(LineMachineCompare).forEach(lineMachine => {
+    this.lineMachines.sort(LINE_MACHINE_COMPARE).forEach(lineMachine => {
       if (!spec) {
         spec = new LineMachineSpec(lineMachine.item);
       } else if ((lineMachine.item - spec.end) === 1) {

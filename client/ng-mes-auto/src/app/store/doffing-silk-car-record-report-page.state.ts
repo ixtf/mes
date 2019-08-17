@@ -9,14 +9,16 @@ import {Grade} from '../models/grade';
 import {SilkCarRecordAggregate} from '../models/silk-car-record';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {CodeCompare} from '../services/util.service';
+import {CODE_COMPARE} from '../services/util.service';
+
+const PAGE_NAME = 'DoffingSilkCarRecordReportPage';
 
 export class InitAction {
-  static readonly type = '[DoffingSilkCarRecordReportPage] InitAction';
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
 export class QueryAction {
-  static readonly type = '[DoffingSilkCarRecordReportPage] QueryAction';
+  static readonly type = `[${PAGE_NAME}] QueryAction`;
 
   constructor(public payload: { workshopId: string; startDateTime: Date; endDateTime: Date; }) {
   }
@@ -84,13 +86,17 @@ export class InfoItem {
 
 interface StateModel {
   workshopId?: string;
-  workshops?: Workshop[];
+  startDateTime?: number;
+  endDateTime?: number;
+  workshopEntities: { [id: string]: Workshop };
   infoItems?: InfoItem[];
 }
 
 @State<StateModel>({
-  name: 'DoffingSilkCarRecordReportPage',
-  defaults: {}
+  name: PAGE_NAME,
+  defaults: {
+    workshopEntities: {},
+  },
 })
 export class DoffingSilkCarRecordReportPageState {
   constructor(private api: ApiService) {
@@ -104,8 +110,48 @@ export class DoffingSilkCarRecordReportPageState {
 
   @Selector()
   @ImmutableSelector()
+  static startDateTime(state: StateModel): number {
+    return state.startDateTime;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static startDate_hour(state: StateModel): number {
+    const startMoment = state.startDateTime && moment(state.startDateTime);
+    return startMoment && startMoment.hour() || 8;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static startDate_minute(state: StateModel): number {
+    const startMoment = state.startDateTime && moment(state.startDateTime);
+    return startMoment && startMoment.minute() || 0;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static endDateTime(state: StateModel): number {
+    return state.endDateTime;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static endDate_hour(state: StateModel): number {
+    const startMoment = state.endDateTime && moment(state.endDateTime);
+    return startMoment && startMoment.hour() || 8;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static endDate_minute(state: StateModel): number {
+    const startMoment = state.endDateTime && moment(state.endDateTime);
+    return startMoment && startMoment.hour() || 0;
+  }
+
+  @Selector()
+  @ImmutableSelector()
   static workshops(state: StateModel): Workshop[] {
-    return state.workshops || [];
+    return Object.values(state.workshopEntities).sort(CODE_COMPARE);
   }
 
   @Selector()
@@ -119,26 +165,29 @@ export class DoffingSilkCarRecordReportPageState {
   InitAction({setState}: StateContext<StateModel>) {
     return this.api.listWorkshop().pipe(
       tap(workshops => setState((state: StateModel) => {
-        state.workshops = workshops.sort(CodeCompare);
-        if (!state.workshopId) {
-          state.workshopId = state.workshops[0].id;
-        }
+        state.workshopEntities = Workshop.toEntities(workshops);
         state.infoItems = [];
         return state;
-      }))
+      })),
     );
   }
 
   @Action(QueryAction)
   @ImmutableContext()
   QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, startDateTime, endDateTime}}: QueryAction) {
-    console.log(moment(startDateTime).millisecond());
+    setState((state: StateModel) => {
+      state.workshopId = workshopId;
+      state.startDateTime = moment(startDateTime).valueOf();
+      state.endDateTime = moment(endDateTime).valueOf();
+      return state;
+    });
     const httpParams = new HttpParams().set('workshopId', workshopId)
-      .append('startDate', `${moment(startDateTime).valueOf()}`)
-      .append('endDate', `${moment(endDateTime).valueOf()}`);
+      .set('startDateTime', `${moment(startDateTime).valueOf()}`)
+      .set('endDateTime', `${moment(endDateTime).valueOf()}`)
+      .set('startDate', `${moment(startDateTime).valueOf()}`)
+      .set('endDate', `${moment(endDateTime).valueOf()}`);
     return this.api.doffingSilkCarRecordReport(httpParams).pipe(
       tap(reportItems => setState((state: StateModel) => {
-        state.workshopId = workshopId;
         state.infoItems = (reportItems || []).map(reportItem => new InfoItem(reportItem)).sort((a, b) => {
           let i = a.batch.batchNo.localeCompare(b.batch.batchNo);
           if (i === 0) {
@@ -147,7 +196,7 @@ export class DoffingSilkCarRecordReportPageState {
           return i;
         });
         return state;
-      }))
+      })),
     );
   }
 

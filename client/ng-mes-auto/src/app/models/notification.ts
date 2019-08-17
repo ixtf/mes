@@ -1,4 +1,4 @@
-import {CodeCompare, LineCompare} from '../services/util.service';
+import {CODE_COMPARE, LINE_COMPARE} from '../services/util.service';
 import {Line} from './line';
 import {Operator} from './operator';
 import {Workshop} from './workshop';
@@ -14,14 +14,14 @@ export class Notification {
 
   get linesSpec(): string {
     if (this.lines && this.lines.length > 0) {
-      return this.lines.sort(LineCompare).map(it => it.name).join(',');
+      return this.lines.sort(LINE_COMPARE).map(it => it.name).join(',');
     }
     return '';
   }
 
   get workshopsSpec(): string {
     if (this.workshops && this.workshops.length > 0) {
-      return this.workshops.sort(CodeCompare).map(it => it.name).join(',');
+      return this.workshops.sort(CODE_COMPARE).map(it => it.name).join(',');
     }
     return '';
   }

@@ -1,6 +1,6 @@
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Self, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Self} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, NgControl, Validators} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material';
 import {combineLatest, Subject} from 'rxjs';
@@ -8,7 +8,7 @@ import {debounceTime, distinctUntilChanged, filter, map, switchMap} from 'rxjs/o
 import {isString} from 'util';
 import {LineMachine} from '../../models/line-machine';
 import {ApiService} from '../../services/api.service';
-import {displayWithLine, entityValidator, SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
+import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 
 @Component({
@@ -26,16 +26,14 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
   readonly id = `line-machine-input-${LineMachineInputComponent.nextId++}`;
   @HostBinding('attr.aria-describedby')
   describedBy = '';
-  @ViewChild('itemInput', {static: true})
-  readonly test: any;
   readonly stateChanges = new Subject<void>();
-  readonly displayWithLine = displayWithLine;
+  readonly displayWithLine = DISPLAY_WITH_LINE;
   focused = false;
   form = this.fb.group({
     id: null,
-    line: [null, [entityValidator]],
-    item: [null, [Validators.min(1)]],
-  }, {validators: [entityValidator]});
+    line: [null, [Validators.required, VALIDATORS.isEntity]],
+    item: [null, [Validators.required, Validators.min(1)]],
+  }, {validators: [VALIDATORS.isEntity]});
   readonly lineCtrl = this.form.get('line');
   readonly itemCtrl = this.form.get('item');
   autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
@@ -62,7 +60,6 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
     }
   }
 
-  // tslint:disable-next-line:variable-name
   private _disabled = false;
 
   @Input()
@@ -76,7 +73,6 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
     this.stateChanges.next();
   }
 
-  // tslint:disable-next-line:variable-name
   private _placeholder: string;
 
   @Input()
@@ -89,7 +85,6 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
     this.stateChanges.next();
   }
 
-  // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
@@ -165,7 +160,7 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
 
   onContainerClick(event: MouseEvent): void {
     if ((event.target as Element).tagName.toLowerCase() !== 'input') {
-      this.elementRef.nativeElement.querySelector('input')!.focus();
+      this.elementRef.nativeElement.querySelector('input').focus();
     }
   }
 
@@ -206,8 +201,8 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
     SharedModule,
   ],
   exports: [
-    LineMachineInputComponent
-  ]
+    LineMachineInputComponent,
+  ],
 })
 export class LineMachineInputComponentModule {
 }

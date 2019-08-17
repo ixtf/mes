@@ -3,7 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {CodeCompare} from '../services/util.service';
+import {CODE_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'WorkshopManagePage';
 
@@ -36,7 +36,7 @@ export class WorkshopManagePageState {
   @Selector()
   @ImmutableSelector()
   static workshops(state: StateModel) {
-    return Object.values(state.workshopEntities).sort(CodeCompare);
+    return Object.values(state.workshopEntities).sort(CODE_COMPARE);
   }
 
   @Action(InitAction)

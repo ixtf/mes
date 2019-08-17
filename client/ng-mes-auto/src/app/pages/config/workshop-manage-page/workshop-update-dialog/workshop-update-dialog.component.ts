@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {Workshop} from '../../../../models/workshop';
 import {ApiService} from '../../../../services/api.service';
-import {compareWithId} from '../../../../services/util.service';
+import {COMPARE_WITH_ID} from '../../../../services/util.service';
 
 @Component({
   templateUrl: './workshop-update-dialog.component.html',
@@ -14,7 +14,7 @@ import {compareWithId} from '../../../../services/util.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkshopUpdateDialogComponent implements OnInit {
-  readonly compareWithId = compareWithId;
+  readonly compareWithId = COMPARE_WITH_ID;
   readonly sapT001ls$ = this.api.listSapT001l();
   readonly title: string;
   readonly form = this.fb.group({

@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {ApiService} from '../../../../services/api.service';
-import {CodeCompare, LineCompare, SEARCH_DEBOUNCE_TIME} from '../../../../services/util.service';
+import {CODE_COMPARE, LINE_COMPARE, SEARCH_DEBOUNCE_TIME} from '../../../../services/util.service';
 
 @Component({
   templateUrl: './board-abnormal-dialog.component.html',
@@ -16,7 +16,7 @@ export class BoardAbnormalDialogComponent implements OnDestroy {
     workshopId: [null, Validators.required],
     lineIds: [null, [Validators.required, Validators.minLength(1)]]
   });
-  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CodeCompare)));
+  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CODE_COMPARE)));
   private readonly destroy$ = new Subject();
   readonly lines$ = this.form.get('workshopId').valueChanges.pipe(
     takeUntil(this.destroy$),
@@ -24,7 +24,7 @@ export class BoardAbnormalDialogComponent implements OnDestroy {
     distinctUntilChanged(),
     tap(() => this.form.patchValue({lineIds: null})),
     switchMap(it => this.api.getWorkshop_Lines(it)),
-    map(it => (it || []).sort(LineCompare)),
+    map(it => (it || []).sort(LINE_COMPARE)),
   );
 
   constructor(private fb: FormBuilder,

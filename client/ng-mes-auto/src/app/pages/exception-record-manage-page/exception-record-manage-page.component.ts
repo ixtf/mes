@@ -60,12 +60,6 @@ export class ExceptionRecordManagePageComponent implements OnInit, OnDestroy {
   }
 
   @Dispatch()
-  private ebUpdateExceptionRecord(error, message) {
-    const exceptionRecord = JSON.parse(message.body);
-    return new EBUpdateExceptionRecordAction({exceptionRecord});
-  }
-
-  @Dispatch()
   handle(exceptionRecord: ExceptionRecord) {
     return new HandleAction(exceptionRecord);
   }
@@ -97,6 +91,12 @@ export class ExceptionRecordManagePageComponent implements OnInit, OnDestroy {
     return combineLatest([this.authInfoId$, this.isAdmin$]).pipe(
       map(([isSelf, isAdmin]) => isAdmin || isSelf)
     );
+  }
+
+  @Dispatch()
+  private ebUpdateExceptionRecord(error, message) {
+    const exceptionRecord = JSON.parse(message.body);
+    return new EBUpdateExceptionRecordAction({exceptionRecord});
   }
 }
 

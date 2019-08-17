@@ -16,7 +16,7 @@
 <mat-divider vertical></mat-divider>
 
 <section *ngIf="(silkCarRuntime$|async)?.silkCarRecord" @insertRemove fxFlex="50" fxLayout="column">
-  <div [formGroup]="settingForm" class="toolbar" ngxsForm="SilkCarRuntimePage.settingForm">
+  <div [formGroup]="settingForm" class="toolbar">
     <h4 fxFlex></h4>
 
     <button (click)="settingForm.patchValue({showAll:!settingForm.value.showAll})" mat-icon-button type="button">

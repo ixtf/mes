@@ -32,6 +32,7 @@ import {SilkException} from '../models/silk-exception';
 import {SilkNote} from '../models/silk-note';
 import {StatisticsReport} from '../models/statistics-report';
 import {SuggestOperator} from '../models/suggest-operator';
+import {TemporaryBox} from '../models/temporary-box';
 import {Workshop} from '../models/workshop';
 import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report';
 import {DoffingSilkCarRecordReportItem} from '../store/doffing-silk-car-record-report-page.state';
@@ -40,7 +41,7 @@ const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
 const SHARE_API_URL = `http://${HOST_NAME}:9998/share`;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   constructor(private http: HttpClient) {
@@ -112,6 +113,14 @@ export class ApiService {
 
   listProductPlanNotify(params?: HttpParams): Observable<{ count: number, first: number, pageSize: number, productPlanNotifies: ProductPlanNotify[] }> {
     return this.http.get<{ count: number, first: number, pageSize: number, productPlanNotifies: ProductPlanNotify[] }>(`${BASE_API_URL}/productPlanNotifies`, {params});
+  }
+
+  saveTemporaryBox(temporaryBox: TemporaryBox): Observable<TemporaryBox> {
+    return temporaryBox.id ? this.updateTemporaryBox(temporaryBox) : this.createTemporaryBox(temporaryBox);
+  }
+
+  listTemporaryBox(params?: HttpParams): Observable<TemporaryBox[]> {
+    return this.http.get<TemporaryBox[]>(`${BASE_API_URL}/temporaryBoxes`, {params});
   }
 
   /*车间增删改查*/
@@ -224,6 +233,10 @@ export class ApiService {
     return this.http.delete(`${BASE_API_URL}/lines/${id}`);
   }
 
+  getLine(id: string): Observable<Line> {
+    return this.http.get<Line>(`${BASE_API_URL}/lines/${id}`);
+  }
+
   listLine(params?: HttpParams): Observable<{ count: number, first: number, pageSize: number, lines: Line[] }> {
     return this.http.get<{ count: number, first: number, pageSize: number, lines: Line[] }>(`${BASE_API_URL}/lines`, {params});
   }
@@ -267,6 +280,11 @@ export class ApiService {
 
   getPackageBox(id: string): Observable<PackageBox> {
     return this.http.get<PackageBox>(`${BASE_API_URL}/packageBoxes/${id}`);
+  }
+
+  autoCompleteBatch(q: string): Observable<Batch[]> {
+    const params = new HttpParams().set('q', q);
+    return this.http.get<Batch[]>(`${BASE_API_URL}/autoComplete/batch`, {params});
   }
 
   autoCompleteLine(q: string): Observable<Line[]> {
@@ -399,7 +417,7 @@ export class ApiService {
   listUnbudatPackageBox(params: HttpParams): Observable<PackageBox[]> {
     params = params.set('first', '0').set('pageSize', '1000');
     return this.http.get<{ packageBoxes: PackageBox[] }>(`${BASE_API_URL}/measurePackageBoxes`, {params}).pipe(
-      map(it => it.packageBoxes)
+      map(it => it.packageBoxes),
     );
   }
 
@@ -413,6 +431,10 @@ export class ApiService {
 
   doffingSilkCarRecordReport(params?: HttpParams): Observable<DoffingSilkCarRecordReportItem[]> {
     return this.http.get<DoffingSilkCarRecordReportItem[]>(`${BASE_API_URL}/reports/doffingSilkCarRecordReport`, {params});
+  }
+
+  deleteEventSource(code: string, eventSourceId: string): Observable<void> {
+    return this.http.delete<void>(`${BASE_API_URL}/silkCarRuntimes/${code}/eventSources/${eventSourceId}`);
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {
@@ -519,6 +541,14 @@ export class ApiService {
     return this.http.post<Workshop>(`${BASE_API_URL}/workshops`, workshop);
   }
 
+  private updateTemporaryBox(temporaryBox: TemporaryBox): Observable<TemporaryBox> {
+    return this.http.put<TemporaryBox>(`${BASE_API_URL}/temporaryBoxes/${temporaryBox.id}`, temporaryBox);
+  }
+
+  private createTemporaryBox(temporaryBox: TemporaryBox): Observable<TemporaryBox> {
+    return this.http.post<TemporaryBox>(`${BASE_API_URL}/temporaryBoxes`, temporaryBox);
+  }
+
   private updateProduct(product: Product): Observable<Product> {
     return this.http.put<Product>(`${BASE_API_URL}/products`, product);
   }
@@ -569,7 +599,7 @@ export class ApiService {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiShareService {
   constructor(private http: HttpClient) {

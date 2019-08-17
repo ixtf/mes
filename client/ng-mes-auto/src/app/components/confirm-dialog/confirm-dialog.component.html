@@ -1,0 +1,11 @@
+<div *ngIf="data.title" fxLayout fxLayoutAlign="start center" mat-dialog-title>
+  <span fxFlex>{{data.title|translate}}</span>
+</div>
+
+<mat-dialog-content fxLayout="column">
+  {{data.content|translate}}
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button [mat-dialog-close]="true" color="warn" mat-button tabindex="-1" type="button">{{'Common.ok'|translate}}</button>
+</mat-dialog-actions>

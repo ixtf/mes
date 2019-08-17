@@ -14,7 +14,7 @@ import {Grade} from '../../models/grade';
 import {PackageBox} from '../../models/package-box';
 import {PackageClass} from '../../models/package-class';
 import {ApiService} from '../../services/api.service';
-import {CodeCompare, COPY_WITH_CTRL} from '../../services/util.service';
+import {CODE_COMPARE, COPY_WITH_CTRL} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
 import {FilterBatchAction, FilterGradeAction, InitAction, UnbudatPackageBoxManagePageState} from '../../store/unbudat-package-box-manage-page.state';
@@ -53,7 +53,7 @@ export class UnbudatPackageBoxManagePageComponent implements OnInit, OnDestroy {
     workshopId: [null, Validators.required],
     date: [new Date(), Validators.required],
   });
-  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CodeCompare)));
+  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CODE_COMPARE)));
   readonly selection = new SelectionModel<PackageBox>(true, []);
   private readonly destroy$ = new Subject();
 

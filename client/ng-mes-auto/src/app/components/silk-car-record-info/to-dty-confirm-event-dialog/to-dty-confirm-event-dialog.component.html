@@ -1,0 +1,23 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+    <span fxFlex>{{'EventSourceType.ToDtyConfirmEvent'|translate}}</span>
+
+    <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content fxLayout="column">
+    <mat-form-field>
+      <mat-select [compareWith]="compareWithId" [placeholder]="'silkCarRecordDestination'|translate" formControlName="destination">
+        <mat-option *ngFor="let it of destinations$|async" [value]="it">
+          {{it.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-button>{{'Common.finish'|translate}}</button>
+  </mat-dialog-actions>
+</form>

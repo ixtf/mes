@@ -10,7 +10,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
 import {PACKAGE_BOX_TYPE, PackageBox} from '../../models/package-box';
 import {ApiService} from '../../services/api.service';
-import {CodeCompare, compareWithId, COPY_WITH_CTRL, PAGE_SIZE_OPTIONS, SortByCompare} from '../../services/util.service';
+import {CODE_COMPARE, COMPARE_WITH_ID, COPY_WITH_CTRL, PAGE_SIZE_OPTIONS, SORT_BY_COMPARE} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
 import {DeleteAction, InitAction, PackageBoxManagePageState, QueryAction} from '../../store/package-box-manage-page.state';
@@ -24,7 +24,7 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
   readonly packageBoxTypes = PACKAGE_BOX_TYPE;
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
   readonly copy = COPY_WITH_CTRL;
-  readonly compareWithId = compareWithId;
+  readonly compareWithId = COMPARE_WITH_ID;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(PackageBoxManagePageState.packageBoxes)
@@ -48,10 +48,10 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
     startDate: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
   });
-  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CodeCompare)));
+  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CODE_COMPARE)));
   readonly products$ = this.api.listProduct();
   readonly packageClasses$ = this.api.listPackageClass();
-  readonly grades$ = this.api.listGrade().pipe(map(it => (it || []).sort(SortByCompare)));
+  readonly grades$ = this.api.listGrade().pipe(map(it => (it || []).sort(SORT_BY_COMPARE)));
   private readonly destroy$ = new Subject();
 
   constructor(private store: Store,

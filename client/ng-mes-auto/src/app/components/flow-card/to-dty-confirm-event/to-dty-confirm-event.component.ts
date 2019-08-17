@@ -20,7 +20,6 @@ export class ToDtyConfirmEventComponent {
   constructor(private store: Store) {
   }
 
-  // tslint:disable-next-line:variable-name
   _event: ToDtyConfirmEvent;
 
   get event(): ToDtyConfirmEvent {

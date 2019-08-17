@@ -3,7 +3,7 @@ import {EventSource} from '../../models/event-source';
 import {SilkCarRecord} from '../../models/silk-car-record';
 import {SilkCarRuntime} from '../../models/silk-car-runtime';
 import {insertRemoveAnimation} from '../../services/animations';
-import {EventSourceCompare} from '../../services/util.service';
+import {EVENT_SOURCE_COMPARE} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {DyeingPrepareEventComponent} from './dyeing-prepare-event/dyeing-prepare-event.component';
 import {JikonAdapterSilkCarInfoFetchEventComponent} from './jikon-adapter-silk-car-info-fetch-event/jikon-adapter-silk-car-info-fetch-event.component';
@@ -48,7 +48,7 @@ export class FlowCardComponent {
       }
       return !it.deleted;
     }).sort((a, b) => {
-      const i = EventSourceCompare(a, b);
+      const i = EVENT_SOURCE_COMPARE(a, b);
       return this.setting.sort === 'desc' ? i : (i * -1);
     });
   }

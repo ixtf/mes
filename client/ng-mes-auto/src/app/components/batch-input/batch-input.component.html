@@ -1,0 +1,6 @@
+<input [formControl]="qCtrl" [matAutocomplete]="auto" matInput>
+<mat-autocomplete #auto='matAutocomplete' (optionSelected)="optionSelected.emit($event)" [displayWith]="displayWithBatch">
+  <mat-option *ngFor="let it of autoData$|async" [value]="it">
+    {{it.batchNo}}
+  </mat-option>
+</mat-autocomplete>

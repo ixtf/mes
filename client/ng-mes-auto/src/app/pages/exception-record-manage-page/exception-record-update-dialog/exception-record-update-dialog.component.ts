@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {ExceptionRecord} from '../../../models/exception-record';
 import {ApiService} from '../../../services/api.service';
-import {compareWithId} from '../../../services/util.service';
+import {COMPARE_WITH_ID} from '../../../services/util.service';
 
 @Component({
   templateUrl: './exception-record-update-dialog.component.html',
@@ -13,7 +13,7 @@ import {compareWithId} from '../../../services/util.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExceptionRecordUpdateDialogComponent implements OnInit, OnDestroy {
-  readonly compareWithId = compareWithId;
+  readonly compareWithId = COMPARE_WITH_ID;
   readonly form = this.fb.group({
     id: null,
     lineMachine: [null, [Validators.required]],

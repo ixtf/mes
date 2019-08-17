@@ -1,18 +1,18 @@
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Self, ViewChild} from '@angular/core';
-import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
+import {ControlValueAccessor, FormControl, NgControl, Validators} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
 import {isString} from 'util';
 import {Line} from '../../models/line';
 import {ApiService} from '../../services/api.service';
-import {displayWithLine, entityValidator, SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
+import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 
 @Component({
-  selector: 'app-line-input',
+  selector: 'app-sap-t001l-input',
   templateUrl: './sap-t001l-input.component.html',
   styleUrls: ['./sap-t001l-input.component.less'],
   providers: [
@@ -29,9 +29,9 @@ export class SapT001lInputComponent implements ControlValueAccessor, MatFormFiel
   @ViewChild('itemInput', {static: true})
   readonly test: any;
   readonly stateChanges = new Subject<void>();
-  readonly displayWithLine = displayWithLine;
+  readonly displayWithLine = DISPLAY_WITH_LINE;
   focused = false;
-  readonly lineCtrl = new FormControl(null, {validators: [entityValidator]});
+  readonly lineCtrl = new FormControl(null, {validators: [Validators.required, VALIDATORS.isEntity]});
   autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
     filter(it => it && isString(it) && it.trim().length > 0),
     debounceTime(SEARCH_DEBOUNCE_TIME),
@@ -55,7 +55,6 @@ export class SapT001lInputComponent implements ControlValueAccessor, MatFormFiel
     }
   }
 
-  // tslint:disable-next-line:variable-name
   private _disabled = false;
 
   @Input()
@@ -69,7 +68,6 @@ export class SapT001lInputComponent implements ControlValueAccessor, MatFormFiel
     this.stateChanges.next();
   }
 
-  // tslint:disable-next-line:variable-name
   private _placeholder: string;
 
   @Input()
@@ -82,7 +80,6 @@ export class SapT001lInputComponent implements ControlValueAccessor, MatFormFiel
     this.stateChanges.next();
   }
 
-  // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
@@ -172,8 +169,8 @@ export class SapT001lInputComponent implements ControlValueAccessor, MatFormFiel
     SharedModule,
   ],
   exports: [
-    SapT001lInputComponent
-  ]
+    SapT001lInputComponent,
+  ],
 })
 export class LineInputComponentModule {
 }

@@ -7,7 +7,7 @@ import {isString} from 'util';
 import {Line} from '../../../models/line';
 import {PackageBox} from '../../../models/package-box';
 import {ApiService} from '../../../services/api.service';
-import {compareWithId, SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
+import {COMPARE_WITH_ID, SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
 
 const workshopsLinesValidator = (control: FormControl) => {
   const workshops = control.value.workshops || [];
@@ -25,7 +25,7 @@ const workshopsLinesValidator = (control: FormControl) => {
 })
 export class PackageBoxMeasureDialogComponent implements OnInit, OnDestroy {
   readonly title: string;
-  readonly compareWithId = compareWithId;
+  readonly compareWithId = COMPARE_WITH_ID;
   readonly workshops$ = this.api.listWorkshop().pipe();
   readonly lineQCtrl = new FormControl();
   readonly form = this.fb.group({

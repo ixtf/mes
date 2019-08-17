@@ -20,7 +20,6 @@ export class SilkNoteFeedbackEventComponent {
   constructor(private store: Store) {
   }
 
-  // tslint:disable-next-line:variable-name
   private _event: SilkNoteFeedbackEvent;
 
   get event(): SilkNoteFeedbackEvent {

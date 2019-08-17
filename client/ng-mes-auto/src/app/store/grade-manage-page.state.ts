@@ -3,7 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {Grade} from '../models/grade';
 import {ApiService} from '../services/api.service';
-import {SortByCompare} from '../services/util.service';
+import {SORT_BY_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'GradeManagePage';
 
@@ -35,7 +35,7 @@ export class GradeManagePageState {
   @Selector()
   @ImmutableSelector()
   static grades(state: StateModel): Grade[] {
-    return Object.values(state.gradeEntities).sort(SortByCompare);
+    return Object.values(state.gradeEntities).sort(SORT_BY_COMPARE);
   }
 
   @Action(InitAction)

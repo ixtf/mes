@@ -3,7 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {PackageClass} from '../models/package-class';
 import {ApiService} from '../services/api.service';
-import {SortByCompare} from '../services/util.service';
+import {SORT_BY_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'PackageClassManagePage';
 
@@ -35,7 +35,7 @@ export class PackageClassManagePageState {
   @Selector()
   @ImmutableSelector()
   static packageClasses(state: StateModel): PackageClass[] {
-    return Object.values(state.packageClassEntities).sort(SortByCompare);
+    return Object.values(state.packageClassEntities).sort(SORT_BY_COMPARE);
   }
 
   @Action(InitAction)

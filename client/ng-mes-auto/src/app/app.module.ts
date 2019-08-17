@@ -20,6 +20,7 @@ import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {NgxsModule, NoopNgxsExecutionStrategy} from '@ngxs/store';
 import {OWL_DATE_TIME_LOCALE, OwlDateTimeIntl} from 'ng-pick-datetime';
 import {environment} from '../environments/environment';
+import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
 import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
 import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './pages/app/app-navbar/board-auto-line-dialog/board-auto-line-dialog.component';
@@ -71,6 +72,7 @@ const routes: Routes = [
           {path: 'batches', loadChildren: () => import('./pages/config/batch-manage-page/batch-manage-page.component').then(it => it.Module)},
           {path: 'packageClasses', loadChildren: () => import('./pages/config/package-class-manage-page/package-class-manage-page.component').then(it => it.Module)},
           {path: 'grades', loadChildren: () => import('./pages/config/grade-manage-page/grade-manage-page.component').then(it => it.Module)},
+          {path: 'temporaryBoxes', loadChildren: () => import('./pages/config/temporary-box-manage-page/temporary-box-manage-page.component').then(it => it.Module)},
           {path: 'silkCarRecordDestinations', loadChildren: () => import('./pages/config/silk-car-record-destination-manage-page/silk-car-record-destination-manage-page.component').then(it => it.Module)},
         ]
       },
@@ -113,12 +115,14 @@ export function createTranslateLoader(httpClient: HttpClient) {
     LoginPageComponent,
     AppShellComponent,
     AppNavbarComponent,
+    ConfirmDialogComponent,
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
     UnbudatPackageBoxDialogComponent,
   ],
   entryComponents: [
+    ConfirmDialogComponent,
     BoardAutoLineDialogComponent,
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
@@ -141,7 +145,13 @@ export function createTranslateLoader(httpClient: HttpClient) {
     }),
     // It is recommended to register the storage plugin before other plugins so initial state can be picked up by those plugins.
     NgxsStoragePluginModule.forRoot({
-      key: ['App.token']
+      key: [
+        'App.token',
+        'LineManagePage.workshopId',
+        'DoffingSilkCarRecordReportPage.workshopId',
+        'DoffingSilkCarRecordReportPage.startDateTime',
+        'DoffingSilkCarRecordReportPage.endDateTime',
+      ],
     }),
     NgxsRouterPluginModule.forRoot(),
     NgxsFormPluginModule.forRoot(),

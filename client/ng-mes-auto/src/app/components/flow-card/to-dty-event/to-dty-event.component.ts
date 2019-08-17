@@ -1,9 +1,14 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
 import {Store} from '@ngxs/store';
+import {switchMap, tap} from 'rxjs/operators';
 import {EventSource, ToDtyEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
+import {ApiService} from '../../../services/api.service';
 import {AppState} from '../../../store/app.state';
+import {ConfirmDialogComponent} from '../../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-to-dty-event',
@@ -17,10 +22,12 @@ export class ToDtyEventComponent {
   @Input()
   private silkCarRecord: SilkCarRecord;
 
-  constructor(private store: Store) {
+  constructor(private store: Store,
+              private api: ApiService,
+              private translate: TranslateService,
+              private dialog: MatDialog) {
   }
 
-  // tslint:disable-next-line:variable-name
   _event: ToDtyEvent;
 
   get event(): ToDtyEvent {
@@ -54,4 +61,17 @@ export class ToDtyEventComponent {
     const authInfo = this.store.selectSnapshot(AppState.authInfo);
     return authInfo.id === this.event.operator.id;
   }
+
+  undo() {
+    ConfirmDialogComponent.openUndo(this.dialog).pipe(
+      switchMap(() => {
+        const {silkCarRecord: {silkCar: {code}}} = this.silkCarRuntime;
+        return this.api.deleteEventSource(code, this.event.eventId);
+      }),
+      tap(() => {
+        console.log('test');
+      }),
+    ).subscribe();
+  }
+
 }

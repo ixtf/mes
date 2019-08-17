@@ -1,51 +1,17 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, Output} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
-import {LineMachine} from '../../models/line-machine';
-import {Silk} from '../../models/silk';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {Select, Store} from '@ngxs/store';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {ProductProcess} from '../../models/product-process';
 import {SilkCarRecord} from '../../models/silk-car-record';
 import {SilkCarRuntime} from '../../models/silk-car-runtime';
 import {SilkRuntime} from '../../models/silk-runtime';
+import {ApiService} from '../../services/api.service';
 import {COPY} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-
-export class SilkModel extends Silk {
-  sideType: string;
-  row: number;
-  col: number;
-  selected = false;
-  exceptions: string[] = [];
-
-  get hasException(): boolean {
-    return this.exceptions && this.exceptions.length > 0;
-  }
-
-  get tooltip(): string {
-    return this.hasException ? this.exceptions.join(';') : '';
-  }
-}
-
-export class SilkCarRecordInfoModel extends SilkCarRecord {
-  aSideSilks: SilkModel[] = [];
-  bSideSilks: SilkModel[] = [];
-
-  get validSideSilks(): SilkModel[] {
-    return [...this.aSideSilks, ...this.bSideSilks].filter(it => it.id);
-  }
-}
-
-class LineMachineSelectBtn {
-  constructor(private lineMachine: LineMachine,
-              private doffingNum: string) {
-  }
-
-  get label(): string {
-    return [this.lineMachine.line.name, this.lineMachine.item, this.doffingNum].join('-');
-  }
-
-  same(silkModel: SilkModel): boolean {
-    return silkModel.lineMachine.id === this.lineMachine.id && silkModel.doffingNum === this.doffingNum;
-  }
-}
+import {AppState} from '../../store/app.state';
+import {LineMachineSelectBtn, SilkCarRecordInfoModel, SilkModel} from './silk-car-record-info.help';
+import {ToDtyConfirmEventDialogComponent} from './to-dty-confirm-event-dialog/to-dty-confirm-event-dialog.component';
 
 @Component({
   selector: 'app-silk-car-record-info',
@@ -54,21 +20,30 @@ class LineMachineSelectBtn {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SilkCarRecordInfoComponent {
-  copy = COPY;
+  readonly copy = COPY;
+  @Select(AppState.authInfoIsAdmin)
+  readonly isAdmin$: Observable<boolean>;
   silkCarRecordInfo: SilkCarRecordInfoModel;
   lineMachineSelectBtns: LineMachineSelectBtn[];
+  readonly productProcesses$ = new BehaviorSubject<ProductProcess[]>([]);
   @Output()
   silkSelectionListChange = new EventEmitter<string[]>();
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(private store: Store,
+              private api: ApiService,
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar) {
   }
 
-  // tslint:disable-next-line:variable-name
   private _silkCarRuntime: SilkCarRuntime;
 
   @Input()
   set silkCarRuntime(silkCarRuntime: SilkCarRuntime) {
     this._silkCarRuntime = silkCarRuntime;
+    this.api.getProduct_ProductProcess(silkCarRuntime.silkCarRecord.batch.product.id).subscribe(it => {
+      this.productProcesses$.next(it);
+    });
+    // SilkCarRecordInfoModel.buildBySilkCarRuntime({silkCarRuntime});
     this.lineMachineSelectBtns = [];
     const silkCarRecordInfo = this.silkCarRecordInfo || new SilkCarRecordInfoModel();
     const aSideSilks = [];
@@ -90,12 +65,14 @@ export class SilkCarRecordInfoComponent {
     this.lineMachineSelectBtns.sort((a, b) => a.label.localeCompare(b.label));
   }
 
-  // tslint:disable-next-line:variable-name
   private _silkCarRecord: SilkCarRecord;
 
   @Input()
   set silkCarRecord(silkCarRecord: SilkCarRecord) {
     this._silkCarRecord = silkCarRecord;
+    this.api.getProduct_ProductProcess(silkCarRecord.batch.product.id).subscribe(it => {
+      this.productProcesses$.next(it);
+    });
     const silkCarRecordInfo = this.silkCarRecordInfo || new SilkCarRecordInfoModel();
     const aSideSilks = [];
     const bSideSilks = [];
@@ -106,6 +83,10 @@ export class SilkCarRecordInfoComponent {
       }
     }
     this.silkCarRecordInfo = Object.assign(new SilkCarRecordInfoModel(), silkCarRecord, {aSideSilks, bSideSilks});
+  }
+
+  get isCurrent(): boolean {
+    return !!this._silkCarRuntime;
   }
 
   get doffingOperatorName() {
@@ -119,6 +100,16 @@ export class SilkCarRecordInfoComponent {
 
   get selectedCount() {
     return this.silkCarRecordInfo.validSideSilks.reduce((acc, cur) => cur.selected ? ++acc : acc, 0);
+  }
+
+  get canAddToDtyConfirmEvent(): boolean {
+    if (!this._silkCarRuntime) {
+      return false;
+    }
+    if (!this.store.selectSnapshot(AppState.authInfoIsAdmin)) {
+      return false;
+    }
+    return true;
   }
 
   resetSelected() {
@@ -139,6 +130,10 @@ export class SilkCarRecordInfoComponent {
   selectByLineMachine(btn: LineMachineSelectBtn) {
     this.silkCarRecordInfo.validSideSilks.filter(it => btn.same(it)).forEach(it => it.selected = true);
     this.emitSilkSelectionListChange();
+  }
+
+  addToDtyConfirmEvent() {
+    ToDtyConfirmEventDialogComponent.open(this.dialog, this._silkCarRuntime);
   }
 
   private silkModel(sideType: string, row: number, col: number, silkModels: SilkModel[], silkRuntimes: SilkRuntime[]): SilkModel {
@@ -162,12 +157,15 @@ export class SilkCarRecordInfoComponent {
     const result = this.silkCarRecordInfo.validSideSilks.filter(it => it.selected).map(it => it.id);
     this.silkSelectionListChange.emit(result);
   }
-
 }
 
 @NgModule({
   declarations: [
     SilkCarRecordInfoComponent,
+    ToDtyConfirmEventDialogComponent,
+  ],
+  entryComponents: [
+    ToDtyConfirmEventDialogComponent,
   ],
   imports: [
     SharedModule,

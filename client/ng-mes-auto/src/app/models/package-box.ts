@@ -25,6 +25,17 @@ export class PackageBox {
   creator: Operator;
   createDateTime: Operator;
 
+  get isValidPalletCode(): boolean {
+    if (!this.palletCode) {
+      return false;
+    }
+    const palletCode = this.palletCode.toUpperCase();
+    if (this.palletCode.startsWith('E')) {
+      return true;
+    }
+    return false;
+  }
+
   static assign(...sources: any[]): PackageBox {
     const result = Object.assign(new PackageBox(), ...sources);
     return result;
@@ -35,17 +46,6 @@ export class PackageBox {
       acc[cur.id] = PackageBox.assign(cur);
       return acc;
     }, {...(entities || {})});
-  }
-
-  get isValidPalletCode(): boolean {
-    if (!this.palletCode) {
-      return false;
-    }
-    const palletCode = this.palletCode.toUpperCase();
-    if (this.palletCode.startsWith('E')) {
-      return true;
-    }
-    return false;
   }
 
 }

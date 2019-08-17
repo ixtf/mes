@@ -6,7 +6,7 @@ import {tap} from 'rxjs/operators';
 import {isNullOrUndefined} from 'util';
 import {PackageBox} from '../models/package-box';
 import {ApiService} from '../services/api.service';
-import {DefaultCompare} from '../services/util.service';
+import {DEFAULT_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'PackageBoxManagePage';
 
@@ -48,7 +48,7 @@ export class PackageBoxManagePageState {
   @Selector()
   @ImmutableSelector()
   static packageBoxes(state: StateModel): PackageBox[] {
-    return Object.values(state.packageBoxEntities).filter(DefaultCompare);
+    return Object.values(state.packageBoxEntities).filter(DEFAULT_COMPARE);
   }
 
   @Selector()

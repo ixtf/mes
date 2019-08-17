@@ -6,11 +6,14 @@
         - {{silkCarRecordInfo.batch.product.name}}
         - {{silkCarRecordInfo.batch.spec}}
       </span>
-    <button *ngIf="silkCarRecordInfo.validSideSilks.length>0" [matMenuTriggerFor]="menu" color="primary" mat-icon-button>
+    <button [matMenuTriggerFor]="menu" color="primary" mat-icon-button>
       <mat-icon>list</mat-icon>
     </button>
     <mat-menu #menu="matMenu" xPosition="before">
-      <button mat-menu-item>Item 2</button>
+      <button *ngFor="let it of productProcesses$|async" mat-menu-item type="button">
+        {{it.name}}
+      </button>
+      <button (click)="addToDtyConfirmEvent()" *ngIf="canAddToDtyConfirmEvent" mat-menu-item type="button">{{'EventSourceType.ToDtyConfirmEvent'|translate}}</button>
     </mat-menu>
   </div>
 

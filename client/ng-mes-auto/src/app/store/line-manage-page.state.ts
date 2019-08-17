@@ -4,36 +4,40 @@ import {switchMap, tap} from 'rxjs/operators';
 import {Line} from '../models/line';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {CodeCompare, LineCompare} from '../services/util.service';
+import {CODE_COMPARE, LINE_COMPARE} from '../services/util.service';
+
+const PAGE_NAME = 'LineManagePage';
 
 export class InitAction {
-  static readonly type = '[LineManagePage] InitAction';
+  static readonly type = `[${PAGE_NAME}] InitAction`;
 }
 
 export class QueryAction {
-  static readonly type = '[LineManagePage] QueryAction';
+  static readonly type = `[${PAGE_NAME}] QueryAction`;
 
-  constructor(public payload: { workshopId?: string; }) {
+  constructor(public payload: { workshopId: string; }) {
+  }
+}
+
+export class SaveAction {
+  static readonly type = `[${PAGE_NAME}] SaveAction`;
+
+  constructor(public payload: Line) {
   }
 }
 
 interface StateModel {
   workshopId?: string;
-  workshops?: Workshop[];
-  lines?: Line[];
-  searchForm: any;
+  workshopEntities: { [id: string]: Workshop };
+  lineEntities: { [id: string]: Line };
 }
 
 @State<StateModel>({
-  name: 'LineManagePage',
+  name: PAGE_NAME,
   defaults: {
-    searchForm: {
-      model: undefined,
-      dirty: false,
-      status: '',
-      errors: {}
-    }
-  }
+    workshopEntities: {},
+    lineEntities: {},
+  },
 })
 export class LineManagePageState {
   constructor(private api: ApiService) {
@@ -47,14 +51,20 @@ export class LineManagePageState {
 
   @Selector()
   @ImmutableSelector()
+  static workshop(state: StateModel): Workshop {
+    return state.workshopEntities[state.workshopId];
+  }
+
+  @Selector()
+  @ImmutableSelector()
   static workshops(state: StateModel): Workshop[] {
-    return state.workshops;
+    return Object.values(state.workshopEntities).sort(CODE_COMPARE);
   }
 
   @Selector()
   @ImmutableSelector()
   static lines(state: StateModel): Line[] {
-    return (state.lines || []).sort(LineCompare);
+    return Object.values(state.lineEntities).sort(LINE_COMPARE);
   }
 
   @Action(InitAction)
@@ -62,28 +72,44 @@ export class LineManagePageState {
   InitAction({getState, setState, dispatch}: StateContext<StateModel>) {
     return this.api.listWorkshop().pipe(
       switchMap(workshops => {
-        workshops = workshops.sort(CodeCompare);
         setState((state: StateModel) => {
-          state.workshops = workshops;
+          state.workshopEntities = Workshop.toEntities(workshops);
           return state;
         });
-        return dispatch(new QueryAction({workshopId: getState().workshopId || workshops[0].id}));
-      })
+        const workshopId = LineManagePageState.workshopId(getState()) || LineManagePageState.workshops(getState())[0].id;
+        return dispatch(new QueryAction({workshopId}));
+      }),
     );
   }
 
-  @Action(QueryAction)
+  @Action(QueryAction, {cancelUncompleted: true})
   @ImmutableContext()
   QueryAction({getState, setState}: StateContext<StateModel>, {payload: {workshopId}}: QueryAction) {
-    if (getState().workshopId !== workshopId) {
-      return this.api.getWorkshop_Lines(workshopId).pipe(
-        tap(lines => setState((state: StateModel) => {
-          state.lines = lines;
-          state.workshopId = workshopId;
-          return state;
-        }))
-      );
+    let fetch = false;
+    if (LineManagePageState.lines(getState()).length < 1) {
+      fetch = true;
+    } else {
+      const oldWorkshopId = LineManagePageState.workshopId(getState());
+      fetch = oldWorkshopId !== workshopId;
     }
+    return this.api.getWorkshop_Lines(workshopId).pipe(
+      tap(lines => setState((state: StateModel) => {
+        state.lineEntities = Line.toEntities(lines);
+        state.workshopId = workshopId;
+        return state;
+      })),
+    );
+  }
+
+  @Action(SaveAction)
+  @ImmutableContext()
+  SaveAction({setState}: StateContext<StateModel>, {payload}: SaveAction) {
+    return this.api.saveLine(payload).pipe(
+      tap(line => setState((state: StateModel) => {
+        state.lineEntities[line.id] = line;
+        return state;
+      })),
+    );
   }
 
 }

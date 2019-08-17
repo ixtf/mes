@@ -45,6 +45,7 @@
   "foamCount": "泡沫数",
   "position": "位置",
   "saleType": "销售类型",
+  "silkCarRecordDestination": "丝车目的地",
   "EventSourceType": {
     "PackageBoxEvent": "打包",
     "ToDtyEvent": "推加弹",
@@ -243,6 +244,7 @@
     "required": "必输项",
     "entity": "输入错误，必须通过选择，然后回车输入",
     "number": "输入必须为数字",
+    "isInt": "输入整数",
     "min": "最小值：{{min}}",
     "max": "最大值：{{max}}",
     "minLength": "至少{{requiredLength}}个字符；当前{{actualLength}}个字符",
@@ -305,9 +307,10 @@
     "delete": "删除",
     "edit": "修改",
     "create": "新增",
+    "undoConfirm": "确认撤销吗？",
     "deleteConfirm": "确认删除吗？",
-    "ok": "确定？",
-    "cancel": "取消？",
+    "ok": "确定",
+    "cancel": "取消",
     "finish": "完成",
     "canComponentDeactivate": "当前页面数据可能没保存，确定离开？"
   },

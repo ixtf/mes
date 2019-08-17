@@ -4,6 +4,7 @@ import {Operator} from './operator';
 import {PackageBox} from './package-box';
 import {ProductProcess} from './product-process';
 import {SilkCarRecord} from './silk-car-record';
+import {SilkCarRecordDestination} from './silk-car-record-destination';
 import {SilkException} from './silk-exception';
 import {SilkNote} from './silk-note';
 import {SilkRuntime} from './silk-runtime';
@@ -71,5 +72,5 @@ export class ToDtyEvent extends EventSource {
 }
 
 export class ToDtyConfirmEvent extends EventSource {
-  command: any;
+  command: { destination: SilkCarRecordDestination };
 }

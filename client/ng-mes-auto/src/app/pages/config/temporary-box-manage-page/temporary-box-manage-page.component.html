@@ -1,0 +1,51 @@
+<form class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <mat-label>{{'batchNo'|translate}}</mat-label>
+    <app-batch-input (optionSelected)="query($event)" [formControl]="batchCtrl"></app-batch-input>
+  </mat-form-field>
+  <span fxFlex></span>
+  <button (click)="create()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="dataSource" fxFlex>
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{row.id}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="code">
+    <mat-header-cell *matHeaderCellDef>{{'CODE'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.code}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="batch">
+    <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batch.batchNo}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="grade">
+    <mat-header-cell *matHeaderCellDef>{{'grade'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.grade.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="count">
+    <mat-header-cell *matHeaderCellDef>{{'count'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.count}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell (click)="update(row)" *matCellDef="let row" matRipple>
+      <mat-icon>edit</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator (page)="onPageEvent($event)" [length]="count$|async" [pageIndex]="pageIndex$|async" [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize$|async" showFirstLastButtons></mat-paginator>

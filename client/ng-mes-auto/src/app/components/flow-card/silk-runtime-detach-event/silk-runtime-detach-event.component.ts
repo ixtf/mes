@@ -24,7 +24,6 @@ export class SilkRuntimeDetachEventComponent {
   constructor(private store: Store) {
   }
 
-  // tslint:disable-next-line:variable-name
   _event: SilkRuntimeDetachEvent;
 
   get event(): SilkRuntimeDetachEvent {

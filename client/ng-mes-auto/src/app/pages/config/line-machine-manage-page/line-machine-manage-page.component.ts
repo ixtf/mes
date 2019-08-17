@@ -1,16 +1,19 @@
-import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
+import {MatAutocompleteSelectedEvent, MatDialog} from '@angular/material';
 import {RouterModule} from '@angular/router';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {LineInputComponentModule} from '../../../components/line-input/line-input.component';
+import {Line} from '../../../models/line';
 import {LineMachine} from '../../../models/line-machine';
-import {SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
+import {VALIDATORS} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {InitAction, LineMachineManagePageState, QueryAction} from '../../../store/line-machine-manage-page.state';
+import {LineMachineUpdateDialogComponent} from './line-machine-update-dialog/line-machine-update-dialog.component';
 
 const COLUMNS = ['line', 'item', 'spindleNum'];
 
@@ -19,39 +22,28 @@ const COLUMNS = ['line', 'item', 'spindleNum'];
   styleUrls: ['./line-machine-manage-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LineMachineManagePageComponent implements OnInit, OnDestroy {
+export class LineMachineManagePageComponent {
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
-  readonly searchForm = this.fb.group({
-    line: this.store.selectSnapshot(LineMachineManagePageState.line)
-  });
+  @Select(LineMachineManagePageState.line)
+  readonly line$: Observable<Line>;
   @Select(LineMachineManagePageState.lineMachines)
   readonly lineMachines$: Observable<LineMachine[]>;
-  displayedColumns$: Observable<string[]>;
-  private readonly destroy$ = new Subject();
+  readonly lineCtrl = new FormControl(null, [Validators.required, VALIDATORS.isEntity]);
+  readonly displayedColumns$: Observable<string[]>;
 
   constructor(private store: Store,
-              private dialog: MatDialog,
-              private fb: FormBuilder) {
+              private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
-  }
-
-  ngOnInit(): void {
     this.displayedColumns$ = this.isAdmin$.pipe(
-      map(it => it ? [...COLUMNS].concat(['btns']) : COLUMNS)
+      map(it => it ? COLUMNS.concat(['btns']) : COLUMNS),
     );
-    this.searchForm.valueChanges.pipe(
-      takeUntil(this.destroy$),
-      debounceTime(SEARCH_DEBOUNCE_TIME),
-      distinctUntilChanged(),
-      filter(it => it.line),
-      switchMap(it => this.store.dispatch(new QueryAction(it)))
-    ).subscribe();
+    this.line$.subscribe(it => this.lineCtrl.patchValue(it));
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  @Dispatch()
+  query(ev: MatAutocompleteSelectedEvent) {
+    return new QueryAction({line: ev.option.value});
   }
 
   create() {
@@ -60,15 +52,20 @@ export class LineMachineManagePageComponent implements OnInit, OnDestroy {
     this.update(lineMachine);
   }
 
+  @Dispatch()
   update(lineMachine: LineMachine) {
-    // BarcodeDialogComponent.open(this.dialog, {value: 'dsfasdfa'});
-    // QrcodeDialogComponent.open(this.dialog, {qrdata: 'dsfasdfa'});
+    LineMachineUpdateDialogComponent.open(this.dialog, lineMachine).pipe();
   }
+
 }
 
 @NgModule({
   declarations: [
     LineMachineManagePageComponent,
+    LineMachineUpdateDialogComponent,
+  ],
+  entryComponents: [
+    LineMachineUpdateDialogComponent,
   ],
   imports: [
     NgxsModule.forFeature([LineMachineManagePageState]),

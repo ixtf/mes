@@ -3,7 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {SapT001l} from '../models/sapT001l';
 import {ApiService} from '../services/api.service';
-import {CheckQ} from '../services/util.service';
+import {CHECK_Q} from '../services/util.service';
 
 const PAGE_NAME = 'SapT001lManagePage';
 
@@ -44,7 +44,7 @@ export class SapT001lManagePageState {
   @ImmutableSelector()
   static sapT001ls(state: SapT001lManagePageStateModel) {
     return Object.values(state.sapT001lEntities).filter(it => {
-      return CheckQ(it.lgort, state.q) || CheckQ(it.lgobe, state.q);
+      return CHECK_Q(it.lgort, state.q) || CHECK_Q(it.lgobe, state.q);
     });
   }
 

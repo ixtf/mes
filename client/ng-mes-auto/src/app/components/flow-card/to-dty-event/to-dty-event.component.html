@@ -5,7 +5,7 @@
     {{('EventSourceType.' + event.type)|translate}}
   </button>
   <mat-menu #menu="matMenu" xPosition="before">
-    <button [disabled]="!canUndo()" mat-menu-item>{{'Common.undo'|translate}}</button>
+    <button (click)="undo()" [disabled]="!canUndo()" mat-menu-item type="button">{{'Common.undo'|translate}}</button>
   </mat-menu>
 </header>
 

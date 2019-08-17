@@ -10,7 +10,7 @@ import {PackageBox} from '../models/package-box';
 import {PackageClass} from '../models/package-class';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {DefaultCompare, SortByCompare} from '../services/util.service';
+import {DEFAULT_COMPARE, SORT_BY_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'UnbudatPackageBoxManagePage';
 
@@ -86,7 +86,7 @@ export class UnbudatPackageBoxManagePageState {
       if (a.printCount < 1 || b.printCount < 1) {
         return a.printCount < 1 ? -1 : 1;
       }
-      return DefaultCompare(a, b);
+      return DEFAULT_COMPARE(a, b);
     });
   }
 
@@ -133,7 +133,7 @@ export class UnbudatPackageBoxManagePageState {
       const grade = it.grade;
       map[grade.id] = grade;
     });
-    return Object.values(map).sort(SortByCompare);
+    return Object.values(map).sort(SORT_BY_COMPARE);
   }
 
   @Action(InitAction)

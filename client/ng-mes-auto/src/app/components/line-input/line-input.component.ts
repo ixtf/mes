@@ -1,14 +1,14 @@
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Self, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
-import {MatFormFieldControl} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatFormFieldControl} from '@angular/material';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
 import {isString} from 'util';
 import {Line} from '../../models/line';
 import {ApiService} from '../../services/api.service';
-import {displayWithLine, entityValidator, SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
+import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 
 @Component({
@@ -22,17 +22,17 @@ import {SharedModule} from '../../shared.module';
 })
 export class LineInputComponent implements ControlValueAccessor, MatFormFieldControl<Line>, OnInit, OnDestroy {
   static nextId = 0;
+  @Output()
+  readonly optionSelected = new EventEmitter<MatAutocompleteSelectedEvent>();
   @HostBinding()
-  readonly id = `line-machine-input-${LineInputComponent.nextId++}`;
+  readonly id = `line-input-${LineInputComponent.nextId++}`;
   @HostBinding('attr.aria-describedby')
   describedBy = '';
-  @ViewChild('itemInput', {static: true})
-  readonly test: any;
   readonly stateChanges = new Subject<void>();
-  readonly displayWithLine = displayWithLine;
+  readonly displayWithLine = DISPLAY_WITH_LINE;
   focused = false;
-  readonly lineCtrl = new FormControl(null, {validators: [entityValidator]});
-  autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
+  readonly qCtrl = new FormControl(null, {validators: [VALIDATORS.isEntity]});
+  readonly autoData$ = this.qCtrl.valueChanges.pipe(
     filter(it => it && isString(it) && it.trim().length > 0),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
@@ -55,7 +55,6 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
     }
   }
 
-  // tslint:disable-next-line:variable-name
   private _disabled = false;
 
   @Input()
@@ -65,11 +64,10 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
 
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
-    this._disabled ? this.lineCtrl.disable() : this.lineCtrl.enable();
+    this._disabled ? this.qCtrl.disable() : this.qCtrl.enable();
     this.stateChanges.next();
   }
 
-  // tslint:disable-next-line:variable-name
   private _placeholder: string;
 
   @Input()
@@ -82,7 +80,6 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
     this.stateChanges.next();
   }
 
-  // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
@@ -96,7 +93,7 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
   }
 
   get empty() {
-    return !this.lineCtrl.value;
+    return !this.qCtrl.value;
   }
 
   get shouldLabelFloat() {
@@ -107,21 +104,21 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
     if (this.disabled) {
       return false;
     }
-    return !!this.lineCtrl.errors;
+    return !!this.qCtrl.errors;
   }
 
   @Input()
   get value(): Line | null {
-    return this.errorState ? null : this.lineCtrl.value;
+    return this.errorState ? null : this.qCtrl.value;
   }
 
   set value(line: Line | null) {
-    this.lineCtrl.patchValue(line);
+    this.qCtrl.patchValue(line);
     this.stateChanges.next();
   }
 
   ngOnInit(): void {
-    this.lineCtrl.valueChanges.subscribe(() => this.onChange(this.value));
+    this.qCtrl.valueChanges.subscribe(() => this.onChange(this.value));
   }
 
   ngOnDestroy(): void {
@@ -131,7 +128,7 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
 
   onContainerClick(event: MouseEvent): void {
     if ((event.target as Element).tagName.toLowerCase() !== 'input') {
-      this.elementRef.nativeElement.querySelector('input')!.focus();
+      this.elementRef.nativeElement.querySelector('input').focus();
     }
   }
 
@@ -160,7 +157,6 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
 
   private onTouched = () => {
   };
-
 }
 
 
@@ -172,8 +168,8 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
     SharedModule,
   ],
   exports: [
-    LineInputComponent
-  ]
+    LineInputComponent,
+  ],
 })
 export class LineInputComponentModule {
 }

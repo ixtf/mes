@@ -4,7 +4,7 @@ import {switchMap, tap} from 'rxjs/operators';
 import {ExceptionRecord} from '../models/exception-record';
 import {Line} from '../models/line';
 import {ApiService} from '../services/api.service';
-import {LineCompare} from '../services/util.service';
+import {LINE_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'ExceptionRecordManagePage';
 
@@ -80,7 +80,7 @@ export class ExceptionRecordManagePageState {
       const line = it.lineMachine.line;
       lineMap[line.id] = line;
     });
-    return Object.values(lineMap).sort(LineCompare);
+    return Object.values(lineMap).sort(LINE_COMPARE);
   }
 
   @Action(InitAction)

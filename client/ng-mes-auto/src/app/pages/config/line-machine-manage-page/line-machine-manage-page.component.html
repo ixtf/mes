@@ -1,7 +1,7 @@
-<form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+<form class="search-area" fxLayoutGap="16px">
   <mat-form-field floatLabel="never">
     <mat-label>{{'line'|translate}}</mat-label>
-    <app-line-input formControlName="line" required></app-line-input>
+    <app-line-input (optionSelected)="query($event)" [formControl]="lineCtrl"></app-line-input>
   </mat-form-field>
   <span fxFlex></span>
   <button (click)="create()" *ngIf="isAdmin$|async" mat-mini-fab tabindex="-1" type="button">

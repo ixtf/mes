@@ -1,0 +1,42 @@
+<form (ngSubmit)="save()" [formGroup]="form">
+  <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+    <span fxFlex>{{title|translate}}</span>
+
+    <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content fxLayout="column">
+
+    <mat-form-field>
+      <input [placeholder]="'batch'|translate" formControlName="batch" matInput required>
+      <mat-error *ngIf="form.get('batchNo').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select [compareWith]="compareWithId" [placeholder]="'grade'|translate" formControlName="grade">
+        <mat-option *ngFor="let it of grades$|async" [value]="it">
+          {{it.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('grade').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [placeholder]="'CODE'|translate" formControlName="code" matInput required>
+      <mat-error *ngIf="form.get('code').hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-button>{{'Common.finish'|translate}}</button>
+  </mat-dialog-actions>
+</form>

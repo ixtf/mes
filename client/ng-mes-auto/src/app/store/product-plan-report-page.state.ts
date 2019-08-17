@@ -4,7 +4,7 @@ import {switchMap, tap} from 'rxjs/operators';
 import {Workshop} from '../models/workshop';
 import {Item as ProductPlanItem} from '../models/workshop-product-plan-report';
 import {ApiService} from '../services/api.service';
-import {CodeCompare} from '../services/util.service';
+import {CODE_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'ProductPlanReportPage';
 
@@ -48,7 +48,7 @@ export class ProductPlanReportPageState {
   @Selector()
   @ImmutableSelector()
   static workshops(state: StateModel): Workshop[] {
-    return Object.values(state.workshopEntities).sort(CodeCompare);
+    return Object.values(state.workshopEntities).sort(CODE_COMPARE);
   }
 
   @Action(InitAction)

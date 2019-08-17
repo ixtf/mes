@@ -8,7 +8,7 @@ import {LineMachineProductPlan} from '../models/line-machine-product-plan';
 import {Notification} from '../models/notification';
 import {Item as ProductPlanItem} from '../models/workshop-product-plan-report';
 import {ApiShareService} from '../services/api.service';
-import {DefaultCompare} from '../services/util.service';
+import {DEFAULT_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'BoardAbnormalPage';
 
@@ -128,7 +128,7 @@ export class BoardAbnormalPageState {
   @ImmutableSelector()
   static notifications(state: StateModel): Notification[] {
     return Object.keys(state.notificationEntities).map(it => state.notificationEntities[it])
-      .sort(DefaultCompare);
+      .sort(DEFAULT_COMPARE);
   }
 
   @Action(InitAction)

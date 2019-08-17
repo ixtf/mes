@@ -1,6 +1,6 @@
-<input [formControl]="lineCtrl" [matAutocomplete]="lineAuto" matInput>
-<mat-autocomplete #lineAuto='matAutocomplete' [displayWith]="displayWithLine">
-  <mat-option *ngFor="let it of autoCompleteLines$|async" [value]="it">
+<input [formControl]="qCtrl" [matAutocomplete]="auto" matInput>
+<mat-autocomplete #auto='matAutocomplete' (optionSelected)="optionSelected.emit($event)" [displayWith]="displayWithLine">
+  <mat-option *ngFor="let it of autoData$|async" [value]="it">
     {{it.name}}
   </mat-option>
 </mat-autocomplete>

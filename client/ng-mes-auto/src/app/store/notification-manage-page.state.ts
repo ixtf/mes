@@ -3,7 +3,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {Notification} from '../models/notification';
 import {ApiService} from '../services/api.service';
-import {DefaultCompare} from '../services/util.service';
+import {DEFAULT_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'NotificationManagePage';
 
@@ -42,7 +42,7 @@ export class NotificationManagePageState {
   @Selector()
   @ImmutableSelector()
   static notifications(state: StateModel): Notification[] {
-    return Object.values(state.notificationEntities).filter(DefaultCompare);
+    return Object.values(state.notificationEntities).filter(DEFAULT_COMPARE);
   }
 
   @Action(InitAction)

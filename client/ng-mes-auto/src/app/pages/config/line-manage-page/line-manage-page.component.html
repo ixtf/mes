@@ -1,8 +1,8 @@
-<form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+<form class="search-area" fxLayoutGap="16px">
   <mat-form-field floatLabel="never">
-    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId" required>
-      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
-        {{workshop.name}}
+    <mat-select (selectionChange)="query($event)" [formControl]="workshopIdCtrl" [placeholder]="'workshop'|translate" required>
+      <mat-option *ngFor="let it of workshops$|async" [value]="it.id">
+        {{it.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>

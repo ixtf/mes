@@ -4,7 +4,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Store} from '@ngxs/store';
 import {merge, Observable} from 'rxjs';
 import {distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
-import {CodeCompare, compareWithId} from 'src/app/services/util.service';
+import {CODE_COMPARE, COMPARE_WITH_ID} from 'src/app/services/util.service';
 import {Batch} from '../../../../models/batch';
 import {ApiService} from '../../../../services/api.service';
 
@@ -15,8 +15,8 @@ import {ApiService} from '../../../../services/api.service';
 })
 export class BatchUpdateDialogComponent implements OnInit {
   readonly title: string;
-  readonly compareWithId = compareWithId;
-  readonly workshops$ = this.api.listWorkshop().pipe(map(it => it.sort(CodeCompare)));
+  readonly compareWithId = COMPARE_WITH_ID;
+  readonly workshops$ = this.api.listWorkshop().pipe(map(it => it.sort(CODE_COMPARE)));
   readonly products$ = this.api.listProduct();
   readonly form = this.fb.group({
     id: null,

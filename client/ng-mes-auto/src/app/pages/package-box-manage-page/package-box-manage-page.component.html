@@ -17,7 +17,7 @@
   </mat-form-field>
 
   <mat-form-field floatLabel="never">
-    <mat-select [compareWith]="compareWithId" [placeholder]="'product'|translate" formControlName="productId">
+    <mat-select [placeholder]="'product'|translate" formControlName="productId">
       <mat-option>{{'Common.all'|translate}}</mat-option>
       <mat-option *ngFor="let it of products$|async" [value]="it.id">
         {{it.name}}
@@ -25,17 +25,13 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field floatLabel="never">
-    <mat-select [compareWith]="compareWithId" [placeholder]="'batchNo'|translate" formControlName="batchId">
-      <mat-option>{{'Common.all'|translate}}</mat-option>
-      <mat-option *ngFor="let it of products$|async" [value]="it.id">
-        {{it.name}}
-      </mat-option>
-    </mat-select>
+  <mat-form-field floatLabel="never" style="width: 150px;">
+    <mat-label>{{'batchNo'|translate}}</mat-label>
+    <app-batch-input formControlName="batchId"></app-batch-input>
   </mat-form-field>
 
   <mat-form-field floatLabel="never">
-    <mat-select [compareWith]="compareWithId" [placeholder]="'grade'|translate" formControlName="gradeId">
+    <mat-select [placeholder]="'grade'|translate" formControlName="gradeId">
       <mat-option>{{'Common.all'|translate}}</mat-option>
       <mat-option *ngFor="let it of grades$|async" [value]="it.id">
         {{it.name}}
@@ -44,19 +40,19 @@
   </mat-form-field>
 
   <mat-form-field floatLabel="never">
-    <input [matDatepicker]="startDatePicker" [placeholder]="'Common.startDate'|translate" formControlName="startDate" matInput required>
+    <input [matDatepicker]="startDatePicker" [matTooltip]="'PackageBox.budat'|translate" [placeholder]="'Common.startDate'|translate" formControlName="startDate" matInput required>
     <mat-datepicker-toggle [for]="startDatePicker" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #startDatePicker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field floatLabel="never">
-    <input [matDatepicker]="endDatePicker" [placeholder]="'Common.endDate'|translate" formControlName="endDate" matInput required>
+    <input [matDatepicker]="endDatePicker" [matTooltip]="'PackageBox.budat'|translate" [placeholder]="'Common.endDate'|translate" formControlName="endDate" matInput required>
     <mat-datepicker-toggle [for]="endDatePicker" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #endDatePicker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field floatLabel="never">
-    <mat-select [compareWith]="compareWithId" [placeholder]="'packageClass'|translate" formControlName="budatClassId">
+    <mat-select [placeholder]="'packageClass'|translate" formControlName="budatClassId">
       <mat-option>{{'Common.all'|translate}}</mat-option>
       <mat-option *ngFor="let it of packageClasses$|async" [value]="it.id">
         {{it.name}}

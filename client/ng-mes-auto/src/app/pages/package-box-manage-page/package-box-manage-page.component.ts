@@ -1,12 +1,13 @@
 import {SelectionModel} from '@angular/cdk/collections';
-import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MatDialog, MatTableDataSource, PageEvent} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {map, takeUntil} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {BatchInputComponentModule} from '../../components/batch-input/batch-input.component';
 import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
 import {PACKAGE_BOX_TYPE, PackageBox} from '../../models/package-box';
 import {ApiService} from '../../services/api.service';
@@ -20,7 +21,7 @@ import {DeleteAction, InitAction, PackageBoxManagePageState, QueryAction} from '
   styleUrls: ['./package-box-manage-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
+export class PackageBoxManagePageComponent {
   readonly packageBoxTypes = PACKAGE_BOX_TYPE;
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
   readonly copy = COPY_WITH_CTRL;
@@ -35,11 +36,11 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
   readonly pageIndex$: Observable<number>;
   @Select(PackageBoxManagePageState.pageSize)
   readonly pageSize$: Observable<number>;
-  readonly dataSource: PackageBoxDataSource;
+  readonly dataSource = new PackageBoxDataSource(this.packageBoxes$);
   readonly selection = new SelectionModel<PackageBox>(true, []);
   readonly displayedColumns = ['select', 'compositeField', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'budat', 'sapT001l', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
   readonly searchForm = this.fb.group({
-    workshopId: [null, Validators.required],
+    workshopId: [this.store.selectSnapshot(PackageBoxManagePageState.workshopId), Validators.required],
     type: null,
     budatClassId: null,
     productId: null,
@@ -52,22 +53,12 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
   readonly products$ = this.api.listProduct();
   readonly packageClasses$ = this.api.listPackageClass();
   readonly grades$ = this.api.listGrade().pipe(map(it => (it || []).sort(SORT_BY_COMPARE)));
-  private readonly destroy$ = new Subject();
 
   constructor(private store: Store,
               private fb: FormBuilder,
               private api: ApiService,
               private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
-    this.dataSource = new PackageBoxDataSource(this.packageBoxes$.pipe(takeUntil(this.destroy$)));
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   @Dispatch()
@@ -83,7 +74,6 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
     return new QueryAction(payload);
   }
 
-  @Dispatch()
   delete(packageBox: PackageBox) {
     return new DeleteAction(packageBox);
   }
@@ -105,7 +95,8 @@ export class PackageBoxManagePageComponent implements OnInit, OnDestroy {
   }
 
   batchTooltip(packageBox: PackageBox) {
-    return `${packageBox.batch.product.name} — ${packageBox.batch.spec} — ${packageBox.batch.tubeColor}`;
+    const {batch: {product, spec, tubeColor}} = packageBox;
+    return `${product.name} — ${spec} — ${tubeColor}`;
   }
 }
 
@@ -134,6 +125,7 @@ class PackageBoxDataSource extends MatTableDataSource<PackageBox> {
     NgxsModule.forFeature([PackageBoxManagePageState]),
     SharedModule,
     PackageBoxPrintComponentModule,
+    BatchInputComponentModule,
     RouterModule.forChild([
       {path: '', component: PackageBoxManagePageComponent, data: {animation: 'FilterPage'}},
     ]),

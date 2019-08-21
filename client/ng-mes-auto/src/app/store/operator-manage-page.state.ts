@@ -32,16 +32,19 @@ export class OperatorManagePageState {
   }
 
   @Selector()
+  @ImmutableSelector()
   static count(state: OperatorManagePageStateModel): number {
     return state.count;
   }
 
   @Selector()
+  @ImmutableSelector()
   static first(state: OperatorManagePageStateModel): number {
     return state.first;
   }
 
   @Selector()
+  @ImmutableSelector()
   static pageSize(state: OperatorManagePageStateModel): number {
     return state.pageSize;
   }

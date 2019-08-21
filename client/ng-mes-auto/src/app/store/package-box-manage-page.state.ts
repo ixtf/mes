@@ -32,6 +32,7 @@ interface StateModel {
   count?: number;
   first?: number;
   pageSize?: number;
+  workshopId?: string;
   packageBoxEntities: { [id: string]: PackageBox };
 }
 
@@ -52,16 +53,25 @@ export class PackageBoxManagePageState {
   }
 
   @Selector()
+  @ImmutableSelector()
+  static workshopId(state: StateModel): string {
+    return state.workshopId;
+  }
+
+  @Selector()
+  @ImmutableSelector()
   static count(state: StateModel): number {
     return state.count;
   }
 
   @Selector()
+  @ImmutableSelector()
   static pageIndex(state: StateModel): number {
     return state.first / state.pageSize;
   }
 
   @Selector()
+  @ImmutableSelector()
   static pageSize(state: StateModel): number {
     return state.pageSize;
   }
@@ -112,6 +122,7 @@ export class PackageBoxManagePageState {
         state.count = it.count;
         state.first = it.first;
         state.pageSize = it.pageSize;
+        state.workshopId = workshopId;
         state.packageBoxEntities = PackageBox.toEntities(it.packageBoxes);
         return state;
       }))

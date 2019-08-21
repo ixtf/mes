@@ -57,16 +57,19 @@ export class SilkCarManagePageState {
   }
 
   @Selector()
+  @ImmutableSelector()
   static count(state: StateModel): number {
     return state.count;
   }
 
   @Selector()
+  @ImmutableSelector()
   static pageIndex(state: StateModel): number {
     return state.first / state.pageSize;
   }
 
   @Selector()
+  @ImmutableSelector()
   static pageSize(state: StateModel): number {
     return state.pageSize;
   }

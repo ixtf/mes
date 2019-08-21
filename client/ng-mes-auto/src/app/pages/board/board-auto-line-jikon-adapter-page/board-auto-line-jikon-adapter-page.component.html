@@ -1,0 +1,32 @@
+<header class="board-title" fxLayout fxLayoutAlign="start center">
+  <img alt="" class="logo" src="assets/img/logo.png">
+  <div class="title-name" fxFlex>
+    <span>{{'Nav.board-auto-line'|translate}}</span>
+  </div>
+  <div class="date-box">
+    <span>{{currentDateTime$|async|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  </div>
+</header>
+
+<main class="board-content" fxFlex fxLayout="column">
+  <table border="1">
+    <thead>
+    <tr>
+      <th translate="SilkCar.code"></th>
+      <th translate="batchNo"></th>
+      <th translate="tubeColor"></th>
+      <th translate="silkCount"></th>
+      <th translate="Board.autoLineReasons"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let it of (messages$|async)">
+      <td>{{it.silkCarRuntime?.silkCarRecord.silkCar.code}}</td>
+      <td>{{it.silkCarRuntime?.silkCarRecord.batch.batchNo}}</td>
+      <td>{{it.silkCarRuntime?.silkCarRecord.batch.tubeColor}}</td>
+      <td>{{it.silkCarRuntime?.silkRuntimes.length}}</td>
+      <td>{{it.reasons && it.reasons.join(',')}}</td>
+    </tr>
+    </tbody>
+  </table>
+</main>

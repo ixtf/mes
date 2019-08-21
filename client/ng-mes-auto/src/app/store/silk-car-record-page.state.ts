@@ -58,16 +58,19 @@ export class SilkCarRecordPageState {
   }
 
   @Selector()
+  @ImmutableSelector()
   static count(state: SilkCarRecordPageStateModel): number {
     return state.count;
   }
 
   @Selector()
+  @ImmutableSelector()
   static first(state: SilkCarRecordPageStateModel): number {
     return state.first;
   }
 
   @Selector()
+  @ImmutableSelector()
   static pageSize(state: SilkCarRecordPageStateModel): number {
     return state.pageSize;
   }

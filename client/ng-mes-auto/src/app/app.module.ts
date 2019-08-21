@@ -148,6 +148,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
       key: [
         'App.token',
         'LineManagePage.workshopId',
+        'PackageBoxManagePage.workshopId',
         'DoffingSilkCarRecordReportPage.workshopId',
         'DoffingSilkCarRecordReportPage.startDateTime',
         'DoffingSilkCarRecordReportPage.endDateTime',

@@ -38,6 +38,11 @@ import {MyOwlDateTimeIntl} from './services/my-owl-date-time-intl';
 import {MyPaginatorIntl} from './services/my-paginator-intl';
 import {SharedModule} from './shared.module';
 import {AppState} from './store/app.state';
+import {DoffingSilkCarRecordReportPageState} from './store/doffing-silk-car-record-report-page.state';
+import {LineManagePageState} from './store/line-manage-page.state';
+import {PackageBoxManagePageState} from './store/package-box-manage-page.state';
+import {StatisticReportDayPageState} from './store/statistic-report-day-page.state';
+import {StatisticReportRangePageState} from './store/statistic-report-range-page.state';
 
 registerLocaleData(localeZhHans, 'zh-Hans');
 
@@ -83,6 +88,8 @@ const routes: Routes = [
         children: [
           {path: 'doffingSilkCarRecordReport', loadChildren: () => import('./pages/report/doffing-silk-car-record-report-page/doffing-silk-car-record-report-page.component').then(it => it.Module)},
           {path: 'productPlan', loadChildren: () => import('./pages/report/product-plan-report-page/product-plan-report-page.component').then(it => it.Module)},
+          {path: 'statisticReportDay', loadChildren: () => import('./pages/report/statistic-report-day-page/statistic-report-day-page.component').then(it => it.Module)},
+          {path: 'statisticReportRange', loadChildren: () => import('./pages/report/statistic-report-range-page/statistic-report-range-page.component').then(it => it.Module)},
         ]
       },
       {
@@ -150,12 +157,12 @@ export function createTranslateLoader(httpClient: HttpClient) {
     // It is recommended to register the storage plugin before other plugins so initial state can be picked up by those plugins.
     NgxsStoragePluginModule.forRoot({
       key: [
-        'App.token',
-        'LineManagePage.workshopId',
-        'PackageBoxManagePage.workshopId',
-        'DoffingSilkCarRecordReportPage.workshopId',
-        'DoffingSilkCarRecordReportPage.startDateTime',
-        'DoffingSilkCarRecordReportPage.endDateTime',
+        ...AppState.storageIds(),
+        ...LineManagePageState.storageIds(),
+        ...PackageBoxManagePageState.storageIds(),
+        ...DoffingSilkCarRecordReportPageState.storageIds(),
+        ...StatisticReportDayPageState.storageIds(),
+        ...StatisticReportRangePageState.storageIds(),
       ],
     }),
     NgxsRouterPluginModule.forRoot(),

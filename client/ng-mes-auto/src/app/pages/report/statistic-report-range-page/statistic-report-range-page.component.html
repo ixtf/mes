@@ -1,0 +1,110 @@
+<form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId">
+      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
+        {{workshop.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never">
+    <input [matDatepicker]="startDatePicker" [matTooltip]="'PackageBox.budat'|translate" [placeholder]="'Common.startDate'|translate" formControlName="startDate" matInput required>
+    <mat-datepicker-toggle [for]="startDatePicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never">
+    <input [matDatepicker]="endDatePicker" [matTooltip]="'PackageBox.budat'|translate" [placeholder]="'Common.endDate'|translate" formControlName="endDate" matInput required>
+    <mat-datepicker-toggle [for]="endDatePicker" matSuffix></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <button [disabled]="searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+    <mat-icon>search</mat-icon>
+  </button>
+
+  <span fxFlex></span>
+  <a *ngIf="showDownload$|async" href="http://baidu.com" mat-mini-fab tabindex="-1" target="_blank">
+    <mat-icon>get_app</mat-icon>
+  </a>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="xlsxItems$" fxFlex>
+  <ng-container matColumnDef="line">
+    <mat-header-cell *matHeaderCellDef fxFlex="70px">{{'lineMachine'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="70px">{{row.line.name}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef fxFlex="70px"></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="product">
+    <mat-header-cell *matHeaderCellDef fxFlex="80px">{{'product'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row" fxFlex="80px">{{row.productName}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef fxFlex="80px"></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="spec">
+    <mat-header-cell *matHeaderCellDef>{{'Batch.spec'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batchSpec|translate}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{'Common.sum'|translate}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="batchNo">
+    <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.batchNo}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="AA">
+    <mat-header-cell *matHeaderCellDef>AA</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.AA.silkWeight|number:'.3-3'}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).AA.silkWeight|number:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="A">
+    <mat-header-cell *matHeaderCellDef>A</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.A.silkWeight|number:'.3-3'}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).A.silkWeight|number:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="B">
+    <mat-header-cell *matHeaderCellDef>B</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.B.silkWeight|number:'.3-3'}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).B.silkWeight|number:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="C">
+    <mat-header-cell *matHeaderCellDef>C</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.C.silkWeight|number:'.3-3'}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).C.silkWeight|number:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="sum">
+    <mat-header-cell *matHeaderCellDef>{{'Common.sum'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.silkWeightSum|number:'.3-3'}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).silkWeightSum|number:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="silkCountSum">
+    <mat-header-cell *matHeaderCellDef>{{'silkCount'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.silkCountSum}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).silkCountSum|number:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="aaPercent">
+    <mat-header-cell *matHeaderCellDef>{{'aaPercent'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.aaPercent|percent:'.3-3'}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).aaPercent|percent:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="aPercent">
+    <mat-header-cell *matHeaderCellDef>{{'aPercent'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.aPercent|percent:'.3-3'}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).aPercent|percent:'.3-3'}}</mat-footer-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" [class.line-sum]="row.displayType==='LINE_SUM'"></mat-row>
+  <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+</mat-table>

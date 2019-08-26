@@ -43,6 +43,10 @@ export class LineManagePageState {
   constructor(private api: ApiService) {
   }
 
+  static storageIds(): string[] {
+    return [`${PAGE_NAME}.workshopId`];
+  }
+
   @Selector()
   @ImmutableSelector()
   static workshopId(state: StateModel): string {

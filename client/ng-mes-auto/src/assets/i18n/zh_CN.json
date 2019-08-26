@@ -1,5 +1,6 @@
 {
   "title": "MES自动化",
+  "LINE_SUM": "机台小计",
   "corporation": "公司",
   "product": "产品",
   "operatorGroup": "用户组",
@@ -7,6 +8,8 @@
   "line": "线别",
   "lineMachine": "机台",
   "batchNo": "批号",
+  "aaPercent": "优等率",
+  "aPercent": "壹等率",
   "grade": "等级",
   "packageClass": "班次",
   "productPlan": "生产计划",
@@ -174,8 +177,13 @@
     "diffDetailInfo": "差异"
   },
   "Nav": {
+    "measureMenu": "计量",
+    "statisticReportDay": "统计报表（日）",
+    "statisticReportRange": "统计报表（周期）",
+    "personalSilkCarRecordMenu": "个人产量",
     "silkCarRuntime": "当前",
     "unbudatPackageBoxes": "开始计量",
+    "temporaryBoxes": "暂存箱管理",
     "silkCarRecord": "历史",
     "workshopProductPlanReport": "车间生产计划",
     "corporations": "公司",
@@ -261,6 +269,7 @@
     "success": "操作成功"
   },
   "Common": {
+    "sum": "合计",
     "all": "全部",
     "filter": "过滤",
     "undo": "撤销",

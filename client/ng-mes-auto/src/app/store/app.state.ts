@@ -37,6 +37,10 @@ export class AppState implements NgxsOnInit {
   constructor(private api: ApiService) {
   }
 
+  static storageIds(): string[] {
+    return [`${PAGE_NAME}.token`];
+  }
+
   @Selector()
   @ImmutableSelector()
   static isShake(state: StateModel): boolean {

@@ -46,6 +46,10 @@ export class PackageBoxManagePageState {
   constructor(private api: ApiService) {
   }
 
+  static storageIds(): string[] {
+    return [`${PAGE_NAME}.workshopId`];
+  }
+
   @Selector()
   @ImmutableSelector()
   static packageBoxes(state: StateModel): PackageBox[] {

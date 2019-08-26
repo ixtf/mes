@@ -30,6 +30,7 @@ import {SilkCarRecordDestination} from '../models/silk-car-record-destination';
 import {SilkCarRuntime} from '../models/silk-car-runtime';
 import {SilkException} from '../models/silk-exception';
 import {SilkNote} from '../models/silk-note';
+import {StatisticReportDay, StatisticReportRange} from '../models/statistic-report-day';
 import {StatisticsReport} from '../models/statistics-report';
 import {SuggestOperator} from '../models/suggest-operator';
 import {TemporaryBox} from '../models/temporary-box';
@@ -159,6 +160,10 @@ export class ApiService {
 
   saveSilkCarRecordDestination(silkCarRecordDestination: SilkCarRecordDestination): Observable<SilkCarRecordDestination> {
     return silkCarRecordDestination.id ? this.updateSilkCarRecordDestination(silkCarRecordDestination) : this.createSilkCarRecordDestination(silkCarRecordDestination);
+  }
+
+  getSilkCarRecordDestination(id: string): Observable<SilkCarRecordDestination> {
+    return this.http.get<SilkCarRecordDestination>(`${BASE_API_URL}/silkCarRecordDestinations/${id}`);
   }
 
   listSilkCarRecordDestination(params?: HttpParams): Observable<SilkCarRecordDestination[]> {
@@ -435,6 +440,16 @@ export class ApiService {
 
   deleteEventSource(code: string, eventSourceId: string): Observable<void> {
     return this.http.delete<void>(`${BASE_API_URL}/silkCarRuntimes/${code}/eventSources/${eventSourceId}`);
+  }
+
+  statisticReportDay(body: { workshopId: string; date: string }): Observable<StatisticReportDay> {
+    return this.http.post<StatisticReportDay>(`http://${HOST_NAME}:9998/statisticReport/generate`, body);
+    // return this.http.post<void>(`${BASE_API_URL}/statisticReport/generate`, body);
+  }
+
+  statisticReportRange(body: { workshopId: string; startDate: string; endDate: string }): Observable<StatisticReportRange> {
+    return this.http.post<StatisticReportDay>(`http://${HOST_NAME}:9998/statisticReport/rangeDisk`, body);
+    // return this.http.post<void>(`${BASE_API_URL}/statisticReport/generate`, body);
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {

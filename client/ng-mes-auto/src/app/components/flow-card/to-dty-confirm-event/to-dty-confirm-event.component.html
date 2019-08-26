@@ -9,7 +9,13 @@
   </mat-menu>
 </header>
 
-<section fxLayout="column" fxLayout fxLayoutAlign="start center" fxLayoutGap="16px">
-  <span translate="silkCarRecordDestination"></span>
-  <span>{{event.command.destination.name}}</span>
+<section fxLayout="column">
+  <mat-list dense>
+    <mat-list-item style="font-size: 14px">
+      <div fxLayout fxLayoutAlign="start center" fxLayoutGap="16px" matLine>
+        <span translate="silkCarRecordDestination"></span>
+        <span>{{($destination|async)?.name}}</span>
+      </div>
+    </mat-list-item>
+  </mat-list>
 </section>

@@ -102,6 +102,10 @@ export class DoffingSilkCarRecordReportPageState {
   constructor(private api: ApiService) {
   }
 
+  static storageIds(): string[] {
+    return [`${PAGE_NAME}.workshopId`, `${PAGE_NAME}.startDateTime`, `${PAGE_NAME}.endDateTime`];
+  }
+
   @Selector()
   @ImmutableSelector()
   static workshopId(state: StateModel): string {

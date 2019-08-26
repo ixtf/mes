@@ -35,7 +35,7 @@ interface StateModel {
 
 @State<StateModel>({
   name: PAGE_NAME,
-  defaults: {}
+  defaults: {},
 })
 export class BoardAutoLinePageState {
   constructor(private api: ApiShareService) {
@@ -49,10 +49,10 @@ export class BoardAutoLinePageState {
 
   @Action(InitAction)
   @ImmutableContext()
-  InitAction({setState}: StateContext<StateModel>, {payload}: InitAction) {
+  InitAction({setState}: StateContext<StateModel>, {payload: {if_riamb_id, displayCount}}: InitAction) {
     setState((state: StateModel) => {
-      state.if_riamb_id = payload.if_riamb_id;
-      state.displayCount = parseInt((payload.displayCount || '1'), 10);
+      state.if_riamb_id = if_riamb_id;
+      state.displayCount = parseInt((displayCount || '1'), 10);
       return state;
     });
   }

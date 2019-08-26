@@ -24,6 +24,7 @@ import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog
 import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
 import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './pages/app/app-navbar/board-auto-line-dialog/board-auto-line-dialog.component';
+import {BoardAutoLineJikonAdapterDialogComponent} from './pages/app/app-navbar/board-auto-line-jikon-adapter-dialog/board-auto-line-jikon-adapter-dialog.component';
 import {BoardSilkCarRuntimeDialogComponent} from './pages/app/app-navbar/board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
 import {UnbudatPackageBoxDialogComponent} from './pages/app/app-navbar/unbudat-package-box-dialog/unbudat-package-box-dialog.component';
 import {AppShellComponent} from './pages/app/app-shell/app-shell.component';
@@ -45,6 +46,7 @@ const routes: Routes = [
   {
     path: 'board',
     children: [
+      {path: 'auto-line-jikon-adapter', loadChildren: () => import('./pages/board/board-auto-line-jikon-adapter-page/board-auto-line-jikon-adapter-page.component').then(it => it.Module)},
       {path: 'auto-line', loadChildren: () => import('./pages/board/board-auto-line-page/board-auto-line-page.component').then(it => it.Module)},
       {path: 'abnormal', loadChildren: () => import('./pages/board/board-abnormal-page/board-abnormal-page.component').then(it => it.Module)},
       {path: 'silk-car-runtime', loadChildren: () => import('./pages/board/board-silk-car-runtime-page/board-silk-car-runtime-page.component').then(it => it.Module)},
@@ -117,6 +119,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     AppNavbarComponent,
     ConfirmDialogComponent,
     BoardAutoLineDialogComponent,
+    BoardAutoLineJikonAdapterDialogComponent,
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
     UnbudatPackageBoxDialogComponent,
@@ -124,6 +127,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
   entryComponents: [
     ConfirmDialogComponent,
     BoardAutoLineDialogComponent,
+    BoardAutoLineJikonAdapterDialogComponent,
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
     UnbudatPackageBoxDialogComponent,

@@ -33,6 +33,7 @@
 
   <button *ngIf="isAdmin$|async" [matMenuTriggerFor]="boardMenu" mat-button type="button">{{'Nav.board'|translate}}</button>
   <mat-menu #boardMenu="matMenu">
+    <button (click)="boardAutoLineJikonAdapter()" mat-menu-item type="button">{{'Nav.board-auto-line-jikon-adapter'|translate}}</button>
     <button (click)="boardAutoLine()" mat-menu-item type="button">{{'Nav.board-auto-line'|translate}}</button>
     <button (click)="boardAbnormal()" mat-menu-item type="button">{{'Nav.board-abnormal'|translate}}</button>
     <button (click)="boardSilkCarRuntime()" mat-menu-item type="button">{{'Nav.board-silk-car-runtime'|translate}}</button>

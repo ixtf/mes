@@ -97,7 +97,7 @@ interface StateModel {
   defaults: {
     exceptionRecordEntities: {},
     notificationEntities: {},
-  }
+  },
 })
 export class BoardAbnormalPageState {
   constructor(private api: ApiShareService) {
@@ -138,8 +138,7 @@ export class BoardAbnormalPageState {
       state.workshopId = workshopId;
       if (isArray(lineIds)) {
         state.lineIds = lineIds as string[];
-      }
-      if (isString(lineIds)) {
+      } else if (isString(lineIds)) {
         state.lineIds = [lineIds as string];
       }
       return state;
@@ -168,7 +167,7 @@ export class BoardAbnormalPageState {
       tap(report => setState((state: StateModel) => {
         state.productPlanItems = (report && report.items || []).filter(it => lineIdFilter(state, it.line.id));
         return state;
-      }))
+      })),
     );
   }
 
@@ -180,7 +179,7 @@ export class BoardAbnormalPageState {
         exceptionRecords = (exceptionRecords || []).filter(it => exceptionRecordFilter(state, it));
         state.exceptionRecordEntities = ExceptionRecord.toEntities(exceptionRecords);
         return state;
-      }))
+      })),
     );
   }
 
@@ -192,7 +191,7 @@ export class BoardAbnormalPageState {
         notifications = (notifications || []).filter(it => notificationFilter(state, it));
         state.notificationEntities = Notification.toEntities(notifications);
         return state;
-      }))
+      })),
     );
   }
 

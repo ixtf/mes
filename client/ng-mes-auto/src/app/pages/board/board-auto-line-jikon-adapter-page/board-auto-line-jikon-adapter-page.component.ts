@@ -7,8 +7,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {EB_URL} from '../../../../environments/environment';
 import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BoardAutoLineJikonAdapterPageState} from '../../../store/board-auto-line-jikon-adapter-page.state';
-import {BoardAutoLinePageState, InitAction, MessageModel, ReceivedMessageAction} from '../../../store/board-auto-line-page.state';
+import {BoardAutoLineJikonAdapterPageState, InitAction, MessageModel, ReceivedMessageAction} from '../../../store/board-auto-line-jikon-adapter-page.state';
 
 declare const EventBus: any;
 
@@ -18,7 +17,7 @@ declare const EventBus: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardAutoLineJikonAdapterPageComponent implements OnInit, OnDestroy {
-  @Select(BoardAutoLinePageState.messages)
+  @Select(BoardAutoLineJikonAdapterPageState.messages)
   readonly messages$: Observable<MessageModel[]>;
   private readonly destroy$ = new Subject();
   readonly currentDateTime$ = INTERVAL$.pipe(

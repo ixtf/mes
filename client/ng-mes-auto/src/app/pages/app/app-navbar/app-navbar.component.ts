@@ -8,6 +8,7 @@ import {ApiService} from '../../../services/api.service';
 import {AppState} from '../../../store/app.state';
 import {BoardAbnormalDialogComponent} from './board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './board-auto-line-dialog/board-auto-line-dialog.component';
+import {BoardAutoLineJikonAdapterDialogComponent} from './board-auto-line-jikon-adapter-dialog/board-auto-line-jikon-adapter-dialog.component';
 import {BoardSilkCarRuntimeDialogComponent} from './board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
 import {UnbudatPackageBoxDialogComponent} from './unbudat-package-box-dialog/unbudat-package-box-dialog.component';
 
@@ -29,6 +30,10 @@ export class AppNavbarComponent {
 
   constructor(private dialog: MatDialog,
               private api: ApiService) {
+  }
+
+  boardAutoLineJikonAdapter() {
+    BoardAutoLineJikonAdapterDialogComponent.open(this.dialog);
   }
 
   boardAutoLine() {

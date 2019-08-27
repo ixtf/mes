@@ -1,0 +1,81 @@
+<form [formGroup]="form">
+  <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+    <span fxFlex>{{title|translate}}</span>
+
+    <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content formArrayName="ar" fxLayout="column" fxLayoutGap="16px">
+
+    <section *ngFor="let diffDataItem of diffDataItems$|async" class="diff" fxLayout>
+      <div fxFlex="50" fxLayout="column">
+        <mat-list dense>
+          <mat-list-item>
+            <div fxLayout fxLayoutAlign="start center" matLine>
+              <span fxFlex>{{'batchNo'|translate}}</span>
+              <button class="line-menu" mat-icon-button tabindex="-1" type="button">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item>
+            <div fxLayout matLine>
+              <span fxFlex>{{'batchNo'|translate}}</span>
+              <span>{{diffDataItem.batch.batchNo}}</span>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div fxLayout matLine>
+              <span fxFlex>{{'grade'|translate}}</span>
+              <span>{{diffDataItem.grade.name}}</span>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div fxLayout matLine>
+              <span fxFlex>{{'silkCount'|translate}}</span>
+              <span>{{diffDataItem.silkCount}}</span>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div fxLayout matLine>
+              <span fxFlex>{{'netWeight'|translate}}</span>
+              <span>{{diffDataItem.silkWeight|number:'.3-3'}}</span>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <mat-divider vertical></mat-divider>
+
+      <div fxFlex="50">
+        <mat-list dense>
+          <mat-list-item>
+            <div fxLayout matLine>
+              <span fxFlex>{{'line'|translate}}</span>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+
+          <mat-list-item *ngFor="let customDiffItem of customDiffItems$|async">
+            <div fxLayout matLine>
+              <span fxFlex>{{customDiffItem.line.name}}</span>
+              <span>{{customDiffItem.silkCount}} / {{customDiffItem.silkWeight|number:'.3-3'}}</span>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </section>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button [disabled]="form.pristine||form.invalid" color="primary" mat-button>{{'Common.finish'|translate}}</button>
+  </mat-dialog-actions>
+</form>

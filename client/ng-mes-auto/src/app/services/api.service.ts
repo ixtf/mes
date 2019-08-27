@@ -24,6 +24,7 @@ import {Product} from '../models/product';
 import {ProductPlanNotify} from '../models/product-plan-notify';
 import {ProductProcess} from '../models/product-process';
 import {SapT001l} from '../models/sapT001l';
+import {Silk} from '../models/silk';
 import {SilkCar} from '../models/silk-car';
 import {SilkCarRecord} from '../models/silk-car-record';
 import {SilkCarRecordDestination} from '../models/silk-car-record-destination';
@@ -285,6 +286,14 @@ export class ApiService {
 
   getPackageBox(id: string): Observable<PackageBox> {
     return this.http.get<PackageBox>(`${BASE_API_URL}/packageBoxes/${id}`);
+  }
+
+  getPackageBox_silks(id: string): Observable<Silk[]> {
+    return this.http.get<Silk[]>(`${BASE_API_URL}/packageBoxes/${id}/silks`);
+  }
+
+  getPackageBox_silkCarRecords(id: string): Observable<SilkCarRecord[]> {
+    return this.http.get<SilkCarRecord[]>(`${BASE_API_URL}/packageBoxes/${id}/silkCarRecords`);
   }
 
   autoCompleteBatch(q: string): Observable<Batch[]> {

@@ -2,7 +2,8 @@ import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {tap} from 'rxjs/operators';
-import {StatisticReportDay, XlsxItem} from '../models/statistic-report-day';
+import {PackageBox} from '../models/package-box';
+import {Item as StatisticReportDayItem, StatisticReportDay, XlsxItem} from '../models/statistic-report-day';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
 import {CODE_COMPARE} from '../services/util.service';
@@ -17,6 +18,13 @@ export class QueryAction {
   static readonly type = `[${PAGE_NAME}] QueryAction`;
 
   constructor(public payload: { workshopId: string; date: Date; }) {
+  }
+}
+
+export class CustomDiffAction {
+  static readonly type = `[${PAGE_NAME}] CustomDiffAction`;
+
+  constructor(public payload: { items: StatisticReportDayItem[]; }) {
   }
 }
 
@@ -61,6 +69,18 @@ export class StatisticReportDayPageState {
 
   @Selector()
   @ImmutableSelector()
+  static unDiffPackageBoxes(state: StateModel): PackageBox[] {
+    return state.report && state.report.unDiffPackageBoxes || [];
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static customDiffItems(state: StateModel): StatisticReportDayItem[] {
+    return state.report && state.report.customDiffItems || [];
+  }
+
+  @Selector()
+  @ImmutableSelector()
   static xlsxItems(state: StateModel): XlsxItem[] {
     const items = state.report && state.report.items;
     return XlsxItem.collect(items);
@@ -94,7 +114,7 @@ export class StatisticReportDayPageState {
     );
   }
 
-  @Action(QueryAction)
+  @Action(QueryAction, {cancelUncompleted: true})
   @ImmutableContext()
   QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, date}}: QueryAction) {
     return this.api.statisticReportDay({workshopId, date: `${moment(date).format('YYYY-MM-DD')}`}).pipe(

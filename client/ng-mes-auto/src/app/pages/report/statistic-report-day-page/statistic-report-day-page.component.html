@@ -18,7 +18,11 @@
   </button>
 
   <span fxFlex></span>
-  <a *ngIf="showDownload$|async" href="http://baidu.com" mat-mini-fab tabindex="-1" target="_blank">
+  <button (click)="customDiff()" [disabled]="(unDiffPackageBoxes$|async)?.length<1" color="primary" mat-stroked-button tabindex="-1" type="button">
+    {{'customDiff'|translate}}（{{customDiffSilkWeightSum$|async|number:'.3-3'}}
+    / {{unDiffSilkWeightSum$|async|number:'.3-3'}}）
+  </button>
+  <a [disabled]="!(showDownload$|async)" href="http://baidu.com" mat-mini-fab tabindex="-1" target="_blank">
     <mat-icon>get_app</mat-icon>
   </a>
 </form>
@@ -74,7 +78,7 @@
     <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).C.silkWeight|number:'.3-3'}}</mat-footer-cell>
   </ng-container>
 
-  <ng-container matColumnDef="sum">
+  <ng-container matColumnDef="silkWeightSum">
     <mat-header-cell *matHeaderCellDef>{{'Common.sum'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row">{{row.silkWeightSum|number:'.3-3'}}</mat-cell>
     <mat-footer-cell *matFooterCellDef>{{(totalItem$|async).silkWeightSum|number:'.3-3'}}</mat-footer-cell>

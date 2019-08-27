@@ -1,6 +1,7 @@
 {
   "title": "MES自动化",
   "LINE_SUM": "机台小计",
+  "customDiff": "人工分配",
   "corporation": "公司",
   "product": "产品",
   "operatorGroup": "用户组",
@@ -30,6 +31,8 @@
   "palletType": "托盘类型",
   "palletCode": "托盘编号",
   "doffingType": "落筒方式",
+  "doffingOperator": "落筒人",
+  "doffingDateTime": "落筒时间",
   "brand": "品牌",
   "supplier": "厂商",
   "tubeColor": "管色",
@@ -81,6 +84,7 @@
     "type": "打包类型",
     "sapT001l": "SAP库存地",
     "budat": "入库日期",
+    "budatClass": "入库班次",
     "packageType": "包装类型",
     "creator": "打包人",
     "createDateTime": "打包时间"
@@ -271,6 +275,7 @@
   "Common": {
     "sum": "合计",
     "all": "全部",
+    "detail": "详情",
     "filter": "过滤",
     "undo": "撤销",
     "creator": "创建人",

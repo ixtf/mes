@@ -1,6 +1,7 @@
 import {Batch} from './batch';
 import {Grade} from './grade';
 import {LineMachine} from './line-machine';
+import {Operator} from './operator';
 
 export class Silk {
   id: string;
@@ -9,6 +10,8 @@ export class Silk {
   lineMachine: LineMachine;
   spindle: number;
   doffingNum: string;
+  doffingOperator: Operator;
+  doffingType: 'AUTO' | 'MANUAL' | 'BIG_SILK_CAR';
   grade: Grade;
   weight: number;
 

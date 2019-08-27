@@ -2,15 +2,18 @@ import {Batch} from './batch';
 import {Grade} from './grade';
 import {Operator} from './operator';
 import {PackageClass} from './package-class';
+import {SapT001l} from './sapT001l';
 
 export const PACKAGE_BOX_TYPE = ['AUTO', 'MANUAL', 'BIG_SILK_CAR', 'MANUAL_APPEND'];
 
 export class PackageBox {
   id: string;
+  type: 'AUTO' | 'MANUAL' | 'SMALL' | 'MANUAL_APPEND' | 'BIG_SILK_CAR';
   code: string;
   batch: Batch;
   grade: Grade;
   saleType: string;
+  sapT001l: SapT001l;
   palletCode: string;
   palletType: string;
   packageType: string;

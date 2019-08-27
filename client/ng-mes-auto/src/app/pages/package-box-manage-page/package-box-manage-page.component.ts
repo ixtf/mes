@@ -8,6 +8,7 @@ import {NgxsModule, Select, Store} from '@ngxs/store';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {BatchInputComponentModule} from '../../components/batch-input/batch-input.component';
+import {PackageBoxDetailDialogPageComponent, PackageBoxDetailDialogPageComponentModule} from '../../components/package-box-detail-dialog-page/package-box-detail-dialog-page.component';
 import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
 import {PACKAGE_BOX_TYPE, PackageBox} from '../../models/package-box';
 import {ApiService} from '../../services/api.service';
@@ -38,7 +39,8 @@ export class PackageBoxManagePageComponent {
   readonly pageSize$: Observable<number>;
   readonly dataSource = new PackageBoxDataSource(this.packageBoxes$);
   readonly selection = new SelectionModel<PackageBox>(true, []);
-  readonly displayedColumns = ['select', 'compositeField', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'budat', 'sapT001l', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
+  // readonly displayedColumns = ['select', 'compositeField', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'budat', 'sapT001l', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
+  readonly displayedColumns = ['compositeField', 'grade', 'silkCount', 'netWeight', 'grossWeight', 'budat', 'sapT001l', 'palletType', 'packageType', 'foamType', 'foamNum', 'creator', 'createDateTime', 'palletCode', 'btns'];
   readonly searchForm = this.fb.group({
     workshopId: [this.store.selectSnapshot(PackageBoxManagePageState.workshopId), Validators.required],
     type: null,
@@ -94,6 +96,10 @@ export class PackageBoxManagePageComponent {
     PackageBoxPrintComponent.print(this.dialog, this.selection.selected);
   }
 
+  detail(packageBox: PackageBox) {
+    PackageBoxDetailDialogPageComponent.open(this.dialog, packageBox);
+  }
+
   batchTooltip(packageBox: PackageBox) {
     const {batch: {product, spec, tubeColor}} = packageBox;
     return `${product.name} — ${spec} — ${tubeColor}`;
@@ -126,6 +132,7 @@ class PackageBoxDataSource extends MatTableDataSource<PackageBox> {
     SharedModule,
     PackageBoxPrintComponentModule,
     BatchInputComponentModule,
+    PackageBoxDetailDialogPageComponentModule,
     RouterModule.forChild([
       {path: '', component: PackageBoxManagePageComponent, data: {animation: 'FilterPage'}},
     ]),

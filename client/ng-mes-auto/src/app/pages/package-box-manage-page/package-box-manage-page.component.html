@@ -60,14 +60,14 @@
     </mat-select>
   </mat-form-field>
 
-  <button [disabled]="searchForm.pristine||searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+  <button [disabled]="searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
     <mat-icon>search</mat-icon>
   </button>
 
   <span fxFlex></span>
-  <button (click)="print()" [disabled]="selection.selected?.length<1" color="primary" mat-stroked-button type="button">
-    {{'Common.print'|translate}} ({{selection.selected.length}})
-  </button>
+  <!--  <button (click)="print()" [disabled]="selection.selected?.length<1" color="primary" mat-stroked-button type="button">-->
+  <!--    {{'Common.print'|translate}} ({{selection.selected.length}})-->
+  <!--  </button>-->
 </form>
 
 <mat-divider></mat-divider>
@@ -92,15 +92,33 @@
       </td>
     </ng-container>
 
+    <!--    <ng-container matColumnDef="compositeField" sticky>-->
+    <!--      <th (click)="masterToggle()" *matHeaderCellDef mat-header-cell>-->
+    <!--        <div fxLayout fxLayoutAlign="center center" fxLayoutGap="32px">-->
+    <!--          <span translate="PackageBox.code"></span>-->
+    <!--          <mat-divider vertical></mat-divider>-->
+    <!--          <span translate="batchNo"></span>-->
+    <!--        </div>-->
+    <!--      </th>-->
+    <!--      <td (click)="selection.toggle(row)" *matCellDef="let row" mat-cell matRipple>-->
+    <!--        <div fxLayout>-->
+    <!--          <span fxFlex="240px">{{row.code}}</span>-->
+    <!--          <mat-divider vertical></mat-divider>-->
+    <!--          <span [matTooltip]="batchTooltip(row)" fxFlex="100px">-->
+    <!--            {{row.batch.batchNo}}-->
+    <!--          </span>-->
+    <!--        </div>-->
+    <!--      </td>-->
+    <!--    </ng-container>-->
     <ng-container matColumnDef="compositeField" sticky>
-      <th (click)="masterToggle()" *matHeaderCellDef mat-header-cell>
+      <th *matHeaderCellDef mat-header-cell>
         <div fxLayout fxLayoutAlign="center center" fxLayoutGap="32px">
           <span translate="PackageBox.code"></span>
           <mat-divider vertical></mat-divider>
           <span translate="batchNo"></span>
         </div>
       </th>
-      <td (click)="selection.toggle(row)" *matCellDef="let row" mat-cell matRipple>
+      <td *matCellDef="let row" mat-cell>
         <div fxLayout>
           <span fxFlex="240px">{{row.code}}</span>
           <mat-divider vertical></mat-divider>
@@ -191,8 +209,16 @@
 
     <ng-container matColumnDef="btns" stickyEnd>
       <th *matHeaderCellDef mat-header-cell>{{'Common.operation'|translate}}</th>
-      <td *matCellDef="let row" mat-cell matRipple>
-        <mat-icon>edit</mat-icon>
+      <td *matCellDef="let row" [matMenuTriggerFor]="btnsMenu" mat-cell matRipple>
+        <mat-icon>list</mat-icon>
+        <mat-menu #btnsMenu="matMenu">
+          <button (click)="detail(row)" color="primary" mat-menu-item type="button">
+            {{'Common.detail'|translate}}
+          </button>
+          <button (click)="print()" color="primary" mat-menu-item type="button">
+            {{'Common.print'|translate}}
+          </button>
+        </mat-menu>
       </td>
     </ng-container>
 

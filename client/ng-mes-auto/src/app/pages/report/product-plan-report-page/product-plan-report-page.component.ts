@@ -42,11 +42,6 @@ export class ProductPlanReportPageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // @Dispatch()
-  // query(workshopId: string) {
-  //   return new QueryAction({workshopId});
-  // }
-
   @Dispatch()
   query(ev: MatSelectChange) {
     return new QueryAction({workshopId: ev.value});

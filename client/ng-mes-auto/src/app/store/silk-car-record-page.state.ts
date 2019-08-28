@@ -2,19 +2,28 @@ import {HttpParams} from '@angular/common/http';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
-import {tap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 import {SilkCarRecord} from '../models/silk-car-record';
 import {ApiService} from '../services/api.service';
 
+const PAGE_NAME = 'SilkCarRecordPage';
+
+export class InitAction {
+  static readonly type = `[${PAGE_NAME}] InitAction`;
+
+  constructor(public payload: { id: string }) {
+  }
+}
+
 export class QueryAction {
-  static readonly type = '[SilkCarRecordPage] QueryAction';
+  static readonly type = `[${PAGE_NAME}] QueryAction`;
 
   constructor(public payload: { startDate: Date, endDate: Date, silkCarCode: string }) {
   }
 }
 
 export class PickAction {
-  static readonly type = '[SilkCarRecordPage] PickAction';
+  static readonly type = `[${PAGE_NAME}] PickAction`;
 
   constructor(public payload: { silkCarRecord: SilkCarRecord }) {
   }
@@ -30,7 +39,7 @@ interface SilkCarRecordPageStateModel {
 }
 
 @State<SilkCarRecordPageStateModel>({
-  name: 'SilkCarRecordPage',
+  name: PAGE_NAME,
   defaults: {
     silkCarRecordEntities: {}
   }
@@ -73,6 +82,22 @@ export class SilkCarRecordPageState {
   @ImmutableSelector()
   static pageSize(state: SilkCarRecordPageStateModel): number {
     return state.pageSize;
+  }
+
+  @Action(InitAction)
+  @ImmutableContext()
+  InitAction({setState, dispatch}: StateContext<SilkCarRecordPageStateModel>, {payload: {id}}: InitAction) {
+    if (id) {
+      return this.api.getSilkCarRecord(id).pipe(
+        switchMap(silkCarRecord => {
+          setState((state: SilkCarRecordPageStateModel) => {
+            state.silkCarRecordEntities = SilkCarRecord.toEntities([silkCarRecord]);
+            return state;
+          });
+          return dispatch(new PickAction({silkCarRecord}));
+        }),
+      );
+    }
   }
 
   @Action(QueryAction)

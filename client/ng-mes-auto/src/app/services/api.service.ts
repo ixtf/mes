@@ -280,6 +280,10 @@ export class ApiService {
     return this.http.get<{ count: number, first: number, pageSize: number, silkCarRecords: SilkCarRecord[] }>(`${BASE_API_URL}/silkCarRecords`, {params});
   }
 
+  getSilkCarRecord(id: string): Observable<SilkCarRecord> {
+    return this.http.get<SilkCarRecord>(`${BASE_API_URL}/silkCarRecords/${id}`);
+  }
+
   getSilkCarRecord_Events(id: string): Observable<EventSource[]> {
     return this.http.get<EventSource[]>(`${BASE_API_URL}/silkCarRecords/${id}/events`);
   }

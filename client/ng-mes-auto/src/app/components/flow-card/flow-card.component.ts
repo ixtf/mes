@@ -5,6 +5,7 @@ import {SilkCarRuntime} from '../../models/silk-car-runtime';
 import {insertRemoveAnimation} from '../../services/animations';
 import {EVENT_SOURCE_COMPARE} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
+import {PackageBoxDetailDialogPageComponentModule} from '../package-box-detail-dialog-page/package-box-detail-dialog-page.component';
 import {DyeingPrepareEventComponent} from './dyeing-prepare-event/dyeing-prepare-event.component';
 import {JikonAdapterSilkCarInfoFetchEventComponent} from './jikon-adapter-silk-car-info-fetch-event/jikon-adapter-silk-car-info-fetch-event.component';
 import {JikonAdapterSilkDetachEventComponent} from './jikon-adapter-silk-detach-event/jikon-adapter-silk-detach-event.component';
@@ -71,6 +72,7 @@ export class FlowCardComponent {
   ],
   imports: [
     SharedModule,
+    PackageBoxDetailDialogPageComponentModule,
   ],
   exports: [
     FlowCardComponent,

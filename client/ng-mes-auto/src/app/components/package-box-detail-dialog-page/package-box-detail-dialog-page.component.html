@@ -15,50 +15,86 @@
   <main class="fill" fxFill fxLayout>
 
     <section class="left" fxFlex="200px" fxLayout="column">
-      <mat-form-field>
-        <input [placeholder]="'batchNo'|translate" [value]="packageBox?.batch.batchNo" matInput readonly required>
-      </mat-form-field>
+      <mat-list dense>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="batchNo"></span>
+            <span>{{packageBox?.batch.batchNo}}</span>
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'grade'|translate" [value]="packageBox?.grade.name" matInput readonly required>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="grade"></span>
+            <span>{{packageBox?.grade.name}}</span>
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'silkCount'|translate" [value]="packageBox?.silkCount" matInput readonly required>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="silkCount"></span>
+            <span>{{packageBox?.silkCount}}</span>
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'netWeight'|translate" [value]="packageBox?.netWeight|number:'.3-3'" matInput readonly required>
-        <span matSuffix>KG</span>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="netWeight"></span>
+            <span>{{packageBox?.netWeight|number:'.3-3'}}</span>
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'grossWeight'|translate" [value]="packageBox?.grossWeight|number:'.3-3'" matInput readonly required>
-        <span matSuffix>KG</span>
-      </mat-form-field>
 
-      <mat-form-field>
-        <input [placeholder]="'PackageBox.budat'|translate" [value]="(packageBox?.budat|date:'yyyy-MM-dd')+' / '+packageBox?.budatClass?.name" matInput readonly required>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="grossWeight"></span>
+            <span>{{packageBox?.grossWeight|number:'.3-3'}}</span>
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'PackageBox.sapT001l'|translate" [value]="packageBox?.sapT001l?.lgort+' / '+(('SaleType.'+packageBox?.saleType)|translate)" matInput readonly required>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="PackageBox.budat"></span>
+            <span>{{packageBox?.budat|date:'yyyy-MM-dd'}} / {{packageBox?.budatClass?.name}}</span>
+            <!--            <span [matTooltip]="packageBox?.budatClass?.name">{{packageBox?.budat|date:'yyyy-MM-dd'}}</span>-->
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'palletType'|translate" [value]="packageBox?.palletType" matInput readonly required>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="PackageBox.sapT001l"></span>
+            <span>{{packageBox?.sapT001l?.lgort}} / {{('SaleType.' + packageBox?.saleType)|translate}}</span>
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'PackageBox.packageType'|translate" [value]="packageBox?.packageType" matInput readonly required>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="palletType"></span>
+            <span>{{packageBox?.palletType}}</span>
+          </div>
+        </mat-list-item>
 
-      <mat-form-field>
-        <input [placeholder]="'foamType'|translate" [value]="packageBox?.foamType" matInput readonly required>
-      </mat-form-field>
-      <mat-form-field>
-        <input [placeholder]="'foamNum'|translate" [value]="packageBox?.foamNum" matInput readonly required>
-      </mat-form-field>
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="PackageBox.packageType"></span>
+            <span>{{packageBox?.packageType}}</span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="foamType"></span>
+            <span>{{packageBox?.foamType}}</span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item>
+          <div fxLayout matLine>
+            <span fxFlex translate="foamNum"></span>
+            <span>{{packageBox?.foamNum}}</span>
+          </div>
+        </mat-list-item>
+      </mat-list>
     </section>
 
     <mat-divider vertical></mat-divider>
@@ -73,8 +109,9 @@
 
           <ng-container matColumnDef="spec">
             <mat-header-cell *matHeaderCellDef>{{'Silk.spec'|translate}}</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.lineMachine.line.name}} - {{row.spindle}}
-              / {{row.lineMachine.item}}</mat-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.lineMachine.line.name}} - {{row.spindle}} / {{row.lineMachine.item}}
+            </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="doffingNum">
@@ -103,39 +140,39 @@
       </ng-container>
 
       <ng-container *ngIf="packageBox?.type==='MANUAL'">
-        <mat-accordion>
-          <mat-expansion-panel *ngFor="let silkCarRecord of silkCarRecords$|async">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{silkCarRecord.silkCar.code}}
-              </mat-panel-title>
-              <mat-panel-description>
-                Type your name and age
-              </mat-panel-description>
-            </mat-expansion-panel-header>
+        <mat-table [dataSource]="silkCarRecords$">
+          <ng-container matColumnDef="code">
+            <mat-header-cell *matHeaderCellDef>{{'SilkCar.code'|translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.silkCar.code}}</mat-cell>
+          </ng-container>
 
-            <mat-table [dataSource]="silkCarRecords$">
-              <ng-container matColumnDef="code">
-                <mat-header-cell *matHeaderCellDef>{{'SilkCar.code'|translate}}</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.silkCar.code}}</mat-cell>
-              </ng-container>
+          <ng-container matColumnDef="doffingType">
+            <mat-header-cell *matHeaderCellDef>{{'doffingType'|translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{('DoffingType.' + row?.doffingType)|translate}}</mat-cell>
+          </ng-container>
 
-              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-          </mat-expansion-panel>
-        </mat-accordion>
+          <ng-container matColumnDef="doffingOperator">
+            <mat-header-cell *matHeaderCellDef>{{'doffingOperator'|translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row?.doffingOperator.name}}</mat-cell>
+          </ng-container>
 
+          <ng-container matColumnDef="doffingDateTime">
+            <mat-header-cell *matHeaderCellDef>{{'doffingDateTime'|translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row?.doffingDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+          </ng-container>
 
-        <!--        <mat-table [dataSource]="silkCarRecords$">-->
-        <!--          <ng-container matColumnDef="code">-->
-        <!--            <mat-header-cell *matHeaderCellDef>{{'SilkCar.code'|translate}}</mat-header-cell>-->
-        <!--            <mat-cell *matCellDef="let row">{{row.silkCar.code}}</mat-cell>-->
-        <!--          </ng-container>-->
+          <ng-container matColumnDef="btns">
+            <mat-header-cell *matHeaderCellDef>{{'Common.detail'|translate}}</mat-header-cell>
+            <mat-cell *matCellDef="let row" matRipple>
+              <a [queryParams]="routerLinkCarRecordQueryParams(row)" [routerLink]="routerLinkCarRecord(row)" tabindex="-1" target="_blank">
+                <mat-icon>link</mat-icon>
+              </a>
+            </mat-cell>
+          </ng-container>
 
-        <!--          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>-->
-        <!--          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
-        <!--        </mat-table>-->
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
       </ng-container>
     </section>
 

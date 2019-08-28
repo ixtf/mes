@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, HostBinding, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostBinding, NgModule, OnDestroy} from '@angular/core';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
@@ -19,7 +19,7 @@ declare const EventBus: any;
   styleUrls: ['./board-abnormal-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BoardAbnormalPageComponent implements OnInit, OnDestroy {
+export class BoardAbnormalPageComponent implements OnDestroy {
   @Select(BoardAbnormalPageState.productPlanItems)
   readonly productPlanItems$: Observable<Item[]>;
   @Select(BoardAbnormalPageState.exceptionRecords)
@@ -47,9 +47,6 @@ export class BoardAbnormalPageComponent implements OnInit, OnDestroy {
       this.eb.registerHandler('mes-auto://websocket/boards/abnormal/productPlan', this.updateProductPlanRecord);
       this.eb.registerHandler('mes-auto://websocket/boards/abnormal/notification', this.updateNotification);
     };
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {

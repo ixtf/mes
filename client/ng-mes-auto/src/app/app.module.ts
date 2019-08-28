@@ -41,6 +41,7 @@ import {AppState} from './store/app.state';
 import {DoffingSilkCarRecordReportPageState} from './store/doffing-silk-car-record-report-page.state';
 import {LineManagePageState} from './store/line-manage-page.state';
 import {PackageBoxManagePageState} from './store/package-box-manage-page.state';
+import {ProductPlanReportPageState} from './store/product-plan-report-page.state';
 import {StatisticReportDayPageState} from './store/statistic-report-day-page.state';
 import {StatisticReportRangePageState} from './store/statistic-report-range-page.state';
 
@@ -158,6 +159,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     NgxsStoragePluginModule.forRoot({
       key: [
         ...AppState.storageIds(),
+        ...ProductPlanReportPageState.storageIds(),
         ...LineManagePageState.storageIds(),
         ...PackageBoxManagePageState.storageIds(),
         ...DoffingSilkCarRecordReportPageState.storageIds(),

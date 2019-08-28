@@ -1,9 +1,8 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
-import {RouterModule} from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
-import {Emittable, Emitter} from '@ngxs-labs/emitter';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
@@ -15,7 +14,7 @@ import {insertRemoveAnimation} from '../../services/animations';
 import {ApiService} from '../../services/api.service';
 import {SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {FetchAction, SilkCarRuntimePageState} from '../../store/silk-car-runtime-page.state';
+import {FetchAction, InitAction, SilkCarRuntimePageState} from '../../store/silk-car-runtime-page.state';
 
 @Component({
   templateUrl: './silk-car-runtime-page.component.html',
@@ -33,8 +32,6 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
   });
   @Select(SilkCarRuntimePageState.silkCarRuntime)
   readonly silkCarRuntime$: Observable<SilkCarRuntime>;
-  @Emitter(SilkCarRuntimePageState.OnInit)
-  readonly OnInit$: Emittable<void>;
   private readonly destroy$ = new Subject();
   readonly autoCompleteSilkCars$ = this.silkCarQCtrl.valueChanges.pipe(
     takeUntil(this.destroy$),
@@ -45,12 +42,13 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
   );
 
   constructor(private store: Store,
+              private route: ActivatedRoute,
               private fb: FormBuilder,
               private api: ApiService) {
+    route.queryParams.subscribe((it: any) => store.dispatch(new InitAction(it)));
   }
 
   ngOnInit(): void {
-    this.OnInit$.emit();
     // this.store.dispatch(new FetchAction('3000F48001'));
     // this.store.dispatch(new FetchAction('YJ048F0002'));
     // this.store.dispatch(new FetchAction('3000F2345'));

@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {TranslateService} from '@ngx-translate/core';
 import {Store} from '@ngxs/store';
-import {switchMap, tap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 import {EventSource, ToDtyEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
@@ -50,6 +50,9 @@ export class ToDtyEventComponent {
   }
 
   canUndo(): boolean {
+    if (!this.silkCarRuntime) {
+      return false;
+    }
     const confirmed = (this.events || []).find(it => !it.deleted && it.type === 'ToDtyConfirmEvent');
     if (confirmed) {
       return false;
@@ -67,9 +70,6 @@ export class ToDtyEventComponent {
       switchMap(() => {
         const {silkCarRecord: {silkCar: {code}}} = this.silkCarRuntime;
         return this.api.deleteEventSource(code, this.event.eventId);
-      }),
-      tap(() => {
-        console.log('test');
       }),
     ).subscribe();
   }

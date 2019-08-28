@@ -33,6 +33,10 @@ export class ProductPlanReportPageState {
   constructor(private api: ApiService) {
   }
 
+  static storageIds(): string[] {
+    return [`${PAGE_NAME}.workshopId`];
+  }
+
   @Selector()
   @ImmutableSelector()
   static productPlanItems(state: StateModel): ProductPlanItem[] {
@@ -54,17 +58,13 @@ export class ProductPlanReportPageState {
   @Action(InitAction)
   @ImmutableContext()
   InitAction({setState, getState, dispatch}: StateContext<StateModel>) {
-    let {workshopId} = getState();
-    if (workshopId) {
-      return;
-    }
     return this.api.listWorkshop().pipe(
       switchMap(workshops => {
         setState((state: StateModel) => {
           state.workshopEntities = Workshop.toEntities(workshops);
           return state;
         });
-        workshopId = ProductPlanReportPageState.workshops(getState())[0].id;
+        const workshopId = getState().workshopId || ProductPlanReportPageState.workshops(getState())[0].id;
         return dispatch(new QueryAction({workshopId}));
       }),
     );
@@ -73,9 +73,6 @@ export class ProductPlanReportPageState {
   @Action(QueryAction)
   @ImmutableContext()
   QueryAction({setState, getState}: StateContext<StateModel>, {payload: {workshopId}}: QueryAction) {
-    if (workshopId === getState().workshopId) {
-      return;
-    }
     return this.api.getWorkshop_ProductPlans(workshopId).pipe(
       tap(report => setState((state: StateModel) => {
         state.workshopId = workshopId;

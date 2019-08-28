@@ -1,12 +1,16 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
 import {Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 import {EventSource, ToDtyConfirmEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRecordDestination} from '../../../models/silk-car-record-destination';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 import {ApiService} from '../../../services/api.service';
 import {AppState} from '../../../store/app.state';
+import {ConfirmDialogComponent} from '../../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-to-dty-confirm-event',
@@ -23,7 +27,9 @@ export class ToDtyConfirmEventComponent {
   private _event: ToDtyConfirmEvent;
 
   constructor(private store: Store,
-              private api: ApiService) {
+              private api: ApiService,
+              private translate: TranslateService,
+              private dialog: MatDialog) {
   }
 
   get event(): ToDtyConfirmEvent {
@@ -47,12 +53,24 @@ export class ToDtyConfirmEventComponent {
   }
 
   canUndo(): boolean {
+    if (!this.silkCarRuntime) {
+      return false;
+    }
     const isAdmin = this.store.selectSnapshot(AppState.authInfoIsAdmin);
     if (isAdmin) {
       return true;
     }
     const authInfo = this.store.selectSnapshot(AppState.authInfo);
     return authInfo.id === this.event.operator.id;
+  }
+
+  undo() {
+    ConfirmDialogComponent.openUndo(this.dialog).pipe(
+      switchMap(() => {
+        const {silkCarRecord: {silkCar: {code}}} = this.silkCarRuntime;
+        return this.api.deleteEventSource(code, this.event.eventId);
+      }),
+    ).subscribe();
   }
 
 }

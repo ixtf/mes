@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject, NgModule} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatExpansionModule} from '@angular/material';
+import {Router, RouterModule} from '@angular/router';
 import {Observable} from 'rxjs';
 import {PackageBox} from '../../models/package-box';
 import {Silk} from '../../models/silk';
@@ -19,6 +20,7 @@ export class PackageBoxDetailDialogPageComponent {
   displayedColumns: string[];
 
   constructor(private api: ApiService,
+              private router: Router,
               @Inject(MAT_DIALOG_DATA) data: PackageBox) {
     this.packageBox = data;
     if (this.packageBox.type === 'AUTO') {
@@ -26,7 +28,7 @@ export class PackageBoxDetailDialogPageComponent {
       this.displayedColumns = ['code', 'spec', 'doffingNum', 'doffingType', 'doffingOperator', 'doffingDateTime'];
     } else if (this.packageBox.type === 'MANUAL') {
       this.silkCarRecords$ = this.api.getPackageBox_silkCarRecords(this.packageBox.id);
-      this.displayedColumns = ['code'];
+      this.displayedColumns = ['code', 'doffingType', 'doffingOperator', 'doffingDateTime', 'btns'];
     }
   }
 
@@ -34,6 +36,13 @@ export class PackageBoxDetailDialogPageComponent {
     return dialog.open(PackageBoxDetailDialogPageComponent, {data, width: '90vw'});
   }
 
+  routerLinkCarRecord(silkCarRecord: SilkCarRecord) {
+    return silkCarRecord.endDateTime ? '/silkCarRecord' : '/silkCarRuntime';
+  }
+
+  routerLinkCarRecordQueryParams(silkCarRecord: SilkCarRecord) {
+    return silkCarRecord.endDateTime ? {id: silkCarRecord.id} : {code: silkCarRecord.silkCar.code};
+  }
 }
 
 @NgModule({
@@ -44,6 +53,7 @@ export class PackageBoxDetailDialogPageComponent {
     PackageBoxDetailDialogPageComponent,
   ],
   imports: [
+    RouterModule,
     SharedModule,
     MatExpansionModule,
   ],

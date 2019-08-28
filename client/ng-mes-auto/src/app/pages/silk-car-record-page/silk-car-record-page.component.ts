@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MatAutocompleteSelectedEvent, MatExpansionModule} from '@angular/material';
-import {RouterModule} from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
@@ -15,14 +15,14 @@ import {ApiService} from '../../services/api.service';
 import {PAGE_SIZE_OPTIONS, SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
-import {PickAction, QueryAction, SilkCarRecordPageState} from '../../store/silk-car-record-page.state';
+import {InitAction, PickAction, QueryAction, SilkCarRecordPageState} from '../../store/silk-car-record-page.state';
 
 @Component({
   templateUrl: './silk-car-record-page.component.html',
   styleUrls: ['./silk-car-record-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
+export class SilkCarRecordPageComponent {
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
@@ -35,7 +35,7 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
   @Select(SilkCarRecordPageState.pageSize)
   readonly pageSize$: Observable<number>;
   readonly searchForm = this.fb.group({
-    silkCarCode: ['3000F2345', Validators.required],
+    silkCarCode: [null, Validators.required],
     startDate: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
   });
@@ -54,20 +54,14 @@ export class SilkCarRecordPageComponent implements OnInit, OnDestroy {
   );
 
   constructor(private store: Store,
+              private route: ActivatedRoute,
               private fb: FormBuilder,
               private api: ApiService) {
+    route.queryParams.subscribe((it: any) => store.dispatch(new InitAction(it)));
   }
 
   readonly displayWithSilkCar = (silkCar: SilkCar) => silkCar && silkCar.code;
 
-  ngOnInit(): void {
-    this.query();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   onSilkCarSelected(ev: MatAutocompleteSelectedEvent) {
     const silkCarCodeCtrl = this.searchForm.get('silkCarCode');

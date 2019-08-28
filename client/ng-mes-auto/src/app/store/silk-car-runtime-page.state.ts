@@ -7,6 +7,13 @@ import {ApiService} from '../services/api.service';
 
 const PAGE_NAME = 'SilkCarRuntimePage';
 
+export class InitAction {
+  static readonly type = `[${PAGE_NAME}] InitAction`;
+
+  constructor(public payload: { code: string }) {
+  }
+}
+
 export class FetchAction {
   static readonly type = `[${PAGE_NAME}] FetchAction`;
 
@@ -36,6 +43,14 @@ export class SilkCarRuntimePageState {
   @Receiver()
   static OnInit({setState}: StateContext<StateModel>, action: EmitterAction<void>) {
     setState({});
+  }
+
+  @Action(InitAction)
+  @ImmutableContext()
+  InitAction({dispatch}: StateContext<StateModel>, {payload: {code}}: InitAction) {
+    if (code) {
+      dispatch(new FetchAction(code));
+    }
   }
 
   @Action(FetchAction)

@@ -5,10 +5,10 @@ import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, takeUntil} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {isString} from 'util';
 import {Batch} from '../../../models/batch';
-import {PAGE_SIZE_OPTIONS, SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
+import {PAGE_SIZE_OPTIONS, SEARCH_DEBOUNCE_TIME, UtilService} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {BatchManagePageState, InitAction, QueryAction, SaveAction, SetQAction} from '../../../store/batch-manage-page.state';
@@ -37,7 +37,8 @@ export class BatchManagePageComponent implements OnInit {
   private readonly destroy$ = new Subject();
 
   constructor(private store: Store,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private util: UtilService) {
     this.store.dispatch(new InitAction());
     this.dataSource = new BatchDataSource(this.batches$.pipe(takeUntil(this.destroy$)));
   }
@@ -61,11 +62,11 @@ export class BatchManagePageComponent implements OnInit {
     this.update(new Batch());
   }
 
-  @Dispatch()
   update(batch: Batch) {
     return BatchUpdateDialogComponent.open(this.dialog, batch).pipe(
-      map(it => new SaveAction(it))
-    );
+      switchMap(it => this.store.dispatch(new SaveAction(it))),
+      tap(() => this.util.showSuccess()),
+    ).subscribe();
   }
 }
 

@@ -29,6 +29,7 @@ export class BatchUpdateDialogComponent implements OnInit {
     tubeColor: [null, Validators.required],
     tubeWeight: [null, [Validators.required, Validators.min(0)]],
     silkWeight: [null, [Validators.required, Validators.min(1)]],
+    multiDyeing: false,
     note: [''],
   });
 

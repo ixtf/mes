@@ -167,6 +167,7 @@
   "Batch": {
     "centralValue": "中间值",
     "holeNum": "孔数",
+    "multiDyeing": "多次织袜",
     "spec": "规格"
   },
   "GradeInfo": {

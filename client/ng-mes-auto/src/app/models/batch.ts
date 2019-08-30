@@ -13,6 +13,7 @@ export class Batch {
   tubeColor: string;
   tubeWeight: number;
   note: string;
+  multiDyeing: boolean;
 
   static assign(...sources: any[]): Batch {
     const result = Object.assign(new Batch(), ...sources);

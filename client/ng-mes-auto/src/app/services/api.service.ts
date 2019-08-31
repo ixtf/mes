@@ -466,9 +466,7 @@ export class ApiService {
   statisticReportCombine(files: File[]): Observable<HttpResponse<Blob>> {
     const formData = new FormData();
     files.forEach(file => formData.append('files', file, file.name));
-    // this.http.post(`http://localhost:8080/uploads`, formData, {responseType: ResponseContentType.Blob, reportProgress: true});
-    return this.http.post(`http://localhost:8080/uploads`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
-    // return this.http.post<StatisticReportRange>(`${BASE_API_URL}/statisticReport/combines`, formData);
+    return this.http.post(`${BASE_API_URL}/statisticReport/combines`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {

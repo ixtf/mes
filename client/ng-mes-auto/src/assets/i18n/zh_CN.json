@@ -57,6 +57,7 @@
     "ToDtyEvent": "推加弹",
     "ToDtyConfirmEvent": "推加弹确认",
     "Detach": "解绑",
+    "SilkCarRuntimeAppendEvent": "拼位落筒",
     "SilkCarInfoFetchEvent": "推自动线",
     "SilkNoteFeedbackEvent": "备注处理"
   },
@@ -139,6 +140,7 @@
   },
   "DoffingType": {
     "AUTO": "自动落筒",
+    "BIG_SILK_CAR": "大丝车",
     "MANUAL": "手动落筒"
   },
   "ProductPlanType": {
@@ -237,6 +239,7 @@
   },
   "Tooltip": {
     "q": "搜索",
+    "statisticReportCombine": "统计报表合并",
     "codeQ": "搜索编号",
     "singleCreateLineMachine": "新增机台",
     "batchCreateLineMachine": "批量新增机台",
@@ -276,6 +279,7 @@
   "Common": {
     "sum": "合计",
     "all": "全部",
+    "file": "文件",
     "detail": "详情",
     "filter": "过滤",
     "undo": "撤销",

@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -456,13 +456,19 @@ export class ApiService {
   }
 
   statisticReportDay(body: { workshopId: string; date: string }): Observable<StatisticReportDay> {
-    return this.http.post<StatisticReportDay>(`http://${HOST_NAME}:9998/statisticReport/generate`, body);
-    // return this.http.post<void>(`${BASE_API_URL}/statisticReport/generate`, body);
+    return this.http.post<StatisticReportDay>(`${BASE_API_URL}/statisticReport/generate`, body);
   }
 
   statisticReportRange(body: { workshopId: string; startDate: string; endDate: string }): Observable<StatisticReportRange> {
-    return this.http.post<StatisticReportDay>(`http://${HOST_NAME}:9998/statisticReport/rangeDisk`, body);
-    // return this.http.post<void>(`${BASE_API_URL}/statisticReport/generate`, body);
+    return this.http.post<StatisticReportRange>(`${BASE_API_URL}/statisticReport/generate`, body);
+  }
+
+  statisticReportCombine(files: File[]): Observable<HttpResponse<Blob>> {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file, file.name));
+    // this.http.post(`http://localhost:8080/uploads`, formData, {responseType: ResponseContentType.Blob, reportProgress: true});
+    return this.http.post(`http://localhost:8080/uploads`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
+    // return this.http.post<StatisticReportRange>(`${BASE_API_URL}/statisticReport/combines`, formData);
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {

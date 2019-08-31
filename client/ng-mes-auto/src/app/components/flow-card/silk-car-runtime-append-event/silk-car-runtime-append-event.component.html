@@ -1,0 +1,39 @@
+<header fxLayout fxLayoutAlign="start center">
+  <span fxFlex="50px">{{event.operator.name}}</span>
+  <span fxFlex>{{event.fireDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  <button [matMenuTriggerFor]="menu" mat-button type="button">
+    {{('EventSourceType.' + event.type)|translate}}
+  </button>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <button [disabled]="!canUndo()" mat-menu-item>{{'Common.undo'|translate}}</button>
+  </mat-menu>
+</header>
+
+<section fxLayout="column">
+  <table [dataSource]="dataSource" mat-table matSort>
+    <ng-container matColumnDef="code">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>{{'Silk.code'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.silk.code}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="position">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>{{'position'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.sideType}}-{{row.row}}-{{row.col}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="grade">
+      <th *matHeaderCellDef mat-header-cell>{{'grade'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.grade?.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="spec">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>{{'spec'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>
+        {{row.silk.lineMachine.line.name}}-{{row.silk.spindle}}/{{row.silk.lineMachine.item}}-{{row.silk.doffingNum}}
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</section>

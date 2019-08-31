@@ -24,6 +24,10 @@
   </button>
 
   <span fxFlex></span>
+  <button (click)="combine()" [matTooltip]="'Tooltip.statisticReportCombine'|translate" mat-mini-fab tabindex="-1" type="button">
+    <!--    <mat-icon>folder_open</mat-icon>-->
+    <mat-icon>create_new_folder</mat-icon>
+  </button>
   <a *ngIf="showDownload$|async" href="http://baidu.com" mat-mini-fab tabindex="-1" target="_blank">
     <mat-icon>get_app</mat-icon>
   </a>
@@ -31,7 +35,7 @@
 
 <mat-divider></mat-divider>
 
-<mat-table [dataSource]="xlsxItems$" fxFlex>
+<mat-table [dataSource]="xlsxItems$" class="statistic-report" fxFlex>
   <ng-container matColumnDef="line">
     <mat-header-cell *matHeaderCellDef fxFlex="70px">{{'lineMachine'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row" fxFlex="70px">{{row.line.name}}</mat-cell>

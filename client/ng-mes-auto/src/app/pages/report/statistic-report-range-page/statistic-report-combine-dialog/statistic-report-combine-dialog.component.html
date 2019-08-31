@@ -1,0 +1,44 @@
+<input #fileInput (change)="handleFileInput($event.target.files)" multiple style="display:none;" type="file">
+
+<!--<mat-list dense mat-dialog-title style="padding: 0;">-->
+<!--  <mat-list-item>-->
+<!--    <div fxLayout fxLayoutAlign="start center" matLine>-->
+<!--      <span fxFlex>{{'Common.file'|translate}}（{{files?.length}}）</span>-->
+<!--      <button class="line-menu" mat-icon-button type="button" (click)="fileInput.click()">-->
+<!--        <mat-icon>file_upload</mat-icon>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </mat-list-item>-->
+<!--</mat-list>-->
+
+<mat-dialog-content style="min-height: 300px;">
+  <mat-list dense style="padding: 0;">
+    <mat-list-item>
+      <div fxLayout fxLayoutAlign="start center" matLine>
+        <span fxFlex>{{'Common.file'|translate}}（{{files?.length}}）</span>
+        <button (click)="fileInput.click()" class="line-menu" mat-icon-button type="button">
+          <mat-icon>file_upload</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+
+    <mat-list-item *ngFor="let it of files">
+      <div fxLayoutAlign="start center" matLine>
+        <span fxFlex>{{it.name}}</span>
+        <button (click)="delete(it)" color="warn" mat-icon-button type="button">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <mat-progress-bar matLine></mat-progress-bar>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button color="accent" mat-button mat-dialog-close type="button">{{'Common.cancel'|translate}}</button>
+  <button [mat-dialog-close]="files" color="primary" mat-button type="button">
+    <mat-icon>cloud_download</mat-icon>
+    {{'Common.finish'|translate}}
+  </button>
+</mat-dialog-actions>

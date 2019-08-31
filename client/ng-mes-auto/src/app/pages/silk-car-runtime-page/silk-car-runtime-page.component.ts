@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, NgModule, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
 import {isString} from 'util';
 import {SilkCarRecordEventListComponentModule} from '../../components/flow-card/flow-card.component';
 import {SilkCarRecordInfoComponentModule} from '../../components/silk-car-record-info/silk-car-record-info.component';
@@ -24,7 +24,7 @@ import {FetchAction, InitAction, SilkCarRuntimePageState} from '../../store/silk
     insertRemoveAnimation,
   ],
 })
-export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
+export class SilkCarRuntimePageComponent {
   readonly silkCarQCtrl = new FormControl();
   readonly settingForm = this.fb.group({
     sort: 'desc',
@@ -32,9 +32,7 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
   });
   @Select(SilkCarRuntimePageState.silkCarRuntime)
   readonly silkCarRuntime$: Observable<SilkCarRuntime>;
-  private readonly destroy$ = new Subject();
   readonly autoCompleteSilkCars$ = this.silkCarQCtrl.valueChanges.pipe(
-    takeUntil(this.destroy$),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     filter(it => it && isString(it) && it.trim().length > 1),
@@ -48,18 +46,13 @@ export class SilkCarRuntimePageComponent implements OnInit, OnDestroy {
     route.queryParams.subscribe((it: any) => store.dispatch(new InitAction(it)));
   }
 
-  ngOnInit(): void {
-    // this.store.dispatch(new FetchAction('3000F48001'));
-    // this.store.dispatch(new FetchAction('YJ048F0002'));
-    // this.store.dispatch(new FetchAction('3000F2345'));
-    // this.store.dispatch(new FetchAction('3000F30606'));
-    this.store.dispatch(new FetchAction('YJ036P0199'));
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  // ngOnInit(): void {
+  //   // this.store.dispatch(new FetchAction('3000F48001'));
+  //   // this.store.dispatch(new FetchAction('YJ048F0002'));
+  //   // this.store.dispatch(new FetchAction('3000F2345'));
+  //   // this.store.dispatch(new FetchAction('3000F30606'));
+  //   this.store.dispatch(new FetchAction('YJ036P0199'));
+  // }
 
   @Dispatch()
   onSilkCarSelected(event: MatAutocompleteSelectedEvent) {

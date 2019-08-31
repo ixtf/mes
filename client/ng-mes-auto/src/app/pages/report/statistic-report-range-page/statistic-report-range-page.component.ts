@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
@@ -12,6 +13,7 @@ import {ApiService} from '../../../services/api.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {InitAction, QueryAction, StatisticReportRangePageState} from '../../../store/statistic-report-range-page.state';
+import {StatisticReportCombineDialogComponent} from './statistic-report-combine-dialog/statistic-report-combine-dialog.component';
 
 @Component({
   templateUrl: './statistic-report-range-page.component.html',
@@ -37,8 +39,9 @@ export class StatisticReportRangePageComponent {
   });
 
   constructor(private store: Store,
-              private api: ApiService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private dialog: MatDialog,
+              private api: ApiService) {
     this.store.dispatch(new InitAction());
     this.grades$ = this.api.listGrade();
   }
@@ -47,13 +50,20 @@ export class StatisticReportRangePageComponent {
   query() {
     return new QueryAction(this.searchForm.value);
   }
+
+  combine() {
+    StatisticReportCombineDialogComponent.open(this.dialog);
+  }
 }
 
 @NgModule({
   declarations: [
     StatisticReportRangePageComponent,
+    StatisticReportCombineDialogComponent,
   ],
-  entryComponents: [],
+  entryComponents: [
+    StatisticReportCombineDialogComponent,
+  ],
   imports: [
     NgxsModule.forFeature([StatisticReportRangePageState]),
     SharedModule,

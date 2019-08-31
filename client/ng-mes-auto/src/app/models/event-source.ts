@@ -35,6 +35,10 @@ export class SilkRuntimeDetachEvent extends EventSource {
   silkRuntimes: SilkRuntime[];
 }
 
+export class SilkRuntimeAppendEvent extends EventSource {
+  silkRuntimes: SilkRuntime[];
+}
+
 export class SilkNoteFeedbackEvent extends EventSource {
   silkNote: SilkNote;
 }

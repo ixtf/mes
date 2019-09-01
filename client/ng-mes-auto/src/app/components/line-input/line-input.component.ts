@@ -148,8 +148,12 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
     this.disabled = isDisabled;
   }
 
-  writeValue(obj: Line | null): void {
-    this.value = obj;
+  writeValue(obj: Line | string): void {
+    if (isString(obj)) {
+      this.api.getLine(obj as string).subscribe(it => this.value = it);
+    } else {
+      this.value = obj as Line;
+    }
   }
 
   private onChange = (_: any) => {

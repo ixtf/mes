@@ -6,13 +6,11 @@ import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {BatchInputComponentModule} from '../../components/batch-input/batch-input.component';
 import {PackageBoxDetailDialogPageComponent, PackageBoxDetailDialogPageComponentModule} from '../../components/package-box-detail-dialog-page/package-box-detail-dialog-page.component';
 import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
 import {PACKAGE_BOX_TYPE, PackageBox} from '../../models/package-box';
-import {ApiService} from '../../services/api.service';
-import {CODE_COMPARE, COMPARE_WITH_ID, COPY_WITH_CTRL, PAGE_SIZE_OPTIONS, SORT_BY_COMPARE} from '../../services/util.service';
+import {COMPARE_WITH_ID, COPY_WITH_CTRL, PAGE_SIZE_OPTIONS} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 import {AppState} from '../../store/app.state';
 import {DeleteAction, InitAction, PackageBoxManagePageState, QueryAction} from '../../store/package-box-manage-page.state';
@@ -29,6 +27,14 @@ export class PackageBoxManagePageComponent {
   readonly compareWithId = COMPARE_WITH_ID;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
+  @Select(PackageBoxManagePageState.workshops)
+  readonly workshops$;
+  @Select(PackageBoxManagePageState.products)
+  readonly products$;
+  @Select(PackageBoxManagePageState.grades)
+  readonly grades$;
+  @Select(PackageBoxManagePageState.packageClasses)
+  readonly packageClasses$;
   @Select(PackageBoxManagePageState.packageBoxes)
   readonly packageBoxes$: Observable<PackageBox[]>;
   @Select(PackageBoxManagePageState.count)
@@ -51,14 +57,9 @@ export class PackageBoxManagePageComponent {
     startDate: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
   });
-  readonly workshops$ = this.api.listWorkshop().pipe(map(it => (it || []).sort(CODE_COMPARE)));
-  readonly products$ = this.api.listProduct();
-  readonly packageClasses$ = this.api.listPackageClass();
-  readonly grades$ = this.api.listGrade().pipe(map(it => (it || []).sort(SORT_BY_COMPARE)));
 
   constructor(private store: Store,
               private fb: FormBuilder,
-              private api: ApiService,
               private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
   }
@@ -73,6 +74,9 @@ export class PackageBoxManagePageComponent {
   @Dispatch()
   query() {
     const payload = Object.assign(this.searchForm.value, {first: 0});
+    if (payload.batchId) {
+      payload.batchId = payload.batchId.id;
+    }
     return new QueryAction(payload);
   }
 

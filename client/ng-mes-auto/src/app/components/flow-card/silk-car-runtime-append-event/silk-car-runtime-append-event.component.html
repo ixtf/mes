@@ -10,30 +10,35 @@
 </header>
 
 <section fxLayout="column">
-  <table [dataSource]="dataSource" mat-table matSort>
+  <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="code">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>{{'Silk.code'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.silk.code}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'Silk.code'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.silk.code}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="position">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>{{'position'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.sideType}}-{{row.row}}-{{row.col}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'position'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.sideType}}-{{row.row}}-{{row.col}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="grade">
-      <th *matHeaderCellDef mat-header-cell>{{'grade'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.grade?.name}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'grade'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.grade?.name}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="spec">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>{{'spec'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>
-        {{row.silk.lineMachine.line.name}}-{{row.silk.spindle}}/{{row.silk.lineMachine.item}}-{{row.silk.doffingNum}}
-      </td>
+      <mat-header-cell *matHeaderCellDef>{{'Silk.spec'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.silk.lineMachine.line.name}}-{{row.silk.spindle}}/{{row.silk.lineMachine.item}}
+      </mat-cell>
     </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-  </table>
+    <ng-container matColumnDef="doffingNum">
+      <mat-header-cell *matHeaderCellDef>{{'doffingNum'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.silk.doffingNum}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </section>

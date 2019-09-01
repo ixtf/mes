@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Store} from '@ngxs/store';
@@ -13,7 +13,7 @@ import {ApiService} from '../../../../services/api.service';
   styleUrls: ['./batch-update-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BatchUpdateDialogComponent implements OnInit {
+export class BatchUpdateDialogComponent {
   readonly title: string;
   readonly compareWithId = COMPARE_WITH_ID;
   readonly workshops$ = this.api.listWorkshop().pipe(map(it => it.sort(CODE_COMPARE)));
@@ -30,24 +30,16 @@ export class BatchUpdateDialogComponent implements OnInit {
     tubeWeight: [null, [Validators.required, Validators.min(0)]],
     silkWeight: [null, [Validators.required, Validators.min(1)]],
     multiDyeing: false,
-    note: [''],
+    note: null,
   });
 
   constructor(private store: Store,
               private fb: FormBuilder,
               private api: ApiService,
               private dialogRef: MatDialogRef<BatchUpdateDialogComponent, Batch>,
-              @Inject(MAT_DIALOG_DATA) private batch: Batch) {
-    this.title = 'Common.' + (this.batch.id ? 'edit' : 'new');
-  }
-
-  static open(dialog: MatDialog, data: Batch): Observable<Batch> {
-    return dialog.open(BatchUpdateDialogComponent, {data, disableClose: true, width: '500px'})
-      .afterClosed().pipe(filter(it => it));
-  }
-
-  ngOnInit(): void {
-    this.form.patchValue(this.batch);
+              @Inject(MAT_DIALOG_DATA) batch: Batch) {
+    this.title = 'Common.' + (batch.id ? 'edit' : 'new');
+    this.form.patchValue(batch);
     merge(this.form.get('centralValue').valueChanges, this.form.get('holeNum').valueChanges).pipe(
       tap(() => {
         const centralValue = this.form.get('centralValue').value;
@@ -64,9 +56,13 @@ export class BatchUpdateDialogComponent implements OnInit {
     ).subscribe();
   }
 
+  static open(dialog: MatDialog, data: Batch): Observable<Batch> {
+    return dialog.open(BatchUpdateDialogComponent, {data, disableClose: true, width: '500px'})
+      .afterClosed().pipe(filter(it => it));
+  }
+
   save() {
-    const result = this.form.value;
-    this.dialogRef.close(result);
+    this.dialogRef.close(this.form.value);
   }
 
 }

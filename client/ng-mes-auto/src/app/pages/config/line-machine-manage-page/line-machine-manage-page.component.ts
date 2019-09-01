@@ -5,14 +5,14 @@ import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import {LineInputComponentModule} from '../../../components/line-input/line-input.component';
 import {Line} from '../../../models/line';
 import {LineMachine} from '../../../models/line-machine';
-import {VALIDATORS} from '../../../services/util.service';
+import {UtilService, VALIDATORS} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {InitAction, LineMachineManagePageState, QueryAction} from '../../../store/line-machine-manage-page.state';
+import {InitAction, LineMachineManagePageState, QueryAction, SaveAction} from '../../../store/line-machine-manage-page.state';
 import {LineMachineUpdateDialogComponent} from './line-machine-update-dialog/line-machine-update-dialog.component';
 
 const COLUMNS = ['line', 'item', 'spindleNum'];
@@ -33,7 +33,8 @@ export class LineMachineManagePageComponent {
   readonly displayedColumns$: Observable<string[]>;
 
   constructor(private store: Store,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private util: UtilService) {
     this.store.dispatch(new InitAction());
     this.displayedColumns$ = this.isAdmin$.pipe(
       map(it => it ? COLUMNS.concat(['btns']) : COLUMNS),
@@ -52,9 +53,11 @@ export class LineMachineManagePageComponent {
     this.update(lineMachine);
   }
 
-  @Dispatch()
   update(lineMachine: LineMachine) {
-    LineMachineUpdateDialogComponent.open(this.dialog, lineMachine).pipe();
+    LineMachineUpdateDialogComponent.open(this.dialog, lineMachine).pipe(
+      switchMap(it => this.store.dispatch(new SaveAction(it))),
+      tap(() => this.util.showSuccess()),
+    ).subscribe();
   }
 
 }

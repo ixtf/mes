@@ -1,17 +1,16 @@
-import {ChangeDetectionStrategy, Component, NgModule, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MatDialog, MatTableDataSource, PageEvent} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil, tap} from 'rxjs/operators';
-import {isString} from 'util';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs/operators';
 import {Batch} from '../../../models/batch';
 import {PAGE_SIZE_OPTIONS, SEARCH_DEBOUNCE_TIME, UtilService} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {BatchManagePageState, InitAction, QueryAction, SaveAction, SetQAction} from '../../../store/batch-manage-page.state';
+import {BatchManagePageState, InitAction, QueryAction, SaveAction} from '../../../store/batch-manage-page.state';
 import {BatchUpdateDialogComponent} from './batch-update-dialog/batch-update-dialog.component';
 
 @Component({
@@ -19,7 +18,7 @@ import {BatchUpdateDialogComponent} from './batch-update-dialog/batch-update-dia
   styleUrls: ['./batch-manage-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BatchManagePageComponent implements OnInit {
+export class BatchManagePageComponent {
   readonly displayedColumns = ['workshop', 'product', 'batchNo', 'spec', 'tubeColor', 'tubeWeight', 'silkWeight', 'btns'];
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
   @Select(AppState.authInfoIsAdmin)
@@ -33,23 +32,20 @@ export class BatchManagePageComponent implements OnInit {
   @Select(BatchManagePageState.pageSize)
   readonly pageSize$: Observable<number>;
   readonly batchNoQCtrl = new FormControl();
-  readonly dataSource: BatchDataSource;
-  private readonly destroy$ = new Subject();
+  readonly dataSource = new BatchDataSource(this.batches$);
 
   constructor(private store: Store,
               private dialog: MatDialog,
               private util: UtilService) {
     this.store.dispatch(new InitAction());
-    this.dataSource = new BatchDataSource(this.batches$.pipe(takeUntil(this.destroy$)));
-  }
-
-  ngOnInit(): void {
     this.batchNoQCtrl.valueChanges.pipe(
-      takeUntil(this.destroy$),
-      filter(it => it && isString(it) && it.trim().length > 1),
       debounceTime(SEARCH_DEBOUNCE_TIME),
       distinctUntilChanged(),
-    ).subscribe(q => this.store.dispatch(new SetQAction(q)));
+      tap(q => {
+        const pageSize = this.store.selectSnapshot(BatchManagePageState.pageSize);
+        this.store.dispatch(new QueryAction({pageSize, q}));
+      }),
+    ).subscribe();
   }
 
   @Dispatch()

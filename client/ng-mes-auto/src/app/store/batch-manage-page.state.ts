@@ -4,6 +4,7 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
 import {Batch} from '../models/batch';
 import {ApiService} from '../services/api.service';
+import {PAGE_SIZE_OPTIONS} from '../services/util.service';
 
 const PAGE_NAME = 'BatchManagePage';
 
@@ -21,14 +22,7 @@ export class SaveAction {
 export class QueryAction {
   static readonly type = `[${PAGE_NAME}] QueryAction`;
 
-  constructor(public payload: { first: number; pageSize: number; }) {
-  }
-}
-
-export class SetQAction {
-  static readonly type = `[${PAGE_NAME}] SetQAction`;
-
-  constructor(public payload: string) {
+  constructor(public payload: { first?: number; pageSize?: number; q?: string }) {
   }
 }
 
@@ -36,7 +30,6 @@ interface StateModel {
   count?: number;
   first?: number;
   pageSize?: number;
-  q?: string;
   batchEntities: { [id: string]: Batch };
 }
 
@@ -44,7 +37,7 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {
     batchEntities: {},
-  }
+  },
 })
 export class BatchManagePageState {
   constructor(private api: ApiService) {
@@ -77,13 +70,22 @@ export class BatchManagePageState {
   @Action(InitAction)
   @ImmutableContext()
   InitAction({dispatch}: StateContext<StateModel>) {
-    return dispatch(new QueryAction({first: 0, pageSize: 50}));
+    return dispatch(new QueryAction({pageSize: PAGE_SIZE_OPTIONS[0]}));
   }
 
   @Action(QueryAction)
   @ImmutableContext()
-  QueryAction({setState}: StateContext<StateModel>, {payload: {first, pageSize}}: QueryAction) {
-    const params = new HttpParams().set('first', `${first}`).set('pageSize', `${pageSize}`);
+  QueryAction({setState}: StateContext<StateModel>, {payload: {first, pageSize, q}}: QueryAction) {
+    let params = new HttpParams();
+    if (first) {
+      params = params.set('first', `${first}`);
+    }
+    if (pageSize) {
+      params = params.set('pageSize', `${pageSize}`);
+    }
+    if (q) {
+      params = params.set('q', q);
+    }
     return this.api.listBatch(params).pipe(
       tap(({count, batches}) => setState((state: StateModel) => {
         state.count = count;
@@ -105,15 +107,6 @@ export class BatchManagePageState {
         return state;
       })),
     );
-  }
-
-  @Action(SetQAction)
-  @ImmutableContext()
-  SetQAction({setState}: StateContext<StateModel>, {payload}: SetQAction) {
-    setState((state: StateModel) => {
-      state.q = payload;
-      return state;
-    });
   }
 
 }

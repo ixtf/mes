@@ -122,7 +122,7 @@ export const CHECK_Q = (sV: string, qV: string): boolean => {
 
 export const INTERVAL$ = interval(1000).pipe(share());
 export const SEARCH_DEBOUNCE_TIME = 500;
-export const PAGE_SIZE_OPTIONS = [50, 100, 1000];
+export const PAGE_SIZE_OPTIONS = [30, 50, 100];
 export const DISPLAY_WITH_LINE = (line: Line) => line && line.name;
 export const DISPLAY_WITH_BATCH = (batch: Batch) => batch && batch.batchNo;
 export const COMPARE_WITH_ID = (o1: any, o2: any) => {

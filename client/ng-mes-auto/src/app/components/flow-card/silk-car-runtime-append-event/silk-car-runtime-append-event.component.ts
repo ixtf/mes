@@ -13,7 +13,7 @@ import {SilkRuntime} from '../../../models/silk-runtime';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SilkCarRuntimeAppendEventComponent {
-  displayedColumns = ['position', 'spec', 'code', 'grade'];
+  displayedColumns = ['position', 'spec', 'doffingNum', 'code', 'grade'];
   dataSource: MatTableDataSource<SilkRuntime>;
   @Input()
   private silkCarRuntime: SilkCarRuntime;
@@ -32,10 +32,7 @@ export class SilkCarRuntimeAppendEventComponent {
   @Input()
   set event(ev: SilkRuntimeAppendEvent) {
     this._event = ev;
-    this.dataSource = new MatTableDataSource(ev.silkRuntimes.sort((a, b) => {
-      return `${a.sideType}${a.row}${a.col}`.localeCompare(`${b.sideType}${b.row}${b.col}`);
-    }));
-    // this.dataSource = new MatTableDataSource(ev.silkRuntimes);
+    this.dataSource = new MatTableDataSource(ev.silkRuntimes.sort((a, b) => a.silk.code.localeCompare(b.silk.code)));
   }
 
   canUndo(): boolean {

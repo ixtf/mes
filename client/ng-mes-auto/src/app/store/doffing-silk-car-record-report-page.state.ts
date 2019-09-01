@@ -187,9 +187,7 @@ export class DoffingSilkCarRecordReportPageState {
     });
     const httpParams = new HttpParams().set('workshopId', workshopId)
       .set('startDateTime', `${moment(startDateTime).valueOf()}`)
-      .set('endDateTime', `${moment(endDateTime).valueOf()}`)
-      .set('startDate', `${moment(startDateTime).valueOf()}`)
-      .set('endDate', `${moment(endDateTime).valueOf()}`);
+      .set('endDateTime', `${moment(endDateTime).valueOf()}`);
     return this.api.doffingSilkCarRecordReport(httpParams).pipe(
       tap(reportItems => setState((state: StateModel) => {
         state.infoItems = (reportItems || []).map(reportItem => new InfoItem(reportItem)).sort((a, b) => {

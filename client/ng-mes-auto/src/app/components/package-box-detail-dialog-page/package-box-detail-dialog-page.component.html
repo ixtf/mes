@@ -44,7 +44,6 @@
           </div>
         </mat-list-item>
 
-
         <mat-list-item>
           <div fxLayout matLine>
             <span fxFlex translate="grossWeight"></span>
@@ -100,7 +99,7 @@
     <mat-divider vertical></mat-divider>
 
     <section class="right" fxFlex>
-      <ng-container *ngIf="packageBox?.type==='AUTO'">
+      <ng-container *ngIf="packageBox?.type==='AUTO'||packageBox?.type==='BIG_SILK_CAR'">
         <mat-table [dataSource]="silks$">
           <ng-container matColumnDef="code">
             <mat-header-cell *matHeaderCellDef>{{'Silk.code'|translate}}</mat-header-cell>
@@ -110,7 +109,7 @@
           <ng-container matColumnDef="spec">
             <mat-header-cell *matHeaderCellDef>{{'Silk.spec'|translate}}</mat-header-cell>
             <mat-cell *matCellDef="let row">
-              {{row.lineMachine.line.name}} - {{row.spindle}} / {{row.lineMachine.item}}
+              {{row.lineMachine.line.name}}-{{row.spindle}}/{{row.lineMachine.item}}
             </mat-cell>
           </ng-container>
 

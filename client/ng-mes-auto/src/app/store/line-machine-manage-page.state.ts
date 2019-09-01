@@ -19,6 +19,13 @@ export class QueryAction {
   }
 }
 
+export class SaveAction {
+  static readonly type = `[${PAGE_NAME}] SaveAction`;
+
+  constructor(public payload: LineMachine) {
+  }
+}
+
 interface StateModel {
   line?: Line;
   lineMachineEntities: { [id: string]: LineMachine };

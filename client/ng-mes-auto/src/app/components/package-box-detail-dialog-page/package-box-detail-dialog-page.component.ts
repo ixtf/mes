@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, Inject, NgModule} from '@angular/cor
 import {MAT_DIALOG_DATA, MatDialog, MatExpansionModule} from '@angular/material';
 import {Router, RouterModule} from '@angular/router';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {PackageBox} from '../../models/package-box';
 import {Silk} from '../../models/silk';
 import {SilkCarRecord} from '../../models/silk-car-record';
@@ -23,8 +24,10 @@ export class PackageBoxDetailDialogPageComponent {
               private router: Router,
               @Inject(MAT_DIALOG_DATA) data: PackageBox) {
     this.packageBox = data;
-    if (this.packageBox.type === 'AUTO') {
-      this.silks$ = this.api.getPackageBox_silks(this.packageBox.id);
+    if (this.packageBox.type === 'AUTO' || this.packageBox.type === 'BIG_SILK_CAR') {
+      this.silks$ = this.api.getPackageBox_silks(this.packageBox.id).pipe(
+        map(it => it.sort((a, b) => a.code.localeCompare(b.code))),
+      );
       this.displayedColumns = ['code', 'spec', 'doffingNum', 'doffingType', 'doffingOperator', 'doffingDateTime'];
     } else if (this.packageBox.type === 'MANUAL') {
       this.silkCarRecords$ = this.api.getPackageBox_silkCarRecords(this.packageBox.id);

@@ -34,15 +34,14 @@ interface SilkCarRecordPageStateModel {
   count?: number;
   first?: number;
   pageSize?: number;
-  silkCarRecords?: SilkCarRecord[];
   silkCarRecordEntities: { [id: string]: SilkCarRecord };
 }
 
 @State<SilkCarRecordPageStateModel>({
   name: PAGE_NAME,
   defaults: {
-    silkCarRecordEntities: {}
-  }
+    silkCarRecordEntities: {},
+  },
 })
 export class SilkCarRecordPageState {
   constructor(private api: ApiService) {
@@ -91,6 +90,9 @@ export class SilkCarRecordPageState {
       return this.api.getSilkCarRecord(id).pipe(
         switchMap(silkCarRecord => {
           setState((state: SilkCarRecordPageStateModel) => {
+            state.first = 0;
+            state.count = 1;
+            state.pageSize = 50;
             state.silkCarRecordEntities = SilkCarRecord.toEntities([silkCarRecord]);
             return state;
           });
@@ -134,11 +136,10 @@ export class SilkCarRecordPageState {
       } else {
         return this.api.getSilkCarRecord_Events(silkCarRecord.id).pipe(
           tap(eventSources => setState((state: SilkCarRecordPageStateModel) => {
-            silkCarRecord.eventSources = eventSources;
-            state.silkCarRecord = silkCarRecord;
-            state.silkCarRecordEntities[silkCarRecord.id] = silkCarRecord;
+            state.silkCarRecord = SilkCarRecord.assign(silkCarRecord, {eventSources});
+            state.silkCarRecordEntities[silkCarRecord.id] = state.silkCarRecord;
             return state;
-          }))
+          })),
         );
       }
     }

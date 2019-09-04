@@ -44,6 +44,7 @@ import {PackageBoxManagePageState} from './store/package-box-manage-page.state';
 import {ProductPlanReportPageState} from './store/product-plan-report-page.state';
 import {StatisticReportDayPageState} from './store/statistic-report-day-page.state';
 import {StatisticReportRangePageState} from './store/statistic-report-range-page.state';
+import {StrippingReportPageState} from './store/stripping-report-page.state';
 
 registerLocaleData(localeZhHans, 'zh-Hans');
 
@@ -91,6 +92,7 @@ const routes: Routes = [
           {path: 'productPlan', loadChildren: () => import('./pages/report/product-plan-report-page/product-plan-report-page.component').then(it => it.Module)},
           {path: 'statisticReportDay', loadChildren: () => import('./pages/report/statistic-report-day-page/statistic-report-day-page.component').then(it => it.Module)},
           {path: 'statisticReportRange', loadChildren: () => import('./pages/report/statistic-report-range-page/statistic-report-range-page.component').then(it => it.Module)},
+          {path: 'strippingReport', loadChildren: () => import('./pages/report/stripping-report-page/stripping-report-page.component').then(it => it.Module)},
         ]
       },
       {
@@ -165,6 +167,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
         ...DoffingSilkCarRecordReportPageState.storageIds(),
         ...StatisticReportDayPageState.storageIds(),
         ...StatisticReportRangePageState.storageIds(),
+        ...StrippingReportPageState.storageIds(),
       ],
     }),
     NgxsRouterPluginModule.forRoot(),

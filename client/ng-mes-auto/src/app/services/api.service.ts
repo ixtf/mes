@@ -13,7 +13,6 @@ import {Grade} from '../models/grade';
 import {Line} from '../models/line';
 import {LineMachine} from '../models/line-machine';
 import {LineMachineProductPlan} from '../models/line-machine-product-plan';
-import {MeasureReport} from '../models/measure-report';
 import {Notification} from '../models/notification';
 import {Operator} from '../models/operator';
 import {OperatorGroup} from '../models/operator-group';
@@ -32,12 +31,12 @@ import {SilkCarRuntime} from '../models/silk-car-runtime';
 import {SilkException} from '../models/silk-exception';
 import {SilkNote} from '../models/silk-note';
 import {StatisticReportDay, StatisticReportRange} from '../models/statistic-report-day';
-import {StatisticsReport} from '../models/statistics-report';
 import {SuggestOperator} from '../models/suggest-operator';
 import {TemporaryBox} from '../models/temporary-box';
 import {Workshop} from '../models/workshop';
 import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report';
 import {DoffingSilkCarRecordReportItem} from '../store/doffing-silk-car-record-report-page.state';
+import {StrippingReportItem} from '../store/stripping-report-page.state';
 
 const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
 const SHARE_API_URL = `http://${HOST_NAME}:9998/share`;
@@ -439,34 +438,31 @@ export class ApiService {
     );
   }
 
-  measureReport(params?: HttpParams): Observable<MeasureReport> {
-    return this.http.get<MeasureReport>(`${BASE_API_URL}/reports/measureReport`, {params});
-  }
-
-  statisticsReport(params?: HttpParams): Observable<StatisticsReport> {
-    return this.http.get<StatisticsReport>(`${BASE_API_URL}/reports/statisticsReport`, {params});
+  deleteEventSource(code: string, eventSourceId: string): Observable<void> {
+    return this.http.delete<void>(`${BASE_API_URL}/silkCarRuntimes/${code}/eventSources/${eventSourceId}`);
   }
 
   doffingSilkCarRecordReport(params?: HttpParams): Observable<DoffingSilkCarRecordReportItem[]> {
     return this.http.get<DoffingSilkCarRecordReportItem[]>(`${BASE_API_URL}/reports/doffingSilkCarRecordReport`, {params});
   }
 
-  deleteEventSource(code: string, eventSourceId: string): Observable<void> {
-    return this.http.delete<void>(`${BASE_API_URL}/silkCarRuntimes/${code}/eventSources/${eventSourceId}`);
-  }
-
   statisticReportDay(body: { workshopId: string; date: string }): Observable<StatisticReportDay> {
-    return this.http.post<StatisticReportDay>(`${BASE_API_URL}/statisticReport/generate`, body);
+    return this.http.post<StatisticReportDay>(`${BASE_API_URL}/reports/statisticReport/generate`, body);
   }
 
   statisticReportRange(body: { workshopId: string; startDate: string; endDate: string }): Observable<StatisticReportRange> {
-    return this.http.post<StatisticReportRange>(`${BASE_API_URL}/statisticReport/generate`, body);
+    return this.http.post<StatisticReportRange>(`${BASE_API_URL}/reports/statisticReport/generate`, body);
   }
 
   statisticReportCombine(files: File[]): Observable<HttpResponse<Blob>> {
     const formData = new FormData();
     files.forEach(file => formData.append('files', file, file.name));
-    return this.http.post(`${BASE_API_URL}/statisticReport/combines`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
+    return this.http.post(`${BASE_API_URL}/reports/statisticReport/combines`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
+  }
+
+  strippingReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<StrippingReportItem[]> {
+    return this.http.post<StrippingReportItem[]>(`http://10.2.0.217:9090/api/reports/strippingReport`, body);
+    // return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/strippingReport`, body);
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {

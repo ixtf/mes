@@ -1,0 +1,54 @@
+<form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId">
+      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
+        {{workshop.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="mat-form-field" style="width: 300px;">
+    <input [formControl]="rangeCtrl" [owlDateTimeTrigger]="rangePicker" [owlDateTime]="rangePicker" [placeholder]="('Common.startDate'|translate)+' ~ '+('Common.endDate'|translate)" matInput readonly required selectMode="range">
+    <owl-date-time #rangePicker></owl-date-time>
+  </div>
+
+  <button [disabled]="searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+    <mat-icon>search</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<mat-table [dataSource]="items$" fxFlex>
+  <ng-container matColumnDef="operator">
+    <mat-header-cell *matHeaderCellDef>{{'operator'|translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{row.operator.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container *ngFor="let product of products$|async" matColumnDef="{{product.id}}">
+    <mat-header-cell *matHeaderCellDef>{{product.name}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:detailInfo(row,product)}"></ng-container>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
+</mat-table>
+
+<ng-template #detailInfoTemp let-detailInfo="detailInfo" let-s="s">
+  <mat-list dense>
+    <mat-list-item>
+      <div fxLayout fxLayoutGap="16px" matLine>
+        <span>{{('silkCar')|translate}}</span>
+        <span>{{detailInfo?.silkCarRecordCount}}</span>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div fxLayout fxLayoutGap="16px" matLine>
+        <span>{{('silkCount')|translate}}</span>
+        <span>{{detailInfo?.silkCount}}</span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</ng-template>

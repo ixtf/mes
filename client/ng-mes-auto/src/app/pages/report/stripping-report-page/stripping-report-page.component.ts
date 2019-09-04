@@ -65,6 +65,11 @@ export class StrippingReportPageComponent {
   detailInfo(item: StrippingReportItem, product: Product): GroupByProduct {
     return item.groupByProducts.find(it => it.product.id === product.id);
   }
+
+  totalInfo(product: Product): GroupByProduct {
+    const totalItemMap = this.store.selectSnapshot(StrippingReportPageState.totalItemMap);
+    return totalItemMap[product.id];
+  }
 }
 
 @NgModule({

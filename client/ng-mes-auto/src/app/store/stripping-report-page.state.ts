@@ -28,8 +28,8 @@ export class StrippingReportItem {
 
 export class GroupByProduct {
   product: Product;
-  silkCarRecordCount: number;
-  silkCount: number;
+  silkCarRecordCount = 0;
+  silkCount = 0;
 }
 
 interface StateModel {
@@ -122,6 +122,23 @@ export class StrippingReportPageState {
   @ImmutableSelector()
   static items(state: StateModel): StrippingReportItem[] {
     return StrippingReportPageState.operators(state).map(it => state.itemEntities[it.id]);
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static totalItemMap(state: StateModel): { [id: string]: GroupByProduct } {
+    const ret: { [id: string]: GroupByProduct } = {};
+    StrippingReportPageState.items(state).forEach(item => item.groupByProducts.forEach(groupByProduct => {
+      const {product: {id}} = groupByProduct;
+      let retElement = ret[id];
+      if (!retElement) {
+        retElement = new GroupByProduct();
+        ret[id] = retElement;
+      }
+      retElement.silkCarRecordCount += groupByProduct.silkCarRecordCount;
+      retElement.silkCount += groupByProduct.silkCount;
+    }));
+    return ret;
   }
 
   @Selector()

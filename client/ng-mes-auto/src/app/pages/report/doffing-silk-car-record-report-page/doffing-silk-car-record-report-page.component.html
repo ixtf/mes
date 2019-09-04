@@ -1,6 +1,6 @@
 <form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
   <mat-form-field floatLabel="never">
-    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId">
+    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId" required>
       <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
         {{workshop.name}}
       </mat-option>
@@ -87,7 +87,7 @@
   <mat-list dense>
     <mat-list-item>
       <div fxLayout fxLayoutGap="16px" matLine>
-        <span>{{(s || '丝车')|translate}}</span>
+        <span>{{(s || 'silkCar')|translate}}</span>
         <span>{{detailInfo.items.length}}</span>
       </div>
     </mat-list-item>

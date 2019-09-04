@@ -1,6 +1,6 @@
 <form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
   <mat-form-field floatLabel="never">
-    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId">
+    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId" required>
       <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
         {{workshop.name}}
       </mat-option>
@@ -23,31 +23,36 @@
   <ng-container matColumnDef="operator">
     <mat-header-cell *matHeaderCellDef>{{'operator'|translate}}</mat-header-cell>
     <mat-cell *matCellDef="let row">{{row.operator.name}}</mat-cell>
+    <mat-footer-cell *matFooterCellDef>{{'Common.sum'|translate}}</mat-footer-cell>
   </ng-container>
 
   <ng-container *ngFor="let product of products$|async" matColumnDef="{{product.id}}">
     <mat-header-cell *matHeaderCellDef>{{product.name}}</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{detailInfo:detailInfo(row,product)}"></ng-container>
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{info:detailInfo(row,product)}"></ng-container>
     </mat-cell>
+    <mat-footer-cell *matFooterCellDef>
+      <ng-container *ngTemplateOutlet="detailInfoTemp;context:{info:totalInfo(product)}"></ng-container>
+    </mat-footer-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
+  <mat-footer-row *matFooterRowDef="displayedColumns$|async; sticky: true"></mat-footer-row>
 </mat-table>
 
-<ng-template #detailInfoTemp let-detailInfo="detailInfo" let-s="s">
+<ng-template #detailInfoTemp let-info="info" let-s="s">
   <mat-list dense>
     <mat-list-item>
       <div fxLayout fxLayoutGap="16px" matLine>
         <span>{{('silkCar')|translate}}</span>
-        <span>{{detailInfo?.silkCarRecordCount}}</span>
+        <span>{{info?.silkCarRecordCount}}</span>
       </div>
     </mat-list-item>
     <mat-list-item>
       <div fxLayout fxLayoutGap="16px" matLine>
         <span>{{('silkCount')|translate}}</span>
-        <span>{{detailInfo?.silkCount}}</span>
+        <span>{{info?.silkCount}}</span>
       </div>
     </mat-list-item>
   </mat-list>

@@ -54,6 +54,7 @@
   "silkCarRecordDestination": "丝车目的地",
   "EventSourceType": {
     "PackageBoxEvent": "打包",
+    "SilkCarRuntimeGradeEvent": "预设等级",
     "ToDtyEvent": "推加弹",
     "ToDtyConfirmEvent": "推加弹确认",
     "Detach": "解绑",

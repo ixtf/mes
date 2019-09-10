@@ -1,14 +1,17 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import * as moment from 'moment';
+import {OwlDateTimeIntl} from 'ng-pick-datetime';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {Operator} from '../../../models/operator';
 import {Product} from '../../../models/product';
 import {Workshop} from '../../../models/workshop';
+import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {GroupByProduct, InitAction, QueryAction, StrippingReportItem, StrippingReportPageState} from '../../../store/stripping-report-page.state';
@@ -19,6 +22,7 @@ import {GroupByProduct, InitAction, QueryAction, StrippingReportItem, StrippingR
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StrippingReportPageComponent {
+  readonly maxDate = new Date();
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(StrippingReportPageState.workshops)
@@ -41,17 +45,18 @@ export class StrippingReportPageComponent {
   });
 
   constructor(private store: Store,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              test: OwlDateTimeIntl) {
     this.store.dispatch(new InitAction());
     this.rangeCtrl.valueChanges.pipe(
       tap(([startDateTime, endDateTime]) => {
         this.searchForm.patchValue({startDateTime, endDateTime});
       }),
     ).subscribe();
-    const startMoment = moment().startOf('d')
+    const startMoment = moment().add(-1, 'd').startOf('d')
       .hour(this.store.selectSnapshot(StrippingReportPageState.startDate_hour))
       .minute(this.store.selectSnapshot(StrippingReportPageState.startDate_minute));
-    const endMoment = moment().add(1, 'd').startOf('d')
+    const endMoment = moment().startOf('d')
       .hour(this.store.selectSnapshot(StrippingReportPageState.endDate_hour))
       .minute(this.store.selectSnapshot(StrippingReportPageState.endDate_minute));
     this.rangeCtrl.patchValue([startMoment.toDate(), endMoment.toDate()]);
@@ -83,6 +88,9 @@ export class StrippingReportPageComponent {
     RouterModule.forChild([
       {path: '', component: StrippingReportPageComponent, data: {animation: 'FilterPage'}},
     ]),
+  ],
+  providers: [
+    {provide: OwlDateTimeIntl, useClass: MyOwlDateTimeIntl, deps: [TranslateService]},
   ],
 })
 export class Module {

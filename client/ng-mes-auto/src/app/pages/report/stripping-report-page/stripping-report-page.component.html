@@ -8,7 +8,7 @@
   </mat-form-field>
 
   <div class="mat-form-field" style="width: 300px;">
-    <input [formControl]="rangeCtrl" [owlDateTimeTrigger]="rangePicker" [owlDateTime]="rangePicker" [placeholder]="('Common.startDate'|translate)+' ~ '+('Common.endDate'|translate)" matInput readonly required selectMode="range">
+    <input [formControl]="rangeCtrl" [max]="maxDate" [owlDateTimeTrigger]="rangePicker" [owlDateTime]="rangePicker" [placeholder]="('Common.startDate'|translate)+' ~ '+('Common.endDate'|translate)" matInput readonly required selectMode="range">
     <owl-date-time #rangePicker></owl-date-time>
   </div>
 

@@ -21,6 +21,7 @@ import {StatisticReportCustomDiffDialogComponent} from './statistic-report-custo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatisticReportDayPageComponent {
+  readonly maxDate = new Date();
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(StatisticReportDayPageState.workshops)

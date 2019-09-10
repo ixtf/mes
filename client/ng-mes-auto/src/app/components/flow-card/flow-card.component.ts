@@ -14,6 +14,7 @@ import {ProductProcessSubmitEventComponent} from './product-process-submit-event
 import {RiambSilkCarInfoFetchEventComponent} from './riamb-silk-car-info-fetch-event/riamb-silk-car-info-fetch-event.component';
 import {RiambSilkDetachEventComponent} from './riamb-silk-detach-event/riamb-silk-detach-event.component';
 import {SilkCarRuntimeAppendEventComponent} from './silk-car-runtime-append-event/silk-car-runtime-append-event.component';
+import {SilkCarRuntimeGradeEventComponent} from './silk-car-runtime-grade-event/silk-car-runtime-grade-event.component';
 import {SilkNoteFeedbackEventComponent} from './silk-note-feedback-event/silk-note-feedback-event.component';
 import {SilkRuntimeDetachEventComponent} from './silk-runtime-detach-event/silk-runtime-detach-event.component';
 import {ToDtyConfirmEventComponent} from './to-dty-confirm-event/to-dty-confirm-event.component';
@@ -64,6 +65,7 @@ export class FlowCardComponent {
     DyeingPrepareEventComponent,
     SilkRuntimeDetachEventComponent,
     SilkCarRuntimeAppendEventComponent,
+    SilkCarRuntimeGradeEventComponent,
     JikonAdapterSilkCarInfoFetchEventComponent,
     JikonAdapterSilkDetachEventComponent,
     SilkNoteFeedbackEventComponent,

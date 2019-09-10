@@ -21,6 +21,7 @@ import {StatisticReportCombineDialogComponent} from './statistic-report-combine-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatisticReportRangePageComponent {
+  readonly maxDate = new Date();
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
   @Select(StatisticReportRangePageState.workshops)

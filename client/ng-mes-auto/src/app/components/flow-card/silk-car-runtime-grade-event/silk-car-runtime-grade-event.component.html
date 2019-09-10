@@ -1,0 +1,15 @@
+<header fxLayout fxLayoutAlign="start center">
+  <span fxFlex="50px">{{event.operator.name}}</span>
+  <span fxFlex>{{event.fireDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  <button mat-button type="button">
+    {{('EventSourceType.' + event.type)|translate}}
+  </button>
+</header>
+
+<section fxLayout="column">
+  <div fxLayout fxLayoutGap="16px" style="padding: 8px 0 8px 8px;">
+    <mat-chip [selectable]="false" disableRipple>
+      {{grade.name}}
+    </mat-chip>
+  </div>
+</section>

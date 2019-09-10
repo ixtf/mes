@@ -8,7 +8,7 @@
   </mat-form-field>
 
   <mat-form-field floatLabel="never">
-    <input [matDatepicker]="datePicker" [matTooltip]="'PackageBox.budat'|translate" [placeholder]="'PackageBox.budat'|translate" formControlName="date" matInput required>
+    <input [matDatepicker]="datePicker" [matTooltip]="'PackageBox.budat'|translate" [max]="maxDate" [placeholder]="'PackageBox.budat'|translate" formControlName="date" matInput required>
     <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #datePicker></mat-datepicker>
   </mat-form-field>

@@ -26,6 +26,11 @@
       <mat-divider></mat-divider>
     </ng-container>
 
+    <ng-container *ngSwitchCase="'SilkCarRuntimeGradeEvent'">
+      <app-silk-car-runtime-grade-event [event]="event" [silkCarRecord]="silkCarRecord" [silkCarRuntime]="silkCarRuntime" class="flow-card-event"></app-silk-car-runtime-grade-event>
+      <mat-divider></mat-divider>
+    </ng-container>
+
     <ng-container *ngSwitchCase="'ToDtyEvent'">
       <app-to-dty-event [event]="event" [silkCarRecord]="silkCarRecord" [silkCarRuntime]="silkCarRuntime" class="flow-card-event"></app-to-dty-event>
       <mat-divider></mat-divider>

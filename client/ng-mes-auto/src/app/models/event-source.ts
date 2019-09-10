@@ -1,5 +1,6 @@
 import {DyeingPrepare} from './dyeing-prepare';
 import {FormConfig} from './form-config';
+import {Grade} from './grade';
 import {Operator} from './operator';
 import {PackageBox} from './package-box';
 import {ProductProcess} from './product-process';
@@ -37,6 +38,10 @@ export class SilkRuntimeDetachEvent extends EventSource {
 
 export class SilkRuntimeAppendEvent extends EventSource {
   silkRuntimes: SilkRuntime[];
+}
+
+export class SilkCarRuntimeGradeEvent extends EventSource {
+  grade: Grade;
 }
 
 export class SilkNoteFeedbackEvent extends EventSource {

@@ -15,6 +15,9 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 
 @NgModule({
+  imports: [
+    CommonModule
+  ],
   exports: [
     CommonModule,
     FormsModule,
@@ -62,9 +65,6 @@ import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
     NgxsFormPluginModule,
     NgxsDispatchPluginModule,
     NgxsEmitPluginModule,
-  ],
-  providers: [
-    // {provide: DateTimeAdapter, useClass: MomentDateTimeAdapter},
   ],
 })
 export class SharedModule {

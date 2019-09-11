@@ -14,7 +14,7 @@
 </header>
 
 <section *ngIf="silkRuntimes?.length>0" fxLayout="column">
-  <div fxLayout fxLayoutGap="16px" style="padding: 8px 0 8px 8px;">
+  <div fxLayout fxLayoutGap="16px" style="padding: 8px;">
     <mat-chip *ngFor="let it of event.silkExceptions" [selectable]="false" color="accent" disableRipple selected style="padding: 0 4px;">
       {{it.name|translate}}
     </mat-chip>
@@ -26,35 +26,40 @@
 
   <mat-divider></mat-divider>
 
-  <table [dataSource]="silkRuntimes" mat-table>
+  <mat-table [dataSource]="silkRuntimes">
     <ng-container matColumnDef="code">
-      <th *matHeaderCellDef mat-header-cell>{{'Silk.code'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.silk.code}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'Silk.code'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.silk.code}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="position">
-      <th *matHeaderCellDef mat-header-cell>{{'position'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.sideType}}-{{row.row}}-{{row.col}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'position'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.sideType}}-{{row.row}}-{{row.col}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="grade">
-      <th *matHeaderCellDef mat-header-cell>{{'grade'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.grade?.name}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'grade'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.grade?.name}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="spec">
-      <th *matHeaderCellDef mat-header-cell>{{'spec'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>
-        {{row.silk.lineMachine.line.name}}-{{row.silk.spindle}}/{{row.silk.lineMachine.item}}-{{row.silk.doffingNum}}
-      </td>
+      <mat-header-cell *matHeaderCellDef>{{'Silk.spec'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.silk.lineMachine.line.name}}-{{row.silk.spindle}}/{{row.silk.lineMachine.item}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="doffingNum">
+      <mat-header-cell *matHeaderCellDef>{{'doffingNum'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.silk.doffingNum}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="netWeight">
-      <th *matHeaderCellDef mat-header-cell>{{'netWeight'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.netWeight|number:'.3-3'}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'netWeight'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.netWeight|number:'.3-3'}}</mat-cell>
     </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-  </table>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </section>

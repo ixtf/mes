@@ -24,7 +24,7 @@ import {CODE_COMPARE} from '../../../services/util.service';
 export class DyeingPrepareEventComponent {
   @Input()
   event: DyeingPrepareEvent;
-  displayedColumns = ['position', 'spec', 'code', 'result'];
+  displayedColumns = ['position', 'spec', 'doffingNum', 'code', 'result'];
   @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()

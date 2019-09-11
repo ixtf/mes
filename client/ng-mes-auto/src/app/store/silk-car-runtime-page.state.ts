@@ -28,7 +28,7 @@ interface StateModel {
 
 @State<StateModel>({
   name: PAGE_NAME,
-  defaults: {}
+  defaults: {},
 })
 export class SilkCarRuntimePageState {
   constructor(private api: ApiService) {
@@ -49,7 +49,7 @@ export class SilkCarRuntimePageState {
   @ImmutableContext()
   InitAction({dispatch}: StateContext<StateModel>, {payload: {code}}: InitAction) {
     if (code) {
-      dispatch(new FetchAction(code));
+      return dispatch(new FetchAction(code));
     }
   }
 

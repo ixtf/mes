@@ -23,7 +23,7 @@ export class SilkCarRuntimeAppendEventComponent {
   constructor(private store: Store) {
   }
 
-  _event: SilkRuntimeAppendEvent;
+  private _event: SilkRuntimeAppendEvent;
 
   get event(): SilkRuntimeAppendEvent {
     return this._event;

@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialog, MatDialogRef} from '@angular/material';
-import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map, switchMap} from 'rxjs/operators';
 import {isString} from 'util';
 import {Line} from '../../../models/line';
 import {PackageBox} from '../../../models/package-box';
@@ -23,7 +23,7 @@ const workshopsLinesValidator = (control: FormControl) => {
   styleUrls: ['./package-box-measure-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PackageBoxMeasureDialogComponent implements OnInit, OnDestroy {
+export class PackageBoxMeasureDialogComponent {
   readonly title: string;
   readonly compareWithId = COMPARE_WITH_ID;
   readonly workshops$ = this.api.listWorkshop().pipe();
@@ -34,9 +34,7 @@ export class PackageBoxMeasureDialogComponent implements OnInit, OnDestroy {
     lines: null,
     note: [null, [Validators.required]],
   }, {validator: [Validators.required, workshopsLinesValidator]});
-  private readonly destroy$ = new Subject();
   readonly autoCompleteLines$ = this.lineQCtrl.valueChanges.pipe(
-    takeUntil(this.destroy$),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     filter(it => it && isString(it) && it.trim().length > 0),
@@ -53,19 +51,12 @@ export class PackageBoxMeasureDialogComponent implements OnInit, OnDestroy {
               private dialogRef: MatDialogRef<PackageBoxMeasureDialogComponent>,
               @Inject(MAT_DIALOG_DATA) private data: PackageBox) {
     this.title = 'Common.' + (this.data.id ? 'edit' : 'new');
-  }
-
-  static open(dialog: MatDialog, data: PackageBox): MatDialogRef<PackageBoxMeasureDialogComponent, PackageBox> {
-    return dialog.open(PackageBoxMeasureDialogComponent, {data, disableClose: true, width: '500px'});
-  }
-
-  ngOnInit(): void {
     this.form.patchValue(this.data);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  static open(dialog: MatDialog, data: PackageBox): Observable<PackageBox> {
+    return dialog.open(PackageBoxMeasureDialogComponent, {data, disableClose: true, width: '500px'})
+      .afterClosed().pipe(filter(it => it));
   }
 
   selectedLine(ev: MatAutocompleteSelectedEvent) {

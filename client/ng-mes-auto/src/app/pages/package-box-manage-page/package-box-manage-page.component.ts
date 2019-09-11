@@ -53,7 +53,7 @@ export class PackageBoxManagePageComponent {
     budatClassId: null,
     productId: null,
     gradeId: null,
-    batchId: null,
+    batch: null,
     startDate: [new Date(), Validators.required],
     endDate: [new Date(), Validators.required],
   });
@@ -73,9 +73,9 @@ export class PackageBoxManagePageComponent {
 
   @Dispatch()
   query() {
-    const payload = Object.assign(this.searchForm.value, {first: 0});
-    if (payload.batchId) {
-      payload.batchId = payload.batchId.id;
+    const payload = Object.assign({}, this.searchForm.value, {first: 0});
+    if (payload.batch) {
+      payload.batchId = payload.batch.id;
     }
     return new QueryAction(payload);
   }

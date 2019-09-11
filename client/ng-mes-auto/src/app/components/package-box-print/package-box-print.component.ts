@@ -14,11 +14,14 @@ export class PackageBoxPrintComponent implements AfterContentInit {
 
   constructor(private elementRef: ElementRef,
               private dialogRef: MatDialogRef<PackageBoxPrintComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: PackageBox | PackageBox[]) {
-    this.packageBoxes = (isArray(data) ? data : [data]) as PackageBox[];
+              @Inject(MAT_DIALOG_DATA) public data: PackageBox[]) {
+    this.packageBoxes = data;
   }
 
   static print(dialog: MatDialog, data: PackageBox | PackageBox[]) {
+    if (!isArray(data)) {
+      data = [data] as PackageBox[];
+    }
     dialog.open(PackageBoxPrintComponent, {data});
   }
 
@@ -49,7 +52,7 @@ export class PackageBoxPrintComponent implements AfterContentInit {
   imports: [
     SharedModule,
     QRCodeModule,
-  ]
+  ],
 })
 export class PackageBoxPrintComponentModule {
 }

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialog, MatDialogRef} from '@angular/material';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil} from 'rxjs/operators';
 import {isString} from 'util';
 import {Line} from '../../../models/line';
@@ -55,8 +55,9 @@ export class PackageBoxBatchMeasureDialogComponent implements OnInit, OnDestroy 
     this.title = 'Common.' + (this.data.id ? 'edit' : 'new');
   }
 
-  static open(dialog: MatDialog, data: PackageBox): MatDialogRef<PackageBoxBatchMeasureDialogComponent, PackageBox> {
-    return dialog.open(PackageBoxBatchMeasureDialogComponent, {data, disableClose: true, width: '500px'});
+  static open(dialog: MatDialog, data: PackageBox[]): Observable<PackageBox[]> {
+    return dialog.open(PackageBoxBatchMeasureDialogComponent, {data, disableClose: true, width: '500px'})
+      .afterClosed().pipe(filter(it => it));
   }
 
   ngOnInit(): void {

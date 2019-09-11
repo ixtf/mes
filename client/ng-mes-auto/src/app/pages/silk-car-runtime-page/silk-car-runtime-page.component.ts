@@ -46,14 +46,6 @@ export class SilkCarRuntimePageComponent {
     route.queryParams.subscribe((it: any) => store.dispatch(new InitAction(it)));
   }
 
-  // ngOnInit(): void {
-  //   // this.store.dispatch(new FetchAction('3000F48001'));
-  //   // this.store.dispatch(new FetchAction('YJ048F0002'));
-  //   // this.store.dispatch(new FetchAction('3000F2345'));
-  //   // this.store.dispatch(new FetchAction('3000F30606'));
-  //   this.store.dispatch(new FetchAction('YJ036P0199'));
-  // }
-
   @Dispatch()
   onSilkCarSelected(event: MatAutocompleteSelectedEvent) {
     return new FetchAction(event.option.value);

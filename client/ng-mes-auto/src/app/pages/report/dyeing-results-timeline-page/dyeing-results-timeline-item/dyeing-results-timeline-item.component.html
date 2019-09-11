@@ -1,0 +1,43 @@
+<section class="left" fxLayout="column" fxLayoutAlign="center center">
+  {{dyeingResult.dateTime|date:'yyyy-MM-dd HH:mm:ss'}}
+</section>
+
+<section class="right" fxFlex fxLayout="column">
+  <mat-list class="dyeing-result" dense>
+    <mat-list-item>
+      <div fxLayout fxLayoutAlign="start center" matLine>
+        <span fxFlex translate="Silk.code"></span>
+        <span>{{dyeingResult?.silk.code}}</span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item>
+      <div fxLayout fxLayoutAlign="start center" matLine>
+        <span fxFlex translate="Silk.spec"></span>
+        <span>
+          {{dyeingResult?.silk.lineMachine.line.name}}-{{dyeingResult?.silk.spindle}}
+          /{{dyeingResult?.silk.lineMachine.item}}
+        </span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item>
+      <div fxLayout fxLayoutAlign="start center" matLine>
+        <span fxFlex translate="doffingNum"></span>
+        <span>{{dyeingResult?.silk.doffingNum}}</span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item>
+      <div fxLayout fxLayoutAlign="start center" matLine>
+        <span fxFlex translate="Common.exception"></span>
+        <ng-container *ngIf="dyeingResult.submitted">
+          <span [class.yes]="dyeingResult?.hasException" class="exception"></span>
+        </ng-container>
+        <ng-container *ngIf="!dyeingResult.submitted">
+          <span translate="DyeingResult.unResult"></span>
+        </ng-container>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</section>

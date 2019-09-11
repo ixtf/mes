@@ -14,7 +14,7 @@ import {SilkRuntime} from '../../../models/silk-runtime';
 export class ProductProcessSubmitEventComponent {
   @Input()
   event: ProductProcessSubmitEvent;
-  displayedColumns = ['position', 'spec', 'code', 'grade'];
+  displayedColumns = ['position', 'spec', 'doffingNum', 'code', 'grade'];
   @Input()
   private silkCarRuntime: SilkCarRuntime;
   @Input()

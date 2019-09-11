@@ -3,8 +3,8 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Store} from '@ngxs/store';
 import {merge, Observable} from 'rxjs';
-import {filter, tap} from 'rxjs/operators';
-import {COMPARE_WITH_ID, VALIDATORS} from 'src/app/services/util.service';
+import {filter, map, tap} from 'rxjs/operators';
+import {COMPARE_WITH_ID, SORT_BY_COMPARE, VALIDATORS} from 'src/app/services/util.service';
 import {TemporaryBox} from '../../../../models/temporary-box';
 import {ApiService} from '../../../../services/api.service';
 
@@ -16,7 +16,9 @@ import {ApiService} from '../../../../services/api.service';
 export class TemporaryBoxUpdateDialogComponent {
   readonly title: string;
   readonly compareWithId = COMPARE_WITH_ID;
-  readonly grades$ = this.api.listGrade();
+  readonly grades$ = this.api.listGrade().pipe(map(grades => {
+    return grades.filter(it => it.sortBy < 100).sort(SORT_BY_COMPARE);
+  }));
   readonly form = this.fb.group({
     id: null,
     code: [null, Validators.required],

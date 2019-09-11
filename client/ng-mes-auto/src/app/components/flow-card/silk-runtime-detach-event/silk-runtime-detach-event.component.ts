@@ -14,7 +14,7 @@ import {AppState} from '../../../store/app.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SilkRuntimeDetachEventComponent {
-  displayedColumns = ['position', 'spec', 'code', 'grade'];
+  displayedColumns = ['position', 'spec', 'doffingNum', 'code', 'grade'];
   dataSource: MatTableDataSource<SilkRuntime>;
   @Input()
   private silkCarRuntime: SilkCarRuntime;

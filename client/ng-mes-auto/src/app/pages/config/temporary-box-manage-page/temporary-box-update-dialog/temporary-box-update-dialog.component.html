@@ -10,14 +10,15 @@
   <mat-dialog-content fxLayout="column">
 
     <mat-form-field>
-      <input [placeholder]="'batch'|translate" formControlName="batch" matInput required>
-      <mat-error *ngIf="form.get('batchNo').hasError('required')">
+      <mat-label>{{'batchNo'|translate}}</mat-label>
+      <app-batch-input formControlName="batch" required></app-batch-input>
+      <mat-error *ngIf="form.get('batch').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select [compareWith]="compareWithId" [placeholder]="'grade'|translate" formControlName="grade">
+      <mat-select [compareWith]="compareWithId" [placeholder]="'grade'|translate" formControlName="grade" required>
         <mat-option *ngFor="let it of grades$|async" [value]="it">
           {{it.name}}
         </mat-option>

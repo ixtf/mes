@@ -2,7 +2,7 @@
   <span fxFlex="50px">{{event.operator.name}}</span>
   <span fxFlex>{{event.fireDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
   <button [matMenuTriggerFor]="menu" mat-button type="button">
-    {{('DyeingPrepareType.' + dyeingPrepare.type)|translate}}
+    {{('DyeingType.' + dyeingPrepare.type)|translate}}
   </button>
   <mat-menu #menu="matMenu" xPosition="before">
     <button (click)="undo()" [disabled]="!canUndo()" mat-menu-item type="button">{{'Common.undo'|translate}}</button>
@@ -10,46 +10,51 @@
 </header>
 
 <section fxLayout="column">
-  <table [dataSource]="dataSource" mat-table>
+  <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="code">
-      <th *matHeaderCellDef mat-header-cell>{{'Silk.code'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.silk.code}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'Silk.code'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.silk.code}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="position">
-      <th *matHeaderCellDef mat-header-cell>{{'position'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{calcPosition(row)}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'position'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{calcPosition(row)}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="grade">
-      <th *matHeaderCellDef mat-header-cell>{{'grade'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>{{row.grade?.name}}</td>
+      <mat-header-cell *matHeaderCellDef>{{'grade'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.grade?.name}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="spec">
-      <th *matHeaderCellDef mat-header-cell>{{'spec'|translate}}</th>
-      <td *matCellDef="let row" mat-cell>
-        {{row.silk.lineMachine.line.name}}-{{row.silk.spindle}}/{{row.silk.lineMachine.item}}-{{row.silk.doffingNum}}
-      </td>
+      <mat-header-cell *matHeaderCellDef>{{'Silk.spec'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.silk.lineMachine.line.name}}-{{row.silk.spindle}}/{{row.silk.lineMachine.item}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="doffingNum">
+      <mat-header-cell *matHeaderCellDef>{{'doffingNum'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.silk.doffingNum}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="result">
-      <th *matHeaderCellDef mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>
         <ng-container *ngIf="!dyeingPrepare.submitted">
           <span style="color: red">{{'DyeingResult.unResult'|translate}}</span>
         </ng-container>
         <ng-container *ngIf="dyeingPrepare.submitted">
           {{'DyeingResult.result'|translate}}
         </ng-container>
-      </th>
-      <td *matCellDef="let row" mat-cell>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
         <ng-container *ngIf="dyeingPrepare.submitted">
           <div [class.error]="row.hasException" class="dyeing-result"></div>
         </ng-container>
-      </td>
+      </mat-cell>
     </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-  </table>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </section>

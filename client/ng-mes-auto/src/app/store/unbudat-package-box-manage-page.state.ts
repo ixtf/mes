@@ -35,8 +35,33 @@ export class FilterGradeAction {
   }
 }
 
+export class FilterPrintedAction {
+  static readonly type = `[${PAGE_NAME}] FilterPrintedAction`;
+
+  constructor(public payload: boolean) {
+  }
+}
+
+export class FilterMeasuredAction {
+  static readonly type = `[${PAGE_NAME}] FilterMeasuredAction`;
+
+  constructor(public payload: boolean) {
+  }
+}
+
+export class ResetFilterAction {
+  static readonly type = `[${PAGE_NAME}] ResetFilterAction`;
+}
+
 export class SaveAction {
   static readonly type = `[${PAGE_NAME}] SaveAction`;
+
+  constructor(public payload: PackageBox) {
+  }
+}
+
+export class MeasureAction {
+  static readonly type = `[${PAGE_NAME}] MeasureAction`;
 
   constructor(public payload: PackageBox) {
   }
@@ -57,8 +82,8 @@ interface StateModel {
 @State<StateModel>({
   name: PAGE_NAME,
   defaults: {
-    packageBoxEntities: {}
-  }
+    packageBoxEntities: {},
+  },
 })
 export class UnbudatPackageBoxManagePageState {
   constructor(private api: ApiService) {
@@ -149,7 +174,7 @@ export class UnbudatPackageBoxManagePageState {
       tap(([workshop, budatClass, packageBoxes]) => setState((state: StateModel) => {
         const packageBoxEntities = PackageBox.toEntities(packageBoxes);
         return {workshopId, workshop, date, budat, budatClassId, budatClass, packageBoxEntities};
-      }))
+      })),
     );
   }
 
@@ -174,6 +199,19 @@ export class UnbudatPackageBoxManagePageState {
   @Action(SaveAction)
   @ImmutableContext()
   SaveAction({setState}: StateContext<StateModel>, {payload}: SaveAction) {
+    // return this.api.saveNotification(payload).pipe(
+    //   tap(it => setState((state: StateModel) => {
+    //     const notification = PackageBox.assign(it);
+    //     state.packageBoxEntities[notification.id] = notification;
+    //     return state;
+    //   }))
+    // );
+  }
+
+  @Action(MeasureAction)
+  @ImmutableContext()
+  MeasureAction({setState}: StateContext<StateModel>, {payload}: MeasureAction) {
+    console.log(payload);
     // return this.api.saveNotification(payload).pipe(
     //   tap(it => setState((state: StateModel) => {
     //     const notification = PackageBox.assign(it);

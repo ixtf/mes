@@ -1,0 +1,30 @@
+<form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <mat-label>{{'lineMachine'|translate}}</mat-label>
+    <app-line-machine-input formControlName="lineMachine" required></app-line-machine-input>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="never">
+    <input [placeholder]="'Silk.spindle'|translate" formControlName="spindle" matInput min="1" required type="number">
+  </mat-form-field>
+
+  <button [disabled]="searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+    <mat-icon>search</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<main fxFlex fxLayout>
+  <section class="first" fxFill fxFlex="45" fxLayout="column" fxLayoutGap="16px">
+    <app-dyeing-results-timeline-item *ngFor="let it of firsts$|async" [dyeingResult]="it"></app-dyeing-results-timeline-item>
+    <button (click)="more('FIRST')" *ngIf="!(firstsEnded$|async)" mat-raised-button type="button">{{'Common.more'|translate}}</button>
+  </section>
+
+  <mat-divider fxFlex vertical></mat-divider>
+
+  <section class="cross" fxFill fxFlex="45" fxLayout="column" fxLayoutGap="16px">
+    <app-dyeing-results-timeline-item *ngFor="let it of crosses$|async" [dyeingResult]="it"></app-dyeing-results-timeline-item>
+    <button (click)="more('CROSS')" *ngIf="!(crossesEnded$|async)" mat-raised-button type="button">{{'Common.more'|translate}}</button>
+  </section>
+</main>

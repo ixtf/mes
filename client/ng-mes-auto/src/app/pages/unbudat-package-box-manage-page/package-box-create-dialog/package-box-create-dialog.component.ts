@@ -1,83 +1,67 @@
-import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialog, MatDialogRef} from '@angular/material';
-import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil} from 'rxjs/operators';
-import {isString} from 'util';
-import {Line} from '../../../models/line';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {merge, Observable} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
 import {PackageBox} from '../../../models/package-box';
+import {SapT001l} from '../../../models/sapT001l';
 import {ApiService} from '../../../services/api.service';
-import {COMPARE_WITH_ID, SEARCH_DEBOUNCE_TIME} from '../../../services/util.service';
-
-const workshopsLinesValidator = (control: FormControl) => {
-  const workshops = control.value.workshops || [];
-  const lines = control.value.lines || [];
-  if (workshops.length > 0 || lines.length > 0) {
-    return null;
-  }
-  return {workshopsLines: true};
-};
+import {COMPARE_WITH_ID, SORT_BY_COMPARE} from '../../../services/util.service';
 
 @Component({
   templateUrl: './package-box-create-dialog.component.html',
   styleUrls: ['./package-box-create-dialog.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PackageBoxCreateDialogComponent implements OnInit, OnDestroy {
+export class PackageBoxCreateDialogComponent {
   readonly title: string;
   readonly compareWithId = COMPARE_WITH_ID;
-  readonly workshops$ = this.api.listWorkshop().pipe();
-  readonly lineQCtrl = new FormControl();
+  readonly packageClasses$ = this.api.listPackageClass();
+  readonly grades$ = this.api.listGrade().pipe(map(it => it.sort(SORT_BY_COMPARE)));
   readonly form = this.fb.group({
     id: null,
-    workshops: null,
-    lines: null,
-    note: [null, [Validators.required]],
-  }, {validator: [Validators.required, workshopsLinesValidator]});
-  private readonly destroy$ = new Subject();
-  readonly autoCompleteLines$ = this.lineQCtrl.valueChanges.pipe(
-    takeUntil(this.destroy$),
-    debounceTime(SEARCH_DEBOUNCE_TIME),
-    distinctUntilChanged(),
-    filter(it => it && isString(it) && it.trim().length > 0),
-    switchMap(q => this.api.autoCompleteLine(q)),
-    map(lines => lines.filter(line => {
-      const selecteds = this.form.value.lines || [];
-      const find = selecteds.find(it => it.id === line.id);
-      return !find;
-    })),
-  );
+    type: ['MANUAL_APPEND', Validators.required],
+    batch: [null, Validators.required],
+    grade: [null, Validators.required],
+    budat: [null, Validators.required],
+    budatClass: [null, Validators.required],
+    saleType: [null, Validators.required],
+    sapT001l: [null, Validators.required],
+  });
+  readonly sapT001ls$: Observable<SapT001l[]>;
 
   constructor(private fb: FormBuilder,
               private api: ApiService,
-              private dialogRef: MatDialogRef<PackageBoxCreateDialogComponent>,
+              private dialogRef: MatDialogRef<PackageBoxCreateDialogComponent, PackageBox>,
               @Inject(MAT_DIALOG_DATA) private data: PackageBox) {
     this.title = 'Common.' + (this.data.id ? 'edit' : 'new');
-  }
-
-  static open(dialog: MatDialog, data: PackageBox): MatDialogRef<PackageBoxCreateDialogComponent, PackageBox> {
-    return dialog.open(PackageBoxCreateDialogComponent, {data, disableClose: true, width: '500px'});
-  }
-
-  ngOnInit(): void {
     this.form.patchValue(this.data);
+    this.sapT001ls$ = merge(this.form.get('batch').valueChanges, this.form.get('saleType').valueChanges).pipe(
+      map(() => {
+        const batch = this.form.get('batch').value;
+        if (!batch) {
+          return [];
+        }
+        const {workshop: {sapT001ls, sapT001lsForeign, sapT001lsPallet}} = batch;
+        const saleType = this.form.get('saleType').value;
+        switch (saleType) {
+          case  'DOMESTIC': {
+            return sapT001ls;
+          }
+          case 'FOREIGN': {
+            return sapT001lsForeign;
+          }
+          default: {
+            return [];
+          }
+        }
+      }),
+    );
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  selectedLine(ev: MatAutocompleteSelectedEvent) {
-    const lines = this.form.value.lines || [];
-    lines.push(ev.option.value);
-    this.form.patchValue({lines});
-    this.lineQCtrl.setValue('a');
-  }
-
-  removeLine(line: Line) {
-    const lines = (this.form.value.lines || []).filter(it => it.id !== line.id);
-    this.form.patchValue({lines});
+  static open(dialog: MatDialog, data: PackageBox): Observable<PackageBox> {
+    return dialog.open(PackageBoxCreateDialogComponent, {data, disableClose: true, width: '800px'})
+      .afterClosed().pipe(filter(it => it));
   }
 
   save() {

@@ -39,6 +39,7 @@ import {MyPaginatorIntl} from './services/my-paginator-intl';
 import {SharedModule} from './shared.module';
 import {AppState} from './store/app.state';
 import {DoffingSilkCarRecordReportPageState} from './store/doffing-silk-car-record-report-page.state';
+import {DyeingResultsTimelinePageState} from './store/dyeing-results-timeline-page.state';
 import {LineManagePageState} from './store/line-manage-page.state';
 import {PackageBoxManagePageState} from './store/package-box-manage-page.state';
 import {ProductPlanReportPageState} from './store/product-plan-report-page.state';
@@ -93,6 +94,7 @@ const routes: Routes = [
           {path: 'statisticReportDay', loadChildren: () => import('./pages/report/statistic-report-day-page/statistic-report-day-page.component').then(it => it.Module)},
           {path: 'statisticReportRange', loadChildren: () => import('./pages/report/statistic-report-range-page/statistic-report-range-page.component').then(it => it.Module)},
           {path: 'strippingReport', loadChildren: () => import('./pages/report/stripping-report-page/stripping-report-page.component').then(it => it.Module)},
+          {path: 'dyeingResultsTimeline', loadChildren: () => import('./pages/report/dyeing-results-timeline-page/dyeing-results-timeline-page.component').then(it => it.Module)},
         ]
       },
       {
@@ -168,6 +170,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
         ...StatisticReportDayPageState.storageIds(),
         ...StatisticReportRangePageState.storageIds(),
         ...StrippingReportPageState.storageIds(),
+        ...DyeingResultsTimelinePageState.storageIds(),
       ],
     }),
     NgxsRouterPluginModule.forRoot(),

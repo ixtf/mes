@@ -45,8 +45,7 @@ export class StrippingReportPageComponent {
   });
 
   constructor(private store: Store,
-              private fb: FormBuilder,
-              test: OwlDateTimeIntl) {
+              private fb: FormBuilder) {
     this.store.dispatch(new InitAction());
     this.rangeCtrl.valueChanges.pipe(
       tap(([startDateTime, endDateTime]) => {

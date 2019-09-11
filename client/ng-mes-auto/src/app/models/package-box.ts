@@ -12,7 +12,7 @@ export class PackageBox {
   code: string;
   batch: Batch;
   grade: Grade;
-  saleType: string;
+  saleType: 'DOMESTIC' | 'FOREIGN';
   sapT001l: SapT001l;
   palletCode: string;
   palletType: string;

@@ -36,6 +36,14 @@
     </mat-footer-cell>
   </ng-container>
 
+  <ng-container matColumnDef="btns">
+    <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+    <mat-cell (click)="detailDialog(row)" *matCellDef="let row" matRipple>
+      <mat-icon>edit</mat-icon>
+    </mat-cell>
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+  </ng-container>
+
   <mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
   <mat-footer-row *matFooterRowDef="displayedColumns$|async; sticky: true"></mat-footer-row>

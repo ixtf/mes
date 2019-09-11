@@ -149,7 +149,7 @@ export class DoffingSilkCarRecordReportPageState {
   @ImmutableSelector()
   static endDate_minute(state: StateModel): number {
     const startMoment = state.endDateTime && moment(state.endDateTime);
-    return startMoment && startMoment.hour() || 0;
+    return startMoment && startMoment.minute() || 0;
   }
 
   @Selector()

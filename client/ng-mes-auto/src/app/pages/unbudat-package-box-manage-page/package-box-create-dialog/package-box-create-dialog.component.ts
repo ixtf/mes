@@ -18,6 +18,7 @@ export class PackageBoxCreateDialogComponent {
   readonly compareWithId = COMPARE_WITH_ID;
   readonly packageClasses$ = this.api.listPackageClass();
   readonly grades$ = this.api.listGrade().pipe(map(it => it.sort(SORT_BY_COMPARE)));
+  readonly sapT001ls$: Observable<SapT001l[]>;
   readonly form = this.fb.group({
     id: null,
     type: ['MANUAL_APPEND', Validators.required],
@@ -28,7 +29,6 @@ export class PackageBoxCreateDialogComponent {
     saleType: [null, Validators.required],
     sapT001l: [null, Validators.required],
   });
-  readonly sapT001ls$: Observable<SapT001l[]>;
 
   constructor(private fb: FormBuilder,
               private api: ApiService,

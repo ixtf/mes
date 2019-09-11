@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
@@ -15,6 +16,7 @@ import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {GroupByProduct, InitAction, QueryAction, StrippingReportItem, StrippingReportPageState} from '../../../store/stripping-report-page.state';
+import {StrippingReportDetailDialogComponent} from './stripping-report-detail-dialog/stripping-report-detail-dialog.component';
 
 @Component({
   templateUrl: './stripping-report-page.component.html',
@@ -33,9 +35,11 @@ export class StrippingReportPageComponent {
   readonly products$: Observable<Product[]>;
   @Select(StrippingReportPageState.items)
   readonly items$: Observable<StrippingReportItem[]>;
+  @Select(StrippingReportPageState.anonymousItem)
+  readonly anonymousItem$: Observable<StrippingReportItem>;
   readonly displayedColumns$ = this.products$.pipe(map(products => {
     const productIds = (products || []).map(it => it.id);
-    return ['operator'].concat(productIds);
+    return ['operator'].concat(productIds).concat(['btns']);
   }));
   readonly rangeCtrl = new FormControl();
   readonly searchForm = this.fb.group({
@@ -45,7 +49,8 @@ export class StrippingReportPageComponent {
   });
 
   constructor(private store: Store,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
     this.rangeCtrl.valueChanges.pipe(
       tap(([startDateTime, endDateTime]) => {
@@ -74,13 +79,20 @@ export class StrippingReportPageComponent {
     const totalItemMap = this.store.selectSnapshot(StrippingReportPageState.totalItemMap);
     return totalItemMap[product.id];
   }
+
+  detailDialog(item: StrippingReportItem) {
+    StrippingReportDetailDialogComponent.open(this.dialog, item);
+  }
 }
 
 @NgModule({
   declarations: [
     StrippingReportPageComponent,
+    StrippingReportDetailDialogComponent,
   ],
-  entryComponents: [],
+  entryComponents: [
+    StrippingReportDetailDialogComponent,
+  ],
   imports: [
     NgxsModule.forFeature([StrippingReportPageState]),
     SharedModule,

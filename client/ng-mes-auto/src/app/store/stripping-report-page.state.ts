@@ -9,6 +9,7 @@ import {ApiService} from '../services/api.service';
 import {CODE_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'StrippingReportPage';
+const ANONYMOUS = 'anonymous';
 
 export class InitAction {
   static readonly type = `[${PAGE_NAME}] InitAction`;
@@ -30,6 +31,7 @@ export class GroupByProduct {
   product: Product;
   silkCarRecordCount = 0;
   silkCount = 0;
+  silkCarRecordAggregates: any[] = [];
 }
 
 interface StateModel {
@@ -98,7 +100,7 @@ export class StrippingReportPageState {
   @ImmutableSelector()
   static endDate_minute(state: StateModel): number {
     const startMoment = state.endDateTime && moment(state.endDateTime);
-    return startMoment && startMoment.hour() || 0;
+    return startMoment && startMoment.minute() || 0;
   }
 
   @Selector()
@@ -109,13 +111,17 @@ export class StrippingReportPageState {
 
   @Selector()
   @ImmutableSelector()
+  static anonymousItem(state: StateModel): StrippingReportItem {
+    return state.itemEntities[ANONYMOUS];
+  }
+
+  @Selector()
+  @ImmutableSelector()
   static operators(state: StateModel): Operator[] {
-    return Object.values(state.itemEntities).map(it => it.operator).sort((a, b) => {
-      if (a.id === 'anonymous') {
-        return -1;
-      }
-      return a.id.localeCompare(b.id);
-    });
+    return Object.values(state.itemEntities)
+      .map(it => it.operator)
+      .filter(it => it.id !== ANONYMOUS)
+      .sort((a, b) => a.id.localeCompare(b.id));
   }
 
   @Selector()
@@ -127,7 +133,7 @@ export class StrippingReportPageState {
   @Selector()
   @ImmutableSelector()
   static totalItemMap(state: StateModel): { [id: string]: GroupByProduct } {
-    const ret: { [id: string]: GroupByProduct } = {};
+    const ret: { [productId: string]: GroupByProduct } = {};
     StrippingReportPageState.items(state).forEach(item => item.groupByProducts.forEach(groupByProduct => {
       const {product: {id}} = groupByProduct;
       let retElement = ret[id];
@@ -137,6 +143,7 @@ export class StrippingReportPageState {
       }
       retElement.silkCarRecordCount += groupByProduct.silkCarRecordCount;
       retElement.silkCount += groupByProduct.silkCount;
+      retElement.silkCarRecordAggregates = retElement.silkCarRecordAggregates.concat(groupByProduct.silkCarRecordAggregates);
     }));
     return ret;
   }

@@ -11,7 +11,7 @@ import {PackageClass} from '../models/package-class';
 import {Product} from '../models/product';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {CODE_COMPARE, DEFAULT_COMPARE, SORT_BY_COMPARE} from '../services/util.service';
+import {CODE_COMPARE, SORT_BY_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'PackageBoxManagePage';
 
@@ -66,7 +66,7 @@ export class PackageBoxManagePageState {
   @Selector()
   @ImmutableSelector()
   static packageBoxes(state: StateModel): PackageBox[] {
-    return Object.values(state.packageBoxEntities).filter(DEFAULT_COMPARE);
+    return Object.values(state.packageBoxEntities).filter(CODE_COMPARE);
   }
 
   @Selector()

@@ -1,19 +1,19 @@
-<section class="left" fxLayout="column" fxLayoutAlign="center center">
+<section (dblclick)="copy(dyeingResult.id,$event)" class="left" fxLayout fxLayoutAlign="center center">
   {{dyeingResult.dateTime|date:'yyyy-MM-dd HH:mm:ss'}}
 </section>
 
 <section class="right" fxFlex fxLayout="column">
   <mat-list class="dyeing-result" dense>
     <mat-list-item>
-      <div fxLayout fxLayoutAlign="start center" matLine>
-        <span fxFlex translate="Silk.code"></span>
+      <div fxLayout fxLayoutAlign="space-between center" matLine>
+        <span translate="Silk.code"></span>
         <span>{{dyeingResult?.silk.code}}</span>
       </div>
     </mat-list-item>
 
     <mat-list-item>
-      <div fxLayout fxLayoutAlign="start center" matLine>
-        <span fxFlex translate="Silk.spec"></span>
+      <div fxLayout fxLayoutAlign="space-between center" matLine>
+        <span translate="Silk.spec"></span>
         <span>
           {{dyeingResult?.silk.lineMachine.line.name}}-{{dyeingResult?.silk.spindle}}
           /{{dyeingResult?.silk.lineMachine.item}}
@@ -22,15 +22,15 @@
     </mat-list-item>
 
     <mat-list-item>
-      <div fxLayout fxLayoutAlign="start center" matLine>
-        <span fxFlex translate="doffingNum"></span>
+      <div fxLayout fxLayoutAlign="space-between center" matLine>
+        <span translate="doffingNum"></span>
         <span>{{dyeingResult?.silk.doffingNum}}</span>
       </div>
     </mat-list-item>
 
     <mat-list-item>
-      <div fxLayout fxLayoutAlign="start center" matLine>
-        <span fxFlex translate="Common.exception"></span>
+      <div fxLayout fxLayoutAlign="space-between center" matLine>
+        <span translate="Common.exception"></span>
         <ng-container *ngIf="dyeingResult.submitted">
           <span [class.yes]="dyeingResult?.hasException" class="exception"></span>
         </ng-container>

@@ -18,79 +18,79 @@
     <section class="left" fxFlex="200px" fxLayout="column">
       <mat-list dense>
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="batchNo"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="batchNo"></span>
             <span>{{packageBox?.batch.batchNo}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="grade"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="grade"></span>
             <span>{{packageBox?.grade.name}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="silkCount"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="silkCount"></span>
             <span>{{packageBox?.silkCount}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="netWeight"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="netWeight"></span>
             <span>{{packageBox?.netWeight|number:'.3-3'}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="grossWeight"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="grossWeight"></span>
             <span>{{packageBox?.grossWeight|number:'.3-3'}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="PackageBox.budat"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="PackageBox.budat"></span>
             <span>{{packageBox?.budat|date:'yyyy-MM-dd'}} / {{packageBox?.budatClass?.name}}</span>
             <!--            <span [matTooltip]="packageBox?.budatClass?.name">{{packageBox?.budat|date:'yyyy-MM-dd'}}</span>-->
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="PackageBox.sapT001l"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="PackageBox.sapT001l"></span>
             <span>{{packageBox?.sapT001l?.lgort}} / {{('SaleType.' + packageBox?.saleType)|translate}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="palletType"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="palletType"></span>
             <span>{{packageBox?.palletType}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="PackageBox.packageType"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="PackageBox.packageType"></span>
             <span>{{packageBox?.packageType}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="foamType"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="foamType"></span>
             <span>{{packageBox?.foamType}}</span>
           </div>
         </mat-list-item>
 
         <mat-list-item>
-          <div fxLayout matLine>
-            <span fxFlex translate="foamNum"></span>
+          <div fxLayout fxLayoutAlign="space-between center" matLine>
+            <span translate="foamNum"></span>
             <span>{{packageBox?.foamNum}}</span>
           </div>
         </mat-list-item>

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {DyeingResult} from '../../../../models/dyeing-result';
 import {ApiService} from '../../../../services/api.service';
-import {UtilService} from '../../../../services/util.service';
+import {COPY_WITH_CTRL, UtilService} from '../../../../services/util.service';
 
 @Component({
   selector: 'app-dyeing-results-timeline-item',
@@ -10,6 +10,7 @@ import {UtilService} from '../../../../services/util.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DyeingResultsTimelineItemComponent {
+  readonly copy = COPY_WITH_CTRL;
   @Input()
   dyeingResult: DyeingResult;
 

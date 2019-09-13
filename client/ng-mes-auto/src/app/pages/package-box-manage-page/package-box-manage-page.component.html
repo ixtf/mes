@@ -60,6 +60,10 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field floatLabel="never" style="width: 150px;">
+    <input [placeholder]="'PackageBox.code'|translate" formControlName="code" matInput>
+  </mat-form-field>
+
   <button [disabled]="searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
     <mat-icon>search</mat-icon>
   </button>
@@ -217,6 +221,9 @@
           </button>
           <button (click)="print()" color="primary" mat-menu-item type="button">
             {{'Common.print'|translate}}
+          </button>
+          <button (click)="delete(row)" *ngIf="isAdmin$|async" color="primary" mat-menu-item type="button">
+            {{'Common.delete'|translate}}
           </button>
         </mat-menu>
       </td>

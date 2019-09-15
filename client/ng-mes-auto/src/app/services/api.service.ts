@@ -454,8 +454,7 @@ export class ApiService {
   }
 
   statisticReportDay(body: { workshopId: string; date: string }): Observable<StatisticReportDay> {
-    return this.http.post<StatisticReportDay>(`http://10.2.0.217:9090/api/reports/statisticReport/generate`, body);
-    // return this.http.post<StatisticReportDay>(`${BASE_API_URL}/reports/statisticReport/generate`, body);
+    return this.http.post<StatisticReportDay>(`${BASE_API_URL}/reports/statisticReport/generate`, body);
   }
 
   statisticReportRange(body: { workshopId: string; startDate: string; endDate: string }): Observable<StatisticReportRange> {
@@ -465,13 +464,11 @@ export class ApiService {
   statisticReportCombine(files: File[]): Observable<HttpResponse<Blob>> {
     const formData = new FormData();
     files.forEach(file => formData.append('files', file, file.name));
-    return this.http.post(`http://10.2.0.217:9090/api/reports/statisticReport/combines`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
-    // return this.http.post(`${BASE_API_URL}/reports/statisticReport/combines`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
+    return this.http.post(`${BASE_API_URL}/reports/statisticReport/combines`, formData, {responseType: 'blob', observe: 'response', reportProgress: true});
   }
 
   strippingReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<StrippingReportItem[]> {
-    return this.http.post<StrippingReportItem[]>(`http://10.2.0.217:9090/api/reports/strippingReport`, body);
-    // return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/strippingReport`, body);
+    return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/strippingReport`, body);
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {

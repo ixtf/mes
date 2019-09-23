@@ -38,6 +38,7 @@ import {TemporaryBox} from '../models/temporary-box';
 import {Workshop} from '../models/workshop';
 import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report';
 import {DoffingSilkCarRecordReportItem} from '../store/doffing-silk-car-record-report-page.state';
+import {InspectionReportItem} from '../store/inspection-report-page.state';
 import {StrippingReportItem} from '../store/stripping-report-page.state';
 
 const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
@@ -469,6 +470,10 @@ export class ApiService {
 
   strippingReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<StrippingReportItem[]> {
     return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/strippingReport`, body);
+  }
+
+  inspectionReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<InspectionReportItem[]> {
+    return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/inspectionReport`, body);
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {

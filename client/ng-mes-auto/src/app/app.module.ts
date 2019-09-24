@@ -21,6 +21,7 @@ import {NgxsModule, NoopNgxsExecutionStrategy} from '@ngxs/store';
 import {OWL_DATE_TIME_LOCALE, OwlDateTimeIntl} from 'ng-pick-datetime';
 import {environment} from '../environments/environment';
 import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
+import {GraphQLModule} from './graphql.module';
 import {AppNavbarComponent} from './pages/app/app-navbar/app-navbar.component';
 import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './pages/app/app-navbar/board-auto-line-dialog/board-auto-line-dialog.component';
@@ -60,7 +61,7 @@ const routes: Routes = [
       {path: 'abnormal', loadChildren: () => import('./pages/board/board-abnormal-page/board-abnormal-page.component').then(it => it.Module)},
       {path: 'silk-car-runtime', loadChildren: () => import('./pages/board/board-silk-car-runtime-page/board-silk-car-runtime-page.component').then(it => it.Module)},
       {path: 'test', loadChildren: () => import('./pages/board/board-test-page/board-test-page.component').then(it => it.Module)},
-    ]
+    ],
   },
   {
     path: '',
@@ -85,7 +86,7 @@ const routes: Routes = [
           {path: 'grades', loadChildren: () => import('./pages/config/grade-manage-page/grade-manage-page.component').then(it => it.Module)},
           {path: 'temporaryBoxes', loadChildren: () => import('./pages/config/temporary-box-manage-page/temporary-box-manage-page.component').then(it => it.Module)},
           {path: 'silkCarRecordDestinations', loadChildren: () => import('./pages/config/silk-car-record-destination-manage-page/silk-car-record-destination-manage-page.component').then(it => it.Module)},
-        ]
+        ],
       },
       {
         path: 'report',
@@ -97,7 +98,7 @@ const routes: Routes = [
           {path: 'strippingReport', loadChildren: () => import('./pages/report/stripping-report-page/stripping-report-page.component').then(it => it.Module)},
           {path: 'inspectionReport', loadChildren: () => import('./pages/report/inspection-report-page/inspection-report-page.component').then(it => it.Module)},
           {path: 'dyeingResultsTimeline', loadChildren: () => import('./pages/report/dyeing-results-timeline-page/dyeing-results-timeline-page.component').then(it => it.Module)},
-        ]
+        ],
       },
       {
         path: 'admin',
@@ -106,7 +107,7 @@ const routes: Routes = [
           {path: 'sapT001ls', loadChildren: () => import('./pages/config/sap-t001l-manage-page/sap-t001l-manage-page.component').then(it => it.Module)},
           {path: 'operators', loadChildren: () => import('./pages/config/operator-manage-page/operator-manage-page.component').then(it => it.Module)},
           {path: 'operatorGroups', loadChildren: () => import('./pages/config/operator-group-manage-page/operator-group-manage-page.component').then(it => it.Module)},
-        ]
+        ],
       },
       {path: 'test/animation01', loadChildren: () => import('./pages/test/animation01-page/animation01-page.component').then(it => it.Module)},
       {path: 'test/animation02', loadChildren: () => import('./pages/test/animation02-page/animation02-page.component').then(it => it.Module)},
@@ -117,7 +118,7 @@ const routes: Routes = [
       // {path: 'report', loadChildren: './report.module#ReportModule'},
       // {path: 'admin', loadChildren: './admin.module#AdminModule', canActivate: [AdminGuard]},
       {path: '', redirectTo: '/silkCarRuntime', pathMatch: 'full'},
-    ]
+    ],
   },
 ];
 
@@ -150,12 +151,13 @@ export function createTranslateLoader(httpClient: HttpClient) {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    GraphQLModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     NgxsModule.forRoot([AppState], {
       developmentMode: !environment.production,
@@ -182,11 +184,11 @@ export function createTranslateLoader(httpClient: HttpClient) {
     NgxsEmitPluginModule.forRoot(),
     // You should always include the logger as the last plugin in your configuration.
     NgxsLoggerPluginModule.forRoot({
-      disabled: environment.production
+      disabled: environment.production,
     }),
     // You should always include the devtools as the last plugin in your configuration.
     NgxsReduxDevtoolsPluginModule.forRoot({
-      disabled: environment.production
+      disabled: environment.production,
     }),
     SharedModule,
     RouterModule.forRoot(routes, {useHash: true}),
@@ -204,7 +206,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     {provide: OWL_DATE_TIME_LOCALE, useValue: 'zh-CN'},
     {provide: OwlDateTimeIntl, useClass: MyOwlDateTimeIntl, deps: [TranslateService]},
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

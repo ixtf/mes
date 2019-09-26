@@ -39,9 +39,6 @@ export class TemporaryBoxManagePageComponent {
               private util: UtilService,
               private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
-    this.batchCtrl.valueChanges.subscribe(it => {
-      console.log(it);
-    });
   }
 
   @Dispatch()

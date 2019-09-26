@@ -26,7 +26,6 @@ export class JikonAdapterSilkCarInfoFetchEventComponent {
       return acc.concat(silkCodes || []);
     }, []);
     return new MatTableDataSource(this.data.list.map(data => {
-      console.log(data);
       const find = detachSilkCodes.find(it => it === data.spindleCode);
       data.detached = !!find;
       return data;

@@ -12,12 +12,10 @@ export class MyOwlDateTimeIntl extends OwlDateTimeIntl {
   constructor(private translate: TranslateService) {
     super();
     this.init();
-    console.log('OwlDateTimeIntl', translate);
     translate.onLangChange.subscribe(this.init);
   }
 
   init(): void {
-    console.log('OwlDateTimeIntl init');
     this.translate.get(keys.map(translateKeyFun)).subscribe(translateObj => {
       keys.forEach(it => this[it] = translateObj[translateKeyFun(it)]);
       this.changes.next();

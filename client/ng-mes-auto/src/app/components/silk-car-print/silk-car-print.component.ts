@@ -25,7 +25,6 @@ export class SilkCarPrintComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    console.log(this.elementRef.nativeElement);
     setTimeout(() => {
       const popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
       popupWin.document.open();

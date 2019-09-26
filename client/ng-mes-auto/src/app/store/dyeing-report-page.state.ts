@@ -122,13 +122,14 @@ export class DyeingReportPageState {
 
   @Selector()
   @ImmutableSelector()
-  static totalItemMap(state: StateModel): GroupByDyeingType[] {
+  static totalItem(state: StateModel): GroupByDyeingType[] {
     const ret: { [dyeingType: string]: GroupByDyeingType } = {};
     DyeingReportPageState.items(state).forEach(item => item.groupByDyeingTypes.forEach(groupByDyeingType => {
       const {dyeingType} = groupByDyeingType;
       let retElement = ret[dyeingType];
       if (!retElement) {
         retElement = new GroupByDyeingType();
+        retElement.dyeingType = dyeingType;
         ret[dyeingType] = retElement;
       }
       retElement.silkCount += groupByDyeingType.silkCount;

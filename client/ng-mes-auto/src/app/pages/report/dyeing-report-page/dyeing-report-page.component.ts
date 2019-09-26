@@ -32,6 +32,8 @@ export class DyeingReportPageComponent {
   readonly operators$: Observable<Operator[]>;
   @Select(DyeingReportPageState.items)
   readonly items$: Observable<DyeingReportItem[]>;
+  @Select(DyeingReportPageState.totalItem)
+  readonly totalItem$: Observable<GroupByDyeingType[]>;
   readonly displayedColumns = ['operator', 'count'];
   readonly rangeCtrl = new FormControl();
   readonly searchForm = this.fb.group({
@@ -65,10 +67,6 @@ export class DyeingReportPageComponent {
 
   groupByDyeingTypes(item: DyeingReportItem): GroupByDyeingType[] {
     return item.groupByDyeingTypes.sort((a, b) => a.dyeingType.localeCompare(b.dyeingType));
-  }
-
-  totalGroupByDyeingTypes(): GroupByDyeingType[] {
-    return this.store.selectSnapshot(DyeingReportPageState.totalItemMap);
   }
 
   detailDialog(item: DyeingReportItem) {

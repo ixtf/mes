@@ -40,6 +40,8 @@ import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report'
 import {DoffingSilkCarRecordReportItem} from '../store/doffing-silk-car-record-report-page.state';
 import {InspectionReportItem} from '../store/inspection-report-page.state';
 import {StrippingReportItem} from '../store/stripping-report-page.state';
+import {ToDtyConfirmReportItem} from '../store/to-dty-confirm-report-page.state';
+import {ToDtyReportItem} from '../store/to-dty-report-page.state';
 
 const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
 const SHARE_API_URL = `http://${HOST_NAME}:9998/share`;
@@ -472,8 +474,20 @@ export class ApiService {
     return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/strippingReport`, body);
   }
 
+  dyeingReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<InspectionReportItem[]> {
+    return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/dyeingReport`, body);
+  }
+
   inspectionReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<InspectionReportItem[]> {
     return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/inspectionReport`, body);
+  }
+
+  toDtyReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<ToDtyReportItem[]> {
+    return this.http.post<ToDtyReportItem[]>(`${BASE_API_URL}/reports/toDtyReport`, body);
+  }
+
+  toDtyConfirmReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<ToDtyConfirmReportItem[]> {
+    return this.http.post<ToDtyConfirmReportItem[]>(`${BASE_API_URL}/reports/toDtyConfirmReport`, body);
   }
 
   private updateProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {

@@ -1,0 +1,68 @@
+<div fxLayout fxLayoutAlign="start center" fxLayoutGap="16px" mat-dialog-title>
+  <span>{{item.operator.name|translate}}</span>
+
+  <div fxFlex>
+    <mat-button-toggle-group [formControl]="productCtrl">
+      <mat-button-toggle *ngFor="let it of products" [value]="it">{{it.name}}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <table [dataSource]="silkCarRecordAggregates" mat-table style="width: 100%;">
+    <ng-container matColumnDef="code">
+      <th *matHeaderCellDef mat-header-cell>{{'SilkCar.code'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row?.silkCar.code}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="silkCount">
+      <th *matHeaderCellDef mat-header-cell>{{'silkCount'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row?.initSilkRuntimes?.length}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="doffingType">
+      <th *matHeaderCellDef mat-header-cell>{{'doffingType'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{('DoffingType.' + row?.doffingType)|translate}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="doffingOperator">
+      <th *matHeaderCellDef mat-header-cell>{{'doffingOperator'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row?.doffingOperator.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="doffingDateTime">
+      <th *matHeaderCellDef mat-header-cell>{{'doffingDateTime'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row?.doffingDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="eventSources">
+      <th *matHeaderCellDef mat-header-cell>{{'eventSources'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>
+        <mat-list dense>
+          <mat-list-item *ngFor="let it of strippingEventSources(row)">
+            <div fxLayout matLine>
+              <span fxFlex>{{it?.operator.name}}</span>
+              <span>{{it?.fireDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="btns">
+      <th *matHeaderCellDef mat-header-cell>{{'Common.detail'|translate}}</th>
+      <td *matCellDef="let row" mat-cell matRipple>
+        <a [queryParams]="routerLinkCarRecordQueryParams(row)" [routerLink]="routerLinkCarRecord(row)" style="display: block;text-decoration: none;" tabindex="-1" target="_blank">
+          <mat-icon>link</mat-icon>
+        </a>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+</mat-dialog-content>

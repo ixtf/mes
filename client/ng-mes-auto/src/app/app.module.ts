@@ -39,6 +39,7 @@ import {MyPaginatorIntl} from './services/my-paginator-intl';
 import {SharedModule} from './shared.module';
 import {AppState} from './store/app.state';
 import {DoffingSilkCarRecordReportPageState} from './store/doffing-silk-car-record-report-page.state';
+import {DyeingReportPageState} from './store/dyeing-report-page.state';
 import {DyeingResultsTimelinePageState} from './store/dyeing-results-timeline-page.state';
 import {InspectionReportPageState} from './store/inspection-report-page.state';
 import {LineManagePageState} from './store/line-manage-page.state';
@@ -47,6 +48,8 @@ import {ProductPlanReportPageState} from './store/product-plan-report-page.state
 import {StatisticReportDayPageState} from './store/statistic-report-day-page.state';
 import {StatisticReportRangePageState} from './store/statistic-report-range-page.state';
 import {StrippingReportPageState} from './store/stripping-report-page.state';
+import {ToDtyConfirmReportPageState} from './store/to-dty-confirm-report-page.state';
+import {ToDtyReportPageState} from './store/to-dty-report-page.state';
 
 registerLocaleData(localeZhHans, 'zh-Hans');
 
@@ -96,6 +99,9 @@ const routes: Routes = [
           {path: 'statisticReportRange', loadChildren: () => import('./pages/report/statistic-report-range-page/statistic-report-range-page.component').then(it => it.Module)},
           {path: 'strippingReport', loadChildren: () => import('./pages/report/stripping-report-page/stripping-report-page.component').then(it => it.Module)},
           {path: 'inspectionReport', loadChildren: () => import('./pages/report/inspection-report-page/inspection-report-page.component').then(it => it.Module)},
+          {path: 'dyeingReport', loadChildren: () => import('./pages/report/dyeing-report-page/dyeing-report-page.component').then(it => it.Module)},
+          {path: 'toDtyReport', loadChildren: () => import('./pages/report/to-dty-report-page/to-dty-report-page.component').then(it => it.Module)},
+          {path: 'toDtyConfirmReport', loadChildren: () => import('./pages/report/to-dty-confirm-report-page/to-dty-confirm-report-page.component').then(it => it.Module)},
           {path: 'dyeingResultsTimeline', loadChildren: () => import('./pages/report/dyeing-results-timeline-page/dyeing-results-timeline-page.component').then(it => it.Module)},
         ]
       },
@@ -173,6 +179,9 @@ export function createTranslateLoader(httpClient: HttpClient) {
         ...StatisticReportRangePageState.storageIds(),
         ...StrippingReportPageState.storageIds(),
         ...InspectionReportPageState.storageIds(),
+        ...DyeingReportPageState.storageIds(),
+        ...ToDtyReportPageState.storageIds(),
+        ...ToDtyConfirmReportPageState.storageIds(),
         ...DyeingResultsTimelinePageState.storageIds(),
       ],
     }),

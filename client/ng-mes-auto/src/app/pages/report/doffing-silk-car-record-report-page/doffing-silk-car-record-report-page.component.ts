@@ -1,12 +1,15 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import * as moment from 'moment';
+import {OwlDateTimeIntl} from 'ng-pick-datetime';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Workshop} from '../../../models/workshop';
+import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {DoffingSilkCarRecordReportPageState, InfoItem, InitAction, QueryAction} from '../../../store/doffing-silk-car-record-report-page.state';
@@ -65,6 +68,9 @@ export class DoffingSilkCarRecordReportPageComponent {
     RouterModule.forChild([
       {path: '', component: DoffingSilkCarRecordReportPageComponent, data: {animation: 'FilterPage'}},
     ]),
+  ],
+  providers: [
+    {provide: OwlDateTimeIntl, useClass: MyOwlDateTimeIntl, deps: [TranslateService]},
   ],
 })
 export class Module {

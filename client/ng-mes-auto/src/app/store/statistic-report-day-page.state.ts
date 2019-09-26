@@ -1,12 +1,13 @@
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
-import {tap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
+import {Line} from '../models/line';
 import {PackageBox} from '../models/package-box';
 import {Item as StatisticReportDayItem, StatisticReportDay, XlsxItem} from '../models/statistic-report-day';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {CODE_COMPARE} from '../services/util.service';
+import {CODE_COMPARE, LINE_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'StatisticReportDayPageState';
 
@@ -32,6 +33,7 @@ interface StateModel {
   workshopId?: string;
   date?: number;
   workshopEntities: { [id: string]: Workshop };
+  lineEntities: { [id: string]: Line };
   report?: StatisticReportDay;
 }
 
@@ -39,6 +41,7 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {
     workshopEntities: {},
+    lineEntities: {},
   },
 })
 export class StatisticReportDayPageState {
@@ -59,6 +62,12 @@ export class StatisticReportDayPageState {
   @ImmutableSelector()
   static workshops(state: StateModel): Workshop[] {
     return Object.values(state.workshopEntities).sort(CODE_COMPARE);
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static lines(state: StateModel): Line[] {
+    return Object.values(state.lineEntities).sort(LINE_COMPARE);
   }
 
   @Selector()
@@ -122,6 +131,11 @@ export class StatisticReportDayPageState {
         state.workshopId = workshopId;
         state.date = moment(date).valueOf();
         state.report = report;
+        return state;
+      })),
+      switchMap(() => this.api.getWorkshop_Lines(workshopId)),
+      tap(lines => setState((state: StateModel) => {
+        state.lineEntities = Line.toEntities(lines);
         return state;
       })),
     );

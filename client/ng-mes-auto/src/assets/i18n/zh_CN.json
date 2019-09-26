@@ -267,6 +267,7 @@
     "createPermission": "新增权限",
     "updateProductProcess": "修改生产工艺",
     "createLine": "新增线别",
+    "dblClickAndDelete": "双击删除",
     "batchCreateLine": "批量新增线别"
   },
   "Validator": {

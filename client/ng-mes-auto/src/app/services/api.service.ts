@@ -1,7 +1,7 @@
 import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, retry} from 'rxjs/operators';
 import {isString} from 'util';
 import {HOST_NAME} from '../../environments/environment';
 import {AuthInfo} from '../models/auth-info';
@@ -457,7 +457,7 @@ export class ApiService {
   }
 
   statisticReportDay(body: { workshopId: string; date: string }): Observable<StatisticReportDay> {
-    return this.http.post<StatisticReportDay>(`${BASE_API_URL}/reports/statisticReport/generate`, body);
+    return this.http.post<StatisticReportDay>(`${BASE_API_URL}/reports/statisticReport/generate`, body).pipe(retry(3));
   }
 
   statisticReportRange(body: { workshopId: string; startDate: string; endDate: string }): Observable<StatisticReportRange> {

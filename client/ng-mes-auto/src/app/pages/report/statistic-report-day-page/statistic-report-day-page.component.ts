@@ -6,6 +6,7 @@ import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {LineInputComponentModule} from '../../../components/line-input/line-input.component';
 import {PackageBox} from '../../../models/package-box';
 import {Item as StatisticReportDayItem, XlsxItem} from '../../../models/statistic-report-day';
 import {Workshop} from '../../../models/workshop';
@@ -56,7 +57,9 @@ export class StatisticReportDayPageComponent {
 
   @Dispatch()
   customDiff() {
-    return StatisticReportCustomDiffDialogComponent.open(this.dialog, this.store.selectSnapshot(StatisticReportDayPageState.report)).pipe(
+    const report = this.store.selectSnapshot(StatisticReportDayPageState.report);
+    const lines = this.store.selectSnapshot(StatisticReportDayPageState.lines);
+    return StatisticReportCustomDiffDialogComponent.open(this.dialog, {report, lines}).pipe(
       map(items => new CustomDiffAction({items})),
     );
   }
@@ -78,6 +81,7 @@ export class StatisticReportDayPageComponent {
   imports: [
     NgxsModule.forFeature([StatisticReportDayPageState]),
     SharedModule,
+    LineInputComponentModule,
     RouterModule.forChild([
       {path: '', component: StatisticReportDayPageComponent, data: {animation: 'FilterPage'}},
     ]),

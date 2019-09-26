@@ -1,51 +1,51 @@
-<form [formGroup]="form">
+<form (ngSubmit)="save()" [formGroup]="form">
   <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
-    <span fxFlex>{{title|translate}}</span>
+    <span fxFlex>{{'customDiff'|translate}}</span>
 
     <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 
-  <mat-dialog-content formArrayName="ar" fxLayout="column" fxLayoutGap="16px">
+  <mat-dialog-content formArrayName="totalFa" fxLayout="column" fxLayoutGap="16px">
 
-    <section *ngFor="let diffDataItem of diffDataItems$|async" class="diff" fxLayout>
+    <section *ngFor="let diffDataItem of diffDataItems;let totalFaIndex=index" [formGroupName]="totalFaIndex" class="diff" fxLayout>
       <div fxFlex="50" fxLayout="column">
         <mat-list dense>
           <mat-list-item>
-            <div fxLayout fxLayoutAlign="start center" matLine>
-              <span fxFlex>{{'batchNo'|translate}}</span>
-              <button class="line-menu" mat-icon-button tabindex="-1" type="button">
-                <mat-icon>add</mat-icon>
+            <div fxLayout fxLayoutAlign="space-between center" matLine>
+              <span translate="PackageBox.code"></span>
+              <button color="primary" mat-stroked-button tabindex="-1" type="button">
+                {{diffDataItem.packageBoxes.length}}
               </button>
             </div>
           </mat-list-item>
           <mat-divider></mat-divider>
 
           <mat-list-item>
-            <div fxLayout matLine>
-              <span fxFlex>{{'batchNo'|translate}}</span>
+            <div fxLayout fxLayoutAlign="space-between center" matLine>
+              <span translate="batchNo"></span>
               <span>{{diffDataItem.batch.batchNo}}</span>
             </div>
           </mat-list-item>
 
           <mat-list-item>
-            <div fxLayout matLine>
-              <span fxFlex>{{'grade'|translate}}</span>
+            <div fxLayout fxLayoutAlign="space-between center" matLine>
+              <span translate="grade"></span>
               <span>{{diffDataItem.grade.name}}</span>
             </div>
           </mat-list-item>
 
           <mat-list-item>
-            <div fxLayout matLine>
-              <span fxFlex>{{'silkCount'|translate}}</span>
+            <div fxLayout fxLayoutAlign="space-between center" matLine>
+              <span translate="silkCount"></span>
               <span>{{diffDataItem.silkCount}}</span>
             </div>
           </mat-list-item>
 
           <mat-list-item>
-            <div fxLayout matLine>
-              <span fxFlex>{{'netWeight'|translate}}</span>
+            <div fxLayout fxLayoutAlign="space-between center" matLine>
+              <span translate="netWeight"></span>
               <span>{{diffDataItem.silkWeight|number:'.3-3'}}</span>
             </div>
           </mat-list-item>
@@ -54,19 +54,44 @@
 
       <mat-divider vertical></mat-divider>
 
-      <div fxFlex="50">
-        <mat-list dense>
+      <div [class.itemValidator]="diffDataItem.fa.hasError('itemValidator')" fxFlex="50">
+        <mat-list dense formArrayName="itemFa">
           <mat-list-item>
-            <div fxLayout matLine>
-              <span fxFlex>{{'line'|translate}}</span>
+            <div fxLayout fxLayoutAlign="space-between center" matLine>
+              <span>
+                {{'line'|translate}}
+                <strong *ngIf="diffDataItem.diffSilkCount>0">
+                  ({{diffDataItem.diffSilkCount}} / {{diffDataItem.diffSilkWeight|number:'.3-3'}})
+                </strong>
+              </span>
+              <button (click)="diffDataItem.addFa()" color="primary" mat-icon-button tabindex="-1" type="button">
+                <mat-icon>add</mat-icon>
+              </button>
             </div>
           </mat-list-item>
           <mat-divider></mat-divider>
 
-          <mat-list-item *ngFor="let customDiffItem of customDiffItems$|async">
-            <div fxLayout matLine>
-              <span fxFlex>{{customDiffItem.line.name}}</span>
-              <span>{{customDiffItem.silkCount}} / {{customDiffItem.silkWeight|number:'.3-3'}}</span>
+          <mat-list-item (dblclick)="diffDataItem.deleteFa(itemFaIndex,$event)" *ngFor="let itemFa of diffDataItem.fa.controls;let itemFaIndex=index">
+            <div [formGroupName]="itemFaIndex" fxLayout fxLayoutAlign="space-between center" matLine>
+              <!--            <div [formGroupName]="itemFaIndex" fxLayout fxLayoutAlign="space-between center" matLine [matTooltip]="'Tooltip.dblClickAndDelete'|translate">-->
+              <mat-form-field floatLabel="never" fxFlex="60px">
+                <mat-select [compareWith]="compareWithId" [placeholder]="'line'|translate" formControlName="line">
+                  <mat-option *ngFor="let line of lines(diffDataItem,itemFaIndex)" [value]="line">
+                    {{line.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div fxLayout fxLayoutGap="16px">
+                <mat-form-field floatLabel="never" fxFlex="100px">
+                  <input [placeholder]="'silkCount'|translate" formControlName="silkCount" matInput min="1" type="number">
+                </mat-form-field>
+
+                <mat-form-field floatLabel="never" fxFlex="150px">
+                  <input [placeholder]="'netWeight'|translate" [readonly]="diffDataItem.grade.sortBy>=100" formControlName="silkWeight" matInput min="1" type="number">
+                  <span matSuffix>KG</span>
+                </mat-form-field>
+              </div>
             </div>
           </mat-list-item>
         </mat-list>

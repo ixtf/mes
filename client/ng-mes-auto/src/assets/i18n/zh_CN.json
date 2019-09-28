@@ -99,6 +99,7 @@
     "AUTO": "自动打包",
     "MANUAL_APPEND": "补充唛头",
     "MANUAL": "人工打包",
+    "SMALL": "小包装",
     "BIG_SILK_CAR": "大丝车",
     "createDateTime": "打包时间"
   },

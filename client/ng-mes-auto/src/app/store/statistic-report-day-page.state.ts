@@ -2,13 +2,12 @@ import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {saveAs} from 'file-saver';
 import * as moment from 'moment';
-import {switchMap, tap} from 'rxjs/operators';
-import {Line} from '../models/line';
+import {tap} from 'rxjs/operators';
 import {PackageBox} from '../models/package-box';
 import {Item as StatisticReportDayItem, StatisticReportDay, XlsxItem} from '../models/statistic-report-day';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
-import {CODE_COMPARE, LINE_COMPARE} from '../services/util.service';
+import {CODE_COMPARE} from '../services/util.service';
 
 const PAGE_NAME = 'StatisticReportDayPageState';
 
@@ -38,7 +37,6 @@ interface StateModel {
   workshopId?: string;
   date?: number;
   workshopEntities: { [id: string]: Workshop };
-  lineEntities: { [id: string]: Line };
   report?: StatisticReportDay;
 }
 
@@ -46,7 +44,6 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {
     workshopEntities: {},
-    lineEntities: {},
   },
 })
 export class StatisticReportDayPageState {
@@ -67,12 +64,6 @@ export class StatisticReportDayPageState {
   @ImmutableSelector()
   static workshops(state: StateModel): Workshop[] {
     return Object.values(state.workshopEntities).sort(CODE_COMPARE);
-  }
-
-  @Selector()
-  @ImmutableSelector()
-  static lines(state: StateModel): Line[] {
-    return Object.values(state.lineEntities).sort(LINE_COMPARE);
   }
 
   @Selector()
@@ -128,6 +119,12 @@ export class StatisticReportDayPageState {
     );
   }
 
+  @Action(CustomDiffAction)
+  @ImmutableContext()
+  CustomDiffAction({setState}: StateContext<StateModel>, {payload: {items}}: CustomDiffAction) {
+    console.log(items);
+  }
+
   @Action(QueryAction, {cancelUncompleted: true})
   @ImmutableContext()
   QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, date}}: QueryAction) {
@@ -136,11 +133,6 @@ export class StatisticReportDayPageState {
         state.workshopId = workshopId;
         state.date = moment(date).valueOf();
         state.report = report;
-        return state;
-      })),
-      switchMap(() => this.api.getWorkshop_Lines(workshopId)),
-      tap(lines => setState((state: StateModel) => {
-        state.lineEntities = Line.toEntities(lines);
         return state;
       })),
     );
@@ -154,10 +146,11 @@ export class StatisticReportDayPageState {
     //     window.open('http://10.2.0.215:9998/api/reports/statisticReport/download?workshopId=5bffa63d8857b85a437d1fc5&startDate=2019-09-25&endDate=2019-09-25');
     //   })
     // );
-    const {workshopId, date} = getState();
+    const {workshopId, date, workshopEntities} = getState();
     const dateString = moment(date).format('YYYY-MM-DD');
+    const workshop = workshopEntities[workshopId];
     return this.api.downloadStatisticReport({workshopId, startDate: `${dateString}`, endDate: `${dateString}`}).pipe(
-      tap(res => saveAs(res.body, 'test.xlsx')),
+      tap(res => saveAs(res.body, `${workshop.code}.${dateString}.xlsx`)),
     );
   }
 

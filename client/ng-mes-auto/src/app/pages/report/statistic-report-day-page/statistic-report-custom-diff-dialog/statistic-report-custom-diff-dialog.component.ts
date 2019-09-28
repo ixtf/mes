@@ -1,89 +1,13 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
-import {Batch} from '../../../../models/batch';
-import {Grade} from '../../../../models/grade';
 import {Line} from '../../../../models/line';
-import {PackageBox} from '../../../../models/package-box';
 import {Item as StatisticReportDayItem, StatisticReportDay} from '../../../../models/statistic-report-day';
 import {COMPARE_WITH_ID} from '../../../../services/util.service';
-
-class DiffDataItem {
-  formGroup: FormGroup;
-
-  constructor(private fb: FormBuilder,
-              public bigSilkCar: boolean,
-              public batch: Batch,
-              public grade: Grade,
-              public packageBoxes: PackageBox[] = []) {
-    this.formGroup = this.fb.group({
-      itemFa: this.fb.array([], [this.itemValidator]),
-    });
-  }
-
-  get silkCount(): number {
-    return (this.packageBoxes || []).reduce((acc, cur) => acc + cur.silkCount, 0);
-  }
-
-  get silkWeight(): number {
-    return (this.packageBoxes || []).reduce((acc, cur) => acc + cur.netWeight, 0);
-  }
-
-  get diffSilkCount(): number {
-    return (this.fa.value || []).reduce((acc, cur) => acc + cur.silkCount, 0);
-  }
-
-  get diffSilkWeight(): number {
-    return (this.fa.value || []).reduce((acc, cur) => acc + cur.silkWeight, 0);
-  }
-
-  get fa(): FormArray {
-    return this.formGroup.get('itemFa') as FormArray;
-  }
-
-  addFa() {
-    const group = this.fb.group({
-      bigSilkCar: [this.bigSilkCar, Validators.required],
-      batch: [this.batch, Validators.required],
-      grade: [this.grade, Validators.required],
-      line: [null, Validators.required],
-      silkCount: [null, [Validators.required, Validators.min(1)]],
-      silkWeight: [null, [Validators.required, Validators.min(1)]],
-    });
-    if (this.grade.sortBy >= 100) {
-      group.get('silkCount').valueChanges.subscribe(it => {
-        group.get('silkWeight').setValue(it * this.batch.silkWeight);
-      });
-    }
-    this.fa.push(group);
-  }
-
-  deleteFa(itemFaIndex: number, ev: MouseEvent) {
-    if (ev.ctrlKey || ev.shiftKey) {
-      this.fa.removeAt(itemFaIndex);
-    }
-  }
-
-  private readonly itemValidator = (control: AbstractControl) => {
-    const value = control.value;
-    if (value && value.length > 0) {
-      const lineIds = value.map(it => it.line && it.line.id).filter(it => it);
-      const lineIdSet = new Set(lineIds);
-      if (lineIds.length !== lineIdSet.size) {
-        return {itemValidator: true};
-      }
-      const silkCount = value.reduce((acc, cur) => acc + cur.silkCount, 0);
-      const silkWeight = value.reduce((acc, cur) => acc + cur.silkWeight, 0);
-      if (silkCount === this.silkCount && silkWeight === this.silkWeight) {
-        return null;
-      }
-    }
-    return {itemValidator: true};
-  };
-}
+import {DiffDataItem, StatisticReportCustomDiffDetailDialogComponent} from '../statistic-report-custom-diff-detail-dialog/statistic-report-custom-diff-detail-dialog.component';
 
 @Component({
   templateUrl: './statistic-report-custom-diff-dialog.component.html',
@@ -92,7 +16,6 @@ class DiffDataItem {
 })
 export class StatisticReportCustomDiffDialogComponent {
   readonly compareWithId = COMPARE_WITH_ID;
-  readonly title: string;
   readonly report: StatisticReportDay;
   readonly diffDataItems: DiffDataItem[];
   readonly allLines: Line[];
@@ -112,11 +35,16 @@ export class StatisticReportCustomDiffDialogComponent {
 
   static open(dialog: MatDialog, data: { report: StatisticReportDay; lines: Line[] }): Observable<StatisticReportDayItem[]> {
     return dialog.open(StatisticReportCustomDiffDialogComponent, {data, disableClose: true, width: '800px'})
-      .afterClosed().pipe(filter(it => it));
+      .afterClosed().pipe(filter(it => it && it.length > 0));
+  }
+
+  detail(diffDataItem: DiffDataItem) {
+    StatisticReportCustomDiffDetailDialogComponent.open(this.dialog, diffDataItem);
   }
 
   save() {
-    console.log(this.form.value);
+    const items = this.form.value.totalFa.reduce((acc, cur) => acc.concat(cur.itemFa), []);
+    this.dialogRef.close(items);
   }
 
   lines(diffDataItem: DiffDataItem, itemFaIndex: number) {

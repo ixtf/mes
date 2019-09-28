@@ -15,7 +15,7 @@
           <mat-list-item>
             <div fxLayout fxLayoutAlign="space-between center" matLine>
               <span translate="PackageBox.code"></span>
-              <button color="primary" mat-stroked-button tabindex="-1" type="button">
+              <button (click)="detail(diffDataItem)" color="primary" mat-stroked-button tabindex="-1" type="button">
                 {{diffDataItem.packageBoxes.length}}
               </button>
             </div>

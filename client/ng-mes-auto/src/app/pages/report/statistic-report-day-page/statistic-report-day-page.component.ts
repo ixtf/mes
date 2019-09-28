@@ -5,15 +5,18 @@ import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {LineInputComponentModule} from '../../../components/line-input/line-input.component';
+import {PackageBoxDetailDialogPageComponentModule} from '../../../components/package-box-detail-dialog-page/package-box-detail-dialog-page.component';
 import {PackageBox} from '../../../models/package-box';
 import {Item as StatisticReportDayItem, XlsxItem} from '../../../models/statistic-report-day';
 import {Workshop} from '../../../models/workshop';
 import {ApiService} from '../../../services/api.service';
+import {LINE_COMPARE, UtilService} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
 import {CustomDiffAction, DownloadAction, InitAction, QueryAction, StatisticReportDayPageState} from '../../../store/statistic-report-day-page.state';
+import {StatisticReportCustomDiffDetailDialogComponent} from './statistic-report-custom-diff-detail-dialog/statistic-report-custom-diff-detail-dialog.component';
 import {StatisticReportCustomDiffDialogComponent} from './statistic-report-custom-diff-dialog/statistic-report-custom-diff-dialog.component';
 
 @Component({
@@ -50,18 +53,22 @@ export class StatisticReportDayPageComponent {
 
   constructor(private store: Store,
               private api: ApiService,
+              private util: UtilService,
               private fb: FormBuilder,
               private dialog: MatDialog) {
     this.store.dispatch(new InitAction());
   }
 
-  @Dispatch()
   customDiff() {
     const report = this.store.selectSnapshot(StatisticReportDayPageState.report);
-    const lines = this.store.selectSnapshot(StatisticReportDayPageState.lines);
-    return StatisticReportCustomDiffDialogComponent.open(this.dialog, {report, lines}).pipe(
-      map(items => new CustomDiffAction({items})),
-    );
+    const workshopId = this.store.selectSnapshot(StatisticReportDayPageState.workshopId);
+    return this.api.getWorkshop_Lines(workshopId).pipe(
+      switchMap(lines => {
+        lines = lines.sort(LINE_COMPARE);
+        return StatisticReportCustomDiffDialogComponent.open(this.dialog, {report, lines});
+      }),
+      switchMap(items => this.store.dispatch(new CustomDiffAction({items}))),
+    ).subscribe(() => this.util.showSuccess());
   }
 
   @Dispatch()
@@ -79,14 +86,17 @@ export class StatisticReportDayPageComponent {
   declarations: [
     StatisticReportDayPageComponent,
     StatisticReportCustomDiffDialogComponent,
+    StatisticReportCustomDiffDetailDialogComponent,
   ],
   entryComponents: [
     StatisticReportCustomDiffDialogComponent,
+    StatisticReportCustomDiffDetailDialogComponent,
   ],
   imports: [
     NgxsModule.forFeature([StatisticReportDayPageState]),
     SharedModule,
     LineInputComponentModule,
+    PackageBoxDetailDialogPageComponentModule,
     RouterModule.forChild([
       {path: '', component: StatisticReportDayPageComponent, data: {animation: 'FilterPage'}},
     ]),

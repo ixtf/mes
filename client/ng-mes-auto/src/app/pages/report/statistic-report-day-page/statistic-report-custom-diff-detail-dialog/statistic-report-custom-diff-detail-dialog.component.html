@@ -1,0 +1,50 @@
+<div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+  <span fxFlex>
+    {{diffDataItem.batch.batchNo}} | {{diffDataItem.grade.name}} | {{diffDataItem.silkCount}}
+    | {{diffDataItem.silkWeight}}
+  </span>
+
+  <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <mat-table [dataSource]="diffDataItem.packageBoxes">
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef>{{'PackageBox.code'|translate}}({{diffDataItem.packageBoxes.length}})
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.code}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="batchNo">
+      <mat-header-cell *matHeaderCellDef fxFlex="100px">{{'batchNo'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="100px">{{row.batch.batchNo}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="grade">
+      <mat-header-cell *matHeaderCellDef fxFlex="50px">{{'grade'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="50px">{{row.grade.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="silkCount">
+      <mat-header-cell *matHeaderCellDef fxFlex="50px">{{'silkCount'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="50px">{{row.silkCount}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="netWeight">
+      <mat-header-cell *matHeaderCellDef fxFlex="80px">{{'netWeight'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" fxFlex="80px">{{row.netWeight|number:'.3-3'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="btns">
+      <mat-header-cell *matHeaderCellDef>{{'Common.operation'|translate}}</mat-header-cell>
+      <mat-cell (click)="detail(row)" *matCellDef="let row" matRipple>
+        <mat-icon>list</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-dialog-content>

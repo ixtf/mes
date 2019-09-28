@@ -43,8 +43,8 @@ import {StrippingReportItem} from '../store/stripping-report-page.state';
 import {ToDtyConfirmReportItem} from '../store/to-dty-confirm-report-page.state';
 import {ToDtyReportItem} from '../store/to-dty-report-page.state';
 
-const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
-const SHARE_API_URL = `http://${HOST_NAME}:9998/share`;
+export const BASE_API_URL = `http://${HOST_NAME}:9998/api`;
+export const SHARE_API_URL = `http://${HOST_NAME}:9998/share`;
 
 @Injectable({
   providedIn: 'root',
@@ -462,6 +462,11 @@ export class ApiService {
 
   statisticReportRange(body: { workshopId: string; startDate: string; endDate: string }): Observable<StatisticReportRange> {
     return this.http.post<StatisticReportRange>(`${BASE_API_URL}/reports/statisticReport/generate`, body);
+  }
+
+  downloadStatisticReport(body: { workshopId: string; startDate: string; endDate: string }): Observable<HttpResponse<Blob>> {
+    const params = new HttpParams().set('workshopId', body.workshopId).set('startDate', body.startDate).set('endDate', body.endDate);
+    return this.http.get(`${BASE_API_URL}/reports/statisticReport/download`, {params, responseType: 'blob', observe: 'response', reportProgress: true});
   }
 
   statisticReportCombine(files: File[]): Observable<HttpResponse<Blob>> {

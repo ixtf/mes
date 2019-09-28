@@ -13,7 +13,7 @@ import {Workshop} from '../../../models/workshop';
 import {ApiService} from '../../../services/api.service';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {CustomDiffAction, InitAction, QueryAction, StatisticReportDayPageState} from '../../../store/statistic-report-day-page.state';
+import {CustomDiffAction, DownloadAction, InitAction, QueryAction, StatisticReportDayPageState} from '../../../store/statistic-report-day-page.state';
 import {StatisticReportCustomDiffDialogComponent} from './statistic-report-custom-diff-dialog/statistic-report-custom-diff-dialog.component';
 
 @Component({
@@ -62,6 +62,11 @@ export class StatisticReportDayPageComponent {
     return StatisticReportCustomDiffDialogComponent.open(this.dialog, {report, lines}).pipe(
       map(items => new CustomDiffAction({items})),
     );
+  }
+
+  @Dispatch()
+  download() {
+    return new DownloadAction();
   }
 
   @Dispatch()

@@ -19,7 +19,7 @@ import {BatchUpdateDialogComponent} from './batch-update-dialog/batch-update-dia
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchManagePageComponent {
-  readonly displayedColumns = ['workshop', 'product', 'batchNo', 'spec', 'tubeColor', 'tubeWeight', 'silkWeight', 'btns'];
+  readonly displayedColumns = ['workshop', 'product', 'batchNo', 'spec', 'silkWeight', 'tubeColor', 'tubeWeight', 'btns'];
   readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;

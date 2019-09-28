@@ -73,7 +73,6 @@
 
           <mat-list-item (dblclick)="diffDataItem.deleteFa(itemFaIndex,$event)" *ngFor="let itemFa of diffDataItem.fa.controls;let itemFaIndex=index">
             <div [formGroupName]="itemFaIndex" fxLayout fxLayoutAlign="space-between center" matLine>
-              <!--            <div [formGroupName]="itemFaIndex" fxLayout fxLayoutAlign="space-between center" matLine [matTooltip]="'Tooltip.dblClickAndDelete'|translate">-->
               <mat-form-field floatLabel="never" fxFlex="60px">
                 <mat-select [compareWith]="compareWithId" [placeholder]="'line'|translate" formControlName="line">
                   <mat-option *ngFor="let line of lines(diffDataItem,itemFaIndex)" [value]="line">

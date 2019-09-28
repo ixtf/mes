@@ -22,9 +22,12 @@
     {{'customDiff'|translate}}（{{customDiffSilkWeightSum$|async|number:'.3-3'}}
     / {{unDiffSilkWeightSum$|async|number:'.3-3'}}）
   </button>
-  <a [disabled]="!(showDownload$|async)" href="http://baidu.com" mat-mini-fab tabindex="-1" target="_blank">
+  <!--  <a [disabled]="!(showDownload$|async)" href="http://baidu.com" mat-mini-fab tabindex="-1" target="_blank">-->
+  <!--    <mat-icon>get_app</mat-icon>-->
+  <!--  </a>-->
+  <button (click)="download()" [disabled]="!(showDownload$|async)" mat-mini-fab tabindex="-1" type="button">
     <mat-icon>get_app</mat-icon>
-  </a>
+  </button>
 </form>
 
 <mat-divider></mat-divider>

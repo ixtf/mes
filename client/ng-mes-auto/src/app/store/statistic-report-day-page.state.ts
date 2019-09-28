@@ -1,5 +1,6 @@
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {saveAs} from 'file-saver';
 import * as moment from 'moment';
 import {switchMap, tap} from 'rxjs/operators';
 import {Line} from '../models/line';
@@ -27,6 +28,10 @@ export class CustomDiffAction {
 
   constructor(public payload: { items: StatisticReportDayItem[]; }) {
   }
+}
+
+export class DownloadAction {
+  static readonly type = `[${PAGE_NAME}] DownloadAction`;
 }
 
 interface StateModel {
@@ -138,6 +143,21 @@ export class StatisticReportDayPageState {
         state.lineEntities = Line.toEntities(lines);
         return state;
       })),
+    );
+  }
+
+  @Action(DownloadAction, {cancelUncompleted: true})
+  @ImmutableContext()
+  DownloadAction({getState}: StateContext<StateModel>) {
+    // return this.api.listWorkshop().pipe(
+    //   tap(() => {
+    //     window.open('http://10.2.0.215:9998/api/reports/statisticReport/download?workshopId=5bffa63d8857b85a437d1fc5&startDate=2019-09-25&endDate=2019-09-25');
+    //   })
+    // );
+    const {workshopId, date} = getState();
+    const dateString = moment(date).format('YYYY-MM-DD');
+    return this.api.downloadStatisticReport({workshopId, startDate: `${dateString}`, endDate: `${dateString}`}).pipe(
+      tap(res => saveAs(res.body, 'test.xlsx')),
     );
   }
 

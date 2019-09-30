@@ -85,6 +85,18 @@ export class ApiService {
     return this.http.get<{ count: number, first: number, pageSize: number, operators: Operator[] }>(`${BASE_API_URL}/operators`, {params});
   }
 
+  foamTypes() {
+    return this.http.get<string[]>(`http://${location.host}/assets/foamTypes.json`);
+  }
+
+  packageTypes() {
+    return this.http.get<string[]>(`http://${location.host}/assets/packageTypes.json`);
+  }
+
+  palletTypes() {
+    return this.http.get<string[]>(`http://${location.host}/assets/palletTypes.json`);
+  }
+
   saveProductPlanNotify(productPlanNotify: ProductPlanNotify): Observable<ProductPlanNotify> {
     return productPlanNotify.id ? this.updateProductPlanNotify(productPlanNotify) : this.createProductPlanNotify(productPlanNotify);
   }

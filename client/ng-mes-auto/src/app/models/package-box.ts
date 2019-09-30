@@ -5,6 +5,9 @@ import {PackageClass} from './package-class';
 import {SapT001l} from './sapT001l';
 
 export const PACKAGE_BOX_TYPE = ['AUTO', 'MANUAL', 'BIG_SILK_CAR', 'MANUAL_APPEND'];
+export const PACKAGE_TYPE = ['AUTO', 'MANUAL', 'BIG_SILK_CAR', 'MANUAL_APPEND'];
+export const PALLET_TYPE = ['AUTO', 'MANUAL', 'BIG_SILK_CAR', 'MANUAL_APPEND'];
+export const FOAM_TYPE = ['AUTO', 'MANUAL', 'BIG_SILK_CAR', 'MANUAL_APPEND'];
 
 export class PackageBox {
   id: string;

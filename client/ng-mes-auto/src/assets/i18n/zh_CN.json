@@ -1,6 +1,11 @@
 {
   "title": "MES自动化",
   "LINE_SUM": "机台小计",
+  "measure": "计量",
+  "measured": "已计量",
+  "unMeasure": "未计量",
+  "printed": "已打印",
+  "unPrint": "未打印",
   "customDiff": "人工分配",
   "corporation": "公司",
   "product": "产品",

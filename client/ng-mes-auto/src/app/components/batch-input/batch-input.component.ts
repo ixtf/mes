@@ -102,17 +102,14 @@ export class BatchInputComponent implements ControlValueAccessor, MatFormFieldCo
   }
 
   get errorState(): boolean {
-    if (this.disabled) {
+    if (this.disabled || this.qCtrl.pristine || !this.ngControl.errors) {
       return false;
     }
-    return !!this.qCtrl.errors;
+    return Object.keys(this.ngControl.errors).length > 0;
   }
 
   @Input()
   get value(): Batch | null {
-    if (this.errorState) {
-      return null;
-    }
     if (this.qCtrl.value && this.qCtrl.value.id) {
       return this.qCtrl.value;
     }

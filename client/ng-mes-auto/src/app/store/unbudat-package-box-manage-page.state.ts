@@ -3,7 +3,8 @@ import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {forkJoin} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
+import {isNullOrUndefined} from 'util';
 import {Batch} from '../models/batch';
 import {Grade} from '../models/grade';
 import {PackageBox} from '../models/package-box';
@@ -21,36 +22,15 @@ export class InitAction {
   }
 }
 
-export class FilterBatchAction {
-  static readonly type = `[${PAGE_NAME}] FilterBatchAction`;
-
-  constructor(public payload: Batch) {
-  }
+export class RefreshAction {
+  static readonly type = `[${PAGE_NAME}] RefreshAction`;
 }
 
-export class FilterGradeAction {
-  static readonly type = `[${PAGE_NAME}] FilterGradeAction`;
+export class SetFilterAction {
+  static readonly type = `[${PAGE_NAME}] SetFilterAction`;
 
-  constructor(public payload: Grade) {
+  constructor(public payload: Filters) {
   }
-}
-
-export class FilterPrintedAction {
-  static readonly type = `[${PAGE_NAME}] FilterPrintedAction`;
-
-  constructor(public payload: boolean) {
-  }
-}
-
-export class FilterMeasuredAction {
-  static readonly type = `[${PAGE_NAME}] FilterMeasuredAction`;
-
-  constructor(public payload: boolean) {
-  }
-}
-
-export class ResetFilterAction {
-  static readonly type = `[${PAGE_NAME}] ResetFilterAction`;
 }
 
 export class SaveAction {
@@ -67,6 +47,13 @@ export class MeasureAction {
   }
 }
 
+class Filters {
+  batchId: string;
+  gradeId: string;
+  printed: boolean;
+  measured: boolean;
+}
+
 interface StateModel {
   workshopId?: string;
   workshop?: Workshop;
@@ -74,8 +61,7 @@ interface StateModel {
   budat?: Date;
   budatClassId?: string;
   budatClass?: PackageClass;
-  filterBatch?: Batch;
-  filterGrade?: Grade;
+  filters: Filters;
   packageBoxEntities: { [id: string]: PackageBox };
 }
 
@@ -83,6 +69,7 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {
     packageBoxEntities: {},
+    filters: new Filters(),
   },
 })
 export class UnbudatPackageBoxManagePageState {
@@ -92,17 +79,43 @@ export class UnbudatPackageBoxManagePageState {
   @Selector()
   @ImmutableSelector()
   static packageBoxes(state: StateModel): PackageBox[] {
-    return Object.values(state.packageBoxEntities).filter(it => {
-      if (state.filterGrade) {
-        if (it.grade.id !== state.filterGrade.id) {
+    return Object.values(state.packageBoxEntities).filter(packageBox => {
+      if (state.filters.batchId) {
+        if (packageBox.batch.id !== state.filters.batchId) {
           return false;
         }
       }
-      if (state.filterBatch) {
-        if (it.batch.id !== state.filterBatch.id) {
+
+      if (state.filters.gradeId) {
+        if (packageBox.grade.id !== state.filters.gradeId) {
           return false;
         }
       }
+
+      if (!isNullOrUndefined(state.filters.printed)) {
+        if (state.filters.printed) {
+          if (packageBox.printCount <= 0) {
+            return false;
+          }
+        } else {
+          if (packageBox.printCount > 0) {
+            return false;
+          }
+        }
+      }
+
+      if (!isNullOrUndefined(state.filters.measured)) {
+        if (state.filters.measured) {
+          if (!packageBox.budat) {
+            return false;
+          }
+        } else {
+          if (packageBox.budat) {
+            return false;
+          }
+        }
+      }
+
       return true;
     }).sort((a, b) => {
       if (!a.budat || !b.budat) {
@@ -117,19 +130,19 @@ export class UnbudatPackageBoxManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static filterBatch(state: StateModel): Batch {
-    return state.filterBatch;
-  }
-
-  @Selector()
-  @ImmutableSelector()
   static batches(state: StateModel): Batch[] {
     const map: { [id: string]: Batch } = {};
     Object.values(state.packageBoxEntities).forEach(it => {
       const batch = it.batch;
       map[batch.id] = batch;
     });
-    return Object.values(map);
+    return Object.values(map).sort((a, b) => a.batchNo.localeCompare(b.batchNo));
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static workshop(state: StateModel): Workshop {
+    return state.workshop;
   }
 
   @Selector()
@@ -146,15 +159,9 @@ export class UnbudatPackageBoxManagePageState {
 
   @Selector()
   @ImmutableSelector()
-  static filterGrade(state: StateModel): Grade {
-    return state.filterGrade;
-  }
-
-  @Selector()
-  @ImmutableSelector()
   static grades(state: StateModel): Grade[] {
     const map: { [id: string]: Grade } = {};
-    Object.values(state.packageBoxEntities).forEach(it => {
+    UnbudatPackageBoxManagePageState.packageBoxes(state).forEach(it => {
       const grade = it.grade;
       map[grade.id] = grade;
     });
@@ -166,32 +173,40 @@ export class UnbudatPackageBoxManagePageState {
   InitAction({dispatch, setState}: StateContext<StateModel>, {payload: {workshopId, date, budat, budatClassId}}: InitAction) {
     const workshop$ = this.api.getWorkshop(workshopId);
     const packageClass$ = this.api.getPackageClass(budatClassId);
-    const params = new HttpParams().set('workshopId', workshopId)
-      .set('startDate', moment(date).format('YYYY-MM-DD'))
-      .set('endDate', moment().format('YYYY-MM-DD'));
-    const packageBoxes$ = this.api.listUnbudatPackageBox(params);
-    return forkJoin([workshop$, packageClass$, packageBoxes$]).pipe(
-      tap(([workshop, budatClass, packageBoxes]) => setState((state: StateModel) => {
-        const packageBoxEntities = PackageBox.toEntities(packageBoxes);
-        return {workshopId, workshop, date, budat, budatClassId, budatClass, packageBoxEntities};
+    return forkJoin([workshop$, packageClass$]).pipe(
+      tap(([workshop, budatClass]) => setState((state: StateModel) => {
+        state.workshopId = workshopId;
+        state.workshop = workshop;
+        state.budat = budat;
+        state.budatClassId = budatClassId;
+        state.budatClass = budatClass;
+        state.date = date;
+        return state;
       })),
+      switchMap(() => dispatch(new RefreshAction())),
     );
   }
 
-  @Action(FilterBatchAction)
+  @Action(RefreshAction, {cancelUncompleted: true})
   @ImmutableContext()
-  FilterBatchAction({setState}: StateContext<StateModel>, {payload}: FilterBatchAction) {
-    setState((state: StateModel) => {
-      state.filterBatch = payload;
-      return state;
-    });
+  RefreshAction({getState, setState}: StateContext<StateModel>) {
+    const {workshopId, date} = getState();
+    const params = new HttpParams().set('workshopId', workshopId)
+      .set('startDate', moment(date).format('YYYY-MM-DD'))
+      .set('endDate', moment().format('YYYY-MM-DD'));
+    return this.api.listUnbudatPackageBox(params).pipe(
+      tap(packageBoxes => setState((state: StateModel) => {
+        state.packageBoxEntities = PackageBox.toEntities(packageBoxes);
+        return state;
+      }))
+    );
   }
 
-  @Action(FilterGradeAction)
+  @Action(SetFilterAction)
   @ImmutableContext()
-  FilterGradeAction({setState}: StateContext<StateModel>, {payload}: FilterGradeAction) {
+  FilterAction({setState}: StateContext<StateModel>, {payload}: SetFilterAction) {
     setState((state: StateModel) => {
-      state.filterGrade = payload;
+      state.filters = payload;
       return state;
     });
   }

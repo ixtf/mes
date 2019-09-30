@@ -13,10 +13,13 @@
         <mat-label>{{'batchNo'|translate}}</mat-label>
         <app-batch-input formControlName="batch" required></app-batch-input>
         <mat-hint *ngIf="form.value.batch" align="end">
-          {{form.value.batch.silkWeight}} / {{form.value.batch.tubeWeight}}
+          {{form.value.batch.product.name}} / {{form.value.batch.silkWeight}} / {{form.value.batch.tubeWeight}}
         </mat-hint>
         <mat-error *ngIf="form.get('batch').hasError('required')">
           {{'Validator.required'|translate}}
+        </mat-error>
+        <mat-error *ngIf="form.get('batch').hasError('workshop')">
+          {{form.get('batch').value.workshop.name}}
         </mat-error>
       </mat-form-field>
 
@@ -55,6 +58,40 @@
     </div>
 
     <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="33">
+        <input [placeholder]="'silkCount'|translate" formControlName="silkCount" matInput required type="number">
+        <mat-error *ngIf="form.get('silkCount').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+        <mat-error *ngIf="form.get('silkCount').hasError('min')">
+          {{'Validator.min'|translate:form.get('silkCount').getError('min')}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="33">
+        <input [placeholder]="'netWeight'|translate" formControlName="netWeight" matInput readonly required type="number">
+        <span matSuffix>KG</span>
+        <mat-error *ngIf="form.get('netWeight').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+        <mat-error *ngIf="form.get('netWeight').hasError('min')">
+          {{'Validator.min'|translate:form.get('netWeight').getError('min')}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="33">
+        <input [placeholder]="'grossWeight'|translate" [readonly]="form.value.grade?.sortBy>=100" formControlName="grossWeight" matInput required type="number">
+        <span matSuffix>KG</span>
+        <mat-error *ngIf="form.get('grossWeight').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+        <mat-error *ngIf="form.get('grossWeight').hasError('min')">
+          {{'Validator.min'|translate:form.get('grossWeight').getError('min')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout fxLayoutGap="16px">
       <mat-form-field fxFlex="50">
         <mat-select [placeholder]="'saleType'|translate" formControlName="saleType" required>
           <mat-option value="DOMESTIC">{{'SaleType.DOMESTIC'|translate}}</mat-option>
@@ -73,6 +110,48 @@
         </mat-select>
         <mat-error *ngIf="form.get('sapT001l').hasError('required')">
           {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="33">
+        <mat-select [placeholder]="'PackageBox.packageType'|translate" formControlName="packageType" required>
+          <mat-option *ngFor="let it of packageTypes$|async" [value]="it">{{it}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('packageType').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="33">
+        <mat-select [placeholder]="'palletType'|translate" formControlName="palletType" required>
+          <mat-option *ngFor="let it of palletTypes$|async" [value]="it">{{it}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('palletType').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="33">
+        <input [placeholder]="'palletCode'|translate" formControlName="palletCode" matInput>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="50">
+        <mat-select [placeholder]="'foamType'|translate" formControlName="foamType" required>
+          <mat-option *ngFor="let it of foamTypes$|async" [value]="it">{{it}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('foamType').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="50">
+        <input [placeholder]="'foamNum'|translate" formControlName="foamNum" matInput type="number">
+        <mat-error *ngIf="form.get('foamType').hasError('min')">
+          {{'Validator.min'|translate:form.get('foamType').getError('min')}}
         </mat-error>
       </mat-form-field>
     </div>

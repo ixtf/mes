@@ -191,5 +191,5 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
     SilkSpecInputComponent,
   ],
 })
-export class BatchInputComponentModule {
+export class SilkSpecInputComponentModule {
 }

@@ -1,40 +1,39 @@
-<form [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
-  <div fxLayout fxLayoutGap="8px" style="font-size: 18px">
-    <!--    <span translate="PackageBox.budat"></span>-->
-    <span>{{budat$|async|date:'yyyy-MM-dd'}} / {{(budatClass$|async)?.name}}</span>
-  </div>
+<form [formGroup]="filterForm" class="search-area" fxLayoutGap="16px">
+  <button (click)="refresh()" mat-stroked-button type="button">
+    {{budat$|async|date:'yyyy-MM-dd'}} / {{(budatClass$|async)?.name}}
+  </button>
 
   <mat-form-field floatLabel="never" fxFlex="100px">
-    <mat-select (valueChange)="filterBatch($event)" [placeholder]="'batchNo'|translate">
+    <mat-select [placeholder]="'batchNo'|translate" formControlName="batchId">
       <mat-option>{{'Common.all'|translate}}</mat-option>
-      <mat-option *ngFor="let it of batches$|async" [value]="it">
+      <mat-option *ngFor="let it of batches$|async" [value]="it.id">
         {{it.batchNo}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field floatLabel="never" fxFlex="100px">
-    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'grade'|translate">
+    <mat-select [placeholder]="'grade'|translate" formControlName="gradeId">
       <mat-option>{{'Common.all'|translate}}</mat-option>
-      <mat-option *ngFor="let it of grades$|async" [value]="it">
+      <mat-option *ngFor="let it of grades$|async" [value]="it.id">
         {{it.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field floatLabel="never" fxFlex="100px">
-    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'Common.print'|translate">
+    <mat-select [placeholder]="'Common.print'|translate" formControlName="printed">
       <mat-option>{{'Common.all'|translate}}</mat-option>
-      <mat-option [value]="0">{{'Common.unPrint'|translate}}</mat-option>
-      <mat-option [value]="1">{{'Common.printed'|translate}}</mat-option>
+      <mat-option [value]="false">{{'unPrint'|translate}}</mat-option>
+      <mat-option [value]="true">{{'printed'|translate}}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field floatLabel="never" fxFlex="100px">
-    <mat-select (valueChange)="filterGrade($event)" [placeholder]="'measure'|translate">
+    <mat-select [placeholder]="'measure'|translate" formControlName="measured">
       <mat-option>{{'Common.all'|translate}}</mat-option>
-      <mat-option [value]="0">{{'Common.unMeasure'|translate}}</mat-option>
-      <mat-option [value]="1">{{'Common.measured'|translate}}</mat-option>
+      <mat-option [value]="false">{{'unMeasure'|translate}}</mat-option>
+      <mat-option [value]="true">{{'measured'|translate}}</mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -43,12 +42,11 @@
   </button>
 
   <span fxFlex></span>
-  <!--  <mat-divider vertical></mat-divider>-->
 
   <button (click)="print()" [disabled]="selection.selected?.length<1" color="primary" mat-stroked-button type="button">
     {{'Common.print'|translate}} ({{selection.selected.length}})
   </button>
-  <button (click)="batchMeasure()" [disabled]="!canBatchMeasure()" color="primary" mat-stroked-button type="button">
+  <button (click)="batchMeasure()" [disabled]="!batchMeasureData.can" [matTooltipDisabled]="batchMeasureData.can" [matTooltip]="batchMeasureData.reason|translate" color="primary" mat-stroked-button type="button">
     {{'batchMeasure'|translate}} ({{selection.selected.length}})
   </button>
 
@@ -181,8 +179,19 @@
 
     <ng-container matColumnDef="btns" stickyEnd>
       <th *matHeaderCellDef mat-header-cell>{{'Common.operation'|translate}}</th>
-      <td (click)="measure(row)" *matCellDef="let row" mat-cell matRipple>
-        <mat-icon>edit</mat-icon>
+      <td *matCellDef="let row" [matMenuTriggerFor]="btnsMenu" mat-cell matRipple>
+        <mat-icon>list</mat-icon>
+        <mat-menu #btnsMenu="matMenu">
+          <button (click)="measure(row)" color="primary" mat-menu-item type="button">
+            {{'measure'|translate}}
+          </button>
+          <button (click)="print(row)" [disabled]="!row.budat" color="primary" mat-menu-item type="button">
+            {{'Common.print'|translate}}
+          </button>
+          <button (click)="detail(row)" [disabled]="!row.budat" color="primary" mat-menu-item type="button">
+            {{'Common.detail'|translate}}
+          </button>
+        </mat-menu>
       </td>
     </ng-container>
 

@@ -62,7 +62,6 @@ export class SilkCarUpdateDialogComponent implements OnInit {
   }
 
   save() {
-    console.log(this.form.value);
   }
 
 }

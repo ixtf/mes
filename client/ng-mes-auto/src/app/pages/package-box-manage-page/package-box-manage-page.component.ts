@@ -89,6 +89,10 @@ export class PackageBoxManagePageComponent {
     ).subscribe();
   }
 
+  isValidPalletCode(packageBox: PackageBox): boolean {
+    return PackageBox.isValidPalletCode(packageBox.palletCode);
+  }
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;

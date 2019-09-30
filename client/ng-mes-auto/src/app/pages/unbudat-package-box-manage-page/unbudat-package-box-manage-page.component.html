@@ -46,7 +46,7 @@
   <button (click)="print()" [disabled]="selection.selected?.length<1" color="primary" mat-stroked-button type="button">
     {{'Common.print'|translate}} ({{selection.selected.length}})
   </button>
-  <button (click)="batchMeasure()" [disabled]="!batchMeasureData.can" [matTooltipDisabled]="batchMeasureData.can" [matTooltip]="batchMeasureData.reason|translate" color="primary" mat-stroked-button type="button">
+  <button (click)="batchMeasure()" [disabled]="!canBatchMeasure" color="primary" mat-stroked-button type="button">
     {{'batchMeasure'|translate}} ({{selection.selected.length}})
   </button>
 
@@ -70,7 +70,7 @@
                       (click)="$event.stopPropagation()"
                       [checked]="selection.isSelected(row)">
         </mat-checkbox>
-        <ng-container *ngIf="row.isValidPalletCode">
+        <ng-container *ngIf="isValidPalletCode(row)">
           <span [matTooltip]="row.palletCode" class="pallet-code" matTooltipPosition="right"></span>
         </ng-container>
       </td>
@@ -136,7 +136,7 @@
     <ng-container matColumnDef="palletType">
       <th *matHeaderCellDef mat-header-cell>{{'palletType'|translate}}</th>
       <td *matCellDef="let row" mat-cell>
-        <span [matTooltipDisabled]="!row.isValidPalletCode" [matTooltip]="row.palletCode">
+        <span [matTooltipDisabled]="!isValidPalletCode(row)" [matTooltip]="row.palletCode">
           {{row.palletType}}
         </span>
       </td>

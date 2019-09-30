@@ -1,6 +1,6 @@
 <form (ngSubmit)="save()" [formGroup]="form">
   <div fxLayout fxLayoutAlign="start center" mat-dialog-title>
-    <span fxFlex>{{title|translate}}</span>
+    <span fxFlex>{{''|translate}} | {{batch.batchNo}} | {{grade.name}}</span>
 
     <button color="warn" mat-dialog-close mat-icon-button tabindex="-1" type="button">
       <mat-icon>close</mat-icon>
@@ -8,40 +8,109 @@
   </div>
 
   <mat-dialog-content fxLayout="column">
-    <mat-error *ngIf="(!form.pristine)&&form.hasError('workshopsLines')">
-      {{'Validator.workshopsLines'|translate}}
-    </mat-error>
+    <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="50">
+        <input [matDatepicker]="budatPicker" [placeholder]="'PackageBox.budat'|translate" formControlName="budat" matInput required>
+        <mat-datepicker-toggle [for]="budatPicker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #budatPicker></mat-datepicker>
+        <mat-error *ngIf="form.get('budat').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-select [compareWith]="compareWithId" [placeholder]="'workshop'|translate" formControlName="workshops" multiple>
-        <mat-option *ngFor="let it of workshops$|async" [value]="it">
-          {{it.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-chip-list #lineChipList aria-label="Fruit selection">
-        <mat-chip (removed)="removeLine(it)" *ngFor="let it of (form.value.lines||[])" [selectable]="false">
-          {{it.name}}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <input [formControl]="lineQCtrl" [matAutocomplete]="autoLine" [matChipInputFor]="lineChipList" [placeholder]="'line'|translate">
-        <mat-autocomplete #autoLine="matAutocomplete" (optionSelected)="selectedLine($event)">
-          <mat-option *ngFor="let it of autoCompleteLines$|async" [value]="it">
+      <mat-form-field fxFlex="50">
+        <mat-select [compareWith]="compareWithId" [placeholder]="'packageClass'|translate" formControlName="budatClass" required>
+          <mat-option *ngFor="let it of packageClasses$|async" [value]="it">
             {{it.name}}
           </mat-option>
-        </mat-autocomplete>
-      </mat-chip-list>
-    </mat-form-field>
+        </mat-select>
+        <mat-error *ngIf="form.get('budatClass').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+    </div>
 
-    <mat-form-field>
-      <textarea [placeholder]="'Common.note'|translate" formControlName="note" matInput required></textarea>
-      <mat-error *ngIf="form.get('note').hasError('required')">
-        {{'Validator.required'|translate}}
-      </mat-error>
-    </mat-form-field>
+    <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="50">
+        <mat-label>{{'batchNo'|translate}}</mat-label>
+        <app-batch-input cdkFocusInitial formControlName="batch" matInput required></app-batch-input>
+        <mat-hint *ngIf="batchCtrl.value" align="end">
+          {{batchCtrl.value.product.name}} / {{batchCtrl.value.silkWeight}} / {{batchCtrl.value.tubeWeight}}
+        </mat-hint>
+      </mat-form-field>
 
+      <mat-form-field fxFlex="50">
+        <mat-select [compareWith]="compareWithId" [placeholder]="'grade'|translate" formControlName="grade" required>
+          <mat-option *ngFor="let it of [grade]" [value]="it">
+            {{it.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="50">
+        <mat-select [placeholder]="'saleType'|translate" formControlName="saleType" required>
+          <mat-option value="DOMESTIC">{{'SaleType.DOMESTIC'|translate}}</mat-option>
+          <mat-option value="FOREIGN">{{'SaleType.FOREIGN'|translate}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('saleType').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="50">
+        <mat-select [compareWith]="compareWithId" [placeholder]="'PackageBox.sapT001l'|translate" formControlName="sapT001l" required>
+          <mat-option *ngFor="let it of sapT001ls$|async" [value]="it">
+            {{it.lgort}} [{{it.lgobe}}]
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('sapT001l').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="50">
+        <mat-select [placeholder]="'PackageBox.packageType'|translate" formControlName="packageType" required>
+          <mat-option *ngFor="let it of packageTypes$|async" [value]="it">{{it}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('packageType').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="50">
+        <mat-select [placeholder]="'palletType'|translate" formControlName="palletType" required>
+          <mat-option *ngFor="let it of palletTypes$|async" [value]="it">{{it}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('palletType').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout fxLayoutGap="16px">
+      <mat-form-field fxFlex="50">
+        <mat-select [placeholder]="'foamType'|translate" formControlName="foamType" required>
+          <mat-option *ngFor="let it of foamTypes$|async" [value]="it">{{it}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('foamType').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="50">
+        <input [placeholder]="'foamNum'|translate" formControlName="foamNum" matInput required type="number">
+        <mat-error *ngIf="form.get('sapT001l').hasError('required')">
+          {{'Validator.required'|translate}}
+        </mat-error>
+        <mat-error *ngIf="form.get('foamType').hasError('min')">
+          {{'Validator.min'|translate:form.get('foamType').getError('min')}}
+        </mat-error>
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

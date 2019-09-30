@@ -1,13 +1,14 @@
 import {SelectionModel} from '@angular/cdk/collections';
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MatDialog, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import {ActivatedRoute, RouterModule} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {fromArray} from 'rxjs/internal/observable/fromArray';
-import {concatMap, switchMap, tap, toArray} from 'rxjs/operators';
+import {concatMap, filter, switchMap, tap, toArray} from 'rxjs/operators';
 import {BatchInputComponentModule} from '../../components/batch-input/batch-input.component';
 import {PackageBoxDetailDialogPageComponent, PackageBoxDetailDialogPageComponentModule} from '../../components/package-box-detail-dialog-page/package-box-detail-dialog-page.component';
 import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../components/package-box-print/package-box-print.component';
@@ -19,7 +20,7 @@ import {PackageClass} from '../../models/package-class';
 import {ApiService} from '../../services/api.service';
 import {COMPARE_WITH_ID, COPY_WITH_CTRL, UtilService} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
+import {AppState, ShowErrorAction} from '../../store/app.state';
 import {InitAction, MeasureAction, RefreshAction, SaveAction, SetFilterAction, UnbudatPackageBoxManagePageState} from '../../store/unbudat-package-box-manage-page.state';
 import {PackageBoxBatchMeasureDialogComponent} from './package-box-batch-measure-dialog/package-box-batch-measure-dialog.component';
 import {PackageBoxCreateDialogComponent} from './package-box-create-dialog/package-box-create-dialog.component';
@@ -61,6 +62,8 @@ export class UnbudatPackageBoxManagePageComponent {
               private fb: FormBuilder,
               private route: ActivatedRoute,
               private dialog: MatDialog,
+              private snackBar: MatSnackBar,
+              private translate: TranslateService,
               private api: ApiService,
               private util: UtilService) {
     route.queryParams.subscribe((it: any) => store.dispatch(new InitAction(it)));
@@ -68,36 +71,6 @@ export class UnbudatPackageBoxManagePageComponent {
       this.selection.clear();
       this.store.dispatch(new SetFilterAction(it));
     });
-  }
-
-  get batchMeasureData(): { can: boolean; reason: string } {
-    if ((!(this.selection.selected && this.selection.selected.length > 0))) {
-      return {can: false, reason: 'Tooltip.noData'};
-    }
-    const batchMap: { [id: string]: Batch } = {};
-    const gradeMap: { [id: string]: Grade } = {};
-    const typeMap = {};
-    this.selection.selected.forEach(packageBox => {
-      batchMap[packageBox.batch.id] = packageBox.batch;
-      gradeMap[packageBox.grade.id] = packageBox.grade;
-      typeMap[packageBox.type] = packageBox.type;
-    });
-    const batches = Object.values(batchMap);
-    if (batches.length !== 1) {
-      return {can: false, reason: 'Tooltip.batchError'};
-    }
-    const grades = Object.values(gradeMap);
-    if (grades.length !== 1) {
-      return {can: false, reason: 'Tooltip.gradeError'};
-    }
-    if (grades[0].sortBy < 100) {
-      return {can: false, reason: 'Tooltip.gradeSortByError'};
-    }
-    const types = Object.values(typeMap);
-    if (types.length !== 1) {
-      return {can: false, reason: 'Tooltip.typeError'};
-    }
-    return {can: true, reason: ''};
   }
 
   @Dispatch()
@@ -114,43 +87,67 @@ export class UnbudatPackageBoxManagePageComponent {
     });
   }
 
+  get canBatchMeasure(): boolean {
+    return PackageBoxBatchMeasureDialogComponent.check(this.selection.selected);
+  }
+
   create() {
+    const workshop = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.workshop);
     const packageBox = new PackageBox();
     packageBox.budat = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.budat);
     packageBox.budatClass = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.budatClass);
-    const workshop = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.workshop);
-    PackageBoxCreateDialogComponent.open(this.dialog, {packageBox, workshop}).pipe(
+    PackageBoxCreateDialogComponent.open(this.dialog, {workshop, packageBox}).pipe(
       switchMap(it => this.store.dispatch(new SaveAction(it))),
-      tap(() => this.util.showSuccess()),
-    );
+    ).subscribe(() => {
+      this.util.showSuccess();
+    }, error => {
+      this.store.dispatch(new ShowErrorAction({error}));
+    });
   }
 
   measure(packageBox: PackageBox) {
-    PackageBoxMeasureDialogComponent.open(this.dialog, packageBox).pipe(
+    const workshop = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.workshop);
+    if (!packageBox.budat) {
+      packageBox.budat = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.budat);
+      packageBox.budatClass = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.budatClass);
+    }
+    PackageBoxMeasureDialogComponent.open(this.dialog, {workshop, packageBox}).pipe(
       switchMap(it => this.store.dispatch(new MeasureAction(it))),
-      tap(() => this.util.showSuccess()),
-    );
+    ).subscribe(() => {
+      this.util.showSuccess();
+    }, error => {
+      this.store.dispatch(new ShowErrorAction({error}));
+    });
   }
 
   batchMeasure() {
-    PackageBoxBatchMeasureDialogComponent.open(this.dialog, this.selection.selected).pipe(
-      switchMap(it => fromArray(it)),
+    const workshop = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.workshop);
+    const budat = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.budat);
+    const budatClass = this.store.selectSnapshot(UnbudatPackageBoxManagePageState.budatClass);
+    const packageBoxes = this.selection.selected;
+    PackageBoxBatchMeasureDialogComponent.open(this.dialog, {workshop, budat, budatClass, packageBoxes}).pipe(
+      switchMap(it => fromArray(it || [])),
       concatMap(it => this.store.dispatch(new MeasureAction(it))),
       toArray(),
+      filter(it => it && it.length > 0),
       tap(() => this.util.showSuccess()),
-    );
+    ).subscribe(() => {
+      this.util.showSuccess();
+    }, error => {
+      this.store.dispatch(new ShowErrorAction({error}));
+    });
   }
 
   print(packageBox?: PackageBox) {
-    let packageBoxes = packageBox ? [packageBox] : this.selection.selected;
-    packageBoxes = packageBoxes.filter(it => it.budat);
-    if (packageBoxes.length > 0) {
-      PackageBoxPrintComponent.print(this.dialog, packageBoxes);
-    }
+    PackageBoxPrintComponent.print(this.dialog, packageBox || this.selection.selected);
   }
 
   detail(packageBox: PackageBox) {
     PackageBoxDetailDialogPageComponent.open(this.dialog, packageBox);
+  }
+
+  isValidPalletCode(packageBox: PackageBox): boolean {
+    return PackageBox.isValidPalletCode(packageBox.palletCode);
   }
 
   isAllSelected() {

@@ -59,7 +59,6 @@ export class TemporaryBoxManagePageComponent {
   }
 
   query(ev: MatAutocompleteSelectedEvent) {
-    console.log(ev);
   }
 }
 

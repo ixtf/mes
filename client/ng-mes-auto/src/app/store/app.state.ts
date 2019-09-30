@@ -1,3 +1,5 @@
+import {MatSnackBar} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
 import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Navigate} from '@ngxs/router-plugin';
@@ -21,6 +23,20 @@ export class LoginAction {
   }
 }
 
+export class ShowErrorAction {
+  static readonly type = `[${PAGE_NAME}] ShowErrorAction`;
+
+  constructor(public payload: { error: Error; params?: any; }) {
+  }
+}
+
+export class ShowErrorByCodeAction {
+  static readonly type = `[${PAGE_NAME}] ShowErrorByCodeAction`;
+
+  constructor(public payload: { code: string; params?: any; }) {
+  }
+}
+
 interface StateModel {
   shake?: boolean;
   loading?: boolean;
@@ -34,7 +50,9 @@ interface StateModel {
   defaults: {}
 })
 export class AppState implements NgxsOnInit {
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService,
+              private translate: TranslateService,
+              private snackBar: MatSnackBar) {
   }
 
   static storageIds(): string[] {
@@ -141,6 +159,25 @@ export class AppState implements NgxsOnInit {
         });
         return of();
       })
+    );
+  }
+
+  @Action(ShowErrorAction)
+  @ImmutableContext()
+  ShowErrorAction({getState, setState, dispatch}: StateContext<StateModel>, {payload: {error, params}}: ShowErrorAction) {
+    return dispatch(new ShowErrorByCodeAction({code: error.message, params}));
+  }
+
+  @Action(ShowErrorByCodeAction)
+  @ImmutableContext()
+  ShowErrorByCodeAction({getState, setState, dispatch}: StateContext<StateModel>, {payload: {code, params}}: ShowErrorByCodeAction) {
+    params = params || {};
+    return this.translate.get(code, params).pipe(
+      tap(it => this.snackBar.open(it, 'OK')),
+      catchError(err => {
+        console.error('ShowErrorByCodeAction', err);
+        return of();
+      }),
     );
   }
 }

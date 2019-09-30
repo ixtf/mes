@@ -1,3 +1,4 @@
+/* tslint:disable:no-eval */
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {AbstractControl, FormBuilder, ValidationErrors, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
@@ -6,7 +7,6 @@ import {debounceTime, distinctUntilChanged, filter, map, takeUntil, tap} from 'r
 import {Batch} from '../../../models/batch';
 import {Grade} from '../../../models/grade';
 import {PackageBox} from '../../../models/package-box';
-import {SapT001l} from '../../../models/sapT001l';
 import {Workshop} from '../../../models/workshop';
 import {ApiService} from '../../../services/api.service';
 import {COMPARE_WITH_ID, SEARCH_DEBOUNCE_TIME, SORT_BY_COMPARE} from '../../../services/util.service';
@@ -18,17 +18,17 @@ import {COMPARE_WITH_ID, SEARCH_DEBOUNCE_TIME, SORT_BY_COMPARE} from '../../../s
 })
 export class PackageBoxCreateDialogComponent {
   readonly compareWithId = COMPARE_WITH_ID;
+  readonly workshop: Workshop;
   readonly palletTypes$ = this.api.palletTypes();
   readonly packageTypes$ = this.api.packageTypes();
   readonly foamTypes$ = this.api.foamTypes();
-  readonly workshop: Workshop;
   readonly packageClasses$ = this.api.listPackageClass();
   readonly grades$ = this.api.listGrade().pipe(map(it => it.sort(SORT_BY_COMPARE)));
-  readonly sapT001ls$: Observable<SapT001l[]>;
   readonly form = this.fb.group({
     id: null,
-    type: ['MANUAL_APPEND', Validators.required],
-    batch: [null, [(ctrl: AbstractControl): ValidationErrors => {
+    budat: [null, Validators.required],
+    budatClass: [null, Validators.required],
+    batch: [null, (ctrl: AbstractControl): ValidationErrors => {
       const value: Batch = ctrl.value;
       if (!value) {
         return {required: true};
@@ -37,13 +37,11 @@ export class PackageBoxCreateDialogComponent {
         return {workshop: true};
       }
       return null;
-    }]],
+    }],
     grade: [null, Validators.required],
     silkCount: [null, [Validators.required, Validators.min(1)]],
-    netWeight: [null, [Validators.required, Validators.min(1)]],
-    grossWeight: [null, [Validators.required, Validators.min(1)]],
-    budat: [null, Validators.required],
-    budatClass: [null, Validators.required],
+    netWeight: [{value: null, disabled: true}, [Validators.required, Validators.min(1)]],
+    grossWeight: [{value: null, disabled: true}, [Validators.required, Validators.min(1)]],
     saleType: [null, Validators.required],
     sapT001l: [null, Validators.required],
     palletType: [null, Validators.required],
@@ -52,42 +50,51 @@ export class PackageBoxCreateDialogComponent {
     foamNum: [null, Validators.min(1)],
     palletCode: null,
   });
+  readonly sapT001ls$ = merge(this.saleTypeCtrl.valueChanges, this.palletCodeCtrl.valueChanges).pipe(
+    takeUntil(this.dialogRef.afterClosed()),
+    debounceTime(SEARCH_DEBOUNCE_TIME),
+    distinctUntilChanged(),
+    map(() => {
+      const saleType = this.saleTypeCtrl.value;
+      const palletCode = this.palletCodeCtrl.value;
+      return PackageBox.sapT001ls({saleType, workshop: this.workshop, palletCode});
+    }),
+    tap(sapT001ls => {
+      if (sapT001ls && sapT001ls.length === 1) {
+        this.sapT001lCtrl.setValue(sapT001ls[0]);
+      } else {
+        const oldId = this.sapT001lCtrl.value && this.sapT001lCtrl.value.id;
+        const find = (sapT001ls || []).find(it => it.id === oldId);
+        this.sapT001lCtrl.setValue(find);
+      }
+    }),
+  );
 
   constructor(private fb: FormBuilder,
               private api: ApiService,
               private dialogRef: MatDialogRef<PackageBoxCreateDialogComponent, PackageBox>,
-              @Inject(MAT_DIALOG_DATA) data: { packageBox: PackageBox; workshop: Workshop }) {
+              @Inject(MAT_DIALOG_DATA) data: { workshop: Workshop; packageBox: PackageBox; }) {
     this.workshop = data.workshop;
-    this.form.patchValue(data.packageBox);
-    this.sapT001ls$ = merge(this.form.get('palletCode').valueChanges, this.form.get('saleType').valueChanges).pipe(
-      map(() => {
-        const {sapT001ls, sapT001lsForeign, sapT001lsPallet} = this.workshop;
-        const palletCode = this.form.get('palletCode').value;
-        if (palletCode) {
-          return sapT001lsPallet;
-        }
-        const saleType = this.form.get('saleType').value;
-        switch (saleType) {
-          case  'DOMESTIC': {
-            return sapT001ls;
-          }
-          case 'FOREIGN': {
-            return sapT001lsForeign;
-          }
-          default: {
-            return [];
-          }
+    this.gradeCtrl.valueChanges.pipe(
+      takeUntil(this.dialogRef.afterClosed()),
+      debounceTime(SEARCH_DEBOUNCE_TIME),
+      distinctUntilChanged(),
+      tap((grade: Grade) => {
+        if (grade && grade.sortBy < 100) {
+          this.grossWeightCtrl.enable();
+        } else {
+          this.grossWeightCtrl.disable();
         }
       }),
-    );
-    merge(this.form.get('batch').valueChanges, this.form.get('grade').valueChanges, this.form.get('silkCount').valueChanges, this.form.get('netWeight').valueChanges, this.form.get('grossWeight').valueChanges).pipe(
+    ).subscribe();
+    merge(this.batchCtrl.valueChanges, this.gradeCtrl.valueChanges, this.silkCountCtrl.valueChanges, this.grossWeightCtrl.valueChanges).pipe(
       takeUntil(this.dialogRef.afterClosed()),
       map(() => {
-        const batch: Batch = this.form.get('batch').value;
-        const grade: Grade = this.form.get('grade').value;
-        const silkCount = this.form.get('silkCount').value;
-        const netWeight = this.form.get('netWeight').value;
-        const grossWeight = this.form.get('grossWeight').value;
+        const batch: Batch = this.batchCtrl.value;
+        const grade: Grade = this.gradeCtrl.value;
+        const silkCount = this.silkCountCtrl.value;
+        const netWeight = this.netWeightCtrl.value;
+        const grossWeight = this.grossWeightCtrl.value;
         if (batch && grade && silkCount) {
           return [batch.id, grade.id, silkCount, netWeight, grossWeight].join();
         }
@@ -97,27 +104,60 @@ export class PackageBoxCreateDialogComponent {
       debounceTime(SEARCH_DEBOUNCE_TIME),
       distinctUntilChanged(),
       tap(() => {
-        const batch: Batch = this.form.get('batch').value;
-        const grade: Grade = this.form.get('grade').value;
-        const silkCount = this.form.get('silkCount').value;
-        if (grade.sortBy >= 100) {
-          const netWeight = silkCount * batch.silkWeight;
-          const grossWeight = netWeight + silkCount * batch.tubeWeight;
-          this.form.get('netWeight').setValue(netWeight, {onlySelf: true});
-          this.form.get('grossWeight').setValue(grossWeight);
-        } else {
-          const grossWeight = this.form.get('grossWeight').value;
-          if (grossWeight) {
-            const netWeight = grossWeight - silkCount * batch.tubeWeight;
-            this.form.get('netWeight').setValue(netWeight);
-          }
+        const {netWeight, grossWeight} = this.weightFormula;
+        if (netWeight) {
+          this.netWeightCtrl.setValue(eval(netWeight));
+        }
+        if (grossWeight) {
+          this.grossWeightCtrl.setValue(eval(grossWeight));
         }
       }),
     ).subscribe();
+    this.form.patchValue(data.packageBox);
   }
 
-  static open(dialog: MatDialog, data: { packageBox: PackageBox; workshop: Workshop }): Observable<PackageBox> {
-    return dialog.open(PackageBoxCreateDialogComponent, {data, disableClose: true, width: '800px'})
+  get sapT001lCtrl(): AbstractControl {
+    return this.form.get('sapT001l');
+  }
+
+  get palletCodeCtrl(): AbstractControl {
+    return this.form.get('palletCode');
+  }
+
+  get saleTypeCtrl(): AbstractControl {
+    return this.form.get('saleType');
+  }
+
+  get batchCtrl(): AbstractControl {
+    return this.form.get('batch');
+  }
+
+  get gradeCtrl(): AbstractControl {
+    return this.form.get('grade');
+  }
+
+  get silkCountCtrl(): AbstractControl {
+    return this.form.get('silkCount');
+  }
+
+  get netWeightCtrl(): AbstractControl {
+    return this.form.get('netWeight');
+  }
+
+  get grossWeightCtrl(): AbstractControl {
+    return this.form.get('grossWeight');
+  }
+
+  get weightFormula(): { netWeight: string; grossWeight?: string } {
+    const batch: Batch = this.batchCtrl.value;
+    const grade: Grade = this.gradeCtrl.value;
+    const silkCount = this.silkCountCtrl.value;
+    const grossWeight = this.grossWeightCtrl.value;
+    return PackageBox.weightFormula({batch, grade, silkCount, grossWeight});
+  }
+
+  static open(dialog: MatDialog, data: { workshop: Workshop; packageBox: PackageBox; }): Observable<PackageBox> {
+    return dialog.open(PackageBoxCreateDialogComponent, {data, disableClose: true, minWidth: '800px'})
       .afterClosed().pipe(filter(it => it));
   }
 

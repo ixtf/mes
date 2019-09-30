@@ -19,10 +19,11 @@ export class PackageBoxPrintComponent implements AfterContentInit {
   }
 
   static print(dialog: MatDialog, data: PackageBox | PackageBox[]) {
-    if (!isArray(data)) {
-      data = [data] as PackageBox[];
+    let packageBoxes: PackageBox[] = (isArray(data) ? data : [data]) as PackageBox[];
+    packageBoxes = packageBoxes.filter(it => it.budat && it.type !== 'BIG_SILK_CAR');
+    if (packageBoxes.length > 0) {
+      dialog.open(PackageBoxPrintComponent, {data: packageBoxes});
     }
-    dialog.open(PackageBoxPrintComponent, {data});
   }
 
   ngAfterContentInit(): void {

@@ -90,7 +90,7 @@
                       (click)="$event.stopPropagation()"
                       [checked]="selection.isSelected(row)">
         </mat-checkbox>
-        <ng-container *ngIf="row.isValidPalletCode">
+        <ng-container *ngIf="isValidPalletCode(row)">
           <span [matTooltip]="row.palletCode" class="pallet-code" matTooltipPosition="right"></span>
         </ng-container>
       </td>
@@ -170,7 +170,7 @@
     <ng-container matColumnDef="palletType">
       <th *matHeaderCellDef mat-header-cell>{{'palletType'|translate}}</th>
       <td *matCellDef="let row" mat-cell>
-        <span [matTooltipDisabled]="!row.isValidPalletCode" [matTooltip]="row.palletCode">
+        <span [matTooltipDisabled]="!isValidPalletCode(row)" [matTooltip]="row.palletCode">
           {{row.palletType}}
         </span>
       </td>
@@ -219,7 +219,7 @@
           <button (click)="detail(row)" color="primary" mat-menu-item type="button">
             {{'Common.detail'|translate}}
           </button>
-          <button (click)="print()" color="primary" mat-menu-item type="button">
+          <button (click)="print()" [disabled]="row.type==='BIG_SILK_CAR'" color="primary" mat-menu-item type="button">
             {{'Common.print'|translate}}
           </button>
           <button (click)="delete(row)" *ngIf="isAdmin$|async" color="primary" mat-menu-item type="button">

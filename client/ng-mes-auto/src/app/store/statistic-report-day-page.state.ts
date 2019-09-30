@@ -122,7 +122,6 @@ export class StatisticReportDayPageState {
   @Action(CustomDiffAction)
   @ImmutableContext()
   CustomDiffAction({setState}: StateContext<StateModel>, {payload: {items}}: CustomDiffAction) {
-    console.log(items);
   }
 
   @Action(QueryAction, {cancelUncompleted: true})

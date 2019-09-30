@@ -226,7 +226,6 @@ export class UnbudatPackageBoxManagePageState {
   @Action(MeasureAction)
   @ImmutableContext()
   MeasureAction({setState}: StateContext<StateModel>, {payload}: MeasureAction) {
-    console.log(payload);
     // return this.api.saveNotification(payload).pipe(
     //   tap(it => setState((state: StateModel) => {
     //     const notification = PackageBox.assign(it);

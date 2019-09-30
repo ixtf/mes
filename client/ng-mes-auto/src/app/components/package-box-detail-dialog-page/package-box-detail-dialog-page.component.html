@@ -103,7 +103,7 @@
       <ng-container *ngIf="packageBox?.type==='AUTO'||packageBox?.type==='BIG_SILK_CAR'">
         <mat-table [dataSource]="silks$">
           <ng-container matColumnDef="code">
-            <mat-header-cell *matHeaderCellDef>{{'Silk.code'|translate}}</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>{{'Silk.code'|translate}}({{(silks$|async)?.length}})</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.code}}</mat-cell>
           </ng-container>
 

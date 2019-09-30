@@ -286,6 +286,7 @@
     "max": "最大值：{{max}}",
     "minLength": "至少{{requiredLength}}个字符；当前{{actualLength}}个字符",
     "maxLength": "最大值为 {{MAXLENGTH}}",
+    "batchMeasureError": "无法批量",
     "BatchRange": {
       "noNumberFind": "没有数字可以进行批量",
       "prefix": "前缀不同",

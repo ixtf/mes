@@ -13,8 +13,8 @@
   </section>
 
   <section fxFlex fxLayout="column">
-    <span class="line" style="text-align: right;padding-right: 0.5cm">{{it.netWeight}}</span>
-    <span class="line" style="text-align: right;padding-right: 0.5cm">{{it.grossWeight}}</span>
+    <span class="line" style="text-align: right;padding-right: 0.5cm">{{it.netWeight|number:'.3-3'}}</span>
+    <span class="line" style="text-align: right;padding-right: 0.5cm">{{it.grossWeight|number:'.3-3'}}</span>
     <qrcode [qrdata]="it.code" [usesvg]="true" style="width:8cm;height:8cm;"></qrcode>
   </section>
 </div>

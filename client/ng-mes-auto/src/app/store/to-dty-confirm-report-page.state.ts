@@ -171,26 +171,13 @@ export class ToDtyConfirmReportPageState {
     const endS = moment(endDateTime).format('YYYY-MM-DD HH:mm');
     const fileName = workshop.name + '.' + startS + '~' + endS + '.xlsx';
 
-    const headerItem = ['人员'];
+    const headerItem = ['人员', '车数', '颗数'];
     const data = [headerItem];
-    const products = InspectionReportPageState.products(getState());
-    products.forEach(product => {
-      headerItem.push(product.name + '车数');
-      headerItem.push(product.name + '颗数');
-    });
-    (InspectionReportPageState.items(getState()) || []).forEach(item => {
+    (ToDtyConfirmReportPageState.items(getState()) || []).forEach(item => {
       const xlsxItem = [];
-      const {operator, groupByProducts} = item;
-      xlsxItem.push(operator.name);
-      products.forEach(product => {
-        const groupByProduct = groupByProducts.find(it => it.product.id === product.id);
-        if (groupByProduct) {
-          xlsxItem.push(groupByProduct.silkCarRecordCount);
-          xlsxItem.push(groupByProduct.silkCount);
-        } else {
-          xlsxItem.push('', '');
-        }
-      });
+      xlsxItem.push(item.operator.name);
+      xlsxItem.push(item.silkCarRecordCount);
+      xlsxItem.push(item.silkCount);
       data.push(xlsxItem);
     });
     if (data.length > 1) {

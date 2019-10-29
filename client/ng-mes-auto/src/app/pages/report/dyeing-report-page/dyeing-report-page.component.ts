@@ -14,7 +14,7 @@ import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {DyeingReportItem, DyeingReportPageState, GroupByDyeingType, InitAction, QueryAction} from '../../../store/dyeing-report-page.state';
+import {DownloadAction, DyeingReportItem, DyeingReportPageState, GroupByDyeingType, InitAction, QueryAction} from '../../../store/dyeing-report-page.state';
 import {DyeingReportDetailDialogComponent} from './dyeing-report-detail-dialog/dyeing-report-detail-dialog.component';
 
 @Component({
@@ -63,6 +63,11 @@ export class DyeingReportPageComponent {
   @Dispatch()
   query() {
     return new QueryAction(this.searchForm.value);
+  }
+
+  @Dispatch()
+  download() {
+    return new DownloadAction();
   }
 
   groupByDyeingTypes(item: DyeingReportItem): GroupByDyeingType[] {

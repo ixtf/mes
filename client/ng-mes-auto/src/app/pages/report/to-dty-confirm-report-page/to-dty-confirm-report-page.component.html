@@ -15,6 +15,11 @@
   <button [disabled]="searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
     <mat-icon>search</mat-icon>
   </button>
+
+  <span fxFlex></span>
+  <button (click)="download()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>get_app</mat-icon>
+  </button>
 </form>
 
 <mat-divider></mat-divider>

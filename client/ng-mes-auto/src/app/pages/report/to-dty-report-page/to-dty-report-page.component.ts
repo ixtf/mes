@@ -14,7 +14,7 @@ import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {InitAction, QueryAction, ToDtyReportItem, ToDtyReportPageState} from '../../../store/to-dty-report-page.state';
+import {DownloadAction, InitAction, QueryAction, ToDtyReportItem, ToDtyReportPageState} from '../../../store/to-dty-report-page.state';
 import {ToDtyReportDetailDialogComponent} from './to-dty-report-detail-dialog/to-dty-report-detail-dialog.component';
 
 @Component({
@@ -61,6 +61,11 @@ export class ToDtyReportPageComponent {
   @Dispatch()
   query() {
     return new QueryAction(this.searchForm.value);
+  }
+
+  @Dispatch()
+  download() {
+    return new DownloadAction();
   }
 
   totalInfo(): ToDtyReportItem {

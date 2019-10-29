@@ -2,6 +2,7 @@ import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {tap} from 'rxjs/operators';
+import * as XLSX from 'xlsx';
 import {Operator} from '../models/operator';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
@@ -18,6 +19,10 @@ export class QueryAction {
 
   constructor(public payload: { workshopId: string; startDateTime: Date; endDateTime: Date; }) {
   }
+}
+
+export class DownloadAction {
+  static readonly type = `[${PAGE_NAME}] DownloadAction`;
 }
 
 export class ToDtyConfirmReportItem {
@@ -155,6 +160,46 @@ export class ToDtyConfirmReportPageState {
         return state;
       })),
     );
+  }
+
+  @Action(DownloadAction)
+  @ImmutableContext()
+  DownloadAction({getState}: StateContext<StateModel>) {
+    const {workshopId, workshopEntities, startDateTime, endDateTime} = getState();
+    const workshop = workshopEntities[workshopId];
+    const startS = moment(startDateTime).format('YYYY-MM-DD HH:mm');
+    const endS = moment(endDateTime).format('YYYY-MM-DD HH:mm');
+    const fileName = workshop.name + '.' + startS + '~' + endS + '.xlsx';
+
+    const headerItem = ['人员'];
+    const data = [headerItem];
+    const products = InspectionReportPageState.products(getState());
+    products.forEach(product => {
+      headerItem.push(product.name + '车数');
+      headerItem.push(product.name + '颗数');
+    });
+    (InspectionReportPageState.items(getState()) || []).forEach(item => {
+      const xlsxItem = [];
+      const {operator, groupByProducts} = item;
+      xlsxItem.push(operator.name);
+      products.forEach(product => {
+        const groupByProduct = groupByProducts.find(it => it.product.id === product.id);
+        if (groupByProduct) {
+          xlsxItem.push(groupByProduct.silkCarRecordCount);
+          xlsxItem.push(groupByProduct.silkCount);
+        } else {
+          xlsxItem.push('', '');
+        }
+      });
+      data.push(xlsxItem);
+    });
+    if (data.length > 1) {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      // ws['!merges'] = ws['!merges'] || [];
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, fileName);
+    }
   }
 
 }

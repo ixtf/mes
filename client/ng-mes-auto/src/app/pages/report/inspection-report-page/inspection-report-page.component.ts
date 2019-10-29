@@ -15,7 +15,7 @@ import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../../store/app.state';
-import {GroupByProduct, InitAction, InspectionReportItem, InspectionReportPageState, QueryAction} from '../../../store/inspection-report-page.state';
+import {DownloadAction, GroupByProduct, InitAction, InspectionReportItem, InspectionReportPageState, QueryAction} from '../../../store/inspection-report-page.state';
 import {InspectionReportDetailDialogComponent} from './inspection-report-detail-dialog/inspection-report-detail-dialog.component';
 
 @Component({
@@ -70,6 +70,11 @@ export class InspectionReportPageComponent {
   @Dispatch()
   query() {
     return new QueryAction(this.searchForm.value);
+  }
+
+  @Dispatch()
+  download() {
+    return new DownloadAction();
   }
 
   detailInfo(item: InspectionReportItem, product: Product): GroupByProduct {

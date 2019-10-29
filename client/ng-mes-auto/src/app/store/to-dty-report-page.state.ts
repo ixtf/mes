@@ -2,6 +2,7 @@ import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {tap} from 'rxjs/operators';
+import * as XLSX from 'xlsx';
 import {Operator} from '../models/operator';
 import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
@@ -18,6 +19,10 @@ export class QueryAction {
 
   constructor(public payload: { workshopId: string; startDateTime: Date; endDateTime: Date; }) {
   }
+}
+
+export class DownloadAction {
+  static readonly type = `[${PAGE_NAME}] DownloadAction`;
 }
 
 export class ToDtyReportItem {
@@ -155,6 +160,33 @@ export class ToDtyReportPageState {
         return state;
       })),
     );
+  }
+
+  @Action(DownloadAction)
+  @ImmutableContext()
+  DownloadAction({getState}: StateContext<StateModel>) {
+    const {workshopId, workshopEntities, startDateTime, endDateTime} = getState();
+    const workshop = workshopEntities[workshopId];
+    const startS = moment(startDateTime).format('YYYY-MM-DD HH:mm');
+    const endS = moment(endDateTime).format('YYYY-MM-DD HH:mm');
+    const fileName = workshop.name + '.' + startS + '~' + endS + '.xlsx';
+
+    const headerItem = ['人员', '车数', '颗数'];
+    const data = [headerItem];
+    (ToDtyReportPageState.items(getState()) || []).forEach(item => {
+      const xlsxItem = [];
+      xlsxItem.push(item.operator.name);
+      xlsxItem.push(item.silkCarRecordCount);
+      xlsxItem.push(item.silkCount);
+      data.push(xlsxItem);
+    });
+    if (data.length > 1) {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      // ws['!merges'] = ws['!merges'] || [];
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, fileName);
+    }
   }
 
 }

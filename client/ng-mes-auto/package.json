@@ -47,7 +47,7 @@
     "ng-pick-datetime-moment": "^1.0.8",
     "ngx-barcode": "^0.2.4",
     "normalize.css": "^8.0.1",
-    "rxjs": "~6.5.2",
+    "rxjs": "~6.5.3",
     "sockjs": "^0.3.19",
     "tslib": "^1.9.0",
     "vertx3-eventbus-client": "~3.7.1",

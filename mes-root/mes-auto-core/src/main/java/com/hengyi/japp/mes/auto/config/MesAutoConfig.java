@@ -65,20 +65,20 @@ public class MesAutoConfig {
         return Util.readJsonObject(apkPath.resolve(path));
     }
 
+    public static String apkFile(String version) {
+        if ("latest".equalsIgnoreCase(version)) {
+            final JsonObject apkInfo = apkInfo();
+            version = apkInfo.getString("version");
+        }
+        return apkPath.resolve(Paths.get(version, "mes-auto.apk")).toFile().getPath();
+    }
+
     public static Path luceneIndexPath(Class<?> clazz) {
         return lucenePath.resolve(clazz.getSimpleName());
     }
 
     public static Path luceneTaxoPath(Class<?> clazz) {
         return lucenePath.resolve(clazz.getSimpleName() + "_Taxonomy");
-    }
-
-    public static String apkFile(String version) {
-        if (version.equalsIgnoreCase("latest")) {
-            final JsonObject apkInfo = apkInfo();
-            version = apkInfo.getString("version");
-        }
-        return apkPath.resolve(Paths.get(version, "mes-auto.apk")).toFile().getPath();
     }
 
     public static KeyStore getKeyStore() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {

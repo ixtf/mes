@@ -1,0 +1,9 @@
+type Mutation {
+    createOperator(command:OperatorUpdateCommand!): Operator
+    updateOperator(id: ID!,command:OperatorUpdateCommand!): Operator
+}
+
+type Query {
+    listOperator(first: Int=0,pageSize:Int=50): OperatorQuery
+    hello: String
+}

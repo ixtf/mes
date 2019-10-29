@@ -1,0 +1,5 @@
+input OperatorUpdateCommand{
+    name: String!
+    hrId: String!
+    admin: Boolean
+}

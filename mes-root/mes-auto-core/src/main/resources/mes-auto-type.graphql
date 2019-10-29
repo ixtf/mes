@@ -1,0 +1,16 @@
+scalar Long
+
+type Operator {
+    id: ID!
+    name: String
+    hrId: String
+    admin: Boolean
+}
+type OperatorQuery {
+    first: Long
+    pageSize: Int
+    count: Long
+    operators: [Operator]
+    l: Long
+    #    d: Date
+}

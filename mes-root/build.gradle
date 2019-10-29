@@ -1,8 +1,8 @@
 plugins {
-    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
-    id 'io.franzbecker.gradle-lombok' version '1.14'
-    id 'com.palantir.docker' version "0.20.1"
-    id 'com.github.johnrengelman.shadow' version '4.0.3'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'io.franzbecker.gradle-lombok' version '3.2.0'
+    id 'com.palantir.docker' version "0.22.1"
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 allprojects {
     group 'com.hengyi.japp.mes'
@@ -12,6 +12,7 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: "io.spring.dependency-management"
+    apply plugin: 'io.franzbecker.gradle-lombok'
 
     repositories {
         mavenLocal()
@@ -33,11 +34,6 @@ subprojects {
     apply plugin: 'application'
     apply plugin: 'com.github.johnrengelman.shadow'
     apply plugin: 'com.palantir.docker'
-    apply plugin: 'io.franzbecker.gradle-lombok'
-    lombok {
-        version = "${lombokVersion}"
-        sha256 = ""
-    }
 
     dependencies {
         compileOnly "io.vertx:vertx-codegen"

@@ -219,7 +219,7 @@
           <button (click)="detail(row)" color="primary" mat-menu-item type="button">
             {{'Common.detail'|translate}}
           </button>
-          <button (click)="print()" [disabled]="row.type==='BIG_SILK_CAR'" color="primary" mat-menu-item type="button">
+          <button (click)="print(row)" [disabled]="row.type==='BIG_SILK_CAR'" color="primary" mat-menu-item type="button">
             {{'Common.print'|translate}}
           </button>
           <button (click)="delete(row)" *ngIf="isAdmin$|async" color="primary" mat-menu-item type="button">

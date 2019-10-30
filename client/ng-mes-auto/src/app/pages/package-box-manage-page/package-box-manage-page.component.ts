@@ -105,8 +105,12 @@ export class PackageBoxManagePageComponent {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  print() {
-    PackageBoxPrintComponent.print(this.dialog, this.selection.selected);
+  print(packageBox?: PackageBox) {
+    if (packageBox) {
+      PackageBoxPrintComponent.print(this.dialog, packageBox);
+    } else {
+      PackageBoxPrintComponent.print(this.dialog, this.selection.selected);
+    }
   }
 
   detail(packageBox: PackageBox) {

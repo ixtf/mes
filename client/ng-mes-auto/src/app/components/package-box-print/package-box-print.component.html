@@ -1,20 +1,16 @@
 <div *ngFor="let it of packageBoxes" class="package-box" fxLayout>
-  <section fxFlex="40" fxFlexAlign="center center" fxFlexOffset="19" fxLayout="column">
-    <span class="line bold">{{it.batch.batchNo}}</span>
-    <span class="line">{{it.batch.spec}}</span>
-    <span class="line bold">{{it.grade.name}}</span>
-    <span class="line">{{it.silkCount}}</span>
-    <span class="line">{{it.batch.tubeColor}}</span>
-    <span class="line">{{it.budat|date:'yyyy-MM-dd'}}</span>
-    <div fxFlexAlign="center center" fxLayout="column">
-      <span class="line" style="line-height: 0.82cm">{{it.code.substring(0, 12)}}</span>
-      <span class="line" style="line-height: 0.82cm">{{it.code.substring(12)}}</span>
-    </div>
-  </section>
+  <div class="box batchNo bold">{{it.batch.batchNo}}</div>
+  <div class="box spec">{{it.batch.spec}}</div>
+  <div class="box grade bold">{{it.grade.name}}</div>
+  <div class="box silkCount">{{it.silkCount}}</div>
+  <div class="box tubeColor">{{it.batch.tubeColor}}</div>
+  <div class="box printDate">{{it.budat|date:'yyyy-MM-dd'}}</div>
+  <div class="box code" fxFlexAlign="center center" fxLayout="column" fxLayoutGap="4">
+    <div>{{it.code.substring(0, 12)}}</div>
+    <div>{{it.code.substring(12)}}</div>
+  </div>
 
-  <section fxFlex fxLayout="column">
-    <span class="line" style="text-align: right;padding-right: 0.5cm">{{it.netWeight|number:'.3-3'}}</span>
-    <span class="line" style="text-align: right;padding-right: 0.5cm">{{it.grossWeight|number:'.3-3'}}</span>
-    <qrcode [qrdata]="it.code" [usesvg]="true" style="width:8cm;height:8cm;"></qrcode>
-  </section>
+  <div class="box netWeight">{{it.netWeight|number:'.3-3'}}</div>
+  <div class="box grossWeight">{{it.grossWeight|number:'.3-3'}}</div>
+  <qrcode [qrdata]="it.code" [usesvg]="true"></qrcode>
 </div>

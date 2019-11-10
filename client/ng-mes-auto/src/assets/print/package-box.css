@@ -1,22 +1,76 @@
 @page {
   size: 20cm 16cm;
   margin: 0;
+  padding: 0;
 }
 
 div.package-box {
-  /*border: 1px solid #000;*/
+  position: relative;
   width: 20cm;
   height: 16cm;
-  padding-top: 3.2cm;
   font-size: 0.9cm;
 }
 
-span.line {
-  line-height: 1.64cm;
-  text-align: center;
+.box {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 2.5cm;
+  height: 1.64cm;
+  width: 8cm;
 }
 
-span.line.bold {
+.box.bold {
   font-size: 1.5cm;
   font-weight: bold;
+}
+
+div.batchNo {
+  top: 3cm;
+}
+
+div.spec {
+  top: 4.64cm;
+}
+
+div.grade {
+  top: 6.28cm;
+}
+
+div.silkCount {
+  top: 7.92cm;
+}
+
+div.tubeColor {
+  top: 9.56cm;
+}
+
+div.printDate {
+  top: 11.2cm;
+}
+
+div.code {
+  top: 12.84cm;
+  height: 3cm;
+}
+
+div.netWeight {
+  top: 3cm;
+  left: 11.5cm;
+  justify-content: flex-end;
+}
+
+div.grossWeight {
+  top: 4.64cm;
+  left: 11.5cm;
+  justify-content: flex-end;
+}
+
+qrcode {
+  position: absolute;
+  top: 7cm;
+  left: 11.7cm;
+  width: 8cm;
+  height: 8cm;
 }

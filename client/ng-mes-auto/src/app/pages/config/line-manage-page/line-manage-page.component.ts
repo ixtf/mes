@@ -6,6 +6,7 @@ import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
+import {DoffingConfigDialogComponent, DoffingConfigDialogComponentModule} from '../../../components/doffing-config-dialog/doffing-config-dialog.component';
 import {Line} from '../../../models/line';
 import {Workshop} from '../../../models/workshop';
 import {UtilService} from '../../../services/util.service';
@@ -60,6 +61,13 @@ export class LineManagePageComponent {
   query(ev: MatSelectChange) {
     return new QueryAction({workshopId: ev.source.value});
   }
+
+  doffingConfig(line: Line) {
+    DoffingConfigDialogComponent.open(this.dialog, {spindleNum: 5}).pipe(
+      switchMap(it => this.store.dispatch(new SaveAction(it))),
+      tap(() => this.util.showSuccess()),
+    ).subscribe();
+  }
 }
 
 @NgModule({
@@ -71,6 +79,7 @@ export class LineManagePageComponent {
     LineUpdateDialogComponent,
   ],
   imports: [
+    DoffingConfigDialogComponentModule,
     NgxsModule.forFeature([LineManagePageState]),
     SharedModule,
     RouterModule.forChild([

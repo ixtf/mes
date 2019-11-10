@@ -1,0 +1,51 @@
+@import "../../../library";
+
+//.mat-dialog-content {
+//  padding: 0;
+//}
+
+.silk-tile {
+  box-sizing: border-box;
+  border: 1px black solid;
+  font-size: 15px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .position {
+    color: white;
+    //background: seagreen;
+    background: rgba(0, 0, 0, .38);
+    line-height: 28px;
+    cursor: pointer;
+
+    span {
+      font-size: 16px;
+      text-align: center;
+    }
+
+    mat-icon {
+      position: absolute;
+      right: 2px;
+    }
+  }
+
+  &.empty {
+    border: 1px black dashed;
+
+    .position {
+      cursor: auto;
+    }
+  }
+}
+
+.silk {
+  box-sizing: border-box;
+  border: 1px black solid;
+
+  &.empty {
+    border: 1px black dashed;
+  }
+}

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Inject, NgModule} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatExpansionModule} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import {Router, RouterModule} from '@angular/router';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -58,7 +58,6 @@ export class PackageBoxDetailDialogPageComponent {
   imports: [
     RouterModule,
     SharedModule,
-    MatExpansionModule,
   ],
   exports: [
     PackageBoxDetailDialogPageComponent,

@@ -31,7 +31,7 @@ export class SilkCarPrintComponent implements AfterContentInit {
       popupWin.document.write(`<html>
 <head>
 <link rel="stylesheet" type="text/css" href="assets/print/normalize.css">
-<link rel="stylesheet" type="text/css" href="assets/print/package-box.css">
+<link rel="stylesheet" type="text/css" href="assets/print/silk-car.css">
 </head>
 <body onload="window.print();window.close()">${this.elementRef.nativeElement.innerHTML}</body>
 </html>`);

@@ -1,0 +1,79 @@
+<div fxLayout fxLayoutAlign="start center" mat-dialog-title>
+  <span fxFlex>{{title|translate}}</span>
+</div>
+
+<mat-dialog-content fxLayout="column">
+  <section [formGroup]="form" fxFlexAlign="center center" fxLayoutGap="16px">
+    <mat-form-field>
+      <input [formControl]="lineMachineCountCtrl" [placeholder]="'lineMachineCount'|translate" matInput min="1" required step="1" type="number">
+      <mat-error *ngIf="lineMachineCountCtrl.hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="lineMachineCountCtrl.hasError('min')">
+        {{'Validator.min'|translate:lineMachineCountCtrl.getError('min')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [formControl]="spindleNumCtrl" [placeholder]="'spindleNum'|translate" matInput min="1" required step="1" type="number">
+      <mat-error *ngIf="spindleNumCtrl.hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="spindleNumCtrl.hasError('min')">
+        {{'Validator.min'|translate:spindleNumCtrl.getError('min')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [formControl]="rowCtrl" [placeholder]="'Common.row'|translate" matInput min="3" required step="1" type="number">
+      <mat-error *ngIf="rowCtrl.hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="rowCtrl.hasError('min')">
+        {{'Validator.min'|translate:rowCtrl.getError('min')}}
+      </mat-error>
+      <mat-error *ngIf="rowCtrl.hasError('max')">
+        {{'Validator.max'|translate:rowCtrl.getError('max')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input [formControl]="colCtrl" [placeholder]="'Common.col'|translate" matInput min="4" required step="1" type="number">
+      <mat-error *ngIf="colCtrl.hasError('required')">
+        {{'Validator.required'|translate}}
+      </mat-error>
+      <mat-error *ngIf="colCtrl.hasError('min')">
+        {{'Validator.min'|translate:colCtrl.getError('min')}}
+      </mat-error>
+      <mat-error *ngIf="colCtrl.hasError('max')">
+        {{'Validator.max'|translate:colCtrl.getError('max')}}
+      </mat-error>
+    </mat-form-field>
+  </section>
+
+  <section #tileGroup='cdkDropListGroup' cdkDropListGroup fxLayout="column" fxLayoutGap="4px">
+    <mat-grid-list (cdkDropListDropped)="dropTile($event)" *ngFor="let rowTile of rowTiles$|async" [cdkDropListConnectedTo]="[silkGroup]" [cols]="form.value.col*2" cdkDropList cdkDropListOrientation="horizontal" gutterSize="4" rowHeight="60px">
+      <mat-grid-tile *ngFor="let tile of rowTile.tiles" [cdkDragData]="tile" cdkDrag>
+        <div class="silk-tile" fxFill fxLayout="column">
+          <div class="position">
+            <span fxFlex>{{tile.sideType}}-{{tile.row}}-{{tile.col}}</span>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </section>
+
+  <section #silkGroup='cdkDropListGroup' cdkDropListGroup fxFlexOffset="16px" fxLayout="column" fxLayoutGap="8px">
+    <mat-grid-list (cdkDropListDropped)="dropSilk($event)" *ngFor="let lineMachine of lineMachines$|async" [cdkDropListConnectedTo]="[tileGroup]" [cols]="form.value.spindleNum" cdkDropList cdkDropListOrientation="horizontal" gutterSize="4" rowHeight="30px">
+      <mat-grid-tile *ngFor="let silk of lineMachine.silks" [cdkDragData]="silk" cdkDrag>
+        <div class="silk" fxFill fxFlexAlign="center center">
+          <span fxFlex>{{silk.orderBy}}-{{silk.spindle}}</span>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button color="warn" mat-button tabindex="-1" type="button">{{'Common.ok'|translate}}</button>
+</mat-dialog-actions>

@@ -38,5 +38,5 @@
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
+  <mat-row (dblclick)="doffingConfig(row)" *matRowDef="let row; columns: displayedColumns$|async;"></mat-row>
 </mat-table>

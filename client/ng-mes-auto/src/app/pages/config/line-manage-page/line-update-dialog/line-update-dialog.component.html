@@ -21,7 +21,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input [placeholder]="'name'|translate" formControlName="name" matInput required>
+      <input [placeholder]="'Common.name'|translate" formControlName="name" matInput required>
       <mat-error *ngIf="form.get('name').hasError('required')">
         {{'Validator.required'|translate}}
       </mat-error>

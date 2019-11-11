@@ -25,15 +25,15 @@
 <mat-divider></mat-divider>
 
 <div fxFlex style="overflow: auto;width: 100vw;">
-  <table mat-table [dataSource]="items$" fxFlex>
+  <table [dataSource]="items$" fxFlex mat-table>
     <ng-container matColumnDef="product" sticky>
-      <th mat-header-cell *matHeaderCellDef>{{'product'|translate}}</th>
-      <td mat-cell *matCellDef="let row">{{row.product.name}}</td>
+      <th *matHeaderCellDef mat-header-cell>{{'product'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.product.name}}</td>
     </ng-container>
 
     <ng-container matColumnDef="line" sticky>
-      <th mat-header-cell *matHeaderCellDef>{{'line'|translate}}</th>
-      <td mat-cell *matCellDef="let row">
+      <th *matHeaderCellDef mat-header-cell>{{'line'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>
         <ng-container *ngIf="!row.productSum">
           {{row.line?.name}}
         </ng-container>
@@ -41,8 +41,8 @@
     </ng-container>
 
     <ng-container matColumnDef="batchNo" sticky>
-      <th mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</th>
-      <td mat-cell *matCellDef="let row">
+      <th *matHeaderCellDef mat-header-cell>{{'batchNo'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>
         <ng-container *ngIf="!row.productSum">
           {{row.batch.batchNo}}
         </ng-container>
@@ -50,20 +50,20 @@
     </ng-container>
 
     <ng-container matColumnDef="batchSpec" sticky>
-      <th mat-header-cell *matHeaderCellDef>{{'Batch.spec'|translate}}</th>
-      <td mat-cell *matCellDef="let row">
+      <th *matHeaderCellDef mat-header-cell>{{'Batch.spec'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>
         <ng-container *ngIf="!row.productSum">
           {{row.batch.spec}}
         </ng-container>
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="{{silkException.id}}" *ngFor="let silkException of silkExceptions$|async">
-      <th class="silk-exception" mat-header-cell *matHeaderCellDef>{{silkException.name}}</th>
-      <td class="silk-exception" mat-cell *matCellDef="let row">{{silkExceptionCount(row, silkException)}}</td>
+    <ng-container *ngFor="let silkException of silkExceptions$|async" matColumnDef="{{silkException.id}}">
+      <th *matHeaderCellDef class="silk-exception" mat-header-cell>{{silkException.name}}</th>
+      <td *matCellDef="let row" class="silk-exception" mat-cell>{{silkExceptionCount(row, silkException)}}</td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns$|async; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns$|async;" [class.line-sum]="row.productSum"></tr>
+    <tr *matHeaderRowDef="displayedColumns$|async; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns$|async;" [class.line-sum]="row.productSum" mat-row></tr>
   </table>
 </div>

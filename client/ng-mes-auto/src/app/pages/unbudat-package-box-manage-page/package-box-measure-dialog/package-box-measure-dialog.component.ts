@@ -152,6 +152,10 @@ export class PackageBoxMeasureDialogComponent {
       .afterClosed().pipe(filter(it => it));
   }
 
+  save() {
+    this.dialogRef.close(this.form.value);
+  }
+
   /**
    * 自动线打包
    */
@@ -187,9 +191,5 @@ export class PackageBoxMeasureDialogComponent {
         this.form.get('netWeight').setValue(netWeight);
       }),
     ).subscribe();
-  }
-
-  save() {
-    this.dialogRef.close(this.form.value);
   }
 }

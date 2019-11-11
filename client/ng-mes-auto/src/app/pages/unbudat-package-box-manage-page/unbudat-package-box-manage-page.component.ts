@@ -73,6 +73,10 @@ export class UnbudatPackageBoxManagePageComponent {
     });
   }
 
+  get canBatchMeasure(): boolean {
+    return PackageBoxBatchMeasureDialogComponent.check(this.selection.selected);
+  }
+
   @Dispatch()
   refresh() {
     return new RefreshAction();
@@ -85,10 +89,6 @@ export class UnbudatPackageBoxManagePageComponent {
       printed: null,
       measured: null,
     });
-  }
-
-  get canBatchMeasure(): boolean {
-    return PackageBoxBatchMeasureDialogComponent.check(this.selection.selected);
   }
 
   create() {

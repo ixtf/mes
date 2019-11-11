@@ -1,6 +1,6 @@
 <div *ngFor="let it of silkCars" class="silk-car-print" fxLayout>
   <div class="box number">{{it.number}}</div>
-  <ngx-barcode bc-element-type="canvas" bc-class="box barcode" bc-height="133" bc-margin="0" bc-display-value [bc-value]="it.code"></ngx-barcode>
+  <ngx-barcode [bc-value]="it.code" bc-class="box barcode" bc-display-value bc-element-type="canvas" bc-height="133" bc-margin="0"></ngx-barcode>
 
   <div class="box qrcode-number">{{it.number}}</div>
   <div class="box qrcode">

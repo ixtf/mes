@@ -24,13 +24,14 @@ export class ToDtyConfirmEventComponent {
   private silkCarRuntime: SilkCarRuntime;
   @Input()
   private silkCarRecord: SilkCarRecord;
-  private _event: ToDtyConfirmEvent;
 
   constructor(private store: Store,
               private api: ApiService,
               private translate: TranslateService,
               private dialog: MatDialog) {
   }
+
+  private _event: ToDtyConfirmEvent;
 
   get event(): ToDtyConfirmEvent {
     return this._event;

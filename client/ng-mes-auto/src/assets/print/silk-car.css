@@ -3,7 +3,61 @@
   margin: 0;
 }
 
-.silk-car-print {
+div.silk-car {
+  position: relative;
   width: 10cm;
   height: 5cm;
+  font-size: 5mm;
+}
+
+.box {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5cm;
+}
+
+div.number {
+  top: 0;
+  height: 1cm;
+  font-weight: bold;
+}
+
+div.barcode {
+  top: 8mm;
+  height: 4cm;
+}
+
+div.barcode canvas {
+  height: 4cm;
+  width: 5cm;
+}
+
+div.qrcode-number {
+  top: 0;
+  left: 5cm;
+  height: 1cm;
+  font-weight: bold;
+}
+
+div.qrcode {
+  top: 8mm;
+  left: 5cm;
+  width: 5cm;
+  height: 4cm;
+  flex-direction: column;
+}
+
+qrcode {
+  width: 3cm;
+  height: 3cm;
+}
+
+div.qrcode-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5cm;
+  height: 6mm;
 }

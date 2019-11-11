@@ -1,0 +1,48 @@
+@import "../../../../library";
+
+:host {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+}
+
+.mat-table {
+  overflow-y: auto;
+
+  .mat-footer-row {
+    font-weight: bold;
+    background-color: #c4e3f3;
+  }
+}
+
+.mat-column-product {
+  width: 100px;
+}
+
+.mat-column-batchSpec,
+.mat-column-batchNo {
+  width: 150px;
+}
+
+.mat-column-batchSpec {
+  border-right: 1px solid #e0e0e0;
+}
+
+.mat-column-line {
+  width: 80px;
+}
+
+.silk-exception {
+  min-width: 100px;
+  text-align: right;
+}
+
+.line-sum,
+.mat-footer-cell {
+  font-weight: bold;
+  background-color: #fbed50;
+}

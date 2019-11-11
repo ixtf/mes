@@ -9,7 +9,7 @@ import {Workshop} from '../models/workshop';
 import {ApiService} from '../services/api.service';
 import {CODE_COMPARE} from '../services/util.service';
 
-const PAGE_NAME = 'StatisticReportDayPageState';
+const PAGE_NAME = 'StatisticReportDayPage';
 
 export class InitAction {
   static readonly type = `[${PAGE_NAME}] InitAction`;

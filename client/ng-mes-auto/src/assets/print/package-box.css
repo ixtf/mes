@@ -8,7 +8,7 @@ div.package-box {
   position: relative;
   width: 20cm;
   height: 16cm;
-  font-size: 0.9cm;
+  font-size: 9mm;
 }
 
 .box {
@@ -16,8 +16,8 @@ div.package-box {
   display: flex;
   justify-content: center;
   align-items: center;
-  left: 2.5cm;
-  height: 1.64cm;
+  left: 28mm;
+  height: 18mm;
   width: 8cm;
 }
 
@@ -27,50 +27,50 @@ div.package-box {
 }
 
 div.batchNo {
-  top: 3cm;
+  top: 25mm;
 }
 
 div.spec {
-  top: 4.64cm;
+  top: 43mm;
 }
 
 div.grade {
-  top: 6.28cm;
+  top: 61mm;
 }
 
 div.silkCount {
-  top: 7.92cm;
+  top: 79mm;
 }
 
 div.tubeColor {
-  top: 9.56cm;
+  top: 97mm;
 }
 
 div.printDate {
-  top: 11.2cm;
+  top: 115mm;
 }
 
 div.code {
-  top: 12.84cm;
-  height: 3cm;
+  top: 133mm;
+  height: 25mm;
 }
 
 div.netWeight {
-  top: 3cm;
-  left: 11.5cm;
+  top: 25mm;
+  left: 114mm;
   justify-content: flex-end;
 }
 
 div.grossWeight {
-  top: 4.64cm;
-  left: 11.5cm;
+  top: 43mm;
+  left: 114mm;
   justify-content: flex-end;
 }
 
 qrcode {
   position: absolute;
   top: 7cm;
-  left: 11.7cm;
+  left: 117mm;
   width: 8cm;
   height: 8cm;
 }

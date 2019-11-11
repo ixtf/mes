@@ -37,8 +37,8 @@ export class PackageBoxPrintComponent implements AfterContentInit {
 </head>
 <body onload="window.print();window.close()">${this.elementRef.nativeElement.innerHTML}</body>
 </html>`);
-      popupWin.document.close();
       this.dialogRef.close();
+      popupWin.document.close();
     });
   }
 }

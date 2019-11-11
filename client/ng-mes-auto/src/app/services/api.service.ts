@@ -38,7 +38,9 @@ import {TemporaryBox} from '../models/temporary-box';
 import {Workshop} from '../models/workshop';
 import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report';
 import {DoffingSilkCarRecordReportItem} from '../store/doffing-silk-car-record-report-page.state';
+import {DyeingReportItem} from '../store/dyeing-report-page.state';
 import {InspectionReportItem} from '../store/inspection-report-page.state';
+import {SilkExceptionReportItem} from '../store/silk-exception-report-page.state';
 import {StrippingReportItem} from '../store/stripping-report-page.state';
 import {ToDtyConfirmReportItem} from '../store/to-dty-confirm-report-page.state';
 import {ToDtyReportItem} from '../store/to-dty-report-page.state';
@@ -491,8 +493,12 @@ export class ApiService {
     return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/strippingReport`, body);
   }
 
-  dyeingReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<InspectionReportItem[]> {
-    return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/dyeingReport`, body);
+  dyeingReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<DyeingReportItem[]> {
+    return this.http.post<DyeingReportItem[]>(`${BASE_API_URL}/reports/dyeingReport`, body);
+  }
+
+  silkExceptionReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<SilkExceptionReportItem[]> {
+    return this.http.post<SilkExceptionReportItem[]>(`${BASE_API_URL}/reports/silkExceptionReport`, body);
   }
 
   inspectionReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<InspectionReportItem[]> {

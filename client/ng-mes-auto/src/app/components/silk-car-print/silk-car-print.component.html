@@ -1,10 +1,10 @@
 <div *ngFor="let it of silkCars" class="silk-car-print" fxLayout>
-  <section fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
-    <span style="font-size: 5mm;font-weight: bold;">{{it.number}}</span>
-    <ngx-barcode [bc-value]="it.code" bc-display-value></ngx-barcode>
-  </section>
+  <div class="box number">{{it.number}}</div>
+  <ngx-barcode bc-element-type="canvas" bc-class="box barcode" bc-height="133" bc-margin="0" bc-display-value [bc-value]="it.code"></ngx-barcode>
 
-  <section fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
-    <qrcode [qrdata]="it.code" [usesvg]="true" style="width:3cm;height:3cm;"></qrcode>
-  </section>
+  <div class="box qrcode-number">{{it.number}}</div>
+  <div class="box qrcode">
+    <qrcode [qrdata]="it.code" [usesvg]="true"></qrcode>
+    <div class="qrcode-code">{{it.code}}</div>
+  </div>
 </div>

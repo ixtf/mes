@@ -41,7 +41,6 @@ public class PackageBoxLucene extends BaseLucene<PackageBox> {
         final Document doc = doc(packageBox);
         add(doc, "code", packageBox.getCode());
         add(doc, "type", packageBox.getType());
-        addFacet(doc, "type", packageBox.getType());
         add(doc, "palletCode", packageBox.getPalletCode());
         add(doc, "netWeight", packageBox.getNetWeight());
         add(doc, "grossWeight", packageBox.getGrossWeight());
@@ -51,22 +50,23 @@ public class PackageBoxLucene extends BaseLucene<PackageBox> {
         add(doc, "budatClass", packageBox.getBudatClass());
         add(doc, "sapT001l", packageBox.getSapT001l());
         add(doc, "inWarehouse", packageBox.isInWarehouse());
-        addLoggable(doc, packageBox);
 
         final Batch batch = packageBox.getBatch();
         add(doc, "batch", batch);
-        addFacet(doc, "batch", batch);
 
         final Product product = batch.getProduct();
         add(doc, "product", product);
-        addFacet(doc, "product", product);
 
         final Workshop workshop = batch.getWorkshop();
         add(doc, "workshop", workshop);
-        addFacet(doc, "workshop", workshop);
 
         final Grade grade = packageBox.getGrade();
         add(doc, "grade", grade);
+
+        addFacet(doc, "type", packageBox.getType());
+        addFacet(doc, "batch", batch);
+        addFacet(doc, "product", product);
+        addFacet(doc, "workshop", workshop);
         addFacet(doc, "grade", grade);
         return doc;
     }

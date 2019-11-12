@@ -9,6 +9,7 @@ import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.search.SearchModule;
 import com.hengyi.japp.mes.auto.search.application.LuceneService;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,13 +32,18 @@ public class LuceneServiceImpl implements LuceneService {
     @Override
     public void index(LuceneCommand command) {
         final BaseLucene lucene = luceneMap.get(command.getClassName());
-        jmongo.find(command.getClazz(), command.getId()).subscribe(lucene::index);
+        jmongo.find(command.getClazz(), command.getId())
+                .doOnNext(lucene::index)
+                .doOnError(err -> log.error(command.getClassName() + "[" + command.getId() + "]", err))
+                .subscribe();
     }
 
     @Override
     public void remove(LuceneCommand command) {
         final BaseLucene lucene = luceneMap.get(command.getClassName());
-        lucene.remove(command.getId());
+        Mono.fromRunnable(() -> lucene.remove(command.getId()))
+                .doOnError(err -> log.error(command.getClassName() + "[" + command.getId() + "]", err))
+                .subscribe();
     }
 
     @Override

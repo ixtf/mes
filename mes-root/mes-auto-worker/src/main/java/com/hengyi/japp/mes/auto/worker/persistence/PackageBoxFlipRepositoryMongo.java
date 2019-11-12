@@ -7,8 +7,6 @@ import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.application.query.PackageBoxFlipQuery;
 import com.hengyi.japp.mes.auto.domain.PackageBoxFlip;
 import com.hengyi.japp.mes.auto.repository.PackageBoxFlipRepository;
-import com.hengyi.japp.mes.auto.search.lucene.PackageBoxFlipLucene;
-import com.hengyi.japp.mes.auto.search.lucene.SilkLucene;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;

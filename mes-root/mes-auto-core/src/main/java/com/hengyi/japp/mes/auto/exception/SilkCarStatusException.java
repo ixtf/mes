@@ -1,13 +1,13 @@
 package com.hengyi.japp.mes.auto.exception;
 
-import com.github.ixtf.japp.core.exception.JException;
+import com.github.ixtf.japp.core.exception.JError;
 import com.hengyi.japp.mes.auto.Constant;
 import com.hengyi.japp.mes.auto.domain.SilkCar;
 
 /**
  * @author jzb 2018-07-28
  */
-public class SilkCarStatusException extends JException {
+public class SilkCarStatusException extends JError {
     private final SilkCar silkCar;
 
     public SilkCarStatusException(SilkCar silkCar) {

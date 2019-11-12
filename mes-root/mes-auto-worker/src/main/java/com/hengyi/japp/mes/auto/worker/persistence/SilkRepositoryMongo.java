@@ -6,7 +6,6 @@ import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.application.query.SilkQuery;
 import com.hengyi.japp.mes.auto.domain.Silk;
 import com.hengyi.japp.mes.auto.repository.SilkRepository;
-import com.hengyi.japp.mes.auto.search.lucene.SilkLucene;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;

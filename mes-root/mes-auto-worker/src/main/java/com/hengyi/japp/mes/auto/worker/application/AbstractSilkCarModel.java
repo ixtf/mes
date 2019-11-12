@@ -5,7 +5,6 @@ import com.hengyi.japp.mes.auto.application.SilkBarcodeService;
 import com.hengyi.japp.mes.auto.domain.Batch;
 import com.hengyi.japp.mes.auto.domain.SilkBarcode;
 import com.hengyi.japp.mes.auto.domain.SilkCar;
-import com.hengyi.japp.mes.auto.domain.SilkRuntime;
 import com.hengyi.japp.mes.auto.domain.data.SilkCarPosition;
 import com.hengyi.japp.mes.auto.domain.data.SilkCarType;
 import com.hengyi.japp.mes.auto.dto.CheckSilkDTO;

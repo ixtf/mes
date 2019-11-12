@@ -6,9 +6,7 @@ dependencies {
     compile "com.github.ixtf.persistence:mongo",
             "com.github.ixtf.persistence:redis",
             "com.google.inject:guice",
-            "io.vertx:vertx-rx-java2",
-            "io.vertx:vertx-rabbitmq-client",
-            "io.vertx:vertx-jdbc-client",
+            "io.vertx:vertx-web",
             "io.vertx:vertx-auth-jwt"
 }
 

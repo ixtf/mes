@@ -1,10 +1,7 @@
 package com.hengyi.japp.mes.auto.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.ComparisonChain;
-import com.hengyi.japp.mes.auto.interfaces.jackson.ProductEmbedSerializer;
-import com.hengyi.japp.mes.auto.interfaces.jackson.WorkshopEmbedSerializer;
 import lombok.*;
 
 import javax.persistence.Cacheable;
@@ -34,13 +31,11 @@ public class Batch implements EntityLoggable, Comparable<Batch> {
     @Id
     @NotBlank
     private String id;
-    @JsonSerialize(using = WorkshopEmbedSerializer.class)
     @Getter
     @Setter
     @Column
     @NotNull
     private Workshop workshop;
-    @JsonSerialize(using = ProductEmbedSerializer.class)
     @ToString.Include
     @Getter
     @Setter

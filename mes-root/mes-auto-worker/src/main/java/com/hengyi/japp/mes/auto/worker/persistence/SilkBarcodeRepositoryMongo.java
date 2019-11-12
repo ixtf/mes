@@ -9,7 +9,7 @@ import com.hengyi.japp.mes.auto.domain.Batch;
 import com.hengyi.japp.mes.auto.domain.LineMachine;
 import com.hengyi.japp.mes.auto.domain.SilkBarcode;
 import com.hengyi.japp.mes.auto.repository.SilkBarcodeRepository;
-import com.hengyi.japp.mes.auto.search.lucene.SilkBarcodeLucene;
+import com.hengyi.japp.mes.auto.search.application.internal.SilkBarcodeLucene;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;

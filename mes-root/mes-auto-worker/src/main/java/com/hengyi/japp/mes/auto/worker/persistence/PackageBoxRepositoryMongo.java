@@ -10,7 +10,7 @@ import com.hengyi.japp.mes.auto.application.query.PackageBoxQuery;
 import com.hengyi.japp.mes.auto.application.query.PackageBoxQueryForMeasure;
 import com.hengyi.japp.mes.auto.domain.*;
 import com.hengyi.japp.mes.auto.repository.PackageBoxRepository;
-import com.hengyi.japp.mes.auto.search.lucene.PackageBoxLucene;
+import com.hengyi.japp.mes.auto.search.application.internal.PackageBoxLucene;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;

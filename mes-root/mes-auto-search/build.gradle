@@ -1,13 +1,24 @@
 dependencies {
     compile project(':mes-auto-core'),
-            "com.github.ixtf.vertx:jax-rs",
             "com.github.ixtf.persistence:mongo",
-            "io.vertx:vertx-hazelcast",
-            "org.apache.lucene:lucene-analyzers-smartcn",
-            "org.apache.lucene:lucene-expressions",
-            "org.apache.lucene:lucene-facet",
-            "org.apache.lucene:lucene-queries",
-            "org.apache.lucene:lucene-queryparser"
+            "com.github.ixtf.persistence:lucene",
+            "com.github.ixtf.vertx:jax-rs",
+            "io.projectreactor.rabbitmq:reactor-rabbitmq",
+            "io.vertx:vertx-micrometer-metrics",
+            "io.micrometer:micrometer-registry-prometheus:1.3.0",
+            "io.vertx:vertx-health-check"
 }
 
-mainClassName = "com.hengyi.japp.mes.auto.search.Search"
+mainClassName = "com.hengyi.japp.mes.auto.search.SearchLauncher"
+
+jar.manifest {
+    attributes(
+            'Main-Verticle': "com.hengyi.japp.mes.auto.search.MainVerticle",
+            'Implementation-Title': name,
+            'Implementation-Version': version,
+            'Built-By': System.getProperty('user.name'),
+            'Built-JDK': System.getProperty('java.version'),
+            'Source-Compatibility': sourceCompatibility,
+            'Target-Compatibility': targetCompatibility
+    )
+}

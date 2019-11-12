@@ -3,8 +3,6 @@ package com.hengyi.japp.mes.auto.worker.application;
 import com.google.common.collect.ImmutableList;
 import com.hengyi.japp.mes.auto.domain.SilkBarcode;
 import com.hengyi.japp.mes.auto.domain.SilkCarRecord;
-import com.hengyi.japp.mes.auto.domain.SilkCarRuntime;
-import com.hengyi.japp.mes.auto.domain.SilkRuntime;
 import com.hengyi.japp.mes.auto.domain.data.SilkCarSideType;
 import com.hengyi.japp.mes.auto.dto.CheckSilkDTO;
 import lombok.Data;

@@ -3,7 +3,6 @@ package com.hengyi.japp.mes.auto.worker.application;
 import com.google.common.collect.ImmutableList;
 import com.hengyi.japp.mes.auto.domain.Silk;
 import com.hengyi.japp.mes.auto.domain.SilkCar;
-import com.hengyi.japp.mes.auto.domain.SilkRuntime;
 import com.hengyi.japp.mes.auto.domain.data.SilkCarPosition;
 import com.hengyi.japp.mes.auto.domain.data.SilkCarSideType;
 import com.hengyi.japp.mes.auto.dto.CheckSilkDTO;

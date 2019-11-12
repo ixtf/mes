@@ -1,9 +1,7 @@
 package com.hengyi.japp.mes.auto.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hengyi.japp.mes.auto.domain.data.DoffingType;
-import com.hengyi.japp.mes.auto.interfaces.jackson.WorkshopEmbedSerializer;
 import lombok.*;
 
 import javax.persistence.Cacheable;
@@ -32,7 +30,6 @@ public class Line implements EntityLoggable {
     @Id
     @NotBlank
     private String id;
-    @JsonSerialize(using = WorkshopEmbedSerializer.class)
     @Getter
     @Setter
     @Column

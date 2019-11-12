@@ -1,9 +1,7 @@
 package com.hengyi.japp.mes.auto.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hengyi.japp.mes.auto.domain.data.ProductPlanType;
-import com.hengyi.japp.mes.auto.interfaces.jackson.LineMachineEmbedSerializer;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -59,7 +57,6 @@ public class ProductPlanNotify implements EntityLoggable {
     @Column
     private Date endDate;
 
-    @JsonSerialize(contentUsing = LineMachineEmbedSerializer.class)
     @Getter
     @Setter
     @Column(name = "machines")

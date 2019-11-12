@@ -9,7 +9,6 @@ import com.hengyi.japp.mes.auto.application.report.StatisticsReportDay;
 import com.hengyi.japp.mes.auto.domain.PackageBox;
 import com.hengyi.japp.mes.auto.domain.Silk;
 import com.hengyi.japp.mes.auto.domain.SilkCarRecord;
-import com.hengyi.japp.mes.auto.domain.SilkRuntime;
 import com.hengyi.japp.mes.auto.report.PoiUtil;
 import lombok.Cleanup;
 import lombok.Data;

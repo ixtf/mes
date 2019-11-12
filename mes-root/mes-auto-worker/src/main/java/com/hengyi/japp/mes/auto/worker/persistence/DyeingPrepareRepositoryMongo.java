@@ -7,7 +7,7 @@ import com.hengyi.japp.mes.auto.application.query.DyeingPrepareQuery;
 import com.hengyi.japp.mes.auto.application.query.DyeingPrepareResultQuery;
 import com.hengyi.japp.mes.auto.domain.DyeingPrepare;
 import com.hengyi.japp.mes.auto.repository.DyeingPrepareRepository;
-import com.hengyi.japp.mes.auto.search.lucene.DyeingPrepareLucene;
+import com.hengyi.japp.mes.auto.search.application.internal.DyeingPrepareLucene;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.search.Sort;

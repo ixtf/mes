@@ -232,17 +232,4 @@ public class DyeingResult implements EntityLoggable {
         }
     }
 
-    public SilkRuntime fillData(SilkRuntime silkRuntime) {
-        final Silk silk = silkRuntime.getSilk();
-        if (silk.getDoffingDateTime().getTime() >= getDateTime().getTime()) {
-            silkRuntime.getDyeingResultCalcModel().add(this);
-            return silkRuntime;
-        }
-        final DyeingResult prev = getPrev();
-        if (prev != null) {
-            return prev.fillData(silkRuntime);
-        }
-        return silkRuntime;
-    }
-
 }

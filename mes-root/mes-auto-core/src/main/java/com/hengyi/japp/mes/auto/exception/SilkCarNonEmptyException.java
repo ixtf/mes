@@ -1,6 +1,6 @@
 package com.hengyi.japp.mes.auto.exception;
 
-import com.github.ixtf.japp.core.exception.JException;
+import com.github.ixtf.japp.core.exception.JError;
 import com.hengyi.japp.mes.auto.Constant;
 import com.hengyi.japp.mes.auto.domain.SilkCar;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Getter;
 /**
  * @author jzb 2018-07-28
  */
-public class SilkCarNonEmptyException extends JException {
+public class SilkCarNonEmptyException extends JError {
     @Getter
     private final SilkCar silkCar;
 

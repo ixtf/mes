@@ -1,11 +1,7 @@
 package com.hengyi.japp.mes.auto.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hengyi.japp.mes.auto.domain.data.RoleType;
-import com.hengyi.japp.mes.auto.interfaces.jackson.ProductEmbedSerializer;
-import com.hengyi.japp.mes.auto.interfaces.jackson.SilkExceptionEmbedSerializer;
-import com.hengyi.japp.mes.auto.interfaces.jackson.SilkNoteEmbedSerializer;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -34,7 +30,6 @@ public class ProductProcess implements EntityLoggable {
     @Id
     @NotBlank
     private String id;
-    @JsonSerialize(using = ProductEmbedSerializer.class)
     @Getter
     @Setter
     @Column
@@ -57,14 +52,12 @@ public class ProductProcess implements EntityLoggable {
     @Setter
     @Column
     private int sortBy;
-    @JsonSerialize(contentUsing = SilkExceptionEmbedSerializer.class)
     @Getter
     @Setter
     @Column
     @NotNull
     @Size(min = 1)
     private Collection<SilkException> exceptions;
-    @JsonSerialize(contentUsing = SilkNoteEmbedSerializer.class)
     @Getter
     @Setter
     @Column

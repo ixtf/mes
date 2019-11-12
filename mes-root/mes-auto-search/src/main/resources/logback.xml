@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
     <jmxConfigurator/>
-    <property name="LOG_HOME" value="/home/mes/auto/log/search"/>
+    <if condition='isNull("mes.auto.search.path")'>
+        <then>
+            <property name="mes.auto.search.path" value="/home/mes/search"/>
+        </then>
+    </if>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n"/>
     <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
     <!-- 控制台输出日志 -->
@@ -15,9 +19,9 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>error</level>
         </filter>
-        <File>${LOG_HOME}/error/log.txt</File>
+        <File>${mes.auto.search.path}/error/log.txt</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/error/log-%d{yyyy-MM-dd}.%i.txt</FileNamePattern>
+            <FileNamePattern>${mes.auto.search.path}/error/log-%d{yyyy-MM-dd}.%i.txt</FileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>200</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>
@@ -31,9 +35,9 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>info</level>
         </filter>
-        <File>${LOG_HOME}/info/log.txt</File>
+        <File>${mes.auto.search.path}/info/log.txt</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/info/log-%d{yyyy-MM-dd}.%i.txt</FileNamePattern>
+            <FileNamePattern>${mes.auto.search.path}/info/log-%d{yyyy-MM-dd}.%i.txt</FileNamePattern>
             <MinIndex>1</MinIndex>
             <MaxIndex>3</MaxIndex>
         </rollingPolicy>

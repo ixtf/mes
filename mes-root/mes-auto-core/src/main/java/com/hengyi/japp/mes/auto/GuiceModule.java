@@ -4,9 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.config.MesAutoConfig;
-import io.vertx.reactivex.core.Vertx;
-import io.vertx.reactivex.ext.auth.jwt.JWTAuth;
-import io.vertx.reactivex.rabbitmq.RabbitMQClient;
+import io.vertx.core.Vertx;
+import io.vertx.ext.auth.jwt.JWTAuth;
 
 import java.io.IOException;
 import java.security.*;
@@ -20,12 +19,6 @@ public class GuiceModule extends AbstractModule {
 
     public GuiceModule(Vertx vertx) {
         this.vertx = vertx;
-    }
-
-    @Provides
-    @Singleton
-    private RabbitMQClient RabbitMQClient() {
-        return RabbitMQClient.create(vertx, MesAutoConfig.rabbitMQOptions());
     }
 
     @Provides

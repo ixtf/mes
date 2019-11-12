@@ -5,6 +5,7 @@ import com.google.inject.ImplementedBy;
 import com.hengyi.japp.mes.auto.search.application.internal.LuceneServiceImpl;
 import com.rabbitmq.client.Delivery;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.rabbitmq.AcknowledgableDelivery;
 
 import java.io.Closeable;
@@ -18,7 +19,8 @@ import static com.github.ixtf.japp.core.Constant.MAPPER;
 public interface LuceneService extends Closeable {
 
     default Mono<LuceneCommand> rxCommand(Delivery delivery) {
-        return Mono.fromCallable(() -> MAPPER.readValue(delivery.getBody(), LuceneCommand.class));
+        return Mono.fromCallable(() -> MAPPER.readValue(delivery.getBody(), LuceneCommand.class))
+                .subscribeOn(Schedulers.elastic());
     }
 
     default void index(AcknowledgableDelivery delivery) {

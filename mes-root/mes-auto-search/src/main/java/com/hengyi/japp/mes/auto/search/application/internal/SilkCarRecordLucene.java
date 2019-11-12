@@ -1,7 +1,6 @@
 package com.hengyi.japp.mes.auto.search.application.internal;
 
 import com.github.ixtf.persistence.lucene.BaseLucene;
-import com.github.ixtf.persistence.lucene.Jlucene;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.domain.Batch;
@@ -12,6 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.FacetsConfig;
 
+import javax.inject.Named;
+import java.nio.file.Path;
+
+import static com.github.ixtf.persistence.lucene.Jlucene.*;
+
 /**
  * @author jzb 2018-06-25
  */
@@ -20,7 +24,7 @@ import org.apache.lucene.facet.FacetsConfig;
 public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
 
     @Inject
-    private SilkCarRecordLucene(String luceneRootPath) {
+    private SilkCarRecordLucene(@Named("luceneRootPath") Path luceneRootPath) {
         super(luceneRootPath);
     }
 
@@ -34,24 +38,22 @@ public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
     }
 
     protected Document document(SilkCarRecord silkCarRecord) {
-        final Document doc = Jlucene.doc(silkCarRecord);
-
-        Jlucene.add(doc, "doffingType", silkCarRecord.getDoffingType());
-        Jlucene.addFacet(doc, "doffingType", silkCarRecord.getDoffingType());
+        final Document doc = doc(silkCarRecord);
+        add(doc, "doffingType", silkCarRecord.getDoffingType());
+        addFacet(doc, "doffingType", silkCarRecord.getDoffingType());
+        add(doc, "startDateTime", silkCarRecord.getStartDateTime());
+        add(doc, "endDateTime", silkCarRecord.getEndDateTime());
 
         final SilkCar silkCar = silkCarRecord.getSilkCar();
-        Jlucene.add(doc, "silkCar", silkCar.getId());
+        add(doc, "silkCar", silkCar);
 
         final Batch batch = silkCarRecord.getBatch();
-        Jlucene.add(doc, "batch", batch.getId());
-        Jlucene.addFacet(doc, "batch", batch.getId());
+        add(doc, "batch", batch);
+        addFacet(doc, "batch", batch);
 
         final Workshop workshop = batch.getWorkshop();
-        Jlucene.add(doc, "workshop", workshop.getId());
-        Jlucene.addFacet(doc, "workshop", workshop.getId());
-
-        Jlucene.add(doc, "startDateTime", silkCarRecord.getStartDateTime());
-        Jlucene.add(doc, "endDateTime", silkCarRecord.getEndDateTime());
+        add(doc, "workshop", workshop);
+        addFacet(doc, "workshop", workshop);
         return doc;
     }
 

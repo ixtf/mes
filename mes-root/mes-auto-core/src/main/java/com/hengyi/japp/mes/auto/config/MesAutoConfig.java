@@ -4,9 +4,6 @@ import com.hengyi.japp.mes.auto.Util;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.PubSecKeyOptions;
 import io.vertx.ext.auth.jwt.JWTAuthOptions;
-import io.vertx.rabbitmq.RabbitMQOptions;
-import io.vertx.reactivex.core.Vertx;
-import io.vertx.reactivex.ext.jdbc.JDBCClient;
 import lombok.Getter;
 
 import java.io.File;
@@ -87,16 +84,6 @@ public class MesAutoConfig {
         final FileInputStream fis = new FileInputStream(file);
         keystore.load(fis, "esb-open-tomking".toCharArray());
         return keystore;
-    }
-
-    public static RabbitMQOptions rabbitMQOptions() {
-        final JsonObject options = CONFIG.getJsonObject("rabbit");
-        return new RabbitMQOptions(options);
-    }
-
-    public static JDBCClient jikonDS(Vertx vertx) {
-        final JsonObject options = CONFIG.getJsonObject("jikon_ds");
-        return JDBCClient.createShared(vertx, options, "jikonDS");
     }
 
 }

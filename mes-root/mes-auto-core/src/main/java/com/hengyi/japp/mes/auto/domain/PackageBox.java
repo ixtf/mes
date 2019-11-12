@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -207,7 +208,7 @@ public class PackageBox implements EntityLoggable {
 //        return J.isBlank(commandJsonString) ? null : MAPPER.readTree(commandJsonString);
 //    }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     public void command(JsonNode jsonNode) {
         if (jsonNode != null) {
             setCommandJsonString(MAPPER.writeValueAsString(jsonNode));

@@ -7,11 +7,13 @@ import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.domain.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.LongPoint;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.facet.FacetField;
 import org.apache.lucene.facet.FacetsConfig;
+
+import javax.inject.Named;
+import java.nio.file.Path;
+
+import static com.github.ixtf.persistence.lucene.Jlucene.add;
+import static com.github.ixtf.persistence.lucene.Jlucene.addFacet;
 
 /**
  * @author jzb 2018-06-25
@@ -21,7 +23,7 @@ import org.apache.lucene.facet.FacetsConfig;
 public class SilkBarcodeLucene extends BaseLucene<SilkBarcode> {
 
     @Inject
-    private SilkBarcodeLucene(String luceneRootPath) {
+    private SilkBarcodeLucene(@Named("luceneRootPath") Path luceneRootPath) {
         super(luceneRootPath);
     }
 
@@ -38,29 +40,25 @@ public class SilkBarcodeLucene extends BaseLucene<SilkBarcode> {
 
     protected Document document(SilkBarcode silkBarcode) {
         final Document doc = Jlucene.doc(silkBarcode);
+        add(doc, "codeDate", silkBarcode.getCodeDate());
+        add(doc, "doffingNum", silkBarcode.getDoffingNum());
+        addFacet(doc, "doffingNum", silkBarcode.getDoffingNum());
 
         final LineMachine lineMachine = silkBarcode.getLineMachine();
-        Jlucene.add(doc, "lineMachine", lineMachine.getId());
-        Jlucene.addFacet(doc, "lineMachine", lineMachine.getId());
+        add(doc, "lineMachine", lineMachine);
+        addFacet(doc, "lineMachine", lineMachine);
 
         final Line line = lineMachine.getLine();
-        doc.add(new StringField("line", line.getId(), Field.Store.NO));
-        doc.add(new FacetField("line", line.getId()));
+        add(doc, "line", line);
+        addFacet(doc, "line", line);
 
         final Workshop workshop = line.getWorkshop();
-        doc.add(new StringField("workshop", workshop.getId(), Field.Store.NO));
-        doc.add(new FacetField("workshop", workshop.getId()));
-        doc.add(new LongPoint("codeDoffingNum", silkBarcode.getCodeDoffingNum()));
-
-        Jlucene.add(doc, "codeDate", silkBarcode.getCodeDate());
-
-        doc.add(new StringField("doffingNum", silkBarcode.getDoffingNum(), Field.Store.NO));
-        doc.add(new FacetField("doffingNum", silkBarcode.getDoffingNum()));
+        add(doc, "workshop", workshop);
+        addFacet(doc, "workshop", workshop);
 
         final Batch batch = silkBarcode.getBatch();
-        doc.add(new StringField("batch", batch.getId(), Field.Store.NO));
-        doc.add(new FacetField("batch", batch.getId()));
-
+        add(doc, "batch", batch);
+        addFacet(doc, "batch", batch);
         return doc;
     }
 }

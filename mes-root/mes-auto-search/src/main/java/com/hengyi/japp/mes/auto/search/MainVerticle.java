@@ -30,8 +30,8 @@ public class MainVerticle extends AbstractVerticle {
     private Future<String> deployLuceneVerticle() {
         return Future.future(p -> {
             final DeploymentOptions deploymentOptions = new DeploymentOptions()
-                    .setWorker(true)
-                    .setInstances(1000);
+                    .setInstances(20)
+                    .setWorker(true);
             vertx.deployVerticle(LuceneVerticle.class, deploymentOptions, p);
         });
     }

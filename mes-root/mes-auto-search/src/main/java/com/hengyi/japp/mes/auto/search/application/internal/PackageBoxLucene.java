@@ -1,15 +1,20 @@
 package com.hengyi.japp.mes.auto.search.application.internal;
 
+import com.github.ixtf.japp.core.J;
 import com.github.ixtf.persistence.lucene.BaseLucene;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.domain.*;
+import com.hengyi.japp.mes.auto.query.PackageBoxQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.FacetsConfig;
+import org.apache.lucene.search.BooleanQuery;
 
 import javax.inject.Named;
 import java.nio.file.Path;
+import java.util.Collection;
 
 import static com.github.ixtf.persistence.lucene.Jlucene.*;
 
@@ -50,6 +55,8 @@ public class PackageBoxLucene extends BaseLucene<PackageBox> {
         add(doc, "budatClass", packageBox.getBudatClass());
         add(doc, "sapT001l", packageBox.getSapT001l());
         add(doc, "inWarehouse", packageBox.isInWarehouse());
+        add(doc, "smallBatchId", packageBox.getSmallBatchId());
+        add(doc, "riambJobId", packageBox.getRiambJobId());
 
         final Batch batch = packageBox.getBatch();
         add(doc, "batch", batch);
@@ -71,4 +78,22 @@ public class PackageBoxLucene extends BaseLucene<PackageBox> {
         return doc;
     }
 
+    public Pair<Long, Collection<String>> query(PackageBoxQuery query) {
+        final BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        add(builder, "inWarehouse", query.isInWarehouse());
+        if (J.nonBlank(query.getPackageBoxCode())) {
+            add(builder, "code", query.getPackageBoxCode());
+        } else {
+            add(builder, "workshop", query.getWorkshopId());
+            add(builder, "type", query.getType());
+            add(builder, "batch", query.getBatchId());
+            add(builder, "grade", query.getGradeId());
+            add(builder, "smallBatchId", query.getSmallBatchId());
+            add(builder, "riambJobId", query.getRiambJobId());
+            add(builder, "budat", J.localDate(query.getStartBudat()), J.localDate(query.getEndBudat()));
+            add(builder, "budatClass", query.getBudatClassIds());
+            add(builder, "printDate", query.getStartDate(), query.getEndDate());
+        }
+        return query(builder.build(), query.getFirst(), query.getPageSize());
+    }
 }

@@ -1,12 +1,6 @@
 dependencies {
     compile project(':mes-auto-core'),
-            "com.github.ixtf.persistence:mongo",
-            "com.github.ixtf.persistence:lucene",
-            "com.github.ixtf.vertx:jax-rs",
-            "io.projectreactor.rabbitmq:reactor-rabbitmq",
-            "io.vertx:vertx-micrometer-metrics",
-            "io.micrometer:micrometer-registry-prometheus:1.3.0",
-            "io.vertx:vertx-health-check"
+            "com.github.ixtf.persistence:lucene"
 }
 
 mainClassName = "com.hengyi.japp.mes.auto.search.SearchLauncher"

@@ -7,3 +7,5 @@ include 'mes-auto-apm'
 include 'mes-auto-print'
 include 'mes-auto-report'
 include 'mes-auto-doffing-9200'
+include 'mes-auto-open'
+

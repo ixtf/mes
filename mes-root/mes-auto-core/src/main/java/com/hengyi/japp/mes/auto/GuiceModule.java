@@ -1,35 +1,94 @@
 package com.hengyi.japp.mes.auto;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import com.github.ixtf.persistence.mongo.Jmongo;
+import com.google.inject.Key;
+import com.google.inject.*;
 import com.hengyi.japp.mes.auto.config.MesAutoConfig;
+import com.hengyi.japp.mes.auto.config.MesAutoJmongo;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoClients;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
+import lombok.SneakyThrows;
 
+import javax.inject.Named;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.util.Map;
+
+import static com.github.ixtf.japp.core.Constant.MAPPER;
+import static com.github.ixtf.japp.core.Constant.YAML_MAPPER;
 
 /**
  * @author jzb 2018-03-21
  */
 public class GuiceModule extends AbstractModule {
-    protected final Vertx vertx;
+    protected static Injector INJECTOR;
+    protected static Vertx VERTX;
 
-    public GuiceModule(Vertx vertx) {
-        this.vertx = vertx;
+    public static <T> T getInstance(Class<T> clazz) {
+        return INJECTOR.getInstance(clazz);
+    }
+
+    public static <T> T getInstance(Key<T> key) {
+        return INJECTOR.getInstance(key);
+    }
+
+    public static void injectMembers(Object o) {
+        INJECTOR.injectMembers(o);
+    }
+
+    @Override
+    protected void configure() {
+        bind(Vertx.class).toInstance(VERTX);
+    }
+
+    @SneakyThrows(IOException.class)
+    @Provides
+    @Singleton
+    @Named("vertxConfig")
+    private JsonObject vertxConfig(@Named("rootPath") Path rootPath) {
+        final File ymlFile = rootPath.resolve("config.yml").toFile();
+        if (ymlFile.exists()) {
+            final Map map = YAML_MAPPER.readValue(ymlFile, Map.class);
+            return new JsonObject(map);
+        }
+        final File jsonFile = rootPath.resolve("config.json").toFile();
+        final Map map = MAPPER.readValue(jsonFile, Map.class);
+        return new JsonObject(map);
     }
 
     @Provides
     @Singleton
-    private JWTAuth JWTAuth() {
+    private Jmongo Jmongo() {
+        return Jmongo.of(MesAutoJmongo.class);
+    }
+
+    @Provides
+    @Singleton
+    private MongoClient MongoClient(@Named("vertxConfig") JsonObject vertxConfig) {
+        final JsonObject config = vertxConfig.getJsonObject("mongo", new JsonObject());
+        final String connection_string = config.getString("connection_string");
+        final MongoClientSettings.Builder builder = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString(connection_string));
+        return MongoClients.create(builder.build());
+    }
+
+    @Provides
+    @Singleton
+    private JWTAuth JWTAuth(Vertx vertx) {
         return JWTAuth.create(vertx, MesAutoConfig.jwtAuthOptions());
     }
 
     @Provides
     @Singleton
-    private KeyStore keystore() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
+    private KeyStore KeyStore() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
         return MesAutoConfig.getKeyStore();
     }
 
@@ -37,11 +96,6 @@ public class GuiceModule extends AbstractModule {
     @Singleton
     private PrivateKey PrivateKey(KeyStore keyStore) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException {
         return (PrivateKey) keyStore.getKey("esb-open", "esb-open-tomking".toCharArray());
-    }
-
-    @Provides
-    private Vertx vertx() {
-        return vertx;
     }
 
 }

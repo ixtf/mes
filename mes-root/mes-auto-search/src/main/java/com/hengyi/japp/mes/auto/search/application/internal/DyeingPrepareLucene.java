@@ -4,12 +4,16 @@ import com.github.ixtf.persistence.lucene.BaseLucene;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.domain.*;
+import com.hengyi.japp.mes.auto.query.DyeingPrepareQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.FacetsConfig;
+import org.apache.lucene.search.BooleanQuery;
 
 import javax.inject.Named;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.stream.Stream;
 
 import static com.github.ixtf.persistence.lucene.Jlucene.*;
@@ -48,9 +52,9 @@ public class DyeingPrepareLucene extends BaseLucene<DyeingPrepare> {
 
         Stream.concat(
                 dyeingPrepare.prepareSilkCarRecords().stream().peek(silkCarRecord -> {
-                    add(doc, "silkCarRecords", silkCarRecord);
+                    add(doc, "silkCarRecord", silkCarRecord);
                     final SilkCar silkCar = silkCarRecord.getSilkCar();
-                    add(doc, "silkCars", silkCar);
+                    add(doc, "silkCar", silkCar);
                 }).map(SilkCarRecord::getBatch),
                 dyeingPrepare.prepareSilks().stream().peek(silk -> add(doc, "silks", silk)).map(Silk::getBatch)
         ).distinct().forEach(batch -> {
@@ -60,9 +64,19 @@ public class DyeingPrepareLucene extends BaseLucene<DyeingPrepare> {
         });
 
         dyeingPrepare.prepareSilks().stream().map(Silk::getLineMachine).collect(toSet()).forEach(it -> {
-            add(doc, "lineMachines", it);
+            add(doc, "lineMachine", it);
         });
         return doc;
     }
 
+    public Pair<Long, Collection<String>> query(DyeingPrepareQuery query) {
+        final BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        add(builder, "workshop", query.getWorkshopId());
+        add(builder, "silkCar", query.getSilkCarId());
+        add(builder, "creator", query.getCreatorId());
+        add(builder, "lineMachine", query.getLineMachineId());
+        add(builder, "submitted", query.isSubmitted());
+        add(builder, "createDateTime", query.getStartDate(), query.getEndDate());
+        return query(builder.build(), query.getFirst(), query.getPageSize());
+    }
 }

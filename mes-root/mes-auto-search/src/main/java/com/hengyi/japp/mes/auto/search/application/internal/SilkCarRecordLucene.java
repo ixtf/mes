@@ -7,12 +7,16 @@ import com.hengyi.japp.mes.auto.domain.Batch;
 import com.hengyi.japp.mes.auto.domain.SilkCar;
 import com.hengyi.japp.mes.auto.domain.SilkCarRecord;
 import com.hengyi.japp.mes.auto.domain.Workshop;
+import com.hengyi.japp.mes.auto.query.SilkCarRecordQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.FacetsConfig;
+import org.apache.lucene.search.BooleanQuery;
 
 import javax.inject.Named;
 import java.nio.file.Path;
+import java.util.Collection;
 
 import static com.github.ixtf.persistence.lucene.Jlucene.*;
 
@@ -57,4 +61,10 @@ public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
         return doc;
     }
 
+    public Pair<Long, Collection<String>> query(SilkCarRecordQuery query) {
+        final BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        add(builder, "workshop", query.getWorkshopId());
+        add(builder, "submitted", query.isSubmitted());
+        return query(builder.build(), query.getFirst(), query.getPageSize());
+    }
 }

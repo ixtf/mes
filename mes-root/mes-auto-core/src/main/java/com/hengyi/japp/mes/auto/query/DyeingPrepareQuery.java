@@ -18,6 +18,8 @@ public class DyeingPrepareQuery implements Serializable {
     private String silkCarId;
     private String creatorId;
     private String lineMachineId;
+    private String silkId;
+    private String doffingNum;
     private Date startDate;
     private Date endDate;
     @Min(0)

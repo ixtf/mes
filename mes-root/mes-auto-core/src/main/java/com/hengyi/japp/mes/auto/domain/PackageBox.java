@@ -122,6 +122,14 @@ public class PackageBox implements EntityLoggable {
     @Setter
     @Column
     private Collection<SilkCarRecord> silkCarRecords;
+    @Getter
+    @Setter
+    @Column
+    private double tare;
+    @Getter
+    @Setter
+    @Column
+    private double pipeType;
     @JsonIgnore
     @Getter
     @Setter

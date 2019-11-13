@@ -3,7 +3,10 @@ package com.hengyi.japp.mes.auto.search.application.internal;
 import com.github.ixtf.persistence.lucene.BaseLucene;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.hengyi.japp.mes.auto.domain.*;
+import com.hengyi.japp.mes.auto.domain.Batch;
+import com.hengyi.japp.mes.auto.domain.DyeingPrepare;
+import com.hengyi.japp.mes.auto.domain.Silk;
+import com.hengyi.japp.mes.auto.domain.SilkCarRecord;
 import com.hengyi.japp.mes.auto.query.DyeingPrepareQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
@@ -14,10 +17,8 @@ import org.apache.lucene.search.BooleanQuery;
 import javax.inject.Named;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.stream.Stream;
 
 import static com.github.ixtf.persistence.lucene.Jlucene.*;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * @author jzb 2018-06-25
@@ -50,22 +51,21 @@ public class DyeingPrepareLucene extends BaseLucene<DyeingPrepare> {
         add(doc, "submitter", dyeingPrepare.getSubmitter());
         add(doc, "submitDateTime", dyeingPrepare.getSubmitDateTime());
 
-        Stream.concat(
-                dyeingPrepare.prepareSilkCarRecords().stream().peek(silkCarRecord -> {
-                    add(doc, "silkCarRecord", silkCarRecord);
-                    final SilkCar silkCar = silkCarRecord.getSilkCar();
-                    add(doc, "silkCar", silkCar);
-                }).map(SilkCarRecord::getBatch),
-                dyeingPrepare.prepareSilks().stream().peek(silk -> add(doc, "silks", silk)).map(Silk::getBatch)
-        ).distinct().forEach(batch -> {
-            add(doc, "batch", batch);
-            final Workshop workshop = batch.getWorkshop();
-            add(doc, "workshop", workshop);
-        });
-
-        dyeingPrepare.prepareSilks().stream().map(Silk::getLineMachine).collect(toSet()).forEach(it -> {
-            add(doc, "lineMachine", it);
-        });
+        final Collection<SilkCarRecord> silkCarRecords = dyeingPrepare.prepareSilkCarRecords();
+        final Collection<Silk> silks = dyeingPrepare.prepareSilks();
+        silkCarRecords.stream()
+                .map(SilkCarRecord::getSilkCar).distinct()
+                .forEach(silkCar -> add(doc, "silkCar", silkCar));
+        silkCarRecords.stream()
+                .map(SilkCarRecord::getBatch).distinct()
+                .peek(it -> add(doc, "batch", it))
+                .map(Batch::getWorkshop).distinct()
+                .forEach(it -> add(doc, "workshop", it));
+        silks.stream()
+                .peek(it -> add(doc, "silk", it))
+                .map(Silk::getLineMachine).distinct()
+                .forEach(it -> add(doc, "lineMachine", it));
+        silks.stream().map(Silk::getDoffingNum).distinct().forEach(it -> add(doc, "doffingNum", it));
         return doc;
     }
 
@@ -75,6 +75,8 @@ public class DyeingPrepareLucene extends BaseLucene<DyeingPrepare> {
         add(builder, "silkCar", query.getSilkCarId());
         add(builder, "creator", query.getCreatorId());
         add(builder, "lineMachine", query.getLineMachineId());
+        add(builder, "doffingNum", query.getDoffingNum());
+        add(builder, "silk", query.getSilkId());
         add(builder, "submitted", query.isSubmitted());
         add(builder, "createDateTime", query.getStartDate(), query.getEndDate());
         return query(builder.build(), query.getFirst(), query.getPageSize());

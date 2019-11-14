@@ -1,7 +1,6 @@
 package com.hengyi.japp.mes.auto.report;
 
 import com.github.ixtf.japp.core.J;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import com.mongodb.reactivestreams.client.MongoCollection;
@@ -27,7 +26,7 @@ public class Report {
 
     public static void main(String[] args) {
         Vertx.rxClusteredVertx(vertxOptions()).flatMapCompletable(vertx -> {
-            INJECTOR = Guice.createInjector(new GuiceModule(vertx), new ReportModule());
+            INJECTOR = com.google.inject.Guice.createInjector(new GuiceModule(vertx), new ReportModule());
 
             return Completable.mergeArray(
                     deployReport(vertx).ignoreElement(),

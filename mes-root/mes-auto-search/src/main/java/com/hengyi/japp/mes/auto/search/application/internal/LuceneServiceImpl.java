@@ -1,8 +1,7 @@
 package com.hengyi.japp.mes.auto.search.application.internal;
 
-import com.github.ixtf.persistence.lucene.BaseLucene;
-import com.github.ixtf.persistence.lucene.Jlucene;
-import com.github.ixtf.persistence.lucene.LuceneCommand;
+import com.github.ixtf.persistence.IEntity;
+import com.github.ixtf.persistence.lucene.LuceneCommandOne;
 import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -13,6 +12,10 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Function;
+
+import static com.github.ixtf.persistence.lucene.Jlucene.streamBaseLucene;
+import static java.util.stream.Collectors.toUnmodifiableMap;
 
 /**
  * @author jzb 2019-10-25
@@ -20,30 +23,36 @@ import java.util.Map;
 @Slf4j
 @Singleton
 public class LuceneServiceImpl implements LuceneService {
-    private final Map<String, BaseLucene> luceneMap;
+    private final Map<Class, BaseLucene> luceneMap;
     private final Jmongo jmongo;
 
     @Inject
     private LuceneServiceImpl(Jmongo jmongo) {
+        luceneMap = streamBaseLucene(this.getClass().getPackageName())
+                .map(SearchModule::getInstance)
+                .map(BaseLucene.class::cast)
+                .collect(toUnmodifiableMap(it -> it.getEntityClass(), Function.identity()));
         this.jmongo = jmongo;
-        luceneMap = Jlucene.collectBaseLucene(this.getClass().getPackageName(), SearchModule::getInstance);
     }
 
     @Override
-    public void index(LuceneCommand command) {
-        final BaseLucene lucene = luceneMap.get(command.getClassName());
-        jmongo.find(command.getClazz(), command.getId())
-                .doOnNext(lucene::index)
-                .doOnError(err -> log.error(command.getClassName() + "[" + command.getId() + "]", err))
-                .subscribe();
+    public <T extends BaseLucene> T get(Class<? extends IEntity> entityClass) {
+        return (T) luceneMap.get(entityClass);
     }
 
     @Override
-    public void remove(LuceneCommand command) {
-        final BaseLucene lucene = luceneMap.get(command.getClassName());
-        Mono.fromRunnable(() -> lucene.remove(command.getId()))
-                .doOnError(err -> log.error(command.getClassName() + "[" + command.getId() + "]", err))
-                .subscribe();
+    public Mono<Void> index(LuceneCommandOne command) {
+        return jmongo.find(command.getClazz(), command.getId())
+                .doOnNext(get(command.getClazz())::index).then()
+                .retry(3)
+                .doOnError(err -> log.error(command.getClassName() + "[" + command.getId() + "]", err));
+    }
+
+    @Override
+    public Mono<Void> remove(LuceneCommandOne command) {
+        return Mono.fromRunnable(() -> get(command.getClazz()).remove(command.getId())).then()
+                .retry(3)
+                .doOnError(err -> log.error(command.getClassName() + "[" + command.getId() + "]", err));
     }
 
     @Override

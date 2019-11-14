@@ -1,7 +1,6 @@
 package com.hengyi.japp.mes.auto.worker;
 
 import com.github.ixtf.japp.core.J;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import com.hengyi.japp.mes.auto.worker.verticle.AutoDoffingEventVerticle;
@@ -26,7 +25,7 @@ public class Worker {
 
     public static void main(String[] args) {
         Vertx.rxClusteredVertx(vertxOptions()).flatMapCompletable(vertx -> {
-            INJECTOR = Guice.createInjector(new GuiceModule(vertx), new WorkerModule());
+            INJECTOR = com.google.inject.Guice.createInjector(new GuiceModule(vertx), new WorkerModule());
             return Completable.mergeArray(
                     deployAutoDoffingEvent(vertx).ignoreElement(),
                     deployWorker(vertx).ignoreElement()

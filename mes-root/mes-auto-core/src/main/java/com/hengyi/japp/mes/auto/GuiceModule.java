@@ -5,14 +5,16 @@ import com.google.inject.Key;
 import com.google.inject.*;
 import com.hengyi.japp.mes.auto.config.MesAutoConfig;
 import com.hengyi.japp.mes.auto.config.MesAutoJmongo;
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.reactivestreams.client.MongoClient;
-import com.mongodb.reactivestreams.client.MongoClients;
+import com.rabbitmq.client.Address;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import lombok.SneakyThrows;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.rabbitmq.*;
 
 import javax.inject.Named;
 import java.io.File;
@@ -24,6 +26,7 @@ import java.util.Map;
 
 import static com.github.ixtf.japp.core.Constant.MAPPER;
 import static com.github.ixtf.japp.core.Constant.YAML_MAPPER;
+import static reactor.rabbitmq.Utils.singleConnectionMono;
 
 /**
  * @author jzb 2018-03-21
@@ -71,13 +74,50 @@ public class GuiceModule extends AbstractModule {
     }
 
     @Provides
-    @Singleton
-    private MongoClient MongoClient(@Named("vertxConfig") JsonObject vertxConfig) {
-        final JsonObject config = vertxConfig.getJsonObject("mongo", new JsonObject());
-        final String connection_string = config.getString("connection_string");
-        final MongoClientSettings.Builder builder = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connection_string));
-        return MongoClients.create(builder.build());
+    private Receiver Receiver(@Named("vertxConfig") JsonObject vertxConfig) {
+        final JsonObject config = vertxConfig.getJsonObject("rabbit", new JsonObject());
+        final String host = config.getString("host", "192.168.0.38");
+        final String username = config.getString("username", "admin");
+        final String password = config.getString("password", "tomking");
+        final String clientProvidedName = config.getString("clientProvidedName", "mes-auto-search-receiver");
+
+        final ConnectionFactory connectionFactory = new ConnectionFactory();
+        connectionFactory.useNio();
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        final ReceiverOptions receiverOptions = new ReceiverOptions()
+                .connectionFactory(connectionFactory)
+                .connectionSupplier(cf -> {
+                    final Address address = new Address(host);
+                    return cf.newConnection(new Address[]{address}, clientProvidedName);
+                });
+        return RabbitFlux.createReceiver(receiverOptions);
+    }
+
+    @Provides
+    private Sender Sender(@Named("vertxConfig") JsonObject vertxConfig) {
+        final JsonObject config = vertxConfig.getJsonObject("rabbit", new JsonObject());
+        final String host = config.getString("host", "192.168.0.38");
+        final String username = config.getString("username", "admin");
+        final String password = config.getString("password", "tomking");
+        final String clientProvidedName = config.getString("clientProvidedName", "mes-auto-search-sender");
+
+        final ConnectionFactory connectionFactory = new ConnectionFactory();
+        connectionFactory.useNio();
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        final Mono<? extends Connection> connectionMono = singleConnectionMono(() -> {
+            final Address address = new Address(host);
+            final Address[] addrs = {address};
+            return connectionFactory.newConnection(addrs, clientProvidedName);
+        });
+        final ChannelPoolOptions channelPoolOptions = new ChannelPoolOptions().maxCacheSize(10);
+        final SenderOptions senderOptions = new SenderOptions()
+                .connectionFactory(connectionFactory)
+                .connectionMono(connectionMono)
+                .resourceManagementScheduler(Schedulers.elastic())
+                .channelPool(ChannelPoolFactory.createChannelPool(connectionMono, channelPoolOptions));
+        return RabbitFlux.createSender(senderOptions);
     }
 
     @Provides

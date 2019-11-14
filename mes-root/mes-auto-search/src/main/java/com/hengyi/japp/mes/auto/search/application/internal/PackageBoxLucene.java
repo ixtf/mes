@@ -1,7 +1,7 @@
 package com.hengyi.japp.mes.auto.search.application.internal;
 
 import com.github.ixtf.japp.core.J;
-import com.github.ixtf.persistence.lucene.BaseLucene;
+import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.domain.*;
@@ -23,11 +23,12 @@ import static com.github.ixtf.persistence.lucene.Jlucene.*;
  */
 @Slf4j
 @Singleton
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class PackageBoxLucene extends BaseLucene<PackageBox> {
 
     @Inject
-    private PackageBoxLucene(@Named("luceneRootPath") Path luceneRootPath) {
-        super(luceneRootPath);
+    private PackageBoxLucene(@Named("luceneRootPath") Path luceneRootPath, Jmongo jmongo) {
+        super(luceneRootPath, jmongo);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class PackageBoxLucene extends BaseLucene<PackageBox> {
             add(builder, "grade", query.getGradeId());
             add(builder, "smallBatchId", query.getSmallBatchId());
             add(builder, "riambJobId", query.getRiambJobId());
-            add(builder, "budat", J.localDate(query.getStartBudat()), J.localDate(query.getEndBudat()));
+            add(builder, "budat", query.getStartBudat(), query.getEndBudat());
             add(builder, "budatClass", query.getBudatClassIds());
             add(builder, "printDate", query.getStartDate(), query.getEndDate());
         }

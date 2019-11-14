@@ -5,6 +5,8 @@ import io.vertx.core.VertxOptions;
 import io.vertx.micrometer.MicrometerMetricsOptions;
 import io.vertx.micrometer.VertxPrometheusOptions;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author jzb 2018-12-13
  */
@@ -21,6 +23,8 @@ public class SearchLauncher extends Launcher {
         final MicrometerMetricsOptions metricsOptions = new MicrometerMetricsOptions()
                 .setPrometheusOptions(prometheusOptions)
                 .setEnabled(true);
-        options.setMetricsOptions(metricsOptions);
+        options.setMetricsOptions(metricsOptions)
+                .setMaxEventLoopExecuteTime(10)
+                .setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
     }
 }

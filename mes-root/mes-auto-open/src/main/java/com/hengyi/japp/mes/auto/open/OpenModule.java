@@ -1,6 +1,5 @@
 package com.hengyi.japp.mes.auto.open;
 
-import com.google.inject.Guice;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.GuiceModule;
@@ -20,7 +19,7 @@ public class OpenModule extends GuiceModule {
     synchronized public static void init(Vertx vertx) {
         if (INJECTOR == null) {
             VERTX = vertx;
-            INJECTOR = Guice.createInjector(new OpenModule());
+            INJECTOR = com.google.inject.Guice.createInjector(new OpenModule());
         }
     }
 

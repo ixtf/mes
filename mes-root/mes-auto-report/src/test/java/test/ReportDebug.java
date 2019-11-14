@@ -1,6 +1,5 @@
 package test;
 
-import com.google.inject.Guice;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import com.hengyi.japp.mes.auto.report.ReportModule;
 import com.hengyi.japp.mes.auto.report.ReportVerticle;
@@ -20,7 +19,7 @@ public class ReportDebug {
     private static final Vertx vertx = Vertx.vertx();
 
     public static void main(String[] args) {
-        INJECTOR = Guice.createInjector(new GuiceModule(vertx), new ReportModule());
+        INJECTOR = com.google.inject.Guice.createInjector(new GuiceModule(vertx), new ReportModule());
         final DeploymentOptions deploymentOptions = new DeploymentOptions().setWorker(true).setMaxWorkerExecuteTime(Duration.ofDays(1).toNanos());
         vertx.rxDeployVerticle(ReportVerticle.class.getName(), deploymentOptions).subscribe();
     }

@@ -15,19 +15,29 @@ import java.time.Duration;
 public class LuceneVerticle extends AbstractVerticle {
     public static final String INDEX_QUEUE = "mes:auto:lucene:index";
     public static final String REMOVE_QUEUE = "mes:auto:lucene:remove";
+    public static final String ERROR_QUEUE = "mes:auto:lucene:error";
     private static final ConsumeOptions consumeOptions = new ConsumeOptions().exceptionHandler(
             new ExceptionHandlers.RetryAcknowledgmentExceptionHandler(
                     Duration.ofDays(1), Duration.ofSeconds(5),
                     ExceptionHandlers.CONNECTION_RECOVERY_PREDICATE
             )
     );
+    private final Receiver receiver = SearchModule.getInstance(Receiver.class);
+    private final LuceneService luceneService = SearchModule.getInstance(LuceneService.class);
 
     @Override
     public void start() throws Exception {
-        final Receiver receiver = SearchModule.getInstance(Receiver.class);
-        final LuceneService luceneService = SearchModule.getInstance(LuceneService.class);
-        receiver.consumeManualAck(INDEX_QUEUE, consumeOptions).subscribe(luceneService::index);
-        receiver.consumeManualAck(REMOVE_QUEUE, consumeOptions).subscribe(luceneService::remove);
+//        receiver.consumeManualAck(INDEX_QUEUE, consumeOptions)
+//                .concatMap(luceneService::index)
+//                .subscribe();
+//        receiver.consumeManualAck(REMOVE_QUEUE, consumeOptions)
+//                .concatMap(luceneService::remove)
+//                .subscribe();
     }
 
+    @Override
+    public void stop() throws Exception {
+        receiver.close();
+        luceneService.close();
+    }
 }

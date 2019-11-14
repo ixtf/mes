@@ -1,7 +1,6 @@
 package com.hengyi.japp.mes.auto.agent;
 
 import com.github.ixtf.japp.core.J;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import com.hengyi.japp.mes.auto.agent.verticle.OpenVerticle;
@@ -26,7 +25,7 @@ public class Agent {
 
     public static void main(String[] args) {
         Vertx.rxClusteredVertx(vertxOptions()).flatMapCompletable(vertx -> {
-            INJECTOR = Guice.createInjector(new GuiceModule(vertx));
+            INJECTOR = com.google.inject.Guice.createInjector(new GuiceModule(vertx));
 
             final Completable pda$ = deployPda(vertx).ignoreElement();
             final Completable open$ = deployOpen(vertx).ignoreElement();

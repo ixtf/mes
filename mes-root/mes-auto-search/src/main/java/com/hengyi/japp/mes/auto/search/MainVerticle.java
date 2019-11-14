@@ -16,6 +16,12 @@ public class MainVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         SearchModule.init(vertx);
+//        final Sender sender = SearchModule.getInstance(Sender.class);
+//        Flux.merge(
+//                sender.declareQueue(QueueSpecification.queue(INDEX_QUEUE).durable(true)),
+//                sender.declareQueue(QueueSpecification.queue(REMOVE_QUEUE).durable(true)),
+//                sender.declareQueue(QueueSpecification.queue(ERROR_QUEUE).durable(true))
+//        ).blockLast();
     }
 
     @Override

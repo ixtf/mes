@@ -1,6 +1,6 @@
 package com.hengyi.japp.mes.auto.search.application.internal;
 
-import com.github.ixtf.persistence.lucene.BaseLucene;
+import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.domain.Batch;
@@ -25,11 +25,12 @@ import static com.github.ixtf.persistence.lucene.Jlucene.*;
  */
 @Slf4j
 @Singleton
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class DyeingPrepareLucene extends BaseLucene<DyeingPrepare> {
 
     @Inject
-    private DyeingPrepareLucene(@Named("luceneRootPath") Path luceneRootPath) {
-        super(luceneRootPath);
+    private DyeingPrepareLucene(@Named("luceneRootPath") Path luceneRootPath, Jmongo jmongo) {
+        super(luceneRootPath, jmongo);
     }
 
     @Override

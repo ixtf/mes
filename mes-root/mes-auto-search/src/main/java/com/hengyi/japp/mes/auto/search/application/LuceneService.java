@@ -1,7 +1,9 @@
 package com.hengyi.japp.mes.auto.search.application;
 
-import com.github.ixtf.persistence.lucene.LuceneCommand;
+import com.github.ixtf.persistence.IEntity;
+import com.github.ixtf.persistence.lucene.LuceneCommandOne;
 import com.google.inject.ImplementedBy;
+import com.hengyi.japp.mes.auto.search.application.internal.BaseLucene;
 import com.hengyi.japp.mes.auto.search.application.internal.LuceneServiceImpl;
 import com.rabbitmq.client.Delivery;
 import reactor.core.publisher.Mono;
@@ -18,26 +20,26 @@ import static com.github.ixtf.japp.core.Constant.MAPPER;
 @ImplementedBy(LuceneServiceImpl.class)
 public interface LuceneService extends Closeable {
 
-    default Mono<LuceneCommand> rxCommand(Delivery delivery) {
-        return Mono.fromCallable(() -> MAPPER.readValue(delivery.getBody(), LuceneCommand.class))
+    <T extends BaseLucene> T get(Class<? extends IEntity> entityClass);
+
+    default Mono<LuceneCommandOne> rxCommand(Delivery delivery) {
+        return Mono.fromCallable(() -> MAPPER.readValue(delivery.getBody(), LuceneCommandOne.class))
                 .subscribeOn(Schedulers.elastic());
     }
 
-    default void index(AcknowledgableDelivery delivery) {
-        rxCommand(delivery).doOnNext(this::index).then()
-                .doOnError(err -> delivery.nack(true))
-                .doOnSuccess(it -> delivery.ack())
-                .subscribe();
+    default Mono<Void> index(AcknowledgableDelivery delivery) {
+        return rxCommand(delivery).flatMap(this::index)
+                .doOnError(err -> delivery.nack(false))
+                .doOnSuccess(it -> delivery.ack());
     }
 
-    default void remove(AcknowledgableDelivery delivery) {
-        rxCommand(delivery).doOnNext(this::remove).then()
-                .doOnError(err -> delivery.nack(true))
-                .doOnSuccess(it -> delivery.ack())
-                .subscribe();
+    default Mono<Void> remove(AcknowledgableDelivery delivery) {
+        return rxCommand(delivery).flatMap(this::remove)
+                .doOnError(err -> delivery.nack(false))
+                .doOnSuccess(it -> delivery.ack());
     }
 
-    void index(LuceneCommand command);
+    Mono<Void> index(LuceneCommandOne command);
 
-    void remove(LuceneCommand command);
+    Mono<Void> remove(LuceneCommandOne command);
 }

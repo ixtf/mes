@@ -1,6 +1,5 @@
 package test;
 
-import com.google.inject.Guice;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import com.hengyi.japp.mes.auto.domain.Workshop;
 import com.hengyi.japp.mes.auto.report.ReportModule;
@@ -30,7 +29,7 @@ public class AAReport_3000 {
     static {
         // sshfs -o allow_other root@10.2.0.215:/data/mes/auto/db /data/mes-3000/auto/db
         System.setProperty("japp.mes.auto.path", "/data/mes-3000/auto");
-        INJECTOR = Guice.createInjector(new GuiceModule(vertx), new ReportModule());
+        INJECTOR = com.google.inject.Guice.createInjector(new GuiceModule(vertx), new ReportModule());
     }
 
     public static void main(String[] args) {

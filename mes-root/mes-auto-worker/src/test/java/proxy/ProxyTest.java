@@ -1,6 +1,5 @@
 package proxy;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import com.hengyi.japp.mes.auto.worker.WorkerModule;
@@ -17,7 +16,7 @@ public class ProxyTest {
 
     public static void main(String[] args) {
         final Vertx vertx = Vertx.vertx();
-        INJECTOR = Guice.createInjector(new GuiceModule(vertx), new WorkerModule());
+        INJECTOR = com.google.inject.Guice.createInjector(new GuiceModule(vertx), new WorkerModule());
 
         vertx.deployVerticle(new AbstractVerticle() {
         });

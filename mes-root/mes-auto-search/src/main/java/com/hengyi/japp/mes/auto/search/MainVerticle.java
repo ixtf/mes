@@ -16,12 +16,6 @@ public class MainVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         SearchModule.init(vertx);
-//        final Sender sender = SearchModule.getInstance(Sender.class);
-//        Flux.merge(
-//                sender.declareQueue(QueueSpecification.queue(INDEX_QUEUE).durable(true)),
-//                sender.declareQueue(QueueSpecification.queue(REMOVE_QUEUE).durable(true)),
-//                sender.declareQueue(QueueSpecification.queue(ERROR_QUEUE).durable(true))
-//        ).blockLast();
     }
 
     @Override
@@ -36,8 +30,8 @@ public class MainVerticle extends AbstractVerticle {
     private Future<String> deployLuceneVerticle() {
         return Future.future(p -> {
             final DeploymentOptions deploymentOptions = new DeploymentOptions()
-                    .setInstances(20)
-                    .setWorker(true);
+                    .setWorker(true)
+                    .setInstances(20);
             vertx.deployVerticle(LuceneVerticle.class, deploymentOptions, p);
         });
     }

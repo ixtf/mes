@@ -27,8 +27,8 @@ import static com.github.ixtf.persistence.lucene.Jlucene.*;
 public class PackageBoxLucene extends BaseLucene<PackageBox> {
 
     @Inject
-    private PackageBoxLucene(@Named("luceneRootPath") Path luceneRootPath, Jmongo jmongo) {
-        super(luceneRootPath, jmongo);
+    private PackageBoxLucene(@Named("lucenePath") Path lucenePath, Jmongo jmongo) {
+        super(lucenePath, jmongo);
     }
 
     @Override

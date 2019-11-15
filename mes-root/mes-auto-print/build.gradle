@@ -6,7 +6,6 @@ dependencies {
             "javax:javaee-api",
             "org.hibernate.validator:hibernate-validator",
             "org.glassfish:javax.el",
-            "commons-daemon:commons-daemon",
             "redis.clients:jedis:3.0.1"
 }
 

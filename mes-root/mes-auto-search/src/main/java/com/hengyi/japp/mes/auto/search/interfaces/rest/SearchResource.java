@@ -1,8 +1,6 @@
 package com.hengyi.japp.mes.auto.search.interfaces.rest;
 
-import com.github.ixtf.japp.core.exception.JAuthorizationError;
 import com.github.ixtf.persistence.lucene.LuceneCommandAll;
-import com.github.ixtf.vertx.JvertxOptions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.query.DyeingPrepareQuery;
@@ -55,13 +53,9 @@ public class SearchResource {
                 .subscribeOn(Schedulers.elastic());
     }
 
-    @JvertxOptions(timeout = 3000)
     @Path("packageBoxes")
     @POST
     public Mono<Map> packageBoxes(PackageBoxQuery query) {
-        if (1 == 1) {
-            throw new JAuthorizationError();
-        }
         return Mono.fromCallable(() -> packageBoxLucene.query(query))
                 .map(pair -> Map.of("count", pair.getLeft(), "ids", pair.getRight()));
     }

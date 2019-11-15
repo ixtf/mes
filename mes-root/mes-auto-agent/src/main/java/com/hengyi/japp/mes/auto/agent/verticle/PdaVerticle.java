@@ -1,21 +1,18 @@
 package com.hengyi.japp.mes.auto.agent.verticle;
 
 import com.github.ixtf.vertx.Jvertx;
-import com.github.ixtf.vertx.RCEnvelope;
+import com.github.ixtf.vertx.route.RoutingContextEnvelope;
 import com.hengyi.japp.mes.auto.config.MesAutoConfig;
-import io.reactivex.Completable;
-import io.reactivex.functions.Consumer;
+import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.reactivex.core.AbstractVerticle;
-import io.vertx.reactivex.core.eventbus.Message;
-import io.vertx.reactivex.ext.auth.jwt.JWTAuth;
-import io.vertx.reactivex.ext.web.Route;
-import io.vertx.reactivex.ext.web.Router;
-import io.vertx.reactivex.ext.web.RoutingContext;
-import io.vertx.reactivex.ext.web.handler.JWTAuthHandler;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.jwt.JWTAuth;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.JWTAuthHandler;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.hengyi.japp.mes.auto.config.MesAutoConfig.*;
+import static com.hengyi.japp.mes.auto.config.MesAutoConfig.apkFile;
+import static com.hengyi.japp.mes.auto.config.MesAutoConfig.apkInfo;
 import static io.vertx.core.http.HttpMethod.POST;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -25,12 +22,10 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Slf4j
 public class PdaVerticle extends AbstractVerticle {
 
+
     @Override
-    public Completable rxStart() {
-        final Router router = Router.router(vertx);
-        Jvertx.enableCommon(router);
-        Jvertx.enableCors(router, corsConfig().getDomainPatterns());
-        router.route().failureHandler(Jvertx::failureHandler);
+    public void start() throws Exception {
+        final Router router = Jvertx.router(vertx, MesAutoConfig.corsConfig());
 
         router.get("/apkInfo").produces(APPLICATION_JSON).handler(rc -> rc.response().end(apkInfo().encode()));
         router.get("/apk").handler(rc -> rc.reroute("/apk/latest"));
@@ -43,32 +38,16 @@ public class PdaVerticle extends AbstractVerticle {
         router.route("/api/*").handler(JWTAuthHandler.create(jwtAuth));
 
         router.route(POST, "/token").produces(APPLICATION_JSON).handler(rc -> {
-            RCEnvelope.send(rc, "agent:POST:/token");
-        });
-
-//        router.route(GET, "/api/auth").produces(APPLICATION_JSON).handler(rc -> Single.just(rc).map(this::getMessage)
-//                .flatMap(it -> vertx.eventBus().rxSend("agent:GET:/api/auth", it))
-//                .doOnError(rc::fail)
-//                .subscribe(subscribeFun(rc)));
-
-        Jvertx.routes().forEach(routeRepresentation -> {
-            final Route route = router.route(routeRepresentation.getHttpMethod(), routeRepresentation.getPath());
-            routeRepresentation.consumes().forEach(route::consumes);
-            routeRepresentation.produces().forEach(route::produces);
-            route.handler(routeRepresentation.getRoutingContextHandler());
+            final JsonObject message = RoutingContextEnvelope.encode(rc);
+            vertx.eventBus().send("agent:POST:/token", message);
         });
 
         final HttpServerOptions httpServerOptions = new HttpServerOptions()
                 .setDecompressionSupported(true)
                 .setCompressionSupported(true);
-        return vertx.createHttpServer(httpServerOptions)
+        vertx.createHttpServer(httpServerOptions)
                 .requestHandler(router)
-                .rxListen(MesAutoConfig.pdaConfig().getInteger("port", 9998))
-                .ignoreElement();
-    }
-
-    private Consumer<Message<Object>> subscribeFun(RoutingContext rc) {
-        return null;
+                .listen(MesAutoConfig.pdaConfig().getInteger("port", 9998));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.hengyi.japp.mes.auto.search.application.internal;
 
+import com.github.ixtf.japp.core.J;
 import com.github.ixtf.persistence.lucene.Jlucene;
 import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Inject;
@@ -7,6 +8,7 @@ import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.domain.*;
 import com.hengyi.japp.mes.auto.query.SilkBarcodeQuery;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.FacetsConfig;
@@ -15,9 +17,9 @@ import org.apache.lucene.search.BooleanQuery;
 import javax.inject.Named;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Optional;
 
-import static com.github.ixtf.persistence.lucene.Jlucene.add;
-import static com.github.ixtf.persistence.lucene.Jlucene.addFacet;
+import static com.github.ixtf.persistence.lucene.Jlucene.*;
 
 /**
  * @author jzb 2018-06-25
@@ -28,8 +30,8 @@ import static com.github.ixtf.persistence.lucene.Jlucene.addFacet;
 public class SilkBarcodeLucene extends BaseLucene<SilkBarcode> {
 
     @Inject
-    private SilkBarcodeLucene(@Named("luceneRootPath") Path luceneRootPath, Jmongo jmongo) {
-        super(luceneRootPath, jmongo);
+    private SilkBarcodeLucene(@Named("lucenePath") Path lucenePath, Jmongo jmongo) {
+        super(lucenePath, jmongo);
     }
 
     @Override
@@ -69,8 +71,16 @@ public class SilkBarcodeLucene extends BaseLucene<SilkBarcode> {
 
     public Pair<Long, Collection<String>> query(SilkBarcodeQuery query) {
         final BooleanQuery.Builder builder = new BooleanQuery.Builder();
-        add(builder, "workshop", query.getWorkshopId());
-        add(builder, "submitted", query.isSubmitted());
+        add(builder, "line", query.getLineId());
+        add(builder, "lineMachine", query.getLineMachineId());
+        add(builder, "batch", query.getBatchId());
+        add(builder, "codeDate", query.getStartCodeDate(), query.getEndCodeDate());
+        add(builder, "doffingNum", StringUtils.upperCase(query.getDoffingNum()));
+        Optional.ofNullable(query.getDoffingNumQ())
+                .map(StringUtils::upperCase)
+                .filter(J::nonBlank)
+                .map(it -> it + "*")
+                .ifPresent(it -> addWildcard(builder, "doffingNum", it));
         return query(builder.build(), query.getFirst(), query.getPageSize());
     }
 }

@@ -29,8 +29,8 @@ import static com.github.ixtf.persistence.lucene.Jlucene.*;
 public class DyeingPrepareLucene extends BaseLucene<DyeingPrepare> {
 
     @Inject
-    private DyeingPrepareLucene(@Named("luceneRootPath") Path luceneRootPath, Jmongo jmongo) {
-        super(luceneRootPath, jmongo);
+    private DyeingPrepareLucene(@Named("lucenePath") Path lucenePath, Jmongo jmongo) {
+        super(lucenePath, jmongo);
     }
 
     @Override

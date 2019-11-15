@@ -13,6 +13,8 @@ import com.hengyi.japp.mes.auto.print.config.PaperConfig;
 import com.hengyi.japp.mes.auto.print.config.SilkPrintConfig;
 import com.hengyi.japp.mes.auto.print.config.ZxingConfig;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
@@ -21,24 +23,29 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.print.*;
+import java.awt.print.Book;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterJob;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.github.ixtf.japp.print.Jprint.mmToPix;
+import static com.hengyi.japp.mes.auto.print.Print.INJECTOR;
 
 /**
  * @author jzb 2018-08-18
  */
+@Slf4j
 public class SilkPrintable implements Printable {
     private final SilkPrintConfig config;
     private final SilkPrintCommand command;
     private final int numPages;
 
-    public SilkPrintable(SilkPrintConfig config, SilkPrintCommand command) {
-        this.config = config;
+    public SilkPrintable(SilkPrintCommand command) {
+        this.config = INJECTOR.getInstance(SilkPrintConfig.class);
         this.command = command;
 
         final double size = command.getSilks().size();
@@ -61,7 +68,7 @@ public class SilkPrintable implements Printable {
             float imageX = 3;
             for (SilkPrintCommand.Item item : items) {
                 float y = 3;
-                drawString(item.getBatchSpec(), g2d, font, mmToPix(x), mmToPix(y));
+                drawString(J.defaultString(item.getBatchSpec()), g2d, font, mmToPix(x), mmToPix(y));
                 final String lineName = item.getLineName();
                 final int spindle = item.getSpindle();
                 final int lineMachineItem = item.getLineMachineItem();
@@ -100,7 +107,7 @@ public class SilkPrintable implements Printable {
 
     @SneakyThrows
     private BufferedImage silkBarCodeImage(String content) {
-        //配置参数
+        // 配置参数
         Map<EncodeHintType, Object> hints = Maps.newHashMap();
         hints.put(EncodeHintType.MARGIN, 0);
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
@@ -120,22 +127,26 @@ public class SilkPrintable implements Printable {
     }
 
     public void PrintLabel() throws Exception {
-        Book book = new Book();
-        PageFormat pf = new PageFormat();
-        pf.setOrientation(PageFormat.PORTRAIT);
-        Paper p = new Paper();
+        final Book book = new Book();
         final PaperConfig paperConfig = config.getPaperConfig();
-        final float paperWithPix = paperConfig.getWithPix();
-        final float paperHeightPix = paperConfig.getHeightPix();
-        p.setSize(paperWithPix, paperHeightPix); // Paper Size,A4 590, 840
-        p.setImageableArea(0, 0, paperWithPix, paperHeightPix); // Print Area
-        pf.setPaper(p);
-        book.append(this, pf, numPages);
-        PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
-        PrinterJob job = PrinterJob.getPrinterJob();
+        book.append(this, paperConfig.getPageFormat(), numPages);
+        final PrintService printService = Optional.ofNullable(PrintServiceLookup.lookupDefaultPrintService())
+                .orElseGet(() -> findPrintService("MES_PRINT"));
+        final PrinterJob job = PrinterJob.getPrinterJob();
         job.setPrintService(printService);
         job.setPageable(book);
         job.print();
+    }
+
+    private PrintService findPrintService(String printerName) {
+        final PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
+        if (J.isEmpty(printServices)) {
+            return null;
+        }
+        return Arrays.stream(printServices).parallel()
+                .filter(it -> Objects.equals(StringUtils.trim(it.getName()), printerName))
+                .findFirst()
+                .orElse(null);
     }
 
 }

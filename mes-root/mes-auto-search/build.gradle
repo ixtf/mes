@@ -1,6 +1,7 @@
 dependencies {
     compile project(':mes-auto-core'),
-            "com.github.ixtf.persistence:lucene"
+            "com.github.ixtf.persistence:lucene",
+            "io.projectreactor.rabbitmq:reactor-rabbitmq"
 }
 
 mainClassName = "com.hengyi.japp.mes.auto.search.SearchLauncher"

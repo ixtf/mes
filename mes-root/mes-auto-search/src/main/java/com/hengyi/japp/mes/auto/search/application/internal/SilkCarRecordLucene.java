@@ -29,8 +29,8 @@ import static com.github.ixtf.persistence.lucene.Jlucene.*;
 public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
 
     @Inject
-    private SilkCarRecordLucene(@Named("luceneRootPath") Path luceneRootPath, Jmongo jmongo) {
-        super(luceneRootPath, jmongo);
+    private SilkCarRecordLucene(@Named("lucenePath") Path lucenePath, Jmongo jmongo) {
+        super(lucenePath, jmongo);
     }
 
     @Override
@@ -51,6 +51,7 @@ public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
 
         final SilkCar silkCar = silkCarRecord.getSilkCar();
         add(doc, "silkCar", silkCar);
+        add(doc, "silkCar", silkCar.getCode());
 
         final Batch batch = silkCarRecord.getBatch();
         add(doc, "batch", batch);
@@ -65,7 +66,9 @@ public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
     public Pair<Long, Collection<String>> query(SilkCarRecordQuery query) {
         final BooleanQuery.Builder builder = new BooleanQuery.Builder();
         add(builder, "workshop", query.getWorkshopId());
-        add(builder, "submitted", query.isSubmitted());
+        add(builder, "silkCar", query.getSilkCarId());
+        add(builder, "silkCar", query.getSilkCarCode());
+        add(builder, "startDateTime", query.getStartDate(), query.getEndDate().plusDays(1));
         return query(builder.build(), query.getFirst(), query.getPageSize());
     }
 }

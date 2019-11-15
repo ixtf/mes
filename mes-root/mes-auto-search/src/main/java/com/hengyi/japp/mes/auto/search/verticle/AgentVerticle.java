@@ -23,7 +23,7 @@ public class AgentVerticle extends AbstractVerticle {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         start();
-        final Router router = Jvertx.router(vertx, new CorsConfig());
+        final Router router = Jvertx.router(vertx, CorsConfig.builder().build());
         router.route().handler(BodyHandler.create().setUploadsDirectory(FileUtils.getTempDirectoryPath()));
         router.route().handler(ResponseContentTypeHandler.create());
         router.route("/status").handler(HealthCheckHandler.create(vertx));

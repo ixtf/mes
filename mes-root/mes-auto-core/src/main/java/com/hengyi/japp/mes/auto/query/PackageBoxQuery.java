@@ -33,6 +33,7 @@ public class PackageBoxQuery implements Serializable {
     private Date endDate;
     private String smallBatchId;
     private String riambJobId;
+    private String creatorId;
     @Min(0)
     private int first;
     @Min(10)

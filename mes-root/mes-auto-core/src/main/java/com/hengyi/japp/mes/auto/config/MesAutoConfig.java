@@ -1,5 +1,6 @@
 package com.hengyi.japp.mes.auto.config;
 
+import com.github.ixtf.vertx.CorsConfig;
 import com.hengyi.japp.mes.auto.Util;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.PubSecKeyOptions;
@@ -16,6 +17,10 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * @author jzb 2019-02-23
@@ -53,8 +58,11 @@ public class MesAutoConfig {
     }
 
     public static CorsConfig corsConfig() {
-        final JsonObject jsonObject = CONFIG.getJsonObject("cors");
-        return new CorsConfig(jsonObject);
+        final JsonObject cors = CONFIG.getJsonObject("cors");
+        final Object value = cors.getValue("domainPatterns");
+        final Object[] objects = (Object[]) value;
+        final Set<String> domainPatterns = Arrays.stream(objects).map(it -> (String) it).collect(toSet());
+        return CorsConfig.builder().domainPatterns(domainPatterns).build();
     }
 
     public static JsonObject apkInfo() {
@@ -68,14 +76,6 @@ public class MesAutoConfig {
             version = apkInfo.getString("version");
         }
         return apkPath.resolve(Paths.get(version, "mes-auto.apk")).toFile().getPath();
-    }
-
-    public static Path luceneIndexPath(Class<?> clazz) {
-        return lucenePath.resolve(clazz.getSimpleName());
-    }
-
-    public static Path luceneTaxoPath(Class<?> clazz) {
-        return lucenePath.resolve(clazz.getSimpleName() + "_Taxonomy");
     }
 
     public static KeyStore getKeyStore() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {

@@ -1,5 +1,6 @@
 package com.hengyi.japp.mes.auto.worker.application;
 
+import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.application.CorporationService;
@@ -18,13 +19,11 @@ import java.security.Principal;
 @Slf4j
 @Singleton
 public class CorporationServiceImpl implements CorporationService {
-    private final CorporationRepository corporationRepository;
-    private final OperatorRepository operatorRepository;
+    private final Jmongo jmongo;
 
     @Inject
-    private CorporationServiceImpl(CorporationRepository corporationRepository, OperatorRepository operatorRepository) {
-        this.corporationRepository = corporationRepository;
-        this.operatorRepository = operatorRepository;
+    private CorporationServiceImpl(Jmongo jmongo) {
+        this.jmongo = jmongo;
     }
 
     @Override
@@ -37,12 +36,12 @@ public class CorporationServiceImpl implements CorporationService {
         corporation.setName(command.getName());
         final Operator operator = operatorRepository.find(principal);
         corporation.log(operator);
-        return corporationRepository.save(corporation);
+        return jmongo.save(corporation);
     }
 
     @Override
     public Corporation update(Principal principal, String id, CorporationUpdateCommand command) {
-        final Corporation corporation = corporationRepository.find(id).get();
+        final Corporation corporation = jmongo.find(id).get();
         return save(principal, corporation, command);
     }
 

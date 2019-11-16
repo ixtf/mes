@@ -2,10 +2,10 @@ package com.hengyi.japp.mes.auto.open;
 
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import io.vertx.core.Vertx;
 
-import javax.inject.Named;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

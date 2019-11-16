@@ -2,17 +2,16 @@ package com.hengyi.japp.mes.auto.search.application.internal;
 
 import com.github.ixtf.persistence.IEntity;
 import com.github.ixtf.persistence.mongo.Jmongo;
+import com.google.inject.name.Named;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
-import javax.inject.Named;
 import java.nio.file.Path;
 
 /**
  * @author jzb 2019-11-13
  */
 @Slf4j
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class BaseLucene<T extends IEntity> extends com.github.ixtf.persistence.lucene.BaseLucene<T> {
     protected final Jmongo jmongo;
     private boolean indexAlling;

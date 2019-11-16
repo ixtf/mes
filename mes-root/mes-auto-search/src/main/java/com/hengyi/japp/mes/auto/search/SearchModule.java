@@ -5,6 +5,7 @@ import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Guice;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.hengyi.japp.mes.auto.GuiceModule;
 import com.hengyi.japp.mes.auto.search.config.MesAutoJmongo;
 import com.mongodb.ConnectionString;
@@ -20,7 +21,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.rabbitmq.*;
 
-import javax.inject.Named;
 import java.nio.file.Path;
 import java.time.Duration;
 

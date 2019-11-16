@@ -5,6 +5,7 @@ import com.github.ixtf.persistence.lucene.Jlucene;
 import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.hengyi.japp.mes.auto.domain.*;
 import com.hengyi.japp.mes.auto.query.SilkBarcodeQuery;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.FacetsConfig;
 import org.apache.lucene.search.BooleanQuery;
 
-import javax.inject.Named;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Optional;
@@ -26,7 +26,6 @@ import static com.github.ixtf.persistence.lucene.Jlucene.*;
  */
 @Slf4j
 @Singleton
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class SilkBarcodeLucene extends BaseLucene<SilkBarcode> {
 
     @Inject

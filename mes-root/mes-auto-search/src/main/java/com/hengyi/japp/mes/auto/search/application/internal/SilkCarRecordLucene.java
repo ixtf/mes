@@ -3,6 +3,7 @@ package com.hengyi.japp.mes.auto.search.application.internal;
 import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.hengyi.japp.mes.auto.domain.Batch;
 import com.hengyi.japp.mes.auto.domain.SilkCar;
 import com.hengyi.japp.mes.auto.domain.SilkCarRecord;
@@ -14,7 +15,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.FacetsConfig;
 import org.apache.lucene.search.BooleanQuery;
 
-import javax.inject.Named;
 import java.nio.file.Path;
 import java.util.Collection;
 
@@ -25,7 +25,6 @@ import static com.github.ixtf.persistence.lucene.Jlucene.*;
  */
 @Slf4j
 @Singleton
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
 
     @Inject

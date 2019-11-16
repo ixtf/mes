@@ -2,13 +2,13 @@ package com.hengyi.japp.mes.auto;
 
 import com.google.inject.Key;
 import com.google.inject.*;
+import com.google.inject.name.Named;
 import com.hengyi.japp.mes.auto.config.MesAutoConfig;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import lombok.SneakyThrows;
 
-import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;

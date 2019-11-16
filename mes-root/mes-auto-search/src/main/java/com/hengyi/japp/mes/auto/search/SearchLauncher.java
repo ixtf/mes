@@ -1,6 +1,7 @@
 package com.hengyi.japp.mes.auto.search;
 
 import io.vertx.core.Launcher;
+import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.micrometer.MicrometerMetricsOptions;
 import io.vertx.micrometer.VertxPrometheusOptions;
@@ -27,6 +28,11 @@ public class SearchLauncher extends Launcher {
                 .setWorkerPoolSize(1000)
                 .setMaxEventLoopExecuteTime(10)
                 .setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void afterStartingVertx(Vertx vertx) {
+        SearchModule.init(vertx);
     }
 
 }

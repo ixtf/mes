@@ -1,0 +1,13 @@
+version: "3.2"
+# docker save hengyi/mes-auto-search:${TAG} | bzip2 | pv | ssh root@10.2.0.214 'cat | docker load'
+services:
+  mes-auto-search:
+    image: hengyi/mes-auto-search:${TAG}
+    restart: always
+    network_mode: host
+    container_name: mes-auto-search
+    hostname: mes-auto-search
+    environment:
+      JAVA_OPTIONS: "-Xmx10G -Xms10G"
+    ports:
+      - 9999:9999

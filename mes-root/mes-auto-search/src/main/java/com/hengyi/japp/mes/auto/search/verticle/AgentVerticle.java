@@ -36,7 +36,7 @@ public class AgentVerticle extends AbstractVerticle {
                 .setWebsocketSubProtocols("graphql-ws");
         Future.<HttpServer>future(promise -> vertx.createHttpServer(httpServerOptions)
                 .requestHandler(router)
-                .listen(8080, promise))
+                .listen(9999, promise))
                 .<Void>mapEmpty()
                 .setHandler(startFuture);
     }

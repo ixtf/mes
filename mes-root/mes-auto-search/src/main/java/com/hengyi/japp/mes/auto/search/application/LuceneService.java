@@ -42,4 +42,5 @@ public interface LuceneService extends Closeable {
     Mono<Void> index(LuceneCommandOne command);
 
     Mono<Void> remove(LuceneCommandOne command);
+
 }

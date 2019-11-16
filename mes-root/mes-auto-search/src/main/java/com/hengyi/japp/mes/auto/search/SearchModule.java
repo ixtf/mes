@@ -1,9 +1,12 @@
 package com.hengyi.japp.mes.auto.search;
 
+import com.github.ixtf.japp.core.J;
+import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Guice;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.GuiceModule;
+import com.hengyi.japp.mes.auto.search.config.MesAutoJmongo;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.reactivestreams.client.MongoClient;
@@ -19,9 +22,9 @@ import reactor.rabbitmq.*;
 
 import javax.inject.Named;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 
+import static java.util.Optional.ofNullable;
 import static reactor.rabbitmq.Utils.singleConnectionMono;
 
 /**
@@ -42,7 +45,12 @@ public class SearchModule extends GuiceModule {
     @Singleton
     @Named("rootPath")
     private Path rootPath() {
-        return Paths.get(System.getProperty("mes.auto.search.path", "/home/mes/search"));
+        final String path = ofNullable(System.getProperty("mes.auto.search.path"))
+                .filter(J::nonBlank)
+                .or(() -> ofNullable(System.getenv("mes.auto.search.path")))
+                .filter(J::nonBlank)
+                .orElse("/home/mes/search");
+        return Path.of(path);
     }
 
     @Provides
@@ -50,6 +58,12 @@ public class SearchModule extends GuiceModule {
     @Named("lucenePath")
     private Path lucenePath(@Named("rootPath") Path rootPath) {
         return rootPath.resolve("lucene");
+    }
+
+    @Provides
+    @Singleton
+    private Jmongo Jmongo() {
+        return Jmongo.of(MesAutoJmongo.class);
     }
 
     @Provides

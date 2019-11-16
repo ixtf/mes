@@ -1,10 +1,8 @@
 package com.hengyi.japp.mes.auto;
 
-import com.github.ixtf.persistence.mongo.Jmongo;
 import com.google.inject.Key;
 import com.google.inject.*;
 import com.hengyi.japp.mes.auto.config.MesAutoConfig;
-import com.hengyi.japp.mes.auto.config.MesAutoJmongo;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.jwt.JWTAuth;
@@ -58,12 +56,6 @@ public class GuiceModule extends AbstractModule {
         final File jsonFile = rootPath.resolve("config.json").toFile();
         final Map map = MAPPER.readValue(jsonFile, Map.class);
         return new JsonObject(map);
-    }
-
-    @Provides
-    @Singleton
-    private Jmongo Jmongo() {
-        return Jmongo.of(MesAutoJmongo.class);
     }
 
     @Provides

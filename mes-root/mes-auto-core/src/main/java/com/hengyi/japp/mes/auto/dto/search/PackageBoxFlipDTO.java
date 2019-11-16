@@ -3,6 +3,7 @@ package com.hengyi.japp.mes.auto.dto.search;
 import com.hengyi.japp.mes.auto.domain.data.PackageBoxFlipType;
 import com.hengyi.japp.mes.auto.dto.EntityDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Collection;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author jzb 2019-02-25
  */
 @Data
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class PackageBoxFlipDTO extends EntityDTO {
     private PackageBoxFlipType type;
     private PackageBoxInfo packageBox;
@@ -22,6 +24,7 @@ public class PackageBoxFlipDTO extends EntityDTO {
     private Date modifyDateTime;
 
     @Data
+    @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
     public static class PackageBoxInfo extends EntityDTO {
         private BatchInfo batch;
         private EntityDTO grade;
@@ -31,12 +34,14 @@ public class PackageBoxFlipDTO extends EntityDTO {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
     public static class BatchInfo extends EntityDTO {
         private EntityDTO product;
         private EntityDTO workshop;
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
     public static class SilkInfo extends EntityDTO {
         private String code;
     }

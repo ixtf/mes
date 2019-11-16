@@ -1,8 +1,10 @@
 package com.hengyi.japp.mes.auto.query;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.github.ixtf.japp.core.J;
 import com.hengyi.japp.mes.auto.domain.data.PackageBoxType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -11,12 +13,11 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
-import static java.util.Optional.ofNullable;
-
 /**
  * @author jzb 2019-11-13
  */
 @Data
+@NoArgsConstructor
 public class PackageBoxQuery implements Serializable {
     private boolean inWarehouse;
     @NotBlank
@@ -39,11 +40,13 @@ public class PackageBoxQuery implements Serializable {
     @Min(10)
     private int pageSize;
 
-    public void setStartBudat(Date date) {
-        startBudat = ofNullable(date).map(J::localDate).orElse(null);
+    @JsonSetter("startBudatL")
+    public void startBudatL(long l) {
+        startBudat = J.localDate(new Date(l));
     }
 
-    public void setEndBudat(Date date) {
-        endBudat = ofNullable(date).map(J::localDate).orElse(null);
+    @JsonSetter("endBudatL")
+    public void endBudatL(long l) {
+        endBudat = J.localDate(new Date(l));
     }
 }

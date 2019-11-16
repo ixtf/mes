@@ -1,5 +1,6 @@
 package com.hengyi.japp.mes.auto.query;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.github.ixtf.japp.core.J;
 import lombok.Data;
 
@@ -7,8 +8,6 @@ import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * @author jzb 2019-11-13
@@ -27,11 +26,14 @@ public class SilkBarcodeQuery implements Serializable {
     @Min(10)
     private int pageSize;
 
-    public void setStartCodeDate(Date date) {
-        startCodeDate = ofNullable(date).map(J::localDate).orElse(null);
+    @JsonSetter("startCodeDateL")
+    public void startCodeDateL(long l) {
+        startCodeDate = J.localDate(new Date(l));
     }
 
-    public void setEndCodeDate(Date date) {
-        endCodeDate = ofNullable(date).map(J::localDate).orElse(null);
+    @JsonSetter("endCodeDateL")
+    public void endCodeDateL(long l) {
+        endCodeDate = J.localDate(new Date(l));
     }
+
 }

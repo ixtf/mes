@@ -3,6 +3,7 @@ package com.hengyi.japp.mes.auto.search.verticle;
 import com.hengyi.japp.mes.auto.search.SearchModule;
 import com.hengyi.japp.mes.auto.search.application.LuceneService;
 import io.vertx.core.AbstractVerticle;
+import reactor.core.publisher.Mono;
 import reactor.rabbitmq.ConsumeOptions;
 import reactor.rabbitmq.Receiver;
 
@@ -19,9 +20,11 @@ public class LuceneVerticle extends AbstractVerticle {
     public void start() throws Exception {
         receiver.consumeManualAck(INDEX_QUEUE, SearchModule.getInstance(ConsumeOptions.class))
                 .concatMap(luceneService::index)
+                .onErrorResume(err -> Mono.empty())
                 .subscribe();
         receiver.consumeManualAck(REMOVE_QUEUE, SearchModule.getInstance(ConsumeOptions.class))
                 .concatMap(luceneService::remove)
+                .onErrorResume(err -> Mono.empty())
                 .subscribe();
     }
 

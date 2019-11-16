@@ -3,6 +3,7 @@ package test;
 import com.hengyi.japp.mes.auto.domain.PackageBox;
 import com.hengyi.japp.mes.auto.query.PackageBoxQuery;
 import com.hengyi.japp.mes.auto.search.MainVerticle;
+import com.hengyi.japp.mes.auto.search.SearchLauncher;
 import com.hengyi.japp.mes.auto.search.SearchModule;
 import com.hengyi.japp.mes.auto.search.application.internal.PackageBoxLucene;
 import io.vertx.core.AsyncResult;
@@ -16,6 +17,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.List;
 
 import static com.github.ixtf.japp.core.Constant.MAPPER;
 
@@ -25,6 +27,8 @@ import static com.github.ixtf.japp.core.Constant.MAPPER;
 public class SearchDebug {
 
     public static void main(String[] args) {
+        args = List.of("start", "-Dmes.auto.search.path=data/mes-3000/search").toArray(new String[2]);
+        SearchLauncher.main(args);
         Vertx.vertx().deployVerticle(MainVerticle::new, new DeploymentOptions(), SearchDebug::test);
     }
 

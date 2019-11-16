@@ -1,5 +1,5 @@
 plugins {
-    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.0.8"
+    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.0.10"
 }
 
 dependencies {
@@ -16,7 +16,7 @@ dependencies {
 
 resolve {
     outputFormat = 'YAML'
-    outputPath = '/home/jzb/git/com.hengyi/mes3/mes-root/docs'
+    outputDir = file('/home/jzb/git/com.hengyi/mes3/mes-root/docs')
     openApiFile = file('/home/jzb/git/com.hengyi/mes3/mes-root/docs/openapi-base.yaml')
     classpath = sourceSets.main.runtimeClasspath
     resourcePackages = ['com.hengyi.japp.mes.auto']

@@ -1,5 +1,6 @@
 package com.hengyi.japp.mes.auto.query;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.github.ixtf.japp.core.J;
 import lombok.Data;
 
@@ -8,8 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * @author jzb 2019-11-13
@@ -28,12 +27,14 @@ public class SilkCarRecordQuery implements Serializable {
     @NotNull
     private LocalDate endDate;
 
-    public void setStartDate(Date date) {
-        startDate = ofNullable(date).map(J::localDate).orElse(null);
+    @JsonSetter("startDateL")
+    public void startDateL(long l) {
+        startDate = J.localDate(new Date(l));
     }
 
-    public void setEndDate(Date date) {
-        endDate = ofNullable(date).map(J::localDate).orElse(null);
+    @JsonSetter("endDateL")
+    public void endDateL(long l) {
+        endDate = J.localDate(new Date(l));
     }
 
 }

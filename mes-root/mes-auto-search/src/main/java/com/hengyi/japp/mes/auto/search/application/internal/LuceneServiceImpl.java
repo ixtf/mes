@@ -32,6 +32,7 @@ public class LuceneServiceImpl implements LuceneService {
                 .map(SearchModule::getInstance)
                 .map(BaseLucene.class::cast)
                 .collect(toUnmodifiableMap(it -> it.getEntityClass(), Function.identity()));
+        System.out.println(luceneMap);
         this.jmongo = jmongo;
     }
 

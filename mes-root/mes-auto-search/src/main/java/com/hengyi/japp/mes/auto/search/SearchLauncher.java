@@ -24,7 +24,9 @@ public class SearchLauncher extends Launcher {
                 .setPrometheusOptions(prometheusOptions)
                 .setEnabled(true);
         options.setMetricsOptions(metricsOptions)
+                .setWorkerPoolSize(1000)
                 .setMaxEventLoopExecuteTime(10)
                 .setMaxEventLoopExecuteTimeUnit(TimeUnit.SECONDS);
     }
+
 }

@@ -1,6 +1,5 @@
 package com.hengyi.japp.mes.auto.search.config;
 
-import com.github.ixtf.persistence.mongo.EntityCacheOptions;
 import com.github.ixtf.persistence.mongo.JmongoOptions;
 import com.hengyi.japp.mes.auto.search.SearchModule;
 import com.mongodb.reactivestreams.client.MongoClient;
@@ -19,8 +18,4 @@ public class MesAutoJmongo extends JmongoOptions {
         return "mes-auto";
     }
 
-    @Override
-    protected EntityCacheOptions entityCacheOptions() {
-        return EntityCacheOptions.builder().cacheable(false).build();
-    }
 }

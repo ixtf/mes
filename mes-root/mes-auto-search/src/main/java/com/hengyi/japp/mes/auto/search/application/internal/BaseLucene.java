@@ -25,14 +25,19 @@ public abstract class BaseLucene<T extends IEntity> extends com.github.ixtf.pers
         if (indexAlling) {
             return "indexAlling=正在全局索引";
         }
+        log.info("==============" + this.getEntityClass() + " indexAll start==============");
         indexAlling = true;
-        jmongo.find(entityClass).doOnNext(this::index)
-                .onErrorResume(err -> {
-                    log.error("", err);
-                    return Mono.empty();
-                })
-                .doOnComplete(() -> indexAlling = false)
-                .subscribe();
+        jmongo.find(entityClass).flatMap(o -> {
+            try {
+                index(o);
+            } catch (Throwable err) {
+                log.error(entityClass + "[" + o.getId() + "]", err);
+            }
+            return Mono.empty();
+        }).doAfterTerminate(() -> {
+            indexAlling = false;
+            log.info("==============" + this.getEntityClass() + " indexAll end==============");
+        }).subscribe();
         return "indexAlling=ok";
     }
 }

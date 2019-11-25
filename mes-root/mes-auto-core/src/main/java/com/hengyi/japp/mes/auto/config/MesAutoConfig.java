@@ -62,7 +62,9 @@ public class MesAutoConfig {
         final Object value = cors.getValue("domainPatterns");
         final Object[] objects = (Object[]) value;
         final Set<String> domainPatterns = Arrays.stream(objects).map(it -> (String) it).collect(toSet());
-        return CorsConfig.builder().domainPatterns(domainPatterns).build();
+        final CorsConfig corsConfig = new CorsConfig();
+        corsConfig.setDomainPatterns(domainPatterns);
+        return corsConfig;
     }
 
     public static JsonObject apkInfo() {

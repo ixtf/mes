@@ -7,7 +7,7 @@ import {Store} from '@ngxs/store';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
 import {isString} from 'util';
-import {AppState} from '../store/app.state';
+import {AppState} from '../pages/app/app.state';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

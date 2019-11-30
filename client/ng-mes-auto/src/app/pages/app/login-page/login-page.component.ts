@@ -7,7 +7,7 @@ import {Select} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {shake} from '../../../services/animations';
-import {AppState, LoginAction} from '../../../store/app.state';
+import {AppState, LoginAction} from '../app.state';
 
 @Component({
   templateUrl: './login-page.component.html',

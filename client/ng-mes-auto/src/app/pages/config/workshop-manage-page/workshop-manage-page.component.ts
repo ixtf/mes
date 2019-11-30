@@ -8,8 +8,8 @@ import {map} from 'rxjs/operators';
 import {Workshop} from '../../../models/workshop';
 import {COPY_WITH_CTRL} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, SaveAction, WorkshopManagePageState} from '../../../store/workshop-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, SaveAction, WorkshopManagePageState} from './workshop-manage-page.state';
 import {WorkshopUpdateDialogComponent} from './workshop-update-dialog/workshop-update-dialog.component';
 
 const COLUMNS = ['corporation', 'name', 'code', 'sapT001ls', 'sapT001lsForeign', 'sapT001lsPallet'];

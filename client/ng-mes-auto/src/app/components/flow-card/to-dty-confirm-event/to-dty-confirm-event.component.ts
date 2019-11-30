@@ -8,8 +8,8 @@ import {EventSource, ToDtyConfirmEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRecordDestination} from '../../../models/silk-car-record-destination';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
+import {AppState} from '../../../pages/app/app.state';
 import {ApiService} from '../../../services/api.service';
-import {AppState} from '../../../store/app.state';
 import {ConfirmDialogComponent} from '../../confirm-dialog/confirm-dialog.component';
 
 @Component({

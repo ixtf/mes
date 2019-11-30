@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {EmitterService} from '@ngxs-labs/emitter';
 import {Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {AppState} from '../store/app.state';
+import {AppState} from '../pages/app/app.state';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {

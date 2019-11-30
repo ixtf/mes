@@ -18,8 +18,8 @@ export class FlipReportPageComponent {
   readonly items$: Observable<FlipReportItem[]>;
   readonly searchForm = this.fb.group({
     silkSpec: [null, Validators.required],
-    startDate: [null, [Validators.required]],
-    endDate: [null, [Validators.required]],
+    startDate: [new Date(), [Validators.required]],
+    endDate: [new Date(), [Validators.required]],
   });
 
   constructor(private store: Store,

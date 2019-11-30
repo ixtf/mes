@@ -7,8 +7,8 @@ import {Product} from '../../../../models/product';
 import {SilkCarRecord} from '../../../../models/silk-car-record';
 import {ApiService} from '../../../../services/api.service';
 import {UtilService} from '../../../../services/util.service';
-import {InspectionReportItem} from '../../../../store/inspection-report-page.state';
-import {StrippingReportItem} from '../../../../store/stripping-report-page.state';
+import {StrippingReportItem} from '../../stripping-report-page/stripping-report-page.state';
+import {InspectionReportItem} from '../inspection-report-page.state';
 
 @Component({
   templateUrl: './inspection-report-detail-dialog.component.html',

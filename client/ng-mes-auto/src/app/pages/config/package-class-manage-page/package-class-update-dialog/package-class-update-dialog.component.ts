@@ -5,7 +5,7 @@ import {Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {PackageClass} from '../../../../models/package-class';
-import {AppState} from '../../../../store/app.state';
+import {AppState} from '../../../app/app.state';
 
 @Component({
   templateUrl: './package-class-update-dialog.component.html',

@@ -7,7 +7,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {EB_URL} from '../../../../environments/environment';
 import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BoardSilkCarRuntimePageState, GroupByBatchGradeItem, InitAction, SilkCarRuntimeReportItem, UpdateSilkCarRuntimeEvent} from '../../../store/board-silk-car-runtime-page.state';
+import {BoardSilkCarRuntimePageState, GroupByBatchGradeItem, InitAction, SilkCarRuntimeReportItem, UpdateSilkCarRuntimeEvent} from './board-silk-car-runtime-page.state';
 
 declare const EventBus: any;
 

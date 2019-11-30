@@ -7,7 +7,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {EB_URL} from '../../../../environments/environment';
 import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BoardAutoLineJikonAdapterPageState, InitAction, MessageModel, ReceivedMessageAction} from '../../../store/board-auto-line-jikon-adapter-page.state';
+import {BoardAutoLineJikonAdapterPageState, InitAction, MessageModel, ReceivedMessageAction} from './board-auto-line-jikon-adapter-page.state';
 
 declare const EventBus: any;
 

@@ -8,8 +8,8 @@ import {filter, map} from 'rxjs/operators';
 import {ExceptionRecord} from '../../models/exception-record';
 import {Notification} from '../../models/notification';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
-import {DeleteAction, InitAction, NotificationManagePageState, SaveAction} from '../../store/notification-manage-page.state';
+import {AppState} from '../app/app.state';
+import {DeleteAction, InitAction, NotificationManagePageState, SaveAction} from './notification-manage-page.state';
 import {NotificationUpdateDialogComponent} from './notification-update-dialog/notification-update-dialog.component';
 
 @Component({

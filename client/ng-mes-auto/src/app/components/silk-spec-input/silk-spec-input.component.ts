@@ -4,8 +4,8 @@ import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormControl, NgControl, Validators} from '@angular/forms';
 import {MatAutocompleteSelectedEvent, MatFormFieldControl} from '@angular/material';
-import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
+import {combineLatest, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 import {isString} from 'util';
 import {LineMachine} from '../../models/line-machine';
 import {ApiService} from '../../services/api.service';
@@ -117,7 +117,7 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
   }
 
   get empty() {
-    return !this.valueCtrl.value;
+    return !(this.itemCtrl.value || this.spindleCtrl.value || this.lineCtrl.value);
   }
 
   get shouldLabelFloat() {
@@ -125,17 +125,14 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
   }
 
   get errorState(): boolean {
-    if (this.disabled) {
+    if (this.disabled || this.form.pristine) {
       return false;
     }
-    return false;
+    return !this.value;
   }
 
   @Input()
   get value(): SilkSpec | null {
-    if (this.errorState) {
-      return null;
-    }
     return this.valueCtrl.value;
   }
 
@@ -146,6 +143,30 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
 
   ngOnInit(): void {
     this.valueCtrl.valueChanges.subscribe(() => this.onChange(this.value));
+    const lineMachines$ = this.lineCtrl.valueChanges.pipe(
+      filter(it => it && it.id),
+      map(it => it.id),
+      debounceTime(SEARCH_DEBOUNCE_TIME),
+      distinctUntilChanged(),
+      switchMap(it => this.api.getLine_LineMachines(it)),
+    );
+    const lineMachine$ = combineLatest([this.itemCtrl.valueChanges, lineMachines$]).pipe(
+      debounceTime(SEARCH_DEBOUNCE_TIME),
+      distinctUntilChanged(),
+      map(([item, lineMachines]) => (lineMachines || []).find(it => it.item === item)),
+    );
+    combineLatest([this.spindleCtrl.valueChanges, lineMachine$]).pipe(
+      debounceTime(SEARCH_DEBOUNCE_TIME),
+      distinctUntilChanged(),
+      tap(([spindle, lineMachine]) => {
+        const spindleNum = lineMachine && lineMachine.spindleNum;
+        if (spindle > 0 && spindle <= spindleNum) {
+          this.value = {lineMachine, spindle};
+        } else {
+          this.value = null;
+        }
+      }),
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -175,8 +196,13 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
     this.disabled = isDisabled;
   }
 
-  writeValue(obj: SilkSpec | null): void {
-    this.value = obj;
+  writeValue(obj: SilkSpec): void {
+    if (obj) {
+      this.value = obj;
+      this.lineCtrl.setValue(obj.lineMachine.line);
+      this.itemCtrl.setValue(obj.lineMachine.item);
+      this.spindleCtrl.setValue(obj.spindle);
+    }
   }
 
   private onChange = (_: any) => {

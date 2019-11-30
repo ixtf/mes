@@ -14,7 +14,7 @@ import {insertRemoveAnimation} from '../../services/animations';
 import {ApiService} from '../../services/api.service';
 import {SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {FetchAction, InitAction, SilkCarRuntimePageState} from '../../store/silk-car-runtime-page.state';
+import {FetchAction, InitAction, SilkCarRuntimePageState} from './silk-car-runtime-page.state';
 
 @Component({
   templateUrl: './silk-car-runtime-page.component.html',

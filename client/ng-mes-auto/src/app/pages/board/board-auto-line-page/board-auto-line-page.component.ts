@@ -7,7 +7,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {EB_URL} from '../../../../environments/environment';
 import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BoardAutoLinePageState, InitAction, MessageModel, ReceivedMessageAction} from '../../../store/board-auto-line-page.state';
+import {BoardAutoLinePageState, InitAction, MessageModel, ReceivedMessageAction} from './board-auto-line-page.state';
 
 declare const EventBus: any;
 

@@ -7,8 +7,8 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {PackageClass} from '../../../models/package-class';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, PackageClassManagePageState, SaveAction} from '../../../store/package-class-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, PackageClassManagePageState, SaveAction} from './package-class-manage-page.state';
 import {PackageClassUpdateDialogComponent} from './package-class-update-dialog/package-class-update-dialog.component';
 
 const COLUMNS = ['name', 'riambCode', 'sortBy'];

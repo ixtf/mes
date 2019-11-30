@@ -11,8 +11,8 @@ import {ExceptionRecord} from '../../models/exception-record';
 import {Line} from '../../models/line';
 import {ApiService} from '../../services/api.service';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
-import {EBUpdateExceptionRecordAction, ExceptionRecordManagePageState, FilterLineAction, HandleAction, InitAction, SaveAction} from '../../store/exception-record-manage-page.state';
+import {AppState} from '../app/app.state';
+import {EBUpdateExceptionRecordAction, ExceptionRecordManagePageState, FilterLineAction, HandleAction, InitAction, SaveAction} from './exception-record-manage-page.state';
 import {ExceptionRecordUpdateDialogComponent} from './exception-record-update-dialog/exception-record-update-dialog.component';
 
 declare const EventBus: any;

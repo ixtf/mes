@@ -11,8 +11,8 @@ import {Line} from '../../../models/line';
 import {Workshop} from '../../../models/workshop';
 import {UtilService} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, LineManagePageState, QueryAction, SaveAction} from '../../../store/line-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, LineManagePageState, QueryAction, SaveAction} from './line-manage-page.state';
 import {LineUpdateDialogComponent} from './line-update-dialog/line-update-dialog.component';
 
 const COLUMNS = ['workshop', 'name', 'doffingType'];

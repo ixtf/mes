@@ -5,7 +5,7 @@ import {Select} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {AuthInfo} from '../../../models/auth-info';
 import {ApiService} from '../../../services/api.service';
-import {AppState} from '../../../store/app.state';
+import {AppState} from '../app.state';
 import {BoardAbnormalDialogComponent} from './board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './board-auto-line-dialog/board-auto-line-dialog.component';
 import {BoardAutoLineJikonAdapterDialogComponent} from './board-auto-line-jikon-adapter-dialog/board-auto-line-jikon-adapter-dialog.component';

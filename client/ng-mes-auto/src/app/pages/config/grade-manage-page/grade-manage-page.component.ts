@@ -7,8 +7,8 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Grade} from '../../../models/grade';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {GradeManagePageState, InitAction, SaveAction} from '../../../store/grade-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {GradeManagePageState, InitAction, SaveAction} from './grade-manage-page.state';
 import {GradeUpdateDialogComponent} from './grade-update-dialog/grade-update-dialog.component';
 
 const COLUMNS = ['id', 'code', 'name', 'sortBy'];

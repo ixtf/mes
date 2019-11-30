@@ -10,8 +10,8 @@ import {BatchInputComponentModule} from '../../../components/batch-input/batch-i
 import {TemporaryBox} from '../../../models/temporary-box';
 import {PAGE_SIZE_OPTIONS, UtilService} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, QueryAction, SaveAction, TemporaryBoxManagePageState} from '../../../store/temporary-box-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, QueryAction, SaveAction, TemporaryBoxManagePageState} from './temporary-box-manage-page.state';
 import {TemporaryBoxUpdateDialogComponent} from './temporary-box-update-dialog/temporary-box-update-dialog.component';
 
 @Component({

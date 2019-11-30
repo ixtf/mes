@@ -11,8 +11,8 @@ import {Line} from '../../../models/line';
 import {LineMachine} from '../../../models/line-machine';
 import {UtilService, VALIDATORS} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, LineMachineManagePageState, QueryAction, SaveAction} from '../../../store/line-machine-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, LineMachineManagePageState, QueryAction, SaveAction} from './line-machine-manage-page.state';
 import {LineMachineUpdateDialogComponent} from './line-machine-update-dialog/line-machine-update-dialog.component';
 
 const COLUMNS = ['line', 'item', 'spindleNum'];

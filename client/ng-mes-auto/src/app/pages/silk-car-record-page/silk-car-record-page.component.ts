@@ -14,8 +14,8 @@ import {SilkCarRecord} from '../../models/silk-car-record';
 import {ApiService} from '../../services/api.service';
 import {PAGE_SIZE_OPTIONS, SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
-import {InitAction, PickAction, QueryAction, SilkCarRecordPageState} from '../../store/silk-car-record-page.state';
+import {AppState} from '../app/app.state';
+import {InitAction, PickAction, QueryAction, SilkCarRecordPageState} from './silk-car-record-page.state';
 
 @Component({
   templateUrl: './silk-car-record-page.component.html',

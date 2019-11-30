@@ -9,8 +9,8 @@ import {debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs/operators
 import {Batch} from '../../../models/batch';
 import {PAGE_SIZE_OPTIONS, SEARCH_DEBOUNCE_TIME, UtilService} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {BatchManagePageState, InitAction, QueryAction, SaveAction} from '../../../store/batch-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {BatchManagePageState, InitAction, QueryAction, SaveAction} from './batch-manage-page.state';
 import {BatchUpdateDialogComponent} from './batch-update-dialog/batch-update-dialog.component';
 
 @Component({

@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {RefreshAction} from '../../../store/board-abnormal-page.state';
+import {RefreshAction} from '../board-abnormal-page/board-abnormal-page.state';
 
 @Component({
   templateUrl: './board-test-page.component.html',

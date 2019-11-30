@@ -20,11 +20,11 @@ import {PackageClass} from '../../models/package-class';
 import {ApiService} from '../../services/api.service';
 import {COMPARE_WITH_ID, COPY_WITH_CTRL, UtilService} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {AppState, ShowErrorAction} from '../../store/app.state';
-import {InitAction, MeasureAction, RefreshAction, SaveAction, SetFilterAction, UnbudatPackageBoxManagePageState} from '../../store/unbudat-package-box-manage-page.state';
+import {AppState, ShowErrorAction} from '../app/app.state';
 import {PackageBoxBatchMeasureDialogComponent} from './package-box-batch-measure-dialog/package-box-batch-measure-dialog.component';
 import {PackageBoxCreateDialogComponent} from './package-box-create-dialog/package-box-create-dialog.component';
 import {PackageBoxMeasureDialogComponent} from './package-box-measure-dialog/package-box-measure-dialog.component';
+import {InitAction, MeasureAction, RefreshAction, SaveAction, SetFilterAction, UnbudatPackageBoxManagePageState} from './unbudat-package-box-manage-page.state';
 
 @Component({
   templateUrl: './unbudat-package-box-manage-page.component.html',

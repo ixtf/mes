@@ -7,7 +7,7 @@ import {Product} from '../../../../models/product';
 import {SilkCarRecord} from '../../../../models/silk-car-record';
 import {ApiService} from '../../../../services/api.service';
 import {UtilService} from '../../../../services/util.service';
-import {StrippingReportItem} from '../../../../store/stripping-report-page.state';
+import {StrippingReportItem} from '../stripping-report-page.state';
 
 @Component({
   templateUrl: './stripping-report-detail-dialog.component.html',

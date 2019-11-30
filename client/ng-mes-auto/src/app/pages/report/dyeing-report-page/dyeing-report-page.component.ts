@@ -13,9 +13,9 @@ import {Operator} from '../../../models/operator';
 import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {DownloadAction, DyeingReportItem, DyeingReportPageState, GroupByDyeingType, InitAction, QueryAction} from '../../../store/dyeing-report-page.state';
+import {AppState} from '../../app/app.state';
 import {DyeingReportDetailDialogComponent} from './dyeing-report-detail-dialog/dyeing-report-detail-dialog.component';
+import {DownloadAction, DyeingReportItem, DyeingReportPageState, GroupByDyeingType, InitAction, QueryAction} from './dyeing-report-page.state';
 
 @Component({
   templateUrl: './dyeing-report-page.component.html',

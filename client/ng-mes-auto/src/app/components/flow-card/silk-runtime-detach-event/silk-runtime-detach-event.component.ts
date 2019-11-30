@@ -5,7 +5,7 @@ import {SilkRuntimeDetachEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 import {SilkRuntime} from '../../../models/silk-runtime';
-import {AppState} from '../../../store/app.state';
+import {AppState} from '../../../pages/app/app.state';
 
 @Component({
   selector: 'app-silk-runtime-detach-event',

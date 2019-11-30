@@ -13,9 +13,9 @@ import {Operator} from '../../../models/operator';
 import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {DownloadAction, InitAction, QueryAction, ToDtyConfirmReportItem, ToDtyConfirmReportPageState} from '../../../store/to-dty-confirm-report-page.state';
+import {AppState} from '../../app/app.state';
 import {ToDtyConfirmReportDetailDialogComponent} from './to-dty-confirm-report-detail-dialog/to-dty-confirm-report-detail-dialog.component';
+import {DownloadAction, InitAction, QueryAction, ToDtyConfirmReportItem, ToDtyConfirmReportPageState} from './to-dty-confirm-report-page.state';
 
 @Component({
   templateUrl: './to-dty-confirm-report-page.component.html',

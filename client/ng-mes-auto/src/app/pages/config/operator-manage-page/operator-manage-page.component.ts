@@ -6,8 +6,8 @@ import {Observable} from 'rxjs';
 import {Batch} from '../../../models/batch';
 import {PAGE_SIZE_OPTIONS} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BatchManagePageState} from '../../../store/batch-manage-page.state';
-import {OperatorManagePageState} from '../../../store/operator-manage-page.state';
+import {BatchManagePageState} from '../batch-manage-page/batch-manage-page.state';
+import {OperatorManagePageState} from './operator-manage-page.state';
 
 
 @Component({

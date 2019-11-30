@@ -14,9 +14,9 @@ import {Product} from '../../../models/product';
 import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {DownloadAction, GroupByProduct, InitAction, InspectionReportItem, InspectionReportPageState, QueryAction} from '../../../store/inspection-report-page.state';
+import {AppState} from '../../app/app.state';
 import {InspectionReportDetailDialogComponent} from './inspection-report-detail-dialog/inspection-report-detail-dialog.component';
+import {DownloadAction, GroupByProduct, InitAction, InspectionReportItem, InspectionReportPageState, QueryAction} from './inspection-report-page.state';
 
 @Component({
   templateUrl: './inspection-report-page.component.html',

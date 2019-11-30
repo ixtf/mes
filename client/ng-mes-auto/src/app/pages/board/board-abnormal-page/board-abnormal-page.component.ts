@@ -10,7 +10,7 @@ import {Notification} from '../../../models/notification';
 import {Item} from '../../../models/workshop-product-plan-report';
 import {INTERVAL$} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {BoardAbnormalPageState, InitAction, UpdateExceptionRecordAction, UpdateNotificationAction, UpdateProductPlanRecordAction} from '../../../store/board-abnormal-page.state';
+import {BoardAbnormalPageState, InitAction, UpdateExceptionRecordAction, UpdateNotificationAction, UpdateProductPlanRecordAction} from './board-abnormal-page.state';
 
 declare const EventBus: any;
 

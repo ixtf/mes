@@ -14,9 +14,9 @@ import {Product} from '../../../models/product';
 import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {GroupByProduct, InitAction, QueryAction, StrippingReportItem, StrippingReportPageState} from '../../../store/stripping-report-page.state';
+import {AppState} from '../../app/app.state';
 import {StrippingReportDetailDialogComponent} from './stripping-report-detail-dialog/stripping-report-detail-dialog.component';
+import {GroupByProduct, InitAction, QueryAction, StrippingReportItem, StrippingReportPageState} from './stripping-report-page.state';
 
 @Component({
   templateUrl: './stripping-report-page.component.html',

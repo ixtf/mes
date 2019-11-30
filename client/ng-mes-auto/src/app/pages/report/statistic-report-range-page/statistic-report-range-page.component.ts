@@ -11,9 +11,9 @@ import {XlsxItem} from '../../../models/statistic-report-day';
 import {Workshop} from '../../../models/workshop';
 import {ApiService} from '../../../services/api.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, QueryAction, StatisticReportRangePageState} from '../../../store/statistic-report-range-page.state';
+import {AppState} from '../../app/app.state';
 import {StatisticReportCombineDialogComponent} from './statistic-report-combine-dialog/statistic-report-combine-dialog.component';
+import {InitAction, QueryAction, StatisticReportRangePageState} from './statistic-report-range-page.state';
 
 @Component({
   templateUrl: './statistic-report-range-page.component.html',

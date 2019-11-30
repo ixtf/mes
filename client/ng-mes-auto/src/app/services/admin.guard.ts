@@ -4,7 +4,7 @@ import {Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {isNullOrUndefined} from 'util';
-import {AppState} from '../store/app.state';
+import {AppState} from '../pages/app/app.state';
 
 @Injectable({providedIn: 'root'})
 export class AdminGuard implements CanActivate {

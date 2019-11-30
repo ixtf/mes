@@ -7,8 +7,8 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {SilkCarRecordDestination} from '../../../models/silk-car-record-destination';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, SaveAction, SilkCarRecordDestinationManagePageState} from '../../../store/silk-car-record-destination-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, SaveAction, SilkCarRecordDestinationManagePageState} from './silk-car-record-destination-manage-page.state';
 import {SilkCarRecordDestinationUpdateDialogComponent} from './silk-car-record-destination-update-dialog/silk-car-record-destination-update-dialog.component';
 
 @Component({

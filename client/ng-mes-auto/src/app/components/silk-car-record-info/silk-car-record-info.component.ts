@@ -6,10 +6,10 @@ import {ProductProcess} from '../../models/product-process';
 import {SilkCarRecord} from '../../models/silk-car-record';
 import {SilkCarRuntime} from '../../models/silk-car-runtime';
 import {SilkRuntime} from '../../models/silk-runtime';
+import {AppState} from '../../pages/app/app.state';
 import {ApiService} from '../../services/api.service';
 import {COPY} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
 import {LineMachineSelectBtn, SilkCarRecordInfoModel, SilkModel} from './silk-car-record-info.help';
 import {ToDtyConfirmEventDialogComponent} from './to-dty-confirm-event-dialog/to-dty-confirm-event-dialog.component';
 

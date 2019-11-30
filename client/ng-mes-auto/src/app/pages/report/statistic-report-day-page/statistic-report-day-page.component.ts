@@ -14,10 +14,10 @@ import {Workshop} from '../../../models/workshop';
 import {ApiService} from '../../../services/api.service';
 import {LINE_COMPARE, UtilService} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {CustomDiffAction, DownloadAction, InitAction, QueryAction, StatisticReportDayPageState} from '../../../store/statistic-report-day-page.state';
+import {AppState} from '../../app/app.state';
 import {StatisticReportCustomDiffDetailDialogComponent} from './statistic-report-custom-diff-detail-dialog/statistic-report-custom-diff-detail-dialog.component';
 import {StatisticReportCustomDiffDialogComponent} from './statistic-report-custom-diff-dialog/statistic-report-custom-diff-dialog.component';
+import {CustomDiffAction, DownloadAction, InitAction, QueryAction, StatisticReportDayPageState} from './statistic-report-day-page.state';
 
 @Component({
   templateUrl: './statistic-report-day-page.component.html',

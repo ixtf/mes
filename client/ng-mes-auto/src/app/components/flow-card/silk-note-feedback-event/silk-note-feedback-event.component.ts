@@ -3,7 +3,7 @@ import {Store} from '@ngxs/store';
 import {SilkNoteFeedbackEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
-import {AppState} from '../../../store/app.state';
+import {AppState} from '../../../pages/app/app.state';
 
 @Component({
   selector: 'app-silk-note-feedback-event',

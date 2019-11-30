@@ -12,8 +12,8 @@ import {SilkException} from '../../../models/silk-exception';
 import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {DisplayItem, DownloadAction, InitAction, QueryAction, SilkExceptionReportPageState} from '../../../store/silk-exception-report-page.state';
+import {AppState} from '../../app/app.state';
+import {DisplayItem, DownloadAction, InitAction, QueryAction, SilkExceptionReportPageState} from './silk-exception-report-page.state';
 
 @Component({
   templateUrl: './silk-exception-report-page.component.html',

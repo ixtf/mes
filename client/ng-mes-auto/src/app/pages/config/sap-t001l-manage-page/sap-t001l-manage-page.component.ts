@@ -8,8 +8,8 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {SapT001l} from '../../../models/sapT001l';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, SapT001lManagePageState, SaveAction, SetQAction} from '../../../store/sap-t001l-manage-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, SapT001lManagePageState, SaveAction, SetQAction} from './sap-t001l-manage-page.state';
 import {SapT001lUpdateDialogComponent} from './sap-t001l-update-dialog/sap-t001l-update-dialog.component';
 
 const COLUMNS = ['lgort', 'lgobe'];

@@ -8,8 +8,8 @@ import {Observable, Subject} from 'rxjs';
 import {Workshop} from '../../../models/workshop';
 import {Item as ProductPlanItem} from '../../../models/workshop-product-plan-report';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {InitAction, ProductPlanReportPageState, QueryAction} from '../../../store/product-plan-report-page.state';
+import {AppState} from '../../app/app.state';
+import {InitAction, ProductPlanReportPageState, QueryAction} from './product-plan-report-page.state';
 
 @Component({
   templateUrl: './product-plan-report-page.component.html',

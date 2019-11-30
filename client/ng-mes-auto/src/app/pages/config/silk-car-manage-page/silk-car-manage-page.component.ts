@@ -12,9 +12,9 @@ import {SilkCar} from '../../../models/silk-car';
 import {ApiService} from '../../../services/api.service';
 import {PAGE_SIZE_OPTIONS} from '../../../services/util.service';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {BatchSaveAction, InitAction, QueryAction, SaveAction, SilkCarManagePageState} from '../../../store/silk-car-manage-page.state';
+import {AppState} from '../../app/app.state';
 import {SilkCarBatchCreateDialogComponent} from './silk-car-batch-create-dialog/silk-car-batch-create-dialog.component';
+import {BatchSaveAction, InitAction, QueryAction, SaveAction, SilkCarManagePageState} from './silk-car-manage-page.state';
 import {SilkCarUpdateDialogComponent} from './silk-car-update-dialog/silk-car-update-dialog.component';
 
 @Component({

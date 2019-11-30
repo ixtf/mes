@@ -14,8 +14,8 @@ import {PackageBoxPrintComponent, PackageBoxPrintComponentModule} from '../../co
 import {PACKAGE_BOX_TYPE, PackageBox} from '../../models/package-box';
 import {COMPARE_WITH_ID, COPY_WITH_CTRL, PAGE_SIZE_OPTIONS, UtilService} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
-import {AppState} from '../../store/app.state';
-import {DeleteAction, InitAction, PackageBoxManagePageState, QueryAction} from '../../store/package-box-manage-page.state';
+import {AppState} from '../app/app.state';
+import {DeleteAction, InitAction, PackageBoxManagePageState, QueryAction} from './package-box-manage-page.state';
 
 @Component({
   templateUrl: './package-box-manage-page.component.html',

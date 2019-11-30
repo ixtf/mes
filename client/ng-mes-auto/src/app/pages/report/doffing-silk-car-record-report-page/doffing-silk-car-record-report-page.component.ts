@@ -11,8 +11,8 @@ import {tap} from 'rxjs/operators';
 import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {DoffingSilkCarRecordReportPageState, InfoItem, InitAction, QueryAction} from '../../../store/doffing-silk-car-record-report-page.state';
+import {AppState} from '../../app/app.state';
+import {DoffingSilkCarRecordReportPageState, InfoItem, InitAction, QueryAction} from './doffing-silk-car-record-report-page.state';
 
 @Component({
   templateUrl: './doffing-silk-car-record-report-page.component.html',

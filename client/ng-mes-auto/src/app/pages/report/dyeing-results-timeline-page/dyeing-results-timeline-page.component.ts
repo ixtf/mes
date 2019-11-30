@@ -5,11 +5,12 @@ import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {LineMachineInputComponentModule} from '../../../components/line-machine-input/line-machine-input.component';
+import {SilkSpecInputComponentModule} from '../../../components/silk-spec-input/silk-spec-input.component';
 import {DyeingResult} from '../../../models/dyeing-result';
 import {SharedModule} from '../../../shared.module';
-import {AppState} from '../../../store/app.state';
-import {DyeingResultsTimelinePageState, InitAction, MoreAction, QueryAction} from '../../../store/dyeing-results-timeline-page.state';
+import {AppState} from '../../app/app.state';
 import {DyeingResultsTimelineItemComponent} from './dyeing-results-timeline-item/dyeing-results-timeline-item.component';
+import {DyeingResultsTimelinePageState, InitAction, MoreAction, QueryAction} from './dyeing-results-timeline-page.state';
 
 @Component({
   templateUrl: './dyeing-results-timeline-page.component.html',
@@ -28,8 +29,7 @@ export class DyeingResultsTimelinePageComponent {
   @Select(DyeingResultsTimelinePageState.crossesEnded)
   readonly crossesEnded$: Observable<boolean>;
   readonly searchForm = this.fb.group({
-    lineMachine: [null, Validators.required],
-    spindle: [null, [Validators.required, Validators.min(1)]],
+    silkSpec: [null, Validators.required],
   });
 
   constructor(private store: Store,
@@ -40,8 +40,7 @@ export class DyeingResultsTimelinePageComponent {
 
   @Dispatch()
   query() {
-    const {lineMachine, spindle} = this.searchForm.value;
-    return new QueryAction({lineMachineId: lineMachine.id, spindle});
+    return new QueryAction(this.searchForm.value.silkSpec);
   }
 
   @Dispatch()
@@ -60,6 +59,7 @@ export class DyeingResultsTimelinePageComponent {
     NgxsModule.forFeature([DyeingResultsTimelinePageState]),
     SharedModule,
     LineMachineInputComponentModule,
+    SilkSpecInputComponentModule,
     RouterModule.forChild([
       {path: '', component: DyeingResultsTimelinePageComponent, data: {animation: 'FilterPage'}},
     ]),

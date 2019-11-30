@@ -1,27 +1,13 @@
-<button [matMenuTriggerFor]="workshopsMenu" mat-button type="button">Animal index</button>
-<mat-menu #workshopsMenu="matMenu">
-  <button *ngFor="let it of workshops$|async" [matMenuTriggerData]="{workshop: it}" [matMenuTriggerFor]="linesMenu" mat-menu-item type="button">
-    {{it.name}}
-  </button>
-</mat-menu>
-<mat-menu #linesMenu="matMenu">
-  <ng-template let-workshop="workshop" matMenuContent>
-    <button *ngFor="let it of lines$(workshop)|async" [matMenuTriggerData]="{line: it}" [matMenuTriggerFor]="lineMachinesMenu" mat-menu-item type="button">
+<div [formGroup]="form" class="container">
+  <input [formControl]="lineCtrl" [matAutocomplete]="lineAuto" matInput>
+  <mat-autocomplete #lineAuto='matAutocomplete' [displayWith]="displayWithLine">
+    <mat-option *ngFor="let it of autoCompleteLines$|async" [value]="it">
       {{it.name}}
-    </button>
-  </ng-template>
-</mat-menu>
-<mat-menu #lineMachinesMenu="matMenu">
-  <ng-template let-line="line" matMenuContent>
-    <button *ngFor="let it of lineMachines$(line)|async" [matMenuTriggerData]="{lineMachine: it}" [matMenuTriggerFor]="spindlesMenu" mat-menu-item type="button">
-      {{it.item}}
-    </button>
-  </ng-template>
-</mat-menu>
-<mat-menu #spindlesMenu="matMenu">
-  <ng-template let-lineMachine="lineMachine" matMenuContent>
-    <button (click)="test(lineMachine,it)" *ngFor="let it of lineMachineItems$(lineMachine)" mat-menu-item type="button">
-      {{it}}
-    </button>
-  </ng-template>
-</mat-menu>
+    </mat-option>
+  </mat-autocomplete>
+  <span>&ndash;</span>
+  <input [formControl]="spindleCtrl" matInput max="100" min="1" type="number">
+  <span>/</span>
+  <input [formControl]="itemCtrl" matInput max="100" min="1" type="number">
+  <span>#</span>
+</div>

@@ -34,8 +34,6 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
     line: [null, [Validators.required, VALIDATORS.isEntity]],
     item: [null, [Validators.required, Validators.min(1)]],
   }, {validators: [VALIDATORS.isEntity]});
-  readonly lineCtrl = this.form.get('line');
-  readonly itemCtrl = this.form.get('item');
   autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
     filter(it => it && isString(it) && it.trim().length > 0),
     debounceTime(SEARCH_DEBOUNCE_TIME),
@@ -58,6 +56,14 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;
     }
+  }
+
+  get lineCtrl() {
+    return this.form.get('line');
+  }
+
+  get itemCtrl() {
+    return this.form.get('item');
   }
 
   private _disabled = false;

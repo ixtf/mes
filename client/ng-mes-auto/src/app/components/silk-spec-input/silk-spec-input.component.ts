@@ -2,15 +2,14 @@
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
-import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
+import {ControlValueAccessor, FormBuilder, FormControl, NgControl, Validators} from '@angular/forms';
 import {MatAutocompleteSelectedEvent, MatFormFieldControl} from '@angular/material';
-import {Observable, Subject} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Line} from '../../models/line';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
+import {isString} from 'util';
 import {LineMachine} from '../../models/line-machine';
-import {Workshop} from '../../models/workshop';
 import {ApiService} from '../../services/api.service';
-import {CODE_COMPARE} from '../../services/util.service';
+import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
 import {SharedModule} from '../../shared.module';
 
 export class SilkSpec {
@@ -30,18 +29,30 @@ export class SilkSpec {
 })
 export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFieldControl<SilkSpec>, OnInit, OnDestroy {
   static nextId = 0;
+  readonly displayWithLine = DISPLAY_WITH_LINE;
   @Output()
   readonly optionSelected = new EventEmitter<MatAutocompleteSelectedEvent>();
   @HostBinding()
-  readonly id = `batch-input-${SilkSpecInputComponent.nextId++}`;
+  readonly id = `silk-spec-input-${SilkSpecInputComponent.nextId++}`;
   @HostBinding('attr.aria-describedby')
   describedBy = '';
   readonly stateChanges = new Subject<void>();
+  form = this.fb.group({
+    line: [null, [Validators.required, VALIDATORS.isEntity]],
+    item: [null, [Validators.required, Validators.min(1)]],
+    spindle: [null, [Validators.required, Validators.min(1)]],
+  });
   readonly valueCtrl = new FormControl();
   focused = false;
-  readonly workshops$ = this.api.listWorkshop().pipe(map(it => it.sort(CODE_COMPARE)));
+  autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
+    filter(it => it && isString(it) && it.trim().length > 0),
+    debounceTime(SEARCH_DEBOUNCE_TIME),
+    distinctUntilChanged(),
+    switchMap(q => this.api.autoCompleteLine(q)),
+  );
 
   constructor(private api: ApiService,
+              private fb: FormBuilder,
               private focusMonitor: FocusMonitor,
               private elementRef: ElementRef<HTMLElement>,
               @Optional() @Self() public ngControl: NgControl) {
@@ -55,6 +66,18 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
+  }
+
+  get lineCtrl() {
+    return this.form.get('line');
+  }
+
+  get itemCtrl() {
+    return this.form.get('item');
+  }
+
+  get spindleCtrl() {
+    return this.form.get('spindle');
   }
 
   private _disabled = false;
@@ -154,22 +177,6 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
 
   writeValue(obj: SilkSpec | null): void {
     this.value = obj;
-  }
-
-  lines$(workshop: Workshop): Observable<Line[]> {
-    return this.api.getWorkshop_Lines(workshop.id);
-  }
-
-  lineMachines$(line: Line): Observable<LineMachine[]> {
-    return this.api.getLine_LineMachines(line.id);
-  }
-
-  lineMachineItems$(lineMachine: LineMachine): number[] {
-    return Array(lineMachine.spindleNum).fill(null).map((x, i) => i);
-  }
-
-  test(lineMachine: LineMachine, spindle: number) {
-    this.valueCtrl.patchValue(new SilkSpec(lineMachine, spindle));
   }
 
   private onChange = (_: any) => {

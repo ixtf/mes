@@ -311,6 +311,10 @@ export class ApiService {
     return this.http.get<PackageBox>(`${BASE_API_URL}/packageBoxes/${id}`);
   }
 
+  deletePackageBox(packageBox: PackageBox): Observable<void> {
+    return this.http.delete<void>(`http://${HOST_NAME}:9999/warehouse/packageBoxes/codes/${packageBox.code}`);
+  }
+
   getPackageBox_silks(id: string): Observable<Silk[]> {
     return this.http.get<Silk[]>(`${BASE_API_URL}/packageBoxes/${id}/silks`);
   }

@@ -180,12 +180,12 @@ export class PackageBoxManagePageState {
   @Action(DeleteAction)
   @ImmutableContext()
   DeleteAction({setState}: StateContext<StateModel>, {payload}: DeleteAction) {
-    // return this.api.deleteNotification(payload).pipe(
-    //   tap(() => setState((state: StateModel) => {
-    //     delete state.packageBoxEntities[payload.id];
-    //     return state;
-    //   }))
-    // );
+    return this.api.deletePackageBox(payload).pipe(
+      tap(() => setState((state: StateModel) => {
+        delete state.packageBoxEntities[payload.id];
+        return state;
+      }))
+    );
   }
 
 }

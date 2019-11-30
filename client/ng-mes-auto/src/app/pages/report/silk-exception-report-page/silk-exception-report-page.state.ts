@@ -3,6 +3,7 @@ import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {tap} from 'rxjs/operators';
+import * as XLSX from 'xlsx';
 import {Batch} from '../../../models/batch';
 import {Line} from '../../../models/line';
 import {Product} from '../../../models/product';
@@ -235,34 +236,35 @@ export class SilkExceptionReportPageState {
     const endS = moment(endDateTime).format('YYYY-MM-DD HH:mm');
     const fileName = workshop.name + '.' + startS + '~' + endS + '.xlsx';
 
-    // const headerItem = ['人员'];
-    // const dyeingTypes = ['FIRST', 'SECOND', 'CROSS_LINEMACHINE_SPINDLE', 'CROSS_LINEMACHINE_LINEMACHINE', 'THIRD'];
-    // const translateKeyFun = it => 'DyeingType.' + it;
-    // this.translate.get(dyeingTypes.map(translateKeyFun)).subscribe(translateObj => {
-    //   dyeingTypes.forEach(it => headerItem.push(translateObj[translateKeyFun(it)]));
-    //   const data = [headerItem];
-    //   (SilkExceptionReportPageState.items(getState()) || []).forEach(item => {
-    //     const xlsxItem = [];
-    //     const {operator, groupByDyeingTypes} = item;
-    //     xlsxItem.push(operator.name);
-    //     dyeingTypes.forEach(dyeingType => {
-    //       const groupByDyeingType = groupByDyeingTypes.find(it => it.dyeingType === dyeingType);
-    //       if (groupByDyeingType) {
-    //         xlsxItem.push(groupByDyeingType.silkCount);
-    //       } else {
-    //         xlsxItem.push('');
-    //       }
-    //     });
-    //     data.push(xlsxItem);
-    //   });
-    //   if (data.length > 1) {
-    //     const wb = XLSX.utils.book_new();
-    //     const ws = XLSX.utils.aoa_to_sheet(data);
-    //     // ws['!merges'] = ws['!merges'] || [];
-    //     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //     XLSX.writeFile(wb, fileName);
-    //   }
-    // });
+    const dyeingTypes = ['product', 'line', 'batchNo', 'Batch.spec'];
+    this.translate.get(dyeingTypes).subscribe(translateObj => {
+      const headerItem = dyeingTypes.map(it => translateObj[it]);
+      const data = [headerItem];
+      const silkExceptions = SilkExceptionReportPageState.silkExceptions(getState());
+      silkExceptions.forEach(it => headerItem.push(it.name));
+      SilkExceptionReportPageState.items(getState()).forEach(item => {
+        const xlsxItem = [];
+        data.push(xlsxItem);
+        if (!item.productSum) {
+          xlsxItem.push(item.product.name);
+          xlsxItem.push(item.line.name);
+          xlsxItem.push(item.batch.batchNo);
+          xlsxItem.push(item.batch.spec);
+          silkExceptions.forEach(silkException => {
+            const groupBySilkException = item.groupBySilkException.find(it => it.silkException.id === silkException.id);
+            const count = groupBySilkException && groupBySilkException.silkCount || 0;
+            xlsxItem.push(count);
+          });
+        }
+      });
+      if (data.length >= 1) {
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        // ws['!merges'] = ws['!merges'] || [];
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+        XLSX.writeFile(wb, fileName);
+      }
+    });
   }
 
 }

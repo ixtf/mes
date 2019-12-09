@@ -68,7 +68,7 @@ public class SilkBarcodeLucene extends BaseLucene<SilkBarcode> {
         return doc;
     }
 
-    public Pair<Long, Collection<String>> query(SilkBarcodeQuery query) {
+    public Pair<Integer, Collection<String>> query(SilkBarcodeQuery query) {
         final BooleanQuery.Builder builder = new BooleanQuery.Builder();
         add(builder, "line", query.getLineId());
         add(builder, "lineMachine", query.getLineMachineId());

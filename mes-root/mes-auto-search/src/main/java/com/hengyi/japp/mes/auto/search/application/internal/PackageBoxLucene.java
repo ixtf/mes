@@ -78,7 +78,7 @@ public class PackageBoxLucene extends BaseLucene<PackageBox> {
         return doc;
     }
 
-    public Pair<Long, Collection<String>> query(PackageBoxQuery query) {
+    public Pair<Integer, Collection<String>> query(PackageBoxQuery query) {
         final BooleanQuery.Builder builder = new BooleanQuery.Builder();
         add(builder, "inWarehouse", query.isInWarehouse());
         if (J.nonBlank(query.getPackageBoxCode())) {

@@ -3,10 +3,7 @@ package com.hengyi.japp.mes.auto.search.interfaces.rest;
 import com.github.ixtf.persistence.lucene.LuceneCommandAll;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.hengyi.japp.mes.auto.query.DyeingPrepareQuery;
-import com.hengyi.japp.mes.auto.query.PackageBoxQuery;
-import com.hengyi.japp.mes.auto.query.SilkBarcodeQuery;
-import com.hengyi.japp.mes.auto.query.SilkCarRecordQuery;
+import com.hengyi.japp.mes.auto.query.*;
 import com.hengyi.japp.mes.auto.search.application.LuceneService;
 import com.hengyi.japp.mes.auto.search.application.internal.DyeingPrepareLucene;
 import com.hengyi.japp.mes.auto.search.application.internal.PackageBoxLucene;
@@ -18,6 +15,7 @@ import reactor.core.scheduler.Schedulers;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import java.util.Collection;
 import java.util.Map;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -72,6 +70,12 @@ public class SearchResource {
     public Mono<Map> silkCarRecords(SilkCarRecordQuery query) {
         return Mono.fromCallable(() -> silkCarRecordLucene.query(query))
                 .map(pair -> Map.of("count", pair.getLeft(), "ids", pair.getRight()));
+    }
+
+    @Path("silkCarRecordsByEventSourceCanHappen")
+    @POST
+    public Mono<Collection<String>> silkCarRecords(SilkCarRecordQueryByEventSourceCanHappen query) {
+        return Mono.fromCallable(() -> silkCarRecordLucene.query(query));
     }
 
     @Path("silkBarcodes")

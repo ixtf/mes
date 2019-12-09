@@ -69,7 +69,7 @@ public class DyeingPrepareLucene extends BaseLucene<DyeingPrepare> {
         return doc;
     }
 
-    public Pair<Long, Collection<String>> query(DyeingPrepareQuery query) {
+    public Pair<Integer, Collection<String>> query(DyeingPrepareQuery query) {
         final BooleanQuery.Builder builder = new BooleanQuery.Builder();
         add(builder, "workshop", query.getWorkshopId());
         add(builder, "silkCar", query.getSilkCarId());

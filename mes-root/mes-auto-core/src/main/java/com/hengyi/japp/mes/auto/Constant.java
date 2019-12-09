@@ -8,9 +8,9 @@ public class Constant extends com.github.ixtf.japp.core.Constant {
     public static final String JWT_ALGORITHM = "RS256";
 
     public static final class AMQP {
-        // 自动落筒数据接口
-        public static final String MES_AUTO_DOFFING_MIDDLE_TABLE_EXCHANGE = "mes.auto.doffing_middle_table";
-        public static final String MES_AUTO_CURD_EXCHANGE = "mes.auto.curd";
+        public static final String MES_AUTO_SEARCH_INDEX_QUEUE = "mes:auto:lucene:index";
+        public static final String MES_AUTO_SEARCH_REMOVE_QUEUE = "mes:auto:lucene:remove";
+
         public static final String MES_AUTO_SILK_CAR_PRINT_PREFIX = "SilkCar";
         public static final String MES_AUTO_PACKAGE_PRINT_PREFIX = "Package";
         public static final String MES_AUTO_DYEING_RESULT_CREATE_EXCHANGE = "mes.auto.dyeing.result.create.exchange";

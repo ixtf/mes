@@ -9,16 +9,20 @@ import com.hengyi.japp.mes.auto.domain.SilkCar;
 import com.hengyi.japp.mes.auto.domain.SilkCarRecord;
 import com.hengyi.japp.mes.auto.domain.Workshop;
 import com.hengyi.japp.mes.auto.query.SilkCarRecordQuery;
+import com.hengyi.japp.mes.auto.query.SilkCarRecordQueryByEventSourceCanHappen;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.facet.FacetsConfig;
 import org.apache.lucene.search.BooleanQuery;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Date;
 
 import static com.github.ixtf.persistence.lucene.Jlucene.*;
+import static org.apache.lucene.search.BooleanClause.Occur.MUST_NOT;
 
 /**
  * @author jzb 2018-06-25
@@ -62,12 +66,21 @@ public class SilkCarRecordLucene extends BaseLucene<SilkCarRecord> {
         return doc;
     }
 
-    public Pair<Long, Collection<String>> query(SilkCarRecordQuery query) {
+    public Pair<Integer, Collection<String>> query(SilkCarRecordQuery query) {
         final BooleanQuery.Builder builder = new BooleanQuery.Builder();
         add(builder, "workshop", query.getWorkshopId());
         add(builder, "silkCar", query.getSilkCarId());
         add(builder, "silkCar", query.getSilkCarCode());
-        add(builder, "startDateTime", query.getStartDate(), query.getEndDate().plusDays(1));
+        add(builder, "startDateTime", query.getStartDateTime(), query.getEndDateTime());
         return query(builder.build(), query.getFirst(), query.getPageSize());
+    }
+
+    public Collection<String> query(SilkCarRecordQueryByEventSourceCanHappen query) {
+        final BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        add(builder, "workshop", query.getWorkshopId());
+        final Date currentDate = new Date();
+        builder.add(LongPoint.newRangeQuery("startDateTime", query.getEndDateTime().getTime(), currentDate.getTime()), MUST_NOT);
+        builder.add(LongPoint.newRangeQuery("endDateTime", 0, query.getStartDateTime().getTime()), MUST_NOT);
+        return query(builder.build());
     }
 }

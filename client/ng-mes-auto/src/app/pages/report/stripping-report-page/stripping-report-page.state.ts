@@ -25,6 +25,7 @@ export class QueryAction {
 export class StrippingReportItem {
   operator: Operator;
   groupByProducts: GroupByProduct[];
+  productMap?: { [productId: string]: GroupByProduct };
 }
 
 export class GroupByProduct {
@@ -153,6 +154,7 @@ export class StrippingReportPageState {
   static products(state: StateModel): Product[] {
     const array = StrippingReportPageState.items(state).reduce((acc, cur) => acc.concat(cur.groupByProducts || []), []);
     const productEntities = Product.toEntities(array.map(it => it.product));
+    console.log('test', productEntities);
     return Object.values(productEntities);
   }
 
@@ -179,6 +181,7 @@ export class StrippingReportPageState {
     return this.api.strippingReport({workshopId, startDateTime: `${moment(startDateTime).valueOf()}`, endDateTime: `${moment(endDateTime).valueOf()}`}).pipe(
       tap(items => setState((state: StateModel) => {
         state.itemEntities = (items || []).reduce((acc, cur) => {
+          cur.groupByProducts = Object.values(cur.productMap || {});
           acc[cur.operator.id] = cur;
           return acc;
         }, {});

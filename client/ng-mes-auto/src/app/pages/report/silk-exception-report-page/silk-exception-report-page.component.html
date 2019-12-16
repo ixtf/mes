@@ -8,7 +8,7 @@
   </mat-form-field>
 
   <div class="mat-form-field" style="width: 300px;">
-    <input [formControl]="rangeCtrl" [max]="maxDate" [owlDateTimeTrigger]="rangePicker" [owlDateTime]="rangePicker" [placeholder]="('Common.startDate'|translate)+' ~ '+('Common.endDate'|translate)" matInput readonly required selectMode="range">
+    <input (ngModelChange)="rangeChange($event)" [formControl]="rangeCtrl" [max]="maxDate" [owlDateTimeTrigger]="rangePicker" [owlDateTime]="rangePicker" [placeholder]="('Common.startDate'|translate)+' ~ '+('Common.endDate'|translate)" matInput readonly required selectMode="range">
     <owl-date-time #rangePicker></owl-date-time>
   </div>
 
@@ -17,6 +17,10 @@
   </button>
 
   <span fxFlex></span>
+  <button (click)="openNoGradeInfo()" *ngIf="(noGradeSilkCount$|async)>0" color="primary" mat-stroked-button tabindex="-1" type="button">
+    {{'SilkExceptionReport.noGradeInfo'|translate}} ({{noGradeSilkCount$|async}})
+  </button>
+
   <button (click)="download()" mat-mini-fab tabindex="-1" type="button">
     <mat-icon>get_app</mat-icon>
   </button>
@@ -25,7 +29,7 @@
 <mat-divider></mat-divider>
 
 <div fxFlex style="overflow: auto;width: 100vw;">
-  <table [dataSource]="items$" fxFlex mat-table>
+  <table [dataSource]="items$" fxFill id="table-report" mat-table>
     <ng-container matColumnDef="product" sticky>
       <th *matHeaderCellDef mat-header-cell>{{'product'|translate}}</th>
       <td *matCellDef="let row" mat-cell>{{row.product.name}}</td>
@@ -58,9 +62,19 @@
       </td>
     </ng-container>
 
-    <ng-container *ngFor="let silkException of silkExceptions$|async" matColumnDef="{{silkException.id}}">
-      <th *matHeaderCellDef class="silk-exception" mat-header-cell>{{silkException.name}}</th>
-      <td *matCellDef="let row" class="silk-exception" mat-cell>{{silkExceptionCount(row, silkException)}}</td>
+    <ng-container matColumnDef="doffingCount" sticky>
+      <th *matHeaderCellDef mat-header-cell>{{'SilkExceptionReport.doffingCount'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.silkCount}}</td>
+    </ng-container>
+
+    <ng-container *ngFor="let gradeCode of gradeCodes" matColumnDef="{{gradeCode}}">
+      <th *matHeaderCellDef class="silk-count" mat-header-cell>{{gradeCode}}</th>
+      <td *matCellDef="let row" class="silk-count" mat-cell>{{gradeCount(row, gradeCode)}}</td>
+    </ng-container>
+
+    <ng-container *ngFor="let silkException of silkExceptionCols$|async" matColumnDef="{{silkException.id}}">
+      <th *matHeaderCellDef class="silk-count" mat-header-cell>{{silkException.name}}</th>
+      <td *matCellDef="let row" class="silk-count" mat-cell>{{silkExceptionCount(row, silkException)}}</td>
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns$|async; sticky: true" mat-header-row></tr>

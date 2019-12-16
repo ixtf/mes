@@ -53,6 +53,7 @@ const routes: Routes = [
           {path: 'inspectionReport', loadChildren: () => import('./pages/report/inspection-report-page/inspection-report-page.component').then(it => it.Module)},
           {path: 'dyeingReport', loadChildren: () => import('./pages/report/dyeing-report-page/dyeing-report-page.component').then(it => it.Module)},
           {path: 'silkExceptionReport', loadChildren: () => import('./pages/report/silk-exception-report-page/silk-exception-report-page.component').then(it => it.Module)},
+          {path: 'silkExceptionByClassReport', loadChildren: () => import('./pages/report/silk-exception-by-class-report-page/silk-exception-by-class-report-page.component').then(it => it.Module)},
           {path: 'toDtyReport', loadChildren: () => import('./pages/report/to-dty-report-page/to-dty-report-page.component').then(it => it.Module)},
           {path: 'toDtyConfirmReport', loadChildren: () => import('./pages/report/to-dty-confirm-report-page/to-dty-confirm-report-page.component').then(it => it.Module)},
           {path: 'dyeingResultsTimeline', loadChildren: () => import('./pages/report/dyeing-results-timeline-page/dyeing-results-timeline-page.component').then(it => it.Module)},

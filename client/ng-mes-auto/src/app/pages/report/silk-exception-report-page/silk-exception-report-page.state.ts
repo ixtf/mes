@@ -1,64 +1,17 @@
-import {TranslateService} from '@ngx-translate/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
-import {tap} from 'rxjs/operators';
+import {Moment} from 'moment';
+import {retry, tap} from 'rxjs/operators';
 import * as XLSX from 'xlsx';
-import {Batch} from '../../../models/batch';
-import {Line} from '../../../models/line';
-import {Product} from '../../../models/product';
 import {SilkException} from '../../../models/silk-exception';
 import {Workshop} from '../../../models/workshop';
 import {ApiService} from '../../../services/api.service';
 import {CODE_COMPARE, LINE_COMPARE} from '../../../services/util.service';
+import {DisplayItem, DownloadAction, GradeItem, InitAction, NoGradeInfo, PAGE_NAME, QueryAction, SilkExceptionItem, SilkExceptionReportItem, StateModel} from './silk-exception-report-page.z';
 
-const PAGE_NAME = 'SilkExceptionReportPage';
-
-export class InitAction {
-  static readonly type = `[${PAGE_NAME}] InitAction`;
-}
-
-export class QueryAction {
-  static readonly type = `[${PAGE_NAME}] QueryAction`;
-
-  constructor(public payload: { workshopId: string; startDateTime: Date; endDateTime: Date; }) {
-  }
-}
-
-export class DownloadAction {
-  static readonly type = `[${PAGE_NAME}] DownloadAction`;
-}
-
-export class DisplayItem {
-  productSum: boolean;
-  product: Product;
-  line: Line;
-  batch: Batch;
-  groupBySilkException: GroupBySilkException[];
-}
-
-export class SilkExceptionReportItem {
-  line: Line;
-  groupByBatch: GroupByBatch[];
-}
-
-export class GroupByBatch {
-  batch: Batch;
-  groupBySilkException: GroupBySilkException[];
-}
-
-export class GroupBySilkException {
-  silkException: SilkException;
-  silkCount = 0;
-}
-
-interface StateModel {
-  workshopId?: string;
-  startDateTime?: number;
-  endDateTime?: number;
-  workshopEntities: { [id: string]: Workshop };
-  items?: SilkExceptionReportItem[];
-}
+export const FIX_COLS = ['product', 'line', 'batchNo', 'batchSpec', 'doffingCount'];
+export const GRADE_CODES = ['A', 'B', 'C'];
 
 @State<StateModel>({
   name: PAGE_NAME,
@@ -67,8 +20,7 @@ interface StateModel {
   },
 })
 export class SilkExceptionReportPageState {
-  constructor(private api: ApiService,
-              private translate: TranslateService) {
+  constructor(private api: ApiService) {
   }
 
   static storageIds(): string[] {
@@ -83,42 +35,14 @@ export class SilkExceptionReportPageState {
 
   @Selector()
   @ImmutableSelector()
-  static startDateTime(state: StateModel): number {
-    return state.startDateTime;
+  static startDateTime(state: StateModel): Moment {
+    return moment(state.startDateTime);
   }
 
   @Selector()
   @ImmutableSelector()
-  static startDate_hour(state: StateModel): number {
-    const startMoment = state.startDateTime && moment(state.startDateTime);
-    return startMoment && startMoment.hour() || 8;
-  }
-
-  @Selector()
-  @ImmutableSelector()
-  static startDate_minute(state: StateModel): number {
-    const startMoment = state.startDateTime && moment(state.startDateTime);
-    return startMoment && startMoment.minute() || 0;
-  }
-
-  @Selector()
-  @ImmutableSelector()
-  static endDateTime(state: StateModel): number {
-    return state.endDateTime;
-  }
-
-  @Selector()
-  @ImmutableSelector()
-  static endDate_hour(state: StateModel): number {
-    const startMoment = state.endDateTime && moment(state.endDateTime);
-    return startMoment && startMoment.hour() || 8;
-  }
-
-  @Selector()
-  @ImmutableSelector()
-  static endDate_minute(state: StateModel): number {
-    const startMoment = state.endDateTime && moment(state.endDateTime);
-    return startMoment && startMoment.minute() || 0;
+  static endDateTime(state: StateModel): Moment {
+    return moment(state.endDateTime);
   }
 
   @Selector()
@@ -129,74 +53,42 @@ export class SilkExceptionReportPageState {
 
   @Selector()
   @ImmutableSelector()
-  static silkExceptions(state: StateModel): SilkException[] {
-    const exceptionMap: { [id: string]: SilkException } = {};
-    (state.items || []).forEach(item => {
-      (item.groupByBatch || []).forEach(groupByBatch => {
-        (groupByBatch.groupBySilkException || []).forEach(groupByException => {
-          const {silkException} = groupByException;
-          if (!exceptionMap[silkException.id]) {
-            exceptionMap[silkException.id] = silkException;
-          }
-        });
-      });
-    });
-    console.log(exceptionMap);
-    return Object.values(exceptionMap).sort((a, b) => a.id.localeCompare(b.id));
+  static displayedColumns(state: StateModel): string[] {
+    return state.displayedColumns || FIX_COLS;
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static silkExceptionCols(state: StateModel): SilkException[] {
+    return state.silkExceptions || [];
   }
 
   @Selector()
   @ImmutableSelector()
   static items(state: StateModel): DisplayItem[] {
-    const productMap: { [id: string]: DisplayItem } = {};
-    const displayItems: DisplayItem[] = [];
-    (state.items || []).forEach(item => {
-      const {line} = item;
-      (item.groupByBatch || []).forEach(groupByBatch => {
-        const {batch} = groupByBatch;
-        const {product} = batch;
-        const displayItem = new DisplayItem();
-        displayItem.product = product;
-        displayItem.line = line;
-        displayItem.batch = batch;
-        displayItem.groupBySilkException = groupByBatch.groupBySilkException || [];
-        displayItems.push(displayItem);
-        let productSumItem = productMap[product.id];
-        if (!productSumItem) {
-          productSumItem = new DisplayItem();
-          productSumItem.productSum = true;
-          productSumItem.product = product;
-          productSumItem.groupBySilkException = [];
-          productMap[product.id] = productSumItem;
-        }
-        displayItem.groupBySilkException.forEach(groupByException => {
-          const {silkException, silkCount} = groupByException;
-          let groupByExceptionToAdd = productSumItem.groupBySilkException.find(it => it.silkException.id === silkException.id);
-          if (!groupByExceptionToAdd) {
-            groupByExceptionToAdd = new GroupBySilkException();
-            groupByExceptionToAdd.silkException = silkException;
-            groupByExceptionToAdd.silkCount = silkCount;
-            productSumItem.groupBySilkException.push(groupByExceptionToAdd);
-          } else {
-            groupByExceptionToAdd.silkCount += silkCount;
-          }
-        });
-      });
-    });
-    return displayItems.concat(Object.values(productMap)).sort((a, b) => {
-      const productIdx = a.product.name.localeCompare(b.product.name);
-      if (productIdx !== 0) {
-        return productIdx;
-      }
-      if (a.productSum !== b.productSum) {
-        return a.productSum ? 1 : -1;
-      }
-      const lineIdx = LINE_COMPARE(a.line, b.line);
-      if (lineIdx !== 0) {
-        return lineIdx;
-      }
-      return a.batch.batchNo.localeCompare(b.batch.batchNo);
-    });
+    return state.displayItems || [];
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static reportItems(state: StateModel): SilkExceptionReportItem[] {
+    return state.reportItems || [];
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static noGradeInfos(state: StateModel): NoGradeInfo[] {
+    return this.reportItems(state)
+      .filter(it => (it.noGradeInfo && it.noGradeInfo.silkCount || 0) > 0)
+      .map(it => it.noGradeInfo);
+  }
+
+  @Selector()
+  @ImmutableSelector()
+  static noGradeSilkCount(state: StateModel): number {
+    return this.reportItems(state)
+      .map(it => it.noGradeInfo && it.noGradeInfo.silkCount || 0)
+      .reduce((acc, cur) => acc + cur, 0);
   }
 
   @Action(InitAction)
@@ -221,9 +113,14 @@ export class SilkExceptionReportPageState {
     });
     return this.api.silkExceptionReport({workshopId, startDateTime: `${moment(startDateTime).valueOf()}`, endDateTime: `${moment(endDateTime).valueOf()}`}).pipe(
       tap(items => setState((state: StateModel) => {
-        state.items = items;
+        state.reportItems = items;
+        state.displayItems = this.calcDisplayItems(state);
+        state.silkExceptions = this.calcSilkExceptions(state);
+        const expCols = state.silkExceptions.map(it => it.id);
+        state.displayedColumns = FIX_COLS.concat(expCols).concat(GRADE_CODES);
         return state;
       })),
+      retry(3),
     );
   }
 
@@ -235,36 +132,97 @@ export class SilkExceptionReportPageState {
     const startS = moment(startDateTime).format('YYYY-MM-DD HH:mm');
     const endS = moment(endDateTime).format('YYYY-MM-DD HH:mm');
     const fileName = workshop.name + '.' + startS + '~' + endS + '.xlsx';
-
-    const dyeingTypes = ['product', 'line', 'batchNo', 'Batch.spec'];
-    this.translate.get(dyeingTypes).subscribe(translateObj => {
-      const headerItem = dyeingTypes.map(it => translateObj[it]);
-      const data = [headerItem];
-      const silkExceptions = SilkExceptionReportPageState.silkExceptions(getState());
-      silkExceptions.forEach(it => headerItem.push(it.name));
-      SilkExceptionReportPageState.items(getState()).forEach(item => {
-        const xlsxItem = [];
-        data.push(xlsxItem);
-        if (!item.productSum) {
-          xlsxItem.push(item.product.name);
-          xlsxItem.push(item.line.name);
-          xlsxItem.push(item.batch.batchNo);
-          xlsxItem.push(item.batch.spec);
-          silkExceptions.forEach(silkException => {
-            const groupBySilkException = item.groupBySilkException.find(it => it.silkException.id === silkException.id);
-            const count = groupBySilkException && groupBySilkException.silkCount || 0;
-            xlsxItem.push(count);
-          });
-        }
-      });
-      if (data.length >= 1) {
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        // ws['!merges'] = ws['!merges'] || [];
-        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        XLSX.writeFile(wb, fileName);
-      }
-    });
+    const tableDom = document.getElementById('table-report');
+    const wb = XLSX.utils.table_to_book(tableDom);
+    XLSX.writeFile(wb, fileName);
   }
 
+  private calcSilkExceptions(state: StateModel) {
+    const map: { [id: string]: SilkException } = {};
+    (state.reportItems || []).forEach(item => {
+      (item.silkExceptionItems || []).forEach(silkExceptionItem => {
+        const {silkException} = silkExceptionItem;
+        if (!map[silkException.id]) {
+          map[silkException.id] = silkException;
+        }
+      });
+    });
+    return Object.values(map).sort((a, b) => a.id.localeCompare(b.id));
+  }
+
+  private calcDisplayItems(state: StateModel) {
+    const productSumMap: { [id: string]: DisplayItem } = {};
+    (state.reportItems || []).forEach(item => {
+      const productSumItem = this.getOrAddProductSum(productSumMap, item);
+      productSumItem.silkCount += (item.silkCount || 0);
+      item.silkExceptionItems.forEach(silkExceptionItem => {
+        const toAdd = this.getOrAddSilkExceptionItem(productSumItem.silkExceptionItems, silkExceptionItem);
+        toAdd.silkCount += silkExceptionItem.silkCount;
+      });
+      item.gradeItems.forEach(gradeItem => {
+        const toAdd = this.getOrAddGradeItem(productSumItem.gradeItems, gradeItem);
+        toAdd.silkCount += gradeItem.silkCount;
+      });
+    });
+
+    return (state.reportItems || []).map(it => {
+      const ret = DisplayItem.assign(it);
+      ret.product = it.batch.product;
+      return ret;
+    }).concat(Object.values(productSumMap))
+      .sort((a, b) => {
+        const productIdx = a.product.name.localeCompare(b.product.name);
+        if (productIdx !== 0) {
+          return productIdx;
+        }
+        if (a.productSum !== b.productSum) {
+          return a.productSum ? 1 : -1;
+        }
+        const lineIdx = LINE_COMPARE(a.line, b.line);
+        if (lineIdx !== 0) {
+          return lineIdx;
+        }
+        return a.batch.batchNo.localeCompare(b.batch.batchNo);
+      });
+  }
+
+  private getOrAddProductSum(map: { [id: string]: DisplayItem }, item: SilkExceptionReportItem) {
+    const {batch: {product}, line} = item;
+    let ret = map[product.id];
+    if (!ret) {
+      ret = new DisplayItem();
+      ret.productSum = true;
+      ret.line = line;
+      ret.product = product;
+      ret.silkCount = 0;
+      ret.silkExceptionItems = [];
+      ret.gradeItems = [];
+      map[product.id] = ret;
+    }
+    return ret;
+  }
+
+  private getOrAddSilkExceptionItem(items: SilkExceptionItem[], item: SilkExceptionItem) {
+    const {silkException} = item;
+    let ret = items.find(it => it.silkException.id === silkException.id);
+    if (!ret) {
+      ret = new SilkExceptionItem();
+      ret.silkException = silkException;
+      ret.silkCount = 0;
+      items.push(ret);
+    }
+    return ret;
+  }
+
+  private getOrAddGradeItem(items: GradeItem[], item: GradeItem) {
+    const {grade} = item;
+    let ret = items.find(it => it.grade.id === grade.id);
+    if (!ret) {
+      ret = new GradeItem();
+      ret.grade = grade;
+      ret.silkCount = 0;
+      items.push(ret);
+    }
+    return ret;
+  }
 }

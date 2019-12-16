@@ -1,0 +1,30 @@
+<mat-dialog-content fxLayout="column">
+  <mat-table [dataSource]="silkCarRecordInfos" fxFill>
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef>{{'SilkCar.code'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.silkCar.code}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="creator">
+      <mat-header-cell *matHeaderCellDef>{{'doffingOperator'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row?.creator.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="creatorDateTime">
+      <mat-header-cell *matHeaderCellDef>{{'doffingDateTime'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row?.startDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="btns">
+      <mat-header-cell *matHeaderCellDef>{{'Common.detail'|translate}}</mat-header-cell>
+      <mat-cell *matCellDef="let row" matRipple>
+        <a [queryParams]="routerLinkCarRecordQueryParams(row)" [routerLink]="routerLinkCarRecord(row)" tabindex="-1" target="_blank">
+          <mat-icon>link</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-dialog-content>

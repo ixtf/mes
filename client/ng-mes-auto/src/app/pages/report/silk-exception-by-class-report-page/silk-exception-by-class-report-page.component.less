@@ -11,15 +11,12 @@
 }
 
 .mat-table {
+  overflow-y: auto;
+
   .mat-footer-row {
     font-weight: bold;
     background-color: #c4e3f3;
   }
-}
-
-.mat-column-line {
-  width: 80px;
-  min-width: 80px;
 }
 
 .mat-column-product {
@@ -33,12 +30,15 @@
   min-width: 150px;
 }
 
-.mat-column-doffingCount {
-  padding-right: 8px;
+.mat-column-batchSpec {
   border-right: 1px solid #e0e0e0;
 }
 
-.mat-column-doffingCount,
+.mat-column-line {
+  width: 80px;
+  min-width: 80px;
+}
+
 .silk-count {
   min-width: 100px;
   text-align: right;

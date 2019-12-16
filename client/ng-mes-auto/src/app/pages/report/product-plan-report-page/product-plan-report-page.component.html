@@ -13,12 +13,12 @@
 <mat-table [dataSource]="productPlanItems$" fxFlex>
   <ng-container matColumnDef="batch">
     <mat-header-cell *matHeaderCellDef>{{'batchNo'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.batch.batchNo}}</mat-cell>
+    <mat-cell *matCellDef="let row">{{row.batch?.batchNo}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="tubeColor">
     <mat-header-cell *matHeaderCellDef>{{'tubeColor'|translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{row.batch.tubeColor}}</mat-cell>
+    <mat-cell *matCellDef="let row">{{row.batch?.tubeColor}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="line">

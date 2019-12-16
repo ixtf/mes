@@ -29,7 +29,7 @@ export class DownloadAction {
 
 export class InspectionReportItem {
   operator: Operator;
-  groupByProducts: GroupByProduct[];
+  products: GroupByProduct[];
 }
 
 export class GroupByProduct {
@@ -139,7 +139,7 @@ export class InspectionReportPageState {
   @ImmutableSelector()
   static totalItemMap(state: StateModel): { [id: string]: GroupByProduct } {
     const ret: { [productId: string]: GroupByProduct } = {};
-    InspectionReportPageState.items(state).forEach(item => item.groupByProducts.forEach(groupByProduct => {
+    InspectionReportPageState.items(state).forEach(item => item.products.forEach(groupByProduct => {
       const {product: {id}} = groupByProduct;
       let retElement = ret[id];
       if (!retElement) {
@@ -156,7 +156,7 @@ export class InspectionReportPageState {
   @Selector()
   @ImmutableSelector()
   static products(state: StateModel): Product[] {
-    const array = InspectionReportPageState.items(state).reduce((acc, cur) => acc.concat(cur.groupByProducts || []), []);
+    const array = InspectionReportPageState.items(state).reduce((acc, cur) => acc.concat(cur.products || []), []);
     const productEntities = Product.toEntities(array.map(it => it.product));
     return Object.values(productEntities);
   }
@@ -203,17 +203,17 @@ export class InspectionReportPageState {
 
     const headerItem = ['人员'];
     const data = [headerItem];
-    const products = InspectionReportPageState.products(getState());
-    products.forEach(product => {
+    const groupByProducts = InspectionReportPageState.products(getState());
+    groupByProducts.forEach(product => {
       headerItem.push(product.name + '车数');
       headerItem.push(product.name + '颗数');
     });
     (InspectionReportPageState.items(getState()) || []).forEach(item => {
       const xlsxItem = [];
-      const {operator, groupByProducts} = item;
+      const {operator, products} = item;
       xlsxItem.push(operator.name);
       products.forEach(product => {
-        const groupByProduct = groupByProducts.find(it => it.product.id === product.id);
+        const groupByProduct = products.find(it => it.product.id === product.product.id);
         if (groupByProduct) {
           xlsxItem.push(groupByProduct.silkCarRecordCount);
           xlsxItem.push(groupByProduct.silkCount);

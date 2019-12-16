@@ -78,7 +78,7 @@ export class InspectionReportPageComponent {
   }
 
   detailInfo(item: InspectionReportItem, product: Product): GroupByProduct {
-    return item.groupByProducts.find(it => it.product.id === product.id);
+    return item.products.find(it => it.product.id === product.id);
   }
 
   totalInfo(product: Product): GroupByProduct {

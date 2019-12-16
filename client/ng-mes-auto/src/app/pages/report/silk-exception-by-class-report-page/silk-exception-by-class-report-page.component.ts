@@ -6,35 +6,33 @@ import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {OwlDateTimeIntl} from 'ng-pick-datetime';
 import {Observable} from 'rxjs';
-import {SilkException} from '../../../models/silk-exception';
 import {Workshop} from '../../../models/workshop';
 import {MyOwlDateTimeIntl} from '../../../services/my-owl-date-time-intl';
 import {SharedModule} from '../../../shared.module';
 import {AppState} from '../../app/app.state';
-import {GRADE_CODES, SilkExceptionReportPageState} from './silk-exception-report-page.state';
-import {DisplayItem, DownloadAction, InitAction, QueryAction} from './silk-exception-report-page.z';
+import {SilkExceptionByClassReportPageState as State} from './silk-exception-by-class-report-page.state';
+import {DownloadAction, InitAction, QueryAction, SilkExceptionByClassReportItem} from './silk-exception-by-class-report-page.z';
 
 @Component({
-  templateUrl: './silk-exception-report-page.component.html',
-  styleUrls: ['./silk-exception-report-page.component.less'],
+  templateUrl: './silk-exception-by-class-report-page.component.html',
+  styleUrls: ['./silk-exception-by-class-report-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SilkExceptionReportPageComponent {
+export class SilkExceptionByClassReportPageComponent {
   readonly maxDate = new Date();
-  readonly gradeCodes = GRADE_CODES;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
-  @Select(SilkExceptionReportPageState.workshops)
+  @Select(State.workshops)
   readonly workshops$: Observable<Workshop[]>;
-  @Select(SilkExceptionReportPageState.silkExceptionCols)
-  readonly silkExceptionCols$: Observable<SilkException[]>;
-  @Select(SilkExceptionReportPageState.items)
-  readonly items$: Observable<DisplayItem[]>;
-  @Select(SilkExceptionReportPageState.displayedColumns)
+  @Select(State.classCodes)
+  readonly classCodes$: Observable<string[]>;
+  @Select(State.items)
+  readonly items$: Observable<SilkExceptionByClassReportItem[]>;
+  @Select(State.displayedColumns)
   readonly displayedColumns$: Observable<string[]>;
   readonly rangeCtrl = new FormControl();
   readonly searchForm = this.fb.group({
-    workshopId: [this.store.selectSnapshot(SilkExceptionReportPageState.workshopId), Validators.required],
+    workshopId: [this.store.selectSnapshot(State.workshopId), Validators.required],
     startDateTime: [null, Validators.required],
     endDateTime: [null, Validators.required],
   });
@@ -42,8 +40,8 @@ export class SilkExceptionReportPageComponent {
   constructor(private store: Store,
               private fb: FormBuilder) {
     this.store.dispatch(new InitAction());
-    const startMoment = this.store.selectSnapshot(SilkExceptionReportPageState.startDateTime);
-    const endMoment = this.store.selectSnapshot(SilkExceptionReportPageState.endDateTime);
+    const startMoment = this.store.selectSnapshot(State.startDateTime);
+    const endMoment = this.store.selectSnapshot(State.endDateTime);
     this.rangeCtrl.patchValue([startMoment.toDate(), endMoment.toDate()]);
     this.rangeChange([startMoment.toDate(), endMoment.toDate()]);
   }
@@ -62,26 +60,21 @@ export class SilkExceptionReportPageComponent {
     return new DownloadAction();
   }
 
-  silkExceptionCount(row: DisplayItem, silkException: SilkException): number {
-    const find = row.silkExceptionItems.find(it => it.silkException.id === silkException.id);
-    return find && find.silkCount || 0;
-  }
-
-  gradeCount(row: DisplayItem, gradeCode: string): number {
-    const find = row.gradeItems.find(it => it.grade.code === gradeCode);
+  classCount(row: SilkExceptionByClassReportItem, classCode: string): number {
+    const find = row.classCodeItems.find(it => it.classCode === classCode);
     return find && find.silkCount || 0;
   }
 }
 
 @NgModule({
   declarations: [
-    SilkExceptionReportPageComponent,
+    SilkExceptionByClassReportPageComponent,
   ],
   imports: [
-    NgxsModule.forFeature([SilkExceptionReportPageState]),
+    NgxsModule.forFeature([State]),
     SharedModule,
     RouterModule.forChild([
-      {path: '', component: SilkExceptionReportPageComponent, data: {animation: 'FilterPage'}},
+      {path: '', component: SilkExceptionByClassReportPageComponent, data: {animation: 'FilterPage'}},
     ]),
   ],
   providers: [

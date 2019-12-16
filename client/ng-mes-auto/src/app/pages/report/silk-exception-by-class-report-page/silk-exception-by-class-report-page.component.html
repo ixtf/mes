@@ -1,0 +1,42 @@
+<form (ngSubmit)="query()" [formGroup]="searchForm" class="search-area" fxLayoutGap="16px">
+  <mat-form-field floatLabel="never">
+    <mat-select [placeholder]="'workshop'|translate" formControlName="workshopId" required>
+      <mat-option *ngFor="let workshop of workshops$|async" [value]="workshop.id">
+        {{workshop.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="mat-form-field" style="width: 300px;">
+    <input (ngModelChange)="rangeChange($event)" [formControl]="rangeCtrl" [max]="maxDate" [owlDateTimeTrigger]="rangePicker" [owlDateTime]="rangePicker" [placeholder]="('Common.startDate'|translate)+' ~ '+('Common.endDate'|translate)" matInput readonly required selectMode="range">
+    <owl-date-time #rangePicker></owl-date-time>
+  </div>
+
+  <button [disabled]="searchForm.invalid" color="primary" mat-icon-button tabindex="-1">
+    <mat-icon>search</mat-icon>
+  </button>
+
+  <span fxFlex></span>
+  <button (click)="download()" mat-mini-fab tabindex="-1" type="button">
+    <mat-icon>get_app</mat-icon>
+  </button>
+</form>
+
+<mat-divider></mat-divider>
+
+<div fxFlex style="overflow: auto;width: 100vw;">
+  <table [dataSource]="items$" fxFlex id="table-report" mat-table>
+    <ng-container matColumnDef="silkException">
+      <th *matHeaderCellDef mat-header-cell>{{'silkException'|translate}}</th>
+      <td *matCellDef="let row" mat-cell>{{row.silkException.name}}</td>
+    </ng-container>
+
+    <ng-container *ngFor="let classCode of classCodes$|async" matColumnDef="{{classCode}}">
+      <th *matHeaderCellDef class="silk-exception" mat-header-cell>{{classCode}}</th>
+      <td *matCellDef="let row" class="silk-exception" mat-cell>{{classCount(row, classCode)}}</td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns$|async; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns$|async;" [class.line-sum]="row.productSum" mat-row></tr>
+  </table>
+</div>

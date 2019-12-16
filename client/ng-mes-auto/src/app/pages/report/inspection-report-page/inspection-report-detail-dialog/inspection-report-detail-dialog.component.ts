@@ -28,7 +28,7 @@ export class InspectionReportDetailDialogComponent {
               private dialog: MatDialog,
               private dialogRef: MatDialogRef<InspectionReportDetailDialogComponent>,
               @Inject(MAT_DIALOG_DATA) data: InspectionReportItem) {
-    this.item = data;
+    // this.item = data;
     this.products = this.item.groupByProducts.map(it => it.product).sort((a, b) => a.id.localeCompare(b.id));
     this.silkCarRecordAggregatesMap = this.item.groupByProducts.reduce((acc, cur) => {
       acc[cur.product.id] = cur.silkCarRecordAggregates;

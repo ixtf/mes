@@ -137,6 +137,9 @@
     "history": "历史生产通知单",
     "exeInfo": "执行情况"
   },
+  "SilkExceptionReport": {
+    "doffingCount": "落筒颗数"
+  },
   "LineMachine": {
     "spec": "纺位",
     "name": "设备名称",
@@ -205,6 +208,7 @@
     "strippingReport": "剥丝",
     "inspectionReport": "外观",
     "dyeingReport": "织袜",
+    "flipReport": "翻包",
     "toDtyReport": "推加弹",
     "toDtyConfirmReport": "推加弹确认",
     "silkCarRuntime": "当前",
@@ -241,6 +245,7 @@
     "measureReport": "计量报表",
     "statisticsReport": "统计报表",
     "silkExceptionReport": "丝锭异常报表",
+    "silkExceptionByClassReport": "丝锭异常报表(分班)",
     "board": "大屏",
     "board-auto-line-jikon-adapter": "自动包装线管理看板(集控)",
     "board-auto-line": "自动包装线管理看板",

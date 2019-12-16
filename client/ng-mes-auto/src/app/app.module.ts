@@ -38,6 +38,7 @@ import {DyeingReportPageState} from './pages/report/dyeing-report-page/dyeing-re
 import {DyeingResultsTimelinePageState} from './pages/report/dyeing-results-timeline-page/dyeing-results-timeline-page.state';
 import {InspectionReportPageState} from './pages/report/inspection-report-page/inspection-report-page.state';
 import {ProductPlanReportPageState} from './pages/report/product-plan-report-page/product-plan-report-page.state';
+import {SilkExceptionByClassReportPageState} from './pages/report/silk-exception-by-class-report-page/silk-exception-by-class-report-page.state';
 import {SilkExceptionReportPageState} from './pages/report/silk-exception-report-page/silk-exception-report-page.state';
 import {StatisticReportDayPageState} from './pages/report/statistic-report-day-page/statistic-report-day-page.state';
 import {StatisticReportRangePageState} from './pages/report/statistic-report-range-page/statistic-report-range-page.state';
@@ -106,6 +107,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
         ...InspectionReportPageState.storageIds(),
         ...DyeingReportPageState.storageIds(),
         ...SilkExceptionReportPageState.storageIds(),
+        ...SilkExceptionByClassReportPageState.storageIds(),
         ...ToDtyReportPageState.storageIds(),
         ...ToDtyConfirmReportPageState.storageIds(),
         ...DyeingResultsTimelinePageState.storageIds(),

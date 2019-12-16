@@ -40,7 +40,8 @@ import {WorkshopProductPlanReport} from '../models/workshop-product-plan-report'
 import {DoffingSilkCarRecordReportItem} from '../pages/report/doffing-silk-car-record-report-page/doffing-silk-car-record-report-page.state';
 import {DyeingReportItem} from '../pages/report/dyeing-report-page/dyeing-report-page.state';
 import {InspectionReportItem} from '../pages/report/inspection-report-page/inspection-report-page.state';
-import {SilkExceptionReportItem} from '../pages/report/silk-exception-report-page/silk-exception-report-page.state';
+import {SilkExceptionByClassReportItem} from '../pages/report/silk-exception-by-class-report-page/silk-exception-by-class-report-page.z';
+import {SilkExceptionReportItem} from '../pages/report/silk-exception-report-page/silk-exception-report-page.z';
 import {StrippingReportItem} from '../pages/report/stripping-report-page/stripping-report-page.state';
 import {ToDtyConfirmReportItem} from '../pages/report/to-dty-confirm-report-page/to-dty-confirm-report-page.state';
 import {ToDtyReportItem} from '../pages/report/to-dty-report-page/to-dty-report-page.state';
@@ -505,8 +506,13 @@ export class ApiService {
     return this.http.post<SilkExceptionReportItem[]>(`${BASE_API_URL}/reports/silkExceptionReport`, body);
   }
 
+  silkExceptionByClassReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<SilkExceptionByClassReportItem[]> {
+    // return this.http.post<SilkExceptionByClassReportItem[]>(`${BASE_API_URL}/reports/silkExceptionByClassReport`, body);
+    return this.http.post<SilkExceptionByClassReportItem[]>(`http://10.61.0.17:9090/api/reports/silkExceptionByClassReport`, body);
+  }
+
   inspectionReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<InspectionReportItem[]> {
-    return this.http.post<StrippingReportItem[]>(`${BASE_API_URL}/reports/inspectionReport`, body);
+    return this.http.post<InspectionReportItem[]>(`${BASE_API_URL}/reports/inspectionReport`, body);
   }
 
   toDtyReport(body: { workshopId: string; startDateTime: string; endDateTime: string }): Observable<ToDtyReportItem[]> {

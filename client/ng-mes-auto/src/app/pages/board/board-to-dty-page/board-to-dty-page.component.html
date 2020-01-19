@@ -1,0 +1,55 @@
+<header class="board-title" fxLayout fxLayoutAlign="start center">
+  <img alt="" class="logo" src="assets/img/logo.png">
+  <div class="title-name" fxFlex>
+    <span>{{'Nav.board-silk-car-runtime'|translate}}</span>
+  </div>
+  <div class="date-box">
+    <span>{{currentDateTime$|async|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+  </div>
+</header>
+
+<main class="board-content" fxFlex fxLayout>
+  <section fxFlex="50" fxLayout="column" style="padding-right: .5rem">
+    <table border="1">
+      <thead>
+      <tr>
+        <th translate="SilkCar.code"></th>
+        <th translate="doffingType"></th>
+        <th translate="Common.time"></th>
+        <th translate="Common.duration"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of timeOutItems$|async">
+        <td>{{item.silkCar.code}}</td>
+        <td>{{item.initTypeString|translate}}</td>
+        <td>{{item.startDateTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>{{item.duration$|async}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section fxFlex="50" fxLayout="column" style="padding-left: .5rem">
+    <table border="1">
+      <thead>
+      <tr>
+        <th translate="batchNo"></th>
+        <th translate="grade"></th>
+        <th translate="silkCarCount"></th>
+        <th translate="silkCount"></th>
+        <th translate="netWeight"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of groupByBatchGradeItems$|async">
+        <td>{{item.batch.batchNo}}</td>
+        <td>{{item.grade.name}}</td>
+        <td>{{item.silkCarCount}}</td>
+        <td>{{item.silkCount}}</td>
+        <td style="text-align: right">{{item.netWeight|number:'.3-3'}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</main>

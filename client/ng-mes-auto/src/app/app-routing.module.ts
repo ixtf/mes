@@ -14,6 +14,7 @@ const routes: Routes = [
       {path: 'auto-line', loadChildren: () => import('./pages/board/board-auto-line-page/board-auto-line-page.component').then(it => it.Module)},
       {path: 'abnormal', loadChildren: () => import('./pages/board/board-abnormal-page/board-abnormal-page.component').then(it => it.Module)},
       {path: 'silk-car-runtime', loadChildren: () => import('./pages/board/board-silk-car-runtime-page/board-silk-car-runtime-page.component').then(it => it.Module)},
+      {path: 'to-dty', loadChildren: () => import('./pages/board/board-to-dty-page/board-to-dty-page.component').then(it => it.Module)},
       {path: 'test', loadChildren: () => import('./pages/board/board-test-page/board-test-page.component').then(it => it.Module)},
     ]
   },

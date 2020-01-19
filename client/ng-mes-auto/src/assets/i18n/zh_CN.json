@@ -139,7 +139,7 @@
   },
   "SilkExceptionReport": {
     "doffingCount": "落筒颗数",
-    "noGradeInfo": "落筒颗数"
+    "noGradeInfo": "不定重颗数"
   },
   "LineMachine": {
     "spec": "纺位",
@@ -252,6 +252,7 @@
     "board-auto-line": "自动包装线管理看板",
     "board-abnormal": "生产管理看板",
     "board-silk-car-runtime": "丝车运行情况看板",
+    "board-to-dty": "转运线看板",
     "admin": "管理员"
   },
   "Board": {

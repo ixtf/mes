@@ -29,7 +29,6 @@ public class MesAutoConfig {
     private static final Path PATH = Paths.get(System.getProperty("japp.mes.auto.path", "/home/mes/auto"));
     private static final JsonObject CONFIG = Util.readJsonObject(PATH.resolve("config.yml"));
     private static final Path apkPath = PATH.resolve("apk");
-    private static final Path lucenePath = PATH.resolve(Paths.get("db", "lucene"));
     @Getter
     private static final LocalDate silkBarcodeInitLD = LocalDate.parse(CONFIG.getString("silkBarcodeInitLD"));
 

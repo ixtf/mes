@@ -26,6 +26,7 @@ import {BoardAbnormalDialogComponent} from './pages/app/app-navbar/board-abnorma
 import {BoardAutoLineDialogComponent} from './pages/app/app-navbar/board-auto-line-dialog/board-auto-line-dialog.component';
 import {BoardAutoLineJikonAdapterDialogComponent} from './pages/app/app-navbar/board-auto-line-jikon-adapter-dialog/board-auto-line-jikon-adapter-dialog.component';
 import {BoardSilkCarRuntimeDialogComponent} from './pages/app/app-navbar/board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
+import {BoardToDtyDialogComponent} from './pages/app/app-navbar/board-to-dty-dialog/board-to-dty-dialog.component';
 import {UnbudatPackageBoxDialogComponent} from './pages/app/app-navbar/unbudat-package-box-dialog/unbudat-package-box-dialog.component';
 import {AppShellComponent} from './pages/app/app-shell/app-shell.component';
 import {AppComponent} from './pages/app/app.component';
@@ -69,6 +70,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
     UnbudatPackageBoxDialogComponent,
+    BoardToDtyDialogComponent,
   ],
   entryComponents: [
     ConfirmDialogComponent,
@@ -77,6 +79,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
     BoardAbnormalDialogComponent,
     BoardSilkCarRuntimeDialogComponent,
     UnbudatPackageBoxDialogComponent,
+    BoardToDtyDialogComponent,
   ],
   imports: [
     BrowserModule,

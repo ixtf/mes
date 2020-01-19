@@ -10,6 +10,7 @@ import {BoardAbnormalDialogComponent} from './board-abnormal-dialog/board-abnorm
 import {BoardAutoLineDialogComponent} from './board-auto-line-dialog/board-auto-line-dialog.component';
 import {BoardAutoLineJikonAdapterDialogComponent} from './board-auto-line-jikon-adapter-dialog/board-auto-line-jikon-adapter-dialog.component';
 import {BoardSilkCarRuntimeDialogComponent} from './board-silk-car-runtime-dialog/board-silk-car-runtime-dialog.component';
+import {BoardToDtyDialogComponent} from './board-to-dty-dialog/board-to-dty-dialog.component';
 import {UnbudatPackageBoxDialogComponent} from './unbudat-package-box-dialog/unbudat-package-box-dialog.component';
 
 @Component({
@@ -50,5 +51,9 @@ export class AppNavbarComponent {
 
   unbudatPackageBoxes() {
     UnbudatPackageBoxDialogComponent.open(this.dialog);
+  }
+
+  boardToDty() {
+    BoardToDtyDialogComponent.open(this.dialog);
   }
 }

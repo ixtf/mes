@@ -1,7 +1,7 @@
 package com.hengyi.japp.mes.auto.worker.verticle;
 
 import com.hengyi.japp.mes.auto.application.SilkCarRecordService;
-import com.hengyi.japp.mes.auto.application.event.SilkCarRuntimeInitEvent.AutoDoffingSilkCarRuntimeCreateCommand;
+import com.hengyi.japp.mes.auto.event.SilkCarRuntimeInitEvent.AutoDoffingSilkCarRuntimeCreateCommand;
 import io.reactivex.Completable;
 import io.vertx.rabbitmq.QueueOptions;
 import io.vertx.reactivex.core.AbstractVerticle;

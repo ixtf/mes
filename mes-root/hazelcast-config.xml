@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<hazelcast xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns="http://www.hazelcast.com/schema/config"
+<hazelcast xmlns="http://www.hazelcast.com/schema/config"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://www.hazelcast.com/schema/config
-           http://www.hazelcast.com/schema/config/hazelcast-config-3.10.xsd">
+           http://www.hazelcast.com/schema/config/hazelcast-config-3.12.xsd">
 
     <group>
         <name>dev-mes-auto-cluster</name>
     </group>
 
     <network>
-        <public-address>192.168.128.58</public-address>
+        <public-address>192.168.119.85</public-address>
         <interfaces enabled="true">
-            <interface>192.168.128.58</interface>
+            <interface>192.168.119.85</interface>
         </interfaces>
         <join>
             <multicast enabled="false"/>

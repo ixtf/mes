@@ -7,7 +7,7 @@ import io.vertx.core.AbstractVerticle;
 /**
  * @author jzb 2019-05-20
  */
-public class ReportVerticle extends AbstractVerticle {
+public class MainVerticle extends AbstractVerticle {
 
     @Override
     public void start() {

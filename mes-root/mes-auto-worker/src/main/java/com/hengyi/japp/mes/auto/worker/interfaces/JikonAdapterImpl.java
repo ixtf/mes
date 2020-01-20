@@ -7,11 +7,10 @@ import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.application.ApplicationEvents;
-import com.hengyi.japp.mes.auto.application.event.EventSourceType;
-import com.hengyi.japp.mes.auto.application.event.SilkNoteFeedbackEvent;
-import com.hengyi.japp.mes.auto.domain.*;
 import com.hengyi.japp.mes.auto.domain.data.PackageBoxType;
 import com.hengyi.japp.mes.auto.domain.data.SilkCarSideType;
+import com.hengyi.japp.mes.auto.event.EventSourceType;
+import com.hengyi.japp.mes.auto.event.SilkNoteFeedbackEvent;
 import com.hengyi.japp.mes.auto.interfaces.facevisa.FacevisaService;
 import com.hengyi.japp.mes.auto.interfaces.jikon.JikonAdapter;
 import com.hengyi.japp.mes.auto.interfaces.jikon.JikonUtil;
@@ -25,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
 
 import java.security.Principal;
-import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

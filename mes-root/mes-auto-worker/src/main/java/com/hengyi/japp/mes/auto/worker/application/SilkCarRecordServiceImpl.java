@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hengyi.japp.mes.auto.application.SilkCarRecordService;
-import com.hengyi.japp.mes.auto.application.event.EventSource;
-import com.hengyi.japp.mes.auto.application.event.SilkCarRuntimeInitEvent;
-import com.hengyi.japp.mes.auto.domain.*;
 import com.hengyi.japp.mes.auto.domain.data.DoffingType;
+import com.hengyi.japp.mes.auto.event.EventSource;
+import com.hengyi.japp.mes.auto.event.SilkCarRuntimeInitEvent;
 import com.hengyi.japp.mes.auto.repository.*;
 import lombok.extern.slf4j.Slf4j;
 

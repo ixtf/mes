@@ -1,4 +1,4 @@
-package com.hengyi.japp.mes.auto.report;
+package com.hengyi.japp.mes.auto.report.verticle;
 
 import com.github.ixtf.vertx.Jvertx;
 import com.hengyi.japp.mes.auto.config.MesAutoConfig;
@@ -13,7 +13,7 @@ import org.apache.commons.io.FileUtils;
  * @author jzb 2018-06-20
  */
 @Slf4j
-public class ReportAgentVerticle extends AbstractVerticle {
+public class AgentVerticle extends AbstractVerticle {
 
     @Override
     public void start() {

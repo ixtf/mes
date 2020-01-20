@@ -4,8 +4,6 @@ dependencies {
             "io.vertx:vertx-web-graphql",
             "io.projectreactor.rabbitmq:reactor-rabbitmq"
 
-    compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.8'
-
     testCompile "io.github.classgraph:classgraph"
 }
 

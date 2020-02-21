@@ -1,8 +1,10 @@
 plugins {
-    id "io.spring.dependency-management" version "1.0.8.RELEASE"
-    id "io.franzbecker.gradle-lombok" version "3.2.0"
-    id "com.palantir.docker" version "0.22.1"
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    id "io.franzbecker.gradle-lombok" version "3.3.0"
+    id "com.palantir.docker" version "0.25.0"
     id "com.github.johnrengelman.shadow" version "5.2.0"
+    id "com.google.protobuf" version '0.8.11' apply false
+    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.1.1" apply false
 }
 allprojects {
     group 'com.hengyi.japp.mes'
@@ -29,6 +31,15 @@ allprojects {
         imports {
             mavenBom "com.github.ixtf:bom:${bomVersion}"
         }
+
+        dependencies {
+            dependency "com.google.protobuf:protobuf-java:${protobufVersion}"
+            dependency "com.google.protobuf:protoc:${protobufVersion}"
+            dependency "io.rsocket:rsocket-core:${rsocketVersion}"
+            dependency "io.rsocket:rsocket-transport-netty:${rsocketVersion}"
+            dependency "io.rsocket.rpc:rsocket-rpc-protobuf:${rsocketRpcVersion}"
+            dependency "io.rsocket.rpc:rsocket-rpc-core:${rsocketRpcVersion}"
+        }
     }
 }
 subprojects {
@@ -40,8 +51,6 @@ subprojects {
     apply plugin: 'com.palantir.docker'
 
     dependencies {
-        compileOnly "io.vertx:vertx-codegen"
-
         testCompile "junit:junit",
                 "io.vertx:vertx-unit",
                 "io.vertx:vertx-web-client",

@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hengyi.japp.mes.auto.proto";
+option java_outer_classname = "SearchServiceProto";
+
+import "google/protobuf/empty.proto";
+
+service SearchService {
+    rpc SearchPackageBox (SearchPackageBoxRequest) returns (SearchResultResponse) {
+    }
+    rpc SearchDyeingPrepare (SearchDyeingPrepareRequest) returns (SearchResultResponse) {
+    }
+    rpc SearchSilkCarRecord (SearchSilkCarRecordRequest) returns (SearchResultResponse) {
+    }
+    rpc SearchSilkCarRecordsByEventSourceCanHappen (SearchSilkCarRecordsByEventSourceCanHappenRequest) returns (SearchResultResponse) {
+    }
+    rpc SearchSilkBarcode (SearchSilkBarcodeRequest) returns (SearchResultResponse) {
+    }
+}
+
+message SearchResultResponse {
+    uint64 count = 1;
+    repeated string ids = 2;
+}
+
+message SearchPackageBoxRequest {
+    bool inWarehouse = 1;
+    string workshopId = 2;
+    string code = 3;
+    string productId = 4;
+}
+
+message SearchDyeingPrepareRequest {
+    bool inWarehouse = 1;
+    string workshopId = 2;
+    string code = 3;
+    string productId = 4;
+}
+
+message SearchSilkCarRecordRequest {
+    bool inWarehouse = 1;
+    string workshopId = 2;
+    string code = 3;
+    string productId = 4;
+}
+
+message SearchSilkBarcodeRequest {
+    bool inWarehouse = 1;
+    string workshopId = 2;
+    string code = 3;
+    string productId = 4;
+}
+
+message SearchSilkCarRecordsByEventSourceCanHappenRequest {
+    bool inWarehouse = 1;
+    string workshopId = 2;
+    string code = 3;
+    string productId = 4;
+}

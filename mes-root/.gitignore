@@ -41,5 +41,3 @@ gradle-app.setting
 .vertx/
 docker-command.txt
 *.iml
-
-hazelcast-config.xml

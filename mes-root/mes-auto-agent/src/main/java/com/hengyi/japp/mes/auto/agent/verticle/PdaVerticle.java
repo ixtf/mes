@@ -34,13 +34,13 @@ public class PdaVerticle extends AbstractVerticle {
             rc.response().sendFile(apkFile(version));
         });
 
-        final JWTAuth jwtAuth = JWTAuth.create(vertx, MesAutoConfig.jwtAuthOptions());
-        router.route("/api/*").handler(JWTAuthHandler.create(jwtAuth));
-
         router.route(POST, "/token").produces(APPLICATION_JSON).handler(rc -> {
             final JsonObject message = RoutingContextEnvelope.encode(rc);
             vertx.eventBus().send("agent:POST:/token", message);
         });
+
+        final JWTAuth jwtAuth = JWTAuth.create(vertx, MesAutoConfig.jwtAuthOptions());
+        router.route("/api/*").handler(JWTAuthHandler.create(jwtAuth));
 
         final HttpServerOptions httpServerOptions = new HttpServerOptions()
                 .setDecompressionSupported(true)

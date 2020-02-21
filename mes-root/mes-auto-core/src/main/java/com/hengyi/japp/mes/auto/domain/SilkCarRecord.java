@@ -22,6 +22,7 @@ import java.util.Optional;
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+//@EntityListeners()
 public class SilkCarRecord implements IEntity {
     @ToString.Include
     @EqualsAndHashCode.Include

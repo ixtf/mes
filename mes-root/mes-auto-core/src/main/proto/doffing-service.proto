@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hengyi.japp.mes.auto.proto";
+option java_outer_classname = "DoffingServiceProto";
+
+import "google/protobuf/empty.proto";
+
+service DoffingService {
+    rpc ListCheckByWorkshop (ListCheckByWorkshopRequest) returns (ListCheckByWorkshopResponse) {
+    }
+}
+
+message ListCheckByWorkshopRequest {
+    string doffingType = 1;
+    string workshopId = 2;
+    repeated string checks = 3;
+}
+
+message ListCheckByWorkshopResponse {
+    bool inWarehouse = 1;
+    string workshopId = 2;
+    string code = 3;
+    string productId = 4;
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.hengyi.japp.mes.auto.proto";
+option java_outer_classname = "DyeingServiceProto";
+
+import "google/protobuf/empty.proto";
+
+service DyeingService {
+    rpc GetResultBySilkCarRuntimeRecord (GetResultBySilkCarRuntimeRecordRequest) returns (GetResultBySilkCarRuntimeRecordResponse) {
+    }
+}
+
+message GetResultBySilkCarRuntimeRecordRequest {
+    string code = 3;
+}
+
+message GetResultBySilkCarRuntimeRecordResponse {
+    map<string, GetResultBySilkCarRuntimeRecordResponse_ResultItem> resultMap = 1;
+}
+
+message GetResultBySilkCarRuntimeRecordResponse_ResultItem {
+    bool hasResult = 1;
+    bool hasException = 2;
+}

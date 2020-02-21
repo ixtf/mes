@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
@@ -18,6 +19,7 @@ export const FIX_COLS = ['silkException'];
     workshopEntities: {},
   },
 })
+@Injectable()
 export class SilkExceptionByClassReportPageState {
   constructor(private api: ApiService,
               private translate: TranslateService) {

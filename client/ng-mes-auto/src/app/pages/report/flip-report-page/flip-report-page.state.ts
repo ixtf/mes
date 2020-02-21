@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {SilkSpec} from '../../../components/silk-spec-input/silk-spec-input.component';
@@ -31,6 +32,7 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {},
 })
+@Injectable()
 export class FlipReportPageState {
   constructor(private api: ApiService) {
   }

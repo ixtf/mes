@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {switchMap, tap} from 'rxjs/operators';
@@ -48,9 +49,10 @@ interface StateModel {
 @State<StateModel>({
   name: PAGE_NAME,
   defaults: {
-    exceptionRecordEntities: {}
-  }
+    exceptionRecordEntities: {},
+  },
 })
+@Injectable()
 export class ExceptionRecordManagePageState {
   constructor(private api: ApiService) {
   }

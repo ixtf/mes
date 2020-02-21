@@ -2,10 +2,9 @@ import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Self} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, NgControl, Validators} from '@angular/forms';
-import {MatFormFieldControl} from '@angular/material';
+import {MatFormFieldControl} from '@angular/material/form-field';
 import {combineLatest, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, switchMap} from 'rxjs/operators';
-import {isString} from 'util';
 import {LineMachine} from '../../models/line-machine';
 import {ApiService} from '../../services/api.service';
 import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
@@ -35,7 +34,7 @@ export class LineMachineInputComponent implements ControlValueAccessor, MatFormF
     item: [null, [Validators.required, Validators.min(1)]],
   }, {validators: [VALIDATORS.isEntity]});
   autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
-    filter(it => it && isString(it) && it.trim().length > 0),
+    filter(it => it && (typeof it === 'string') && (it.trim().length > 0)),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     switchMap(q => this.api.autoCompleteLine(q)),

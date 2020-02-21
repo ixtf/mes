@@ -1,4 +1,5 @@
 import {HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
@@ -140,8 +141,9 @@ class StateModel {
   name: PAGE_NAME,
   defaults: {
     itemEntities: {},
-  }
+  },
 })
+@Injectable()
 export class BoardToDtyPageState {
   constructor(private api: ApiShareService) {
   }

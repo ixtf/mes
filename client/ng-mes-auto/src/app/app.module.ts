@@ -3,16 +3,16 @@ import {registerLocaleData} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import localeZhHans from '@angular/common/locales/zh-Hans';
 import {LOCALE_ID, NgModule} from '@angular/core';
-import {DateAdapter, MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatPaginatorIntl} from '@angular/material';
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS} from '@angular/material/autocomplete';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatPaginatorIntl} from '@angular/material/paginator';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxsDispatchPluginModule} from '@ngxs-labs/dispatch-decorator';
-import {NgxsEmitPluginModule} from '@ngxs-labs/emitter';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
-import {NgxsFormPluginModule} from '@ngxs/form-plugin';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
@@ -117,9 +117,7 @@ export function createTranslateLoader(httpClient: HttpClient) {
       ],
     }),
     NgxsRouterPluginModule.forRoot(),
-    NgxsFormPluginModule.forRoot(),
     NgxsDispatchPluginModule.forRoot(),
-    NgxsEmitPluginModule.forRoot(),
     // You should always include the logger as the last plugin in your configuration.
     NgxsLoggerPluginModule.forRoot({
       disabled: environment.production

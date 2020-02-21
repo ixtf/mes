@@ -1,4 +1,5 @@
 import {HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
@@ -43,6 +44,7 @@ interface SilkCarRecordPageStateModel {
     silkCarRecordEntities: {},
   },
 })
+@Injectable()
 export class SilkCarRecordPageState {
   constructor(private api: ApiService) {
   }

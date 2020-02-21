@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {saveAs} from 'file-saver';
@@ -46,6 +47,7 @@ interface StateModel {
     workshopEntities: {},
   },
 })
+@Injectable()
 export class StatisticReportDayPageState {
   constructor(private api: ApiService) {
   }

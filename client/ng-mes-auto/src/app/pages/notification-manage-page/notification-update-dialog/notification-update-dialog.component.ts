@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatAutocompleteSelectedEvent, MatDialog, MatDialogRef} from '@angular/material';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil} from 'rxjs/operators';
-import {isString} from 'util';
 import {Line} from '../../../models/line';
 import {Notification} from '../../../models/notification';
 import {ApiService} from '../../../services/api.service';
@@ -39,7 +39,7 @@ export class NotificationUpdateDialogComponent implements OnInit, OnDestroy {
     takeUntil(this.destroy$),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
-    filter(it => it && isString(it) && it.trim().length > 0),
+    filter(it => it && (typeof it === 'string') && it.trim().length > 0),
     switchMap(q => this.api.autoCompleteLine(q)),
     map(lines => lines.filter(line => {
       const selecteds = this.form.value.lines || [];

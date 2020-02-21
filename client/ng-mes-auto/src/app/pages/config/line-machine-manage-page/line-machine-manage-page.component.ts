@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatDialog} from '@angular/material';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatDialog} from '@angular/material/dialog';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';

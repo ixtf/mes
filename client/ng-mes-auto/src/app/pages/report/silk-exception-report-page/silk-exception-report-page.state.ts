@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
@@ -19,6 +20,7 @@ export const GRADE_CODES = ['A', 'B', 'C'];
     workshopEntities: {},
   },
 })
+@Injectable()
 export class SilkExceptionReportPageState {
   constructor(private api: ApiService) {
   }

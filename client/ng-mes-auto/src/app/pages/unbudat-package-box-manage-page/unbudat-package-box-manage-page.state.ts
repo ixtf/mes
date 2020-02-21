@@ -1,10 +1,10 @@
 import {HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {forkJoin} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
-import {isNullOrUndefined} from 'util';
 import {Batch} from '../../models/batch';
 import {Grade} from '../../models/grade';
 import {PackageBox} from '../../models/package-box';
@@ -72,6 +72,7 @@ interface StateModel {
     filters: new Filters(),
   },
 })
+@Injectable()
 export class UnbudatPackageBoxManagePageState {
   constructor(private api: ApiService) {
   }
@@ -92,7 +93,7 @@ export class UnbudatPackageBoxManagePageState {
         }
       }
 
-      if (!isNullOrUndefined(state.filters.printed)) {
+      if (!(state.filters.printed === null || state.filters.printed === undefined)) {
         if (state.filters.printed) {
           if (packageBox.printCount <= 0) {
             return false;
@@ -104,7 +105,7 @@ export class UnbudatPackageBoxManagePageState {
         }
       }
 
-      if (!isNullOrUndefined(state.filters.measured)) {
+      if (!(state.filters.measured === null || state.filters.measured === undefined)) {
         if (state.filters.measured) {
           if (!packageBox.budat) {
             return false;
@@ -198,7 +199,7 @@ export class UnbudatPackageBoxManagePageState {
       tap(packageBoxes => setState((state: StateModel) => {
         state.packageBoxEntities = PackageBox.toEntities(packageBoxes);
         return state;
-      }))
+      })),
     );
   }
 

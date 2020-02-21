@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {Observable, throwError} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, takeUntil, tap} from 'rxjs/operators';
 import {Batch} from '../../../models/batch';

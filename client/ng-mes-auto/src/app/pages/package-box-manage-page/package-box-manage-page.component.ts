@@ -1,7 +1,9 @@
 import {SelectionModel} from '@angular/cdk/collections';
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {MatDialog, MatTableDataSource, PageEvent} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {PageEvent} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';

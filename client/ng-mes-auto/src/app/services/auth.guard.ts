@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Store} from '@ngxs/store';
-import {isNullOrUndefined} from 'util';
 import {AppState} from '../pages/app/app.state';
 
 @Injectable({providedIn: 'root'})
@@ -11,10 +10,10 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = this.store.selectSnapshot(AppState.token);
-    if (isNullOrUndefined(token)) {
-      this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
-      return false;
+    if (token) {
+      return true;
     }
-    return true;
+    this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
+    return false;
   }
 }

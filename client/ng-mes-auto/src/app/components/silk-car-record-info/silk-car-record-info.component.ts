@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, NgModule, Output} from '@angular/core';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {Select, Store} from '@ngxs/store';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ProductProcess} from '../../models/product-process';

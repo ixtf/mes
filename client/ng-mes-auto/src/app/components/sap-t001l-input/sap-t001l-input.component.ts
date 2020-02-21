@@ -5,7 +5,6 @@ import {ControlValueAccessor, FormControl, NgControl, Validators} from '@angular
 import {MatFormFieldControl} from '@angular/material';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
-import {isString} from 'util';
 import {Line} from '../../models/line';
 import {ApiService} from '../../services/api.service';
 import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
@@ -33,7 +32,7 @@ export class SapT001lInputComponent implements ControlValueAccessor, MatFormFiel
   focused = false;
   readonly lineCtrl = new FormControl(null, {validators: [Validators.required, VALIDATORS.isEntity]});
   autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
-    filter(it => it && isString(it) && it.trim().length > 0),
+    filter(it => it && (typeof it === 'string') && (it.trim().length > 0)),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     switchMap(q => this.api.autoCompleteLine(q)),

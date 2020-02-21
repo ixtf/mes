@@ -1,6 +1,7 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MatDialog, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
 import {DyeingPrepare} from '../../../models/dyeing-prepare';
 import {DyeingResult} from '../../../models/dyeing-result';
 import {DyeingPrepareEvent} from '../../../models/event-source';

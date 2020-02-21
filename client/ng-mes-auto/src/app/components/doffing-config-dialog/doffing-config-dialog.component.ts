@@ -1,7 +1,7 @@
 import {CdkDragDrop, DragDropModule} from '@angular/cdk/drag-drop';
 import {ChangeDetectionStrategy, Component, Inject, NgModule} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {BehaviorSubject, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, takeUntil, tap} from 'rxjs/operators';
 import {SEARCH_DEBOUNCE_TIME} from '../../services/util.service';

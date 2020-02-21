@@ -1,4 +1,4 @@
-import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
@@ -30,6 +30,7 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {},
 })
+@Injectable()
 export class SilkCarRuntimePageState {
   constructor(private api: ApiService) {
   }
@@ -38,11 +39,6 @@ export class SilkCarRuntimePageState {
   @ImmutableSelector()
   static silkCarRuntime(state: StateModel) {
     return state.silkCarRuntime;
-  }
-
-  @Receiver()
-  static OnInit({setState}: StateContext<StateModel>, action: EmitterAction<void>) {
-    setState({});
   }
 
   @Action(InitAction)

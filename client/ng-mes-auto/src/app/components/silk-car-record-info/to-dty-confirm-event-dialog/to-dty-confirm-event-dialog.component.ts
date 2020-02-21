@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ToDtyConfirmEvent} from '../../../models/event-source';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 import {ApiService} from '../../../services/api.service';

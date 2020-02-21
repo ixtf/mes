@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
@@ -25,8 +26,9 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {
     silkCarRecordDestinationEntities: {},
-  }
+  },
 })
+@Injectable()
 export class SilkCarRecordDestinationManagePageState {
   constructor(private api: ApiService) {
   }

@@ -1,11 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {MatDialog} from '@angular/material';
-import {Emittable, Emitter} from '@ngxs-labs/emitter';
+import {MatDialog} from '@angular/material/dialog';
+import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {Select} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {AuthInfo} from '../../../models/auth-info';
-import {ApiService} from '../../../services/api.service';
-import {AppState} from '../app.state';
+import {AppState, LogoutAction} from '../app.state';
 import {BoardAbnormalDialogComponent} from './board-abnormal-dialog/board-abnormal-dialog.component';
 import {BoardAutoLineDialogComponent} from './board-auto-line-dialog/board-auto-line-dialog.component';
 import {BoardAutoLineJikonAdapterDialogComponent} from './board-auto-line-jikon-adapter-dialog/board-auto-line-jikon-adapter-dialog.component';
@@ -17,7 +16,7 @@ import {UnbudatPackageBoxDialogComponent} from './unbudat-package-box-dialog/unb
   selector: 'app-navbar',
   templateUrl: './app-navbar.component.html',
   styleUrls: ['./app-navbar.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppNavbarComponent {
   @Select(AppState.isLoading)
@@ -26,11 +25,13 @@ export class AppNavbarComponent {
   readonly authInfo$: Observable<AuthInfo>;
   @Select(AppState.authInfoIsAdmin)
   readonly isAdmin$: Observable<boolean>;
-  @Emitter(AppState.LogoutAction)
-  readonly logout$: Emittable;
 
-  constructor(private dialog: MatDialog,
-              private api: ApiService) {
+  constructor(private dialog: MatDialog) {
+  }
+
+  @Dispatch()
+  logout() {
+    return new LogoutAction();
   }
 
   boardAutoLineJikonAdapter() {

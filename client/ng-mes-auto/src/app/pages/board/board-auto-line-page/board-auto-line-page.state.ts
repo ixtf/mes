@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {RiambFetchSilkCarRecordResultDTO} from '../../../models/riamb-fetch-silk-car-record-result-dto';
@@ -37,6 +38,7 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {},
 })
+@Injectable()
 export class BoardAutoLinePageState {
   constructor(private api: ApiShareService) {
   }

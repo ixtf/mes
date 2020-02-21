@@ -1,8 +1,7 @@
 import {AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, Inject, NgModule} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {QRCodeModule} from 'angularx-qrcode';
 import {NgxBarcodeModule} from 'ngx-barcode';
-import {isArray} from 'util';
 import {SilkCar} from '../../models/silk-car';
 import {SharedModule} from '../../shared.module';
 
@@ -20,7 +19,7 @@ export class SilkCarPrintComponent implements AfterContentInit {
   }
 
   static print(dialog: MatDialog, inputData: SilkCar | SilkCar[]) {
-    const data = isArray(inputData) ? inputData : [inputData];
+    const data = Array.isArray(inputData) ? inputData : [inputData];
     dialog.open(SilkCarPrintComponent, {data});
   }
 

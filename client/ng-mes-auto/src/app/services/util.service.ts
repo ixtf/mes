@@ -1,12 +1,12 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {AbstractControl, ValidationErrors} from '@angular/forms';
-import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import {interval} from 'rxjs';
 import {share} from 'rxjs/operators';
-import {isArray, isNullOrUndefined, isObject} from 'util';
 import {Batch} from '../models/batch';
 import {EventSource} from '../models/event-source';
 import {Line} from '../models/line';
@@ -68,7 +68,7 @@ export const COPY_WITH_CTRL = (s: string, ev: MouseEvent) => {
   }
 };
 export const upEle = (array: any[], ele: any): any[] => {
-  if (!array || !ele || !isArray(array)) {
+  if (!array || !ele || !Array.isArray(array)) {
     return array;
   }
   array = [...(array || [])];
@@ -76,10 +76,7 @@ export const upEle = (array: any[], ele: any): any[] => {
     if (it === ele) {
       return true;
     }
-    if (isObject(it)) {
-      return (it && it.id) === ele.id;
-    }
-    return false;
+    return (it && it.id) === ele.id;
   });
   if (i <= 0) {
     return array;
@@ -89,7 +86,7 @@ export const upEle = (array: any[], ele: any): any[] => {
   return array;
 };
 export const downEle = (array: any[], ele: any): any[] => {
-  if (!array || !ele || !isArray(array)) {
+  if (!array || !ele || !Array.isArray(array)) {
     return array;
   }
   array = [...(array || [])];
@@ -97,10 +94,7 @@ export const downEle = (array: any[], ele: any): any[] => {
     if (it === ele) {
       return true;
     }
-    if (isObject(it)) {
-      return (it && it.id) === ele.id;
-    }
-    return false;
+    return (it && it.id) === ele.id;
   });
   if (i < 0 || i === (array.length - 1)) {
     return array;
@@ -129,10 +123,10 @@ export const COMPARE_WITH_ID = (o1: any, o2: any) => {
   if (o1 === o2) {
     return true;
   }
-  if (isNullOrUndefined(o1) || isNullOrUndefined(o2)) {
-    return false;
+  if (o1 && o1.id && o2 && o2.id) {
+    return o1.id === o2.id;
   }
-  return o1.id === o2.id;
+  return false;
 };
 
 export const DEFAULT_COMPARE = (o1: any, o2: any): number => {

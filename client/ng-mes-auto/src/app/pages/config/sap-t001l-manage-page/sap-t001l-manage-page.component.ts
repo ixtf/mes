@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, NgModule, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';

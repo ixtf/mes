@@ -1,19 +1,16 @@
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
-import {EmitterService} from '@ngxs-labs/emitter';
 import {Store} from '@ngxs/store';
 import {Observable, of, throwError} from 'rxjs';
 import {catchError, finalize} from 'rxjs/operators';
-import {isString} from 'util';
-import {AppState} from '../pages/app/app.state';
+import {AppState, LogoutAction, SetLoadingAction} from '../pages/app/app.state';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
   constructor(private store: Store,
-              private emitter: EmitterService,
               private snackBar: MatSnackBar,
               private translate: TranslateService) {
   }
@@ -27,14 +24,14 @@ export class ErrorInterceptor implements HttpInterceptor {
       }),
       finalize(() => {
         if (this.store.selectSnapshot(AppState.isLoading)) {
-          this.emitter.action(AppState.SetLoading).emit(false);
+          this.store.dispatch(new SetLoadingAction(false));
         }
-      })
+      }),
     );
   }
 
   showError(err: string | any, action?: string, config?: MatSnackBarConfig) {
-    if (isString(err)) {
+    if (typeof err === 'string') {
       this.translate.get(err).subscribe(res => this.snackBar.open(res, action || 'X', config));
       return;
     } else if (err instanceof HttpErrorResponse) {
@@ -58,8 +55,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
     if (err.status === 401) {
       // auto logout if 401 response returned from api
-      this.emitter.action(AppState.LogoutAction).emit().subscribe(() => {
-        location.reload(true);
+      this.store.dispatch(new LogoutAction()).subscribe(() => {
+        location.reload();
       });
     } else {
       this.getErrorMsg(err).subscribe(it => {

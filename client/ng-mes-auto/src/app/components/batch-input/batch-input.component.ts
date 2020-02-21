@@ -3,10 +3,10 @@ import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatFormFieldControl} from '@angular/material';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
-import {isString} from 'util';
 import {Batch} from '../../models/batch';
 import {ApiService} from '../../services/api.service';
 import {DISPLAY_WITH_BATCH, SEARCH_DEBOUNCE_TIME} from '../../services/util.service';
@@ -34,7 +34,7 @@ export class BatchInputComponent implements ControlValueAccessor, MatFormFieldCo
   focused = false;
   readonly qCtrl = new FormControl();
   readonly autoData$ = this.qCtrl.valueChanges.pipe(
-    filter(it => it && isString(it) && it.trim().length > 1),
+    filter(it => it && (typeof it === 'string') && (it.trim().length > 1)),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     switchMap(q => this.api.autoCompleteBatch(q)),

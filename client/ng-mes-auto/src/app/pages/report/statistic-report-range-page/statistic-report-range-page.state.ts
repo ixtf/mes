@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
@@ -34,6 +35,7 @@ interface StateModel {
     workshopEntities: {},
   },
 })
+@Injectable()
 export class StatisticReportRangePageState {
   constructor(private api: ApiService) {
   }

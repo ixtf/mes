@@ -1,8 +1,8 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {tap} from 'rxjs/operators';
-import {isArray, isString} from 'util';
 import {ExceptionRecord} from '../../../models/exception-record';
 import {LineMachineProductPlan} from '../../../models/line-machine-product-plan';
 import {Notification} from '../../../models/notification';
@@ -99,6 +99,7 @@ interface StateModel {
     notificationEntities: {},
   },
 })
+@Injectable()
 export class BoardAbnormalPageState {
   constructor(private api: ApiShareService) {
   }
@@ -136,9 +137,9 @@ export class BoardAbnormalPageState {
   InitAction({setState, dispatch}: StateContext<StateModel>, {payload: {workshopId, lineIds}}: InitAction) {
     setState((state: StateModel) => {
       state.workshopId = workshopId;
-      if (isArray(lineIds)) {
+      if (Array.isArray(lineIds)) {
         state.lineIds = lineIds as string[];
-      } else if (isString(lineIds)) {
+      } else if (typeof lineIds === 'string') {
         state.lineIds = [lineIds as string];
       }
       return state;

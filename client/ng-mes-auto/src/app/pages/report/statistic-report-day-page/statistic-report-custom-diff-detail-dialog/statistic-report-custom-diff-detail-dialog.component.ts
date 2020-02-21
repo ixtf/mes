@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {PackageBoxDetailDialogPageComponent} from '../../../../components/package-box-detail-dialog-page/package-box-detail-dialog-page.component';
 import {Batch} from '../../../../models/batch';
 import {Grade} from '../../../../models/grade';

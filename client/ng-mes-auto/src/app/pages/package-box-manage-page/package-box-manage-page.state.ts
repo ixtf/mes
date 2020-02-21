@@ -1,10 +1,10 @@
 import {HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import * as moment from 'moment';
 import {forkJoin} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {isNullOrUndefined} from 'util';
 import {Grade} from '../../models/grade';
 import {PackageBox} from '../../models/package-box';
 import {PackageClass} from '../../models/package-class';
@@ -55,6 +55,7 @@ interface StateModel {
     packageBoxEntities: {},
   },
 })
+@Injectable()
 export class PackageBoxManagePageState {
   constructor(private api: ApiService) {
   }
@@ -138,9 +139,7 @@ export class PackageBoxManagePageState {
   @Action(QueryAction)
   @ImmutableContext()
   QueryAction({setState}: StateContext<StateModel>, {payload: {workshopId, code, batchId, gradeId, budatClassId, type, startDate, endDate, productId, first, pageSize}}: QueryAction) {
-    if (isNullOrUndefined(pageSize)) {
-      pageSize = 50;
-    }
+    pageSize = pageSize || 50;
     let params = new HttpParams().set('workshopId', workshopId)
       .set('startDate', moment(startDate).format('YYYY-MM-DD'))
       .set('endDate', moment(endDate).format('YYYY-MM-DD'))
@@ -184,7 +183,7 @@ export class PackageBoxManagePageState {
       tap(() => setState((state: StateModel) => {
         delete state.packageBoxEntities[payload.id];
         return state;
-      }))
+      })),
     );
   }
 

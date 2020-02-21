@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {RouterModule} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';

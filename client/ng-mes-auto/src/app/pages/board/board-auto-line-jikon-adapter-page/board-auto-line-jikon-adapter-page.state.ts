@@ -1,6 +1,6 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {isArray, isString} from 'util';
 import {GetSilkSpindleInfoDTO} from '../../../models/get-silk-spindle-info-dto';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';
 import {ApiShareService} from '../../../services/api.service';
@@ -38,6 +38,7 @@ interface StateModel {
   name: PAGE_NAME,
   defaults: {},
 })
+@Injectable()
 export class BoardAutoLineJikonAdapterPageState {
   constructor(private api: ApiShareService) {
   }
@@ -53,9 +54,9 @@ export class BoardAutoLineJikonAdapterPageState {
   InitAction({setState, dispatch}: StateContext<StateModel>, {payload: {workshopId, lineIds, displayCount}}: InitAction) {
     setState((state: StateModel) => {
       state.workshopId = workshopId;
-      if (isArray(lineIds)) {
+      if (Array.isArray(lineIds)) {
         state.lineIds = lineIds as string[];
-      } else if (isString(lineIds)) {
+      } else if (typeof lineIds === 'string') {
         state.lineIds = [lineIds as string];
       }
       state.displayCount = parseInt((displayCount || '6'), 10);

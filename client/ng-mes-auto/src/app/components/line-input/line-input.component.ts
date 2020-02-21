@@ -2,10 +2,10 @@ import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {ControlValueAccessor, FormControl, NgControl} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatFormFieldControl} from '@angular/material';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
-import {isString} from 'util';
 import {Line} from '../../models/line';
 import {ApiService} from '../../services/api.service';
 import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
@@ -33,7 +33,7 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
   focused = false;
   readonly qCtrl = new FormControl(null, {validators: [VALIDATORS.isEntity]});
   readonly autoData$ = this.qCtrl.valueChanges.pipe(
-    filter(it => it && isString(it) && it.trim().length > 0),
+    filter(it => it && (typeof it === 'string') && (it.trim().length > 0)),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     switchMap(q => this.api.autoCompleteLine(q)),
@@ -149,7 +149,7 @@ export class LineInputComponent implements ControlValueAccessor, MatFormFieldCon
   }
 
   writeValue(obj: Line | string): void {
-    if (isString(obj)) {
+    if (typeof obj === 'string') {
       this.api.getLine(obj as string).subscribe(it => this.value = it);
     } else {
       this.value = obj as Line;

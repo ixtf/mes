@@ -1,6 +1,6 @@
 import {HttpResponse} from '@angular/common/http';
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {saveAs} from 'file-saver';
 import {filter, switchMap, tap} from 'rxjs/operators';
 import {ConfirmDialogComponent} from '../../../../components/confirm-dialog/confirm-dialog.component';

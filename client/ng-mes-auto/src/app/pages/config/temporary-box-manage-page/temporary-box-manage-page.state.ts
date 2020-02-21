@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {tap} from 'rxjs/operators';
@@ -39,6 +40,7 @@ interface StateModel {
     temporaryBoxEntities: {},
   },
 })
+@Injectable()
 export class TemporaryBoxManagePageState {
   constructor(private api: ApiService) {
   }

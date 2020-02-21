@@ -1,12 +1,11 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl} from '@angular/forms';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap} from 'rxjs/operators';
-import {isString} from 'util';
 import {SilkCarRecordEventListComponentModule} from '../../components/flow-card/flow-card.component';
 import {SilkCarRecordInfoComponentModule} from '../../components/silk-car-record-info/silk-car-record-info.component';
 import {SilkCarRuntime} from '../../models/silk-car-runtime';
@@ -35,8 +34,8 @@ export class SilkCarRuntimePageComponent {
   readonly autoCompleteSilkCars$ = this.silkCarQCtrl.valueChanges.pipe(
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
-    filter(it => it && isString(it) && it.trim().length > 1),
-    switchMap(q => this.api.autoCompleteSilkCar(q))
+    filter(it => it && (typeof it === 'string') && (it.trim().length > 1)),
+    switchMap(q => this.api.autoCompleteSilkCar(q)),
   );
 
   constructor(private store: Store,

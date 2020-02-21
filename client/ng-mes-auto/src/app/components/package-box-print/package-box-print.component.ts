@@ -1,7 +1,6 @@
 import {AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, Inject, NgModule} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {QRCodeModule} from 'angularx-qrcode';
-import {isArray} from 'util';
 import {PackageBox} from '../../models/package-box';
 import {SharedModule} from '../../shared.module';
 
@@ -19,7 +18,7 @@ export class PackageBoxPrintComponent implements AfterContentInit {
   }
 
   static print(dialog: MatDialog, data: PackageBox | PackageBox[]) {
-    let packageBoxes: PackageBox[] = (isArray(data) ? data : [data]) as PackageBox[];
+    let packageBoxes: PackageBox[] = (Array.isArray(data) ? data : [data]) as PackageBox[];
     packageBoxes = packageBoxes.filter(it => it.budat && it.type !== 'BIG_SILK_CAR');
     if (packageBoxes.length > 0) {
       dialog.open(PackageBoxPrintComponent, {data: packageBoxes});

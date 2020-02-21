@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
@@ -52,6 +53,7 @@ interface StateModel {
     itemEntities: {},
   },
 })
+@Injectable()
 export class DyeingReportPageState {
   constructor(private api: ApiService,
               private translate: TranslateService) {

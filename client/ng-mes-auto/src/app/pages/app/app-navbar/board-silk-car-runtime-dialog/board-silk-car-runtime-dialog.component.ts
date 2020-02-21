@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {map} from 'rxjs/operators';
 import {ApiService} from '../../../../services/api.service';
 import {CODE_COMPARE} from '../../../../services/util.service';

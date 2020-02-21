@@ -1,4 +1,5 @@
 import {HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {forkJoin} from 'rxjs';
@@ -70,6 +71,7 @@ interface StateModel {
     CROSS: new DyeingResultModel(),
   },
 })
+@Injectable()
 export class DyeingResultsTimelinePageState {
   constructor(private api: ApiService) {
   }

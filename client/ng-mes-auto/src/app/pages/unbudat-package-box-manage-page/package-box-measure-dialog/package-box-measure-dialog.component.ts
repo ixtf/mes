@@ -1,7 +1,7 @@
 /* tslint:disable:no-eval */
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {merge, Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, takeUntil, tap} from 'rxjs/operators';
 import {Batch} from '../../../models/batch';

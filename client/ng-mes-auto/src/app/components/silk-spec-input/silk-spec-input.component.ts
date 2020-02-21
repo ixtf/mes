@@ -3,10 +3,10 @@ import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostBinding, Input, NgModule, OnDestroy, OnInit, Optional, Output, Self} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormControl, NgControl, Validators} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatFormFieldControl} from '@angular/material';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatFormFieldControl} from '@angular/material/form-field';
 import {combineLatest, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
-import {isString} from 'util';
 import {LineMachine} from '../../models/line-machine';
 import {ApiService} from '../../services/api.service';
 import {DISPLAY_WITH_LINE, SEARCH_DEBOUNCE_TIME, VALIDATORS} from '../../services/util.service';
@@ -45,7 +45,7 @@ export class SilkSpecInputComponent implements ControlValueAccessor, MatFormFiel
   readonly valueCtrl = new FormControl();
   focused = false;
   autoCompleteLines$ = this.lineCtrl.valueChanges.pipe(
-    filter(it => it && isString(it) && it.trim().length > 0),
+    filter(it => it && (typeof it === 'string') && (it.trim().length > 0)),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
     switchMap(q => this.api.autoCompleteLine(q)),

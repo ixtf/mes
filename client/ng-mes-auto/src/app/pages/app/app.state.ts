@@ -1,6 +1,7 @@
-import {MatSnackBar} from '@angular/material';
+import {Injectable} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
-import {EmitterAction, Receiver} from '@ngxs-labs/emitter';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Navigate} from '@ngxs/router-plugin';
 import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
@@ -20,6 +21,17 @@ export class LoginAction {
   static readonly type = `[${PAGE_NAME}] LoginAction`;
 
   constructor(public payload: { loginId: string; loginPassword: string; returnUrl: string; }) {
+  }
+}
+
+export class LogoutAction {
+  static readonly type = `[${PAGE_NAME}] LogoutAction`;
+}
+
+export class SetLoadingAction {
+  static readonly type = `[${PAGE_NAME}] SetLoadingAction`;
+
+  constructor(public payload: boolean) {
   }
 }
 
@@ -47,10 +59,12 @@ interface StateModel {
 
 @State<StateModel>({
   name: PAGE_NAME,
-  defaults: {}
+  defaults: {},
 })
+@Injectable()
 export class AppState implements NgxsOnInit {
   constructor(private api: ApiService,
+              private router: Router,
               private translate: TranslateService,
               private snackBar: MatSnackBar) {
   }
@@ -101,22 +115,6 @@ export class AppState implements NgxsOnInit {
     return state.corporations && state.corporations[0];
   }
 
-  @Receiver()
-  @ImmutableContext()
-  static SetLoading({setState}: StateContext<StateModel>, {payload}: EmitterAction<boolean>) {
-    setState((state: StateModel) => {
-      state.loading = payload;
-      return state;
-    });
-  }
-
-  @Receiver()
-  static LogoutAction({setState}: StateContext<StateModel>) {
-    setState({});
-    location.reload();
-    // return dispatch(new Navigate(['/']));
-  }
-
   ngxsOnInit({dispatch}: StateContext<StateModel>) {
     dispatch(new InitAction());
   }
@@ -135,7 +133,7 @@ export class AppState implements NgxsOnInit {
       tap(corporations => setState((state: StateModel) => {
         state.corporations = corporations;
         return state;
-      }))
+      })),
     );
   }
 
@@ -151,15 +149,35 @@ export class AppState implements NgxsOnInit {
         const initAction = new InitAction();
         const navigateAction = new Navigate([payload.returnUrl || '/']);
         return dispatch([initAction, navigateAction]);
+
+        // return dispatch(new InitAction());
       }),
+      // tap(() => {
+      //   this.router.navigateByUrl(payload.returnUrl || '/');
+      // }),
       catchError(() => {
         setState((state: StateModel) => {
           state.shake = !state.shake;
           return state;
         });
         return of();
-      })
+      }),
     );
+  }
+
+  @Action(LogoutAction)
+  LogoutAction({setState}: StateContext<StateModel>) {
+    setState({});
+    location.reload();
+  }
+
+  @Action(SetLoadingAction)
+  @ImmutableContext()
+  SetLoadingAction({setState}: StateContext<StateModel>, {payload}: SetLoadingAction) {
+    setState((state: StateModel) => {
+      state.loading = payload;
+      return state;
+    });
   }
 
   @Action(ShowErrorAction)

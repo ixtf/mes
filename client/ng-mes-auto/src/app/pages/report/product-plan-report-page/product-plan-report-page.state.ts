@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {switchMap, tap} from 'rxjs/operators';
@@ -27,8 +28,9 @@ interface StateModel {
 
 @State<StateModel>({
   name: PAGE_NAME,
-  defaults: {}
+  defaults: {},
 })
+@Injectable()
 export class ProductPlanReportPageState {
   constructor(private api: ApiService) {
   }

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import * as moment from 'moment';
 import {Subject} from 'rxjs';
 import {map} from 'rxjs/operators';

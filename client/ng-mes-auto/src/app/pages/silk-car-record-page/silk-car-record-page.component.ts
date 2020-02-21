@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatExpansionModule} from '@angular/material';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatExpansionModule} from '@angular/material/expansion';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';
 import {NgxsModule, Select, Store} from '@ngxs/store';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
-import {isString} from 'util';
 import {SilkCarRecordEventListComponentModule} from '../../components/flow-card/flow-card.component';
 import {SilkCarRecordInfoComponentModule} from '../../components/silk-car-record-info/silk-car-record-info.component';
 import {SilkCar} from '../../models/silk-car';
@@ -49,8 +49,8 @@ export class SilkCarRecordPageComponent {
     takeUntil(this.destroy$),
     debounceTime(SEARCH_DEBOUNCE_TIME),
     distinctUntilChanged(),
-    filter(it => it && isString(it) && it.trim().length > 1),
-    switchMap(q => this.api.autoCompleteSilkCar(q))
+    filter(it => it && (typeof it === 'string') && it.trim().length > 1),
+    switchMap(q => this.api.autoCompleteSilkCar(q)),
   );
 
   constructor(private store: Store,

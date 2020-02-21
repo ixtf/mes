@@ -2,7 +2,6 @@ import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, retry} from 'rxjs/operators';
-import {isString} from 'util';
 import {HOST_NAME} from '../../environments/environment';
 import {AuthInfo} from '../models/auth-info';
 import {Batch} from '../models/batch';
@@ -267,7 +266,7 @@ export class ApiService {
   }
 
   getLine_LineMachines(id: string | { id: string }): Observable<LineMachine[]> {
-    id = isString(id) ? id : (id as { id: string }).id;
+    id = (typeof id === 'string') ? id : (id as { id: string }).id;
     return this.http.get<LineMachine []>(`${BASE_API_URL}/lines/${id}/lineMachines`);
   }
 

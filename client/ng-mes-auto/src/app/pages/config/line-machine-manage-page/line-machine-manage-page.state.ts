@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableContext, ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {switchMap, tap} from 'rxjs/operators';
@@ -37,6 +38,7 @@ interface StateModel {
     lineMachineEntities: {},
   },
 })
+@Injectable()
 export class LineMachineManagePageState {
   constructor(private api: ApiService) {
   }

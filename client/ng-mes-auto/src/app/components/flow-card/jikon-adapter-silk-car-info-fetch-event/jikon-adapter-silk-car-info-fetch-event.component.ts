@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MatTableDataSource} from '@angular/material';
+import {MatTableDataSource} from '@angular/material/table';
 import {EventSource, JikonAdapterSilkCarInfoFetchEvent, JikonAdapterSilkDetachEvent} from '../../../models/event-source';
 import {SilkCarRecord} from '../../../models/silk-car-record';
 import {SilkCarRuntime} from '../../../models/silk-car-runtime';

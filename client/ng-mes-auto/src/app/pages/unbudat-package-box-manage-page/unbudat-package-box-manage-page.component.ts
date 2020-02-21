@@ -1,7 +1,9 @@
 import {SelectionModel} from '@angular/cdk/collections';
 import {ChangeDetectionStrategy, Component, NgModule} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {Dispatch} from '@ngxs-labs/dispatch-decorator';

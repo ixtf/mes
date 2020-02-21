@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {ImmutableSelector} from '@ngxs-labs/immer-adapter';
 import {Selector, State} from '@ngxs/store';
 import {Batch} from '../../../models/batch';
@@ -19,8 +20,9 @@ interface OperatorGroupManagePageStateModel {
     first: 0,
     pageSize: 50,
     batches: [],
-  }
+  },
 })
+@Injectable()
 export class OperatorGroupManagePageState {
   constructor(private api: ApiService) {
   }

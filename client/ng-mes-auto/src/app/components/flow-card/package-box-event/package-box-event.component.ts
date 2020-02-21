@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {PackageBoxEvent} from '../../../models/event-source';
 import {PackageBox} from '../../../models/package-box';
 import {SilkCarRecord} from '../../../models/silk-car-record';

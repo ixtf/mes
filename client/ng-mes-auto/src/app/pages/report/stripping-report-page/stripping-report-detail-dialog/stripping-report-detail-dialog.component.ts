@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {tap} from 'rxjs/operators';
 import {EventSource, ProductProcessSubmitEvent} from '../../../../models/event-source';
 import {Product} from '../../../../models/product';

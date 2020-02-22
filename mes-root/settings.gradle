@@ -6,3 +6,5 @@ include 'mes-auto-search'
 include 'mes-auto-print'
 include 'mes-auto-report'
 include 'mes-auto-open'
+include 'mes-auto-doffing'
+

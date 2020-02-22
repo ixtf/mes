@@ -28,7 +28,6 @@ public class SilkException implements EntityLoggable {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @ToString.Include
     @Getter

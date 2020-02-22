@@ -23,7 +23,6 @@ public class Login implements IEntity {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @ToString.Include
     @JsonIgnore

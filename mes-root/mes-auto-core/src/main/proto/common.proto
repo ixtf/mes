@@ -3,4 +3,22 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_package = "com.hengyi.japp.mes.auto.proto";
 
-DoffingType
+message EntityDTO {
+    string id = 1;
+}
+
+message EntityByCodeDTO {
+    string code = 1;
+}
+
+enum SilkCarSideType {
+    A = 0;
+    B = 1;
+}
+
+message CheckSilkDTO {
+    SilkCarSideType sideType = 1;
+    uint32 row = 2;
+    uint32 col = 3;
+    string code = 4;
+}

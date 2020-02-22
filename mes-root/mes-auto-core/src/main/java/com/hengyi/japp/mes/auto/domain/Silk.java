@@ -26,7 +26,6 @@ public class Silk implements IEntity {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @ToString.Include
     @Getter

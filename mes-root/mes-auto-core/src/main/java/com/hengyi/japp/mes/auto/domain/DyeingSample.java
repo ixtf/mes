@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -25,7 +24,6 @@ public class DyeingSample implements EntityLoggable {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @ToString.Include
     @Getter

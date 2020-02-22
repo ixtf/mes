@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -30,7 +29,6 @@ public class LineMachine implements EntityLoggable {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @ToString.Include
     @Getter

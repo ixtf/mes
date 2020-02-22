@@ -6,9 +6,7 @@ import com.github.ixtf.japp.core.J;
 import com.google.common.base.Strings;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -36,13 +34,15 @@ import java.util.stream.IntStream;
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(indexes = {
+        @Index(name = "_code", columnList = "code"),
+})
 public class SilkBarcode implements EntityLoggable {
     @ToString.Include
     @EqualsAndHashCode.Include
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     /**
      * 编码中的数字转化，36进制
@@ -55,7 +55,8 @@ public class SilkBarcode implements EntityLoggable {
     public static final LocalDate INIT_LD = LocalDate.of(2018, Month.AUGUST, 1);
     @Getter
     @Setter
-    @Column
+    @Column(unique = true)
+    @NotBlank
     private String code;
     /**
      * 条码生成日期

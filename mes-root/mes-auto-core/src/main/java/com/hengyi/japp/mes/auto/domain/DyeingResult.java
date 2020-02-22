@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Collection;
@@ -35,7 +34,6 @@ public class DyeingResult implements EntityLoggable {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @JsonIgnore
     @Getter

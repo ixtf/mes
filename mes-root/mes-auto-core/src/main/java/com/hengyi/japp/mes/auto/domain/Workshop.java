@@ -29,7 +29,6 @@ public class Workshop implements EntityLoggable {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @Getter
     @Setter

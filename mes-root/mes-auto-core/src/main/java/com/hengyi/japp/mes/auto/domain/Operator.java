@@ -26,7 +26,6 @@ public class Operator implements IOperator {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @ToString.Include
     @Getter

@@ -28,7 +28,6 @@ public class Corporation implements EntityLoggable {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     /**
      * 编码，最好和 SAP 编码统一

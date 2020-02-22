@@ -8,7 +8,6 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 
 /**
  * @author jzb 2018-11-11
@@ -24,7 +23,6 @@ public class SapT001l implements IEntity {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @Getter
     @Setter

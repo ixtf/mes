@@ -21,7 +21,6 @@ import static com.github.ixtf.japp.core.Constant.YAML_MAPPER;
  * @author jzb 2018-08-06
  */
 public class PrintModule extends AbstractModule {
-
     @Provides
     @Singleton
     @Named("rootPath")

@@ -5,21 +5,38 @@ option java_package = "com.hengyi.japp.mes.auto.proto";
 option java_outer_classname = "DoffingServiceProto";
 
 import "google/protobuf/empty.proto";
+import "common.proto";
 
 service DoffingService {
-    rpc ListCheckByWorkshop (ListCheckByWorkshopRequest) returns (ListCheckByWorkshopResponse) {
+    rpc AutoListCheckSilkByWorkshop (ListCheckByWorkshopRequest) returns (ListCheckSilkResponse) {
+    }
+    rpc ManualListCheckSilkByWorkshop (ListCheckByWorkshopRequest) returns (ListCheckSilkResponse) {
+    }
+    rpc ListDoffingSpecByWorkshop (EntityDTO) returns (ListDoffingSpecResponse) {
+    }
+
+    rpc AutoListCheckSilkByLine (ListCheckSilkByLineRequest) returns (ListCheckSilkResponse) {
+    }
+    rpc ManualListCheckSilkByLine (ListCheckSilkByLineRequest) returns (ListCheckSilkResponse) {
+    }
+    rpc ListDoffingSpecByLine (EntityDTO) returns (ListDoffingSpecResponse) {
     }
 }
 
 message ListCheckByWorkshopRequest {
-    string doffingType = 1;
-    string workshopId = 2;
-    repeated string checks = 3;
+    EntityByCodeDTO silkCar = 1;
+    EntityDTO workshop = 2;
 }
 
-message ListCheckByWorkshopResponse {
-    bool inWarehouse = 1;
-    string workshopId = 2;
-    string code = 3;
-    string productId = 4;
+message ListCheckSilkByLineRequest {
+    EntityByCodeDTO silkCar = 1;
+    EntityDTO line = 2;
+}
+
+message ListCheckSilkResponse {
+    repeated CheckSilkDTO dtos = 1;
+}
+
+message ListDoffingSpecResponse {
+    repeated bool CheckSilkDTO = 1;
 }

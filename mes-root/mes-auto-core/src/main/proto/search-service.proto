@@ -20,8 +20,8 @@ service SearchService {
 }
 
 message SearchResultResponse {
-    uint64 count = 1;
-    repeated string ids = 2;
+    repeated string ids = 1;
+    uint64 count = 2;
 }
 
 message SearchPackageBoxRequest {

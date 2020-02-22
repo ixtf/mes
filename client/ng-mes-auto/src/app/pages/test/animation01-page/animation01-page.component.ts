@@ -31,8 +31,17 @@ import {SharedModule} from '../../../shared.module';
 export class Animation01PageComponent {
   isOpen = true;
 
+  constructor() {
+  }
+
   toggle() {
     this.isOpen = !this.isOpen;
+    // const greeterClient = new GreeterClient('http://localhost:8081', null, null);
+    // const helloRequest = new HelloRequest();
+    // helloRequest.setName('angular');
+    // greeterClient.sayHello(helloRequest, null, (err, reply) => {
+    //   console.log(reply.getMessage());
+    // });
   }
 
   onAnimationEvent(event: AnimationEvent) {

@@ -1,0 +1,17 @@
+dependencies {
+    compile project(':mes-auto-core')
+}
+
+mainClassName = "com.hengyi.japp.mes.auto.doffing.DoffingLauncher"
+
+jar.manifest {
+    attributes(
+            'Main-Verticle': "com.hengyi.japp.mes.auto.search.MainVerticle",
+            'Implementation-Title': name,
+            'Implementation-Version': version,
+            'Built-By': System.getProperty('user.name'),
+            'Built-JDK': System.getProperty('java.version'),
+            'Source-Compatibility': sourceCompatibility,
+            'Target-Compatibility': targetCompatibility
+    )
+}

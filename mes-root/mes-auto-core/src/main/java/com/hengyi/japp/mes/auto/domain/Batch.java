@@ -29,7 +29,6 @@ public class Batch implements EntityLoggable, Comparable<Batch> {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @Getter
     @Setter

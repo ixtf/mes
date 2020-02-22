@@ -108,12 +108,12 @@ public class SilkPrintable implements Printable {
     @SneakyThrows
     private BufferedImage silkBarCodeImage(String content) {
         // 配置参数
-        Map<EncodeHintType, Object> hints = Maps.newHashMap();
+        final Map<EncodeHintType, Object> hints = Maps.newHashMap();
         hints.put(EncodeHintType.MARGIN, 0);
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         // 容错级别 这里选择最高H级别
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-        MultiFormatWriter writer = new MultiFormatWriter();
+        final MultiFormatWriter writer = new MultiFormatWriter();
         @NotNull final ZxingConfig zxingConfig = config.getZxingConfig();
         final BitMatrix bitMatrix = writer.encode(content, BarcodeFormat.CODE_128, zxingConfig.getWidth(), zxingConfig.getHeight(), hints);
         return MatrixToImageWriter.toBufferedImage(bitMatrix);

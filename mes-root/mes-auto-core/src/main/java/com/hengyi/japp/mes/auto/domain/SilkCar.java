@@ -34,7 +34,6 @@ public class SilkCar implements EntityLoggable {
     @Getter
     @Setter
     @Id
-    @NotBlank
     private String id;
     @Getter
     @Setter

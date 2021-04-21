@@ -48,7 +48,7 @@
     "ngx-barcode": "^0.2.4",
     "normalize.css": "^8.0.1",
     "rxjs": "~6.5.3",
-    "sockjs": "^0.3.19",
+    "sockjs": "^0.3.20",
     "tslib": "^1.9.0",
     "vertx3-eventbus-client": "~3.7.1",
     "xlsx": "^0.15.1",
